@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_menu">
+        <item>Load Database</item>
+    </string-array>
+    <string-array name="sync_database_options">
+        <item>Database From Local</item>
+        <item>Database From Remote</item>
+    </string-array>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/pref_text_setting" >
+        <ListPreference
+            android:key="prefSetFont"
+            android:entries="@array/setFont"
+            android:summary="@string/pref_sync_frequency_summary"
+            android:defaultValue="NORMAL"
+            android:entryValues="@array/setFontValues"
+            android:title="@string/pref_change_font_size" />
+        <ListPreference
+            android:key="prefSetFontStyle"
+            android:entries="@array/setFontStyle"
+            android:summary="@string/pref_text_style_summary"
+            android:defaultValue="NORMAL"
+            android:entryValues="@array/setFontStyleValues"
+            android:title="@string/pref_change_font_style" />
+        <ListPreference
+            android:key="prefSetFontFace"
+            android:entries="@array/setFontFaceStyle"
+            android:summary="@string/pref_font_face_summary"
+            android:defaultValue="DEFAULT"
+            android:entryValues="@array/setFontFaceValues"
+            android:title="@string/pref_change_font_face" />
+
+        <org.worshipsongs.picker.ColorPickerPreference
+            android:key="color2"
+            android:title="@string/color2_title"
+            android:summary="@string/color2_summary"
+            android:defaultValue="@integer/COLOR_GREEN"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

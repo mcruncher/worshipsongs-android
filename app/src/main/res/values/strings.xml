@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">openlp-lite</string>
+    <string name="hello_world">Songs will be listed soon ...</string>
+    <string name="action_settings">Settings</string>
+    <string name="custom_tab_settings">Custom tab settings</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_display_message">Display foo message</string>
+    <string name="dataLabel">Data:----></string>
+    <string name="pref_send_report">Send crash reports</string>
+    <string name="pref_send_report_summary">Helps to fix bugs</string>
+    <string name="pref_change_font_size">Font Size </string>
+    <string name="pref_sync_frequency_summary">Change font size</string>
+    <string name="pref_tag_name">Set tag name</string>
+    <string name="pref_tag_name_summary">Set your tag name</string>
+    <string name="pref_user_profile">User Profile</string>
+    <string name="pref_text_setting">Text Settings</string>
+    <string name="pref_tag_setting">Tag Settings</string>
+    <string name="pref_text_style">Set Font Style</string>
+    <string name="pref_text_style_summary">Change font style</string>
+    <string name="pref_change_font_style">Font Style</string>
+    <string name="pref_font_face_summary">Change font face</string>
+    <string name="pref_change_font_face">Font Face</string>
+
+    <!--Download remote url-->
+    <string name="remoteUrlTitle">Remote url</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/openlp-lite-database/master/songs-1.9.sqlite</string>
+
+
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
+
+
+    <!-- Preferences -->
+    <string name="pref_category">Category</string>
+    <string name="color1_title">Color 1</string>
+    <string name="color1_summary">black color by default, set by reference</string>
+    <string name="color2_title">Font color</string>
+    <string name="color2_summary">Change font color</string>
+    <string name="color_tag_title">Tag Color</string>
+    <string name="color_tag_summary">Set Tag color</string>
+
+
+
+
+    <!-- Done bar strings -->
+    <string name="save">Save</string>
+    <string name="action_about">About</string>
+
+</resources>
