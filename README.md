@@ -7,5 +7,19 @@
   
 How to build project in command line?
   
+  Clone the project execute below command
+  
+  >git clone https://github.com/crunchersaspire/worshipsongs.git
+  
+  >cd worshipsongs
+  
+  If windows
+  >gradlew.bat assembleDebug
+  
+  Then find apk in app\build\outputs\apk directory.
+  
+  
+  
+   
   
   
