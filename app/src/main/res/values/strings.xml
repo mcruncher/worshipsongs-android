@@ -27,7 +27,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
 
-    <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/openlp-lite-database/master/songs-1.9.sqlite</string>
+    <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite</string>
 
 
     <!-- Color Picker -->
