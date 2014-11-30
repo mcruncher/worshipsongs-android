@@ -29,6 +29,7 @@ public final class PropertyUtils
         Properties properties = new Properties();
         OutputStream outputStream = null;
         try {
+
             outputStream = new FileOutputStream(propertiesFile);
             for (String key : propertiesMap.keySet()) {
                 properties.setProperty(key, propertiesMap.get(key));
@@ -63,13 +64,18 @@ public final class PropertyUtils
     {
         File commonPropertyFile = null;
         try {
-            File externalCacheDir = context.getExternalCacheDir();
-            commonPropertyFile = new File(externalCacheDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-            if (commonPropertyFile.exists()) {
+            String configDirPath = "/data/data/config/" + context.getApplicationContext().getPackageName();
+            File configDir = new File(configDirPath);
+            commonPropertyFile = new File(configDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+            Log.d("PropertyUtils", "Absolute path " + commonPropertyFile.getAbsolutePath());
+            if (!commonPropertyFile.exists()) {
+                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is not  exists");
                 FileUtils.touch(commonPropertyFile);
+            } else {
+                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is  exists");
             }
         } catch (Exception ex) {
-
+            Log.e("PropertyUtils", "Error" + ex);
         }
         return commonPropertyFile;
     }
