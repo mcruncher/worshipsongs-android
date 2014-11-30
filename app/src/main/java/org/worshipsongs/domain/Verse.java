@@ -13,6 +13,7 @@ public class Verse implements Serializable
     private String type;
     private int label;
     private String content;
+    private String verseOrder;
 
     public String getType()
     {
@@ -40,6 +41,16 @@ public class Verse implements Serializable
     }
 
     public void setContent(String content)
+    {
+        this.content = content;
+    }
+
+    public String getVerseOrder()
+    {
+        return content;
+    }
+
+    public void setVerseOrder(String content)
     {
         this.content = content;
     }

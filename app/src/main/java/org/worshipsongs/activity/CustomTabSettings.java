@@ -86,8 +86,7 @@ public class CustomTabSettings extends PreferenceActivity
     private void saveIntoFile(String tagName, int color)
     {
         try {
-            File externalCacheDir = context.getExternalCacheDir();
-            customTagFile = new File(externalCacheDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+            customTagFile = PropertyUtils.getCommonPropertyFile(context);
             if (!customTagFile.exists()) {
                 FileUtils.touch(customTagFile);
             }

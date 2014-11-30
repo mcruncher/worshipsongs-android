@@ -95,8 +95,6 @@ public class CustomListViewAdapter extends BaseAdapter
                     holder.textView = (TextView) convertView.findViewById(R.id.text);
                     //loadTextStyle(holder.textView);
                     String text = holder.textView.getText().toString();
-                    Log.d(this.getClass().getName(), "Text content" + text);
-
                     break;
                 case TYPE_SEPARATOR:
                     convertView = layoutInflater.inflate(R.layout.custom_list_view_adapter_item2, null);
@@ -120,7 +118,6 @@ public class CustomListViewAdapter extends BaseAdapter
         preferenceSettingService = new UserPreferenceSettingService();
         String text = textView.getText().toString();
         textView.setText("");
-        Log.d(this.getClass().getName(), "Text content" + text);
         customTagColorService.setCustomTagTextView(context, text, textView);
         textView.setTypeface(preferenceSettingService.getTypeFace(), preferenceSettingService.getFontStyle());
         textView.setTextSize(preferenceSettingService.getFontSize());

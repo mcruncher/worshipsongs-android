@@ -12,7 +12,7 @@ public class Song
     private String title;
     private String alternateTitle;
     private String lyrics;
-    private String verseOrder;
+    private String verse_order;
     private String copyright;
     private String comments;
     private String ccliNumber;
@@ -86,12 +86,12 @@ public class Song
 
     public String getVerseOrder()
     {
-        return verseOrder;
+        return verse_order;
     }
 
     public void setVerseOrder(String verseOrder)
     {
-        this.verseOrder = verseOrder;
+        this.verse_order = verseOrder;
     }
 
     public String getCopyright()

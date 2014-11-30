@@ -30,7 +30,7 @@ public final class PropertyUtils
         OutputStream outputStream = null;
         try {
 
-            outputStream = new FileOutputStream(propertiesFile);
+            outputStream = new FileOutputStream(propertiesFile, true);
             for (String key : propertiesMap.keySet()) {
                 properties.setProperty(key, propertiesMap.get(key));
             }
@@ -67,12 +67,8 @@ public final class PropertyUtils
             String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
             File configDir = new File(configDirPath);
             commonPropertyFile = new File(configDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-            Log.d("PropertyUtils", "Absolute path " + commonPropertyFile.getAbsolutePath());
             if (!commonPropertyFile.exists()) {
                 FileUtils.touch(commonPropertyFile);
-                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is not  exists and created");
-            } else {
-                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is  exists");
             }
         } catch (Exception ex) {
             Log.e("PropertyUtils", "Error" + ex);
@@ -82,14 +78,10 @@ public final class PropertyUtils
 
     public static void appendColoredText(TextView tv, String text, int color)
     {
-        Log.d(PropertyUtils.class.getName(), "Lines" + text);
-        Log.d(PropertyUtils.class.getName(), "color" + color);
         int start = tv.getText().length();
-
         tv.append(text);
         tv.append("\n");
         int end = tv.getText().length();
-
         Spannable spannableText = (Spannable) tv.getText();
         spannableText.setSpan(new ForegroundColorSpan(color), start, end, 0);
     }

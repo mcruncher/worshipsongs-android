@@ -24,7 +24,9 @@ import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.VerseParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : Seenivasan
@@ -66,16 +68,35 @@ public class SongsListActivity extends Activity
             {
                 Song selectedValue = adapter.getItem(position);
                 String lyrics = selectedValue.getLyrics();
+                String verseOrder = selectedValue.getVerseOrder();
+                List<String> verseListData = new ArrayList<String>();
+                Log.d("Verse order cursor: ", verseOrder);
+                if(!verseOrder.isEmpty())
+                {
+                    verseListData = getVerseByVerseOrder(verseOrder);
+                }
                 getVerse(lyrics);
                 List<String> verseName = new ArrayList<String>();
                 List<String> verseContent = new ArrayList<String>();
+                Map<String,String> verseData = new HashMap<String, String>();
                 for (Verse verses : verseList) {
                     verseName.add(verses.getType() + verses.getLabel());
                     verseContent.add(verses.getContent());
+                    verseData.put(verses.getType() + verses.getLabel(),verses.getContent());
                 }
+                List<String> verseListDataContent = new ArrayList<String>();
                 Intent intent = new Intent(SongsListActivity.this, SongsColumnViewActivity.class);
-                intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
+                if(verseListData.size()>0){
+                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
+                    for(int i=0; i<verseListData.size();i++){
+                        verseListDataContent.add(verseData.get(verseListData.get(i)));
+                    }
+                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
+                }
+                else{
+                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
+                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
+                }
                 startActivity(intent);
             }
         });
@@ -104,7 +125,17 @@ public class SongsListActivity extends Activity
     {
         verseList = new ArrayList<Verse>();
         verseList = verseparser.parseVerseDom(this, lyrics);
-        Log.d(this.getClass().getName(), "No. of verse: " + verseList.size());
+    }
+
+    private List<String> getVerseByVerseOrder(String verseOrder)
+    {
+        String split[] = verseOrder.split("\\s+");
+        List<String> verses = new ArrayList<String>();
+        for (int i = 0; i < split.length; i++) {
+            verses.add(split[i]);
+        }
+        Log.d("Verses list: ", verses.toString());
+        return verses;
     }
 
     private void loadSongs()
@@ -161,7 +192,4 @@ public class SongsListActivity extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }
