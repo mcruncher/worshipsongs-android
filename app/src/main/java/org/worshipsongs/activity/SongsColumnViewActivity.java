@@ -84,9 +84,6 @@ public class SongsColumnViewActivity extends ListActivity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.tabbedView).setVisible(true);
-        menu.findItem(R.id.tabbedView).setCheckable(false);
-        menu.findItem(R.id.sectionView).setVisible(false);
         return true;
     }
 
@@ -108,17 +105,7 @@ public class SongsColumnViewActivity extends ListActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.sectionView:
-                break;
-            case R.id.tabbedView:
-                isTabView = !isTabView;
-                item.setChecked(isTabView);
-                intent = new Intent(this, SongsViewActivity.class);
-                intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
-                startActivity(intent);
-                break;
-            case R.id.action_settings:
+            case R.id.text_settings:
                 intent = new Intent(this, UserSettingActivity.class);
                 startActivity(intent);
                 break;

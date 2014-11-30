@@ -189,7 +189,6 @@ public class PinnedSectionListActivity extends ListActivity implements OnClickLi
     public boolean onPrepareOptionsMenu(Menu menu)
     {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.sectionView).setChecked(true);
         return true;
     }
 
@@ -202,17 +201,6 @@ public class PinnedSectionListActivity extends ListActivity implements OnClickLi
                 // app icon in action bar clicked; go home
                 intent = new Intent(this, SongsListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-
-            case R.id.sectionView:
-                break;
-            case R.id.tabbedView:
-                isTabView = !isTabView;
-                item.setChecked(isTabView);
-                intent = new Intent(this, SongsViewActivity.class);
-                intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                 startActivity(intent);
                 break;
             case R.id.action_settings:

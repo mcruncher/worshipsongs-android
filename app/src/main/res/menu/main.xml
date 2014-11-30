@@ -2,6 +2,7 @@
     xmlns:openlp-lite="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActviity" >
+<!--
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
@@ -12,9 +13,12 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/sectionView"
             android:title="Columned View"/>
-        <item android:id="@+id/tabbedView"
-            android:title="Tabbed View" />
     </group>
+-->
+
+    <item android:id="@+id/text_settings"
+        android:title="@string/text_settings"
+        tools:ignore="AppCompatResource"/>
 
     <item android:id="@+id/custom_tab_settings"
         android:title="@string/custom_tab_settings"

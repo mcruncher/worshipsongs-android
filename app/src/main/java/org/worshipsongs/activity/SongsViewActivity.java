@@ -140,9 +140,6 @@ public class SongsViewActivity extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.tabbedView).setVisible(false);
-        menu.findItem(R.id.sectionView).setVisible(true);
-        menu.findItem(R.id.sectionView).setCheckable(false);
         return true;
     }
 
@@ -166,14 +163,8 @@ public class SongsViewActivity extends FragmentActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.action_settings:
+            case R.id.text_settings:
                 intent = new Intent(SongsViewActivity.this, UserSettingActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.sectionView:
-                intent = new Intent(this, SongsColumnViewActivity.class);
-                intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                 startActivity(intent);
                 break;
             case R.id.custom_tab_settings:
