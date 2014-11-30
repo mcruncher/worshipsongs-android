@@ -76,11 +76,11 @@ public class SplashScreenActivity extends Activity
                     String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
                     File externalCacheDir = this.getExternalCacheDir();
                     File downloadSongFile = null;
+                    messageAlert.setText("Downloading latest songs database...");
                     try {
                         downloadSongFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
                         Log.i(this.getClass().getName(), "Download file from " + remoteUrl + " to" + downloadSongFile.getAbsolutePath());
                         if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
-                            messageAlert.setText("Downloading latest songs database...");
                             songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
                             songDao.open();
                             Log.i(this.getClass().getName(), "Copied successfully");
