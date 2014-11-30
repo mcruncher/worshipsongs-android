@@ -110,15 +110,6 @@ public class SongsListActivity extends Activity
         for (int i = 0; i < songs.size(); i++) {
             dataArray[i] = songs.get(i).toString();
         }
-        initColor();
-    }
-
-    private void initColor()
-    {
-        SharedPreferences customSharedPreference = getSharedPreferences("myCustomSharedPrefs", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = customSharedPreference.edit();
-        editor.putInt("color2", -16711936);
-        editor.commit();
     }
 
     private void getVerse(String lyrics)

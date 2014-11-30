@@ -106,7 +106,7 @@ public class CustomTagColorService
             if (!color.isEmpty())
                 colorVal = Integer.parseInt(color);
             else
-                colorVal = Color.BLUE;
+                colorVal = Color.DKGRAY;
         }
         catch (Exception ex){
 

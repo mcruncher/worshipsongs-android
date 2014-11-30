@@ -76,7 +76,7 @@ public class UserPreferenceSettingService{
             color= Integer.parseInt(all.get("color2").toString());
         }
         else{
-            color=-2203129;
+            color=-12303292;
         }
         return color;
     }
