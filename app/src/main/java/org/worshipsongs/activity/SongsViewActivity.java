@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import org.worshipsongs.worship.R;
 import org.worshipsongs.page.component.fragment.VerseContentView;
@@ -37,6 +38,7 @@ public class SongsViewActivity extends FragmentActivity
     {
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_page_listener);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Intent intent = getIntent();
         verseName = new ArrayList<String>();
         verseContent = new ArrayList<String>();

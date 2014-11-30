@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.worshipsongs.adapter.CustomListViewAdapter;
@@ -34,10 +35,12 @@ public class SongsColumnViewActivity extends ListActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (savedInstanceState != null) {
             isSectionView = savedInstanceState.getBoolean("isSectionView");
             isTabView = savedInstanceState.getBoolean("isTabView");
         }
+
         actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
