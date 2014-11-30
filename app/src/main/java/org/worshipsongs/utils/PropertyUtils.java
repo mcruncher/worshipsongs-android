@@ -64,13 +64,13 @@ public final class PropertyUtils
     {
         File commonPropertyFile = null;
         try {
-            String configDirPath = "/data/data/config/" + context.getApplicationContext().getPackageName();
+            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
             File configDir = new File(configDirPath);
             commonPropertyFile = new File(configDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
             Log.d("PropertyUtils", "Absolute path " + commonPropertyFile.getAbsolutePath());
             if (!commonPropertyFile.exists()) {
-                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is not  exists");
                 FileUtils.touch(commonPropertyFile);
+                Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is not  exists and created");
             } else {
                 Log.d("PropertyUtils", "Common property files " + commonPropertyFile + " is  exists");
             }
