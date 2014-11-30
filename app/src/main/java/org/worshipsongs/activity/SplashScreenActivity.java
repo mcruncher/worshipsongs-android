@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.worshipsongs.worship.R;
@@ -29,6 +30,7 @@ public class SplashScreenActivity extends Activity
 {
     private static final int TIME = 4 * 1000;// 4 seconds
     private SongDao songDao;
+    TextView messageAlert;
     private ProgressDialog progressDialog;
 
     @Override
@@ -38,6 +40,7 @@ public class SplashScreenActivity extends Activity
         setContentView(R.layout.splash_screen);
         songDao = new SongDao(this);
         progressDialog = new ProgressDialog(SplashScreenActivity.this);
+        messageAlert = (TextView)findViewById(R.id.message);
 
         new Handler().postDelayed(new Runnable()
         {
@@ -77,6 +80,7 @@ public class SplashScreenActivity extends Activity
                         downloadSongFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
                         Log.i(this.getClass().getName(), "Download file from " + remoteUrl + " to" + downloadSongFile.getAbsolutePath());
                         if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
+                            messageAlert.setText("Downloading latest songs database...");
                             songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
                             songDao.open();
                             Log.i(this.getClass().getName(), "Copied successfully");
@@ -103,11 +107,11 @@ public class SplashScreenActivity extends Activity
                 connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
                 connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
                 connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
-            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
             return true;
         } else if (connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
                         connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
-            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
             return false;
         }
         return false;

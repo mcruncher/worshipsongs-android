@@ -28,6 +28,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="67dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Checking for database updates..."
+        android:id="@+id/message"
+        android:resizeMode="horizontal|vertical"
+        android:layout_alignBottom="@+id/progressBar1"
+        android:layout_marginBottom="-25dp"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
