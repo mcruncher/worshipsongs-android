@@ -41,7 +41,6 @@ public class SongsListActivity extends Activity
     private List<Verse> verseList;
     private ArrayAdapter<Song> adapter;
     private String[] dataArray;
-   // private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,14 +49,8 @@ public class SongsListActivity extends Activity
         setContentView(R.layout.songs_list_activity);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         songListView = (ListView) findViewById(R.id.list_view);
-       // progressDialog = new ProgressDialog(this);
         songDao = new SongDao(this);
         verseparser = new VerseParser();
-        try {
-           // songDao.copyDatabase("", false);
-        } catch (Exception ex) {
-            Log.w(this.getClass().getName(), "Error occurred while creating database", ex);
-        }
         initSetUp();
 
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -68,28 +61,29 @@ public class SongsListActivity extends Activity
             {
                 Song selectedValue = adapter.getItem(position);
                 String lyrics = selectedValue.getLyrics();
-                String verseOrder = selectedValue.getVerseOrder();
-                List<String> verseListData = new ArrayList<String>();
-                Log.d("Verse order cursor: ", verseOrder);
-                if(!verseOrder.isEmpty())
-                {
-                    verseListData = getVerseByVerseOrder(verseOrder);
-                }
-                getVerse(lyrics);
+                verseList = getVerse(lyrics);
+
                 List<String> verseName = new ArrayList<String>();
                 List<String> verseContent = new ArrayList<String>();
-                Map<String,String> verseData = new HashMap<String, String>();
+                Map<String,String> verseDataMap = new HashMap<String, String>();
                 for (Verse verses : verseList) {
                     verseName.add(verses.getType() + verses.getLabel());
                     verseContent.add(verses.getContent());
-                    verseData.put(verses.getType() + verses.getLabel(),verses.getContent());
+                    verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
                 }
+
+
                 List<String> verseListDataContent = new ArrayList<String>();
+                List<String> verseListData = new ArrayList<String>();
+                String verseOrder = selectedValue.getVerseOrder();
+                verseListData = getVerseByVerseOrder(verseOrder);
+
+
                 Intent intent = new Intent(SongsListActivity.this, SongsColumnViewActivity.class);
                 if(verseListData.size()>0){
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                     for(int i=0; i<verseListData.size();i++){
-                        verseListDataContent.add(verseData.get(verseListData.get(i)));
+                        verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
                     }
                     intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
                 }
@@ -112,10 +106,9 @@ public class SongsListActivity extends Activity
         }
     }
 
-    private void getVerse(String lyrics)
+    private List<Verse> getVerse(String lyrics)
     {
-        verseList = new ArrayList<Verse>();
-        verseList = verseparser.parseVerseDom(this, lyrics);
+        return verseparser.parseVerseDom(this, lyrics);
     }
 
     private List<String> getVerseByVerseOrder(String verseOrder)
@@ -123,7 +116,7 @@ public class SongsListActivity extends Activity
         String split[] = verseOrder.split("\\s+");
         List<String> verses = new ArrayList<String>();
         for (int i = 0; i < split.length; i++) {
-            verses.add(split[i]);
+            verses.add(split[i].toLowerCase());
         }
         Log.d("Verses list: ", verses.toString());
         return verses;
