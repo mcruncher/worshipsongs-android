@@ -163,14 +163,6 @@ public class SongsViewActivity extends FragmentActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.text_settings:
-                intent = new Intent(SongsViewActivity.this, UserSettingActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.custom_tab_settings:
-                intent = new Intent(this, CustomTabSettings.class);
-                startActivity(intent);
-                break;
 
         }
         return true;

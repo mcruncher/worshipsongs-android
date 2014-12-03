@@ -22,12 +22,37 @@
             android:defaultValue="DEFAULT"
             android:entryValues="@array/setFontFaceValues"
             android:title="@string/pref_change_font_face" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_color_settings" >
+        <org.worshipsongs.picker.ColorPickerPreference
+            android:key="primaryColor"
+            android:title="@string/primary_color"
+            android:summary="@string/primary_summary"
+            android:defaultValue="@integer/COLOR_DARK_GRAY"/>
 
         <org.worshipsongs.picker.ColorPickerPreference
-            android:key="color2"
-            android:title="@string/color2_title"
-            android:summary="@string/color2_summary"
-            android:defaultValue="@integer/COLOR_GREEN"/>
+            android:key="secondaryColor"
+            android:title="@string/secondary_color"
+            android:summary="@string/secondary_summary"
+            android:defaultValue="@integer/COLOR_DARK_GRAY"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_screen_settings" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefKeepAwakeOn"
+            android:summary="To keep the screen awake"
+            android:title="@string/pref_keep_awake_on" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/pref_restore_default_settings" >
+        <Preference android:title="Reset to default settings"
+            android:key="reset_settings"
+            android:summary="This will reset to default settings"/>
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

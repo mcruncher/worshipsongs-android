@@ -1,7 +1,9 @@
 package org.worshipsongs.service;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,11 +41,11 @@ public class CustomTagColorService
             if (matcher.find()) {
                 String value = matcher.group(0).replace("{", "");
                 tagKey = value.replace("}", "");
-                if(getTagColor(tagKey) == null){
+                if(preferenceSettingService.getTagColor() == null){
                     PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), Color.BLACK);
                 }
                 else
-                    PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), getTagColor(tagKey));
+                    PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), preferenceSettingService.getTagColor());
             }
             else
                 PropertyUtils.appendColoredText(textView, strings.get(i), preferenceSettingService.getColor());
@@ -97,22 +100,6 @@ public class CustomTagColorService
         return strings;
     }
 
-    private Integer getTagColor(String tagKey)
-    {
-        Integer colorVal = null;
-        try{
-            List<String> fileContent = FileUtils.readLines(customTagFile);
-            String color = PropertyUtils.getProperty(tagKey, customTagFile);
-            if (!color.isEmpty())
-                colorVal = Integer.parseInt(color);
-            else
-                colorVal = Color.DKGRAY;
-        }
-        catch (Exception ex){
-
-        }
-        return colorVal;
-    }
 
     private String removeTag(String line, String tagKey)
     {

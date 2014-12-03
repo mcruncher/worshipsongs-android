@@ -207,10 +207,6 @@ public class PinnedSectionListActivity extends ListActivity implements OnClickLi
                 intent = new Intent(this, UserSettingActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.custom_tab_settings:
-                intent = new Intent(this, CustomTabSettings.class);
-                startActivity(intent);
-                break;
         }
         return true;
     }

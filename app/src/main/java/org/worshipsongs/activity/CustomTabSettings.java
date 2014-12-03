@@ -1,6 +1,7 @@
 package org.worshipsongs.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import java.util.Map;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class CustomTabSettings extends PreferenceActivity
+public class CustomTabSettings extends Activity
 {
     private Context context = WorshipSongApplication.getContext();
     private File customTagFile = null;

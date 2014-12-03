@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.worshipsongs.WorshipSongApplication;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 public class UserPreferenceSettingService{
 
     Context context = WorshipSongApplication.getContext();
-    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     private Typeface typeFace;
     private Typeface fontFaceStyle;
     private float fontSize;
@@ -27,7 +28,7 @@ public class UserPreferenceSettingService{
 
 
     public Typeface getTypeFace() {
-        String sharedTypeFace = sharedPrefs.getString("prefSetFontFace","NULL");
+        String sharedTypeFace = sharedPreferences.getString("prefSetFontFace","NULL");
         if(sharedTypeFace.equals("DEFAULT"))
             typeFace=Typeface.DEFAULT;
         if(sharedTypeFace.equals("DEFAULT_BOLD"))
@@ -42,7 +43,7 @@ public class UserPreferenceSettingService{
     }
 
     public float getFontSize() {
-        String sharedFontSize = sharedPrefs.getString("prefSetFont","NULL");
+        String sharedFontSize = sharedPreferences.getString("prefSetFont","NULL");
         if(sharedFontSize.equals("SMALL"))
             fontSize=10;
         if(sharedFontSize.equals("MEDIUM"))
@@ -55,7 +56,7 @@ public class UserPreferenceSettingService{
     }
 
     public int getFontStyle() {
-        String sharedTypeFace = sharedPrefs.getString("prefSetFontStyle","NULL");
+        String sharedTypeFace = sharedPreferences.getString("prefSetFontStyle","NULL");
         int fontStyle=0;
         if(sharedTypeFace.equals("BOLD"))
             fontStyle=Typeface.BOLD;
@@ -69,11 +70,10 @@ public class UserPreferenceSettingService{
     }
 
     public int getColor() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        Map<String, ?> all = sp.getAll();
+        Map<String, ?> all = sharedPreferences.getAll();
         int color;
-        if(all.containsKey("color2")){
-            color= Integer.parseInt(all.get("color2").toString());
+        if(all.containsKey("primaryColor")){
+            color= Integer.parseInt(all.get("primaryColor").toString());
         }
         else{
             color=-12303292;
@@ -81,17 +81,20 @@ public class UserPreferenceSettingService{
         return color;
     }
 
-    public int getBackGroundColor() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        Map<String, ?> all = sp.getAll();
+    public Integer getTagColor()
+    {
+        Map<String, ?> all = sharedPreferences.getAll();
         int color;
-        if(all.containsKey("color2")){
-            //color= Integer.parseInt(all.get("color2").toString());
-            color=-2203129;
+        if(all.containsKey("secondaryColor")){
+            color= Integer.parseInt(all.get("secondaryColor").toString());
         }
         else{
-            color=-2203129;
+            color=-12303292;
         }
         return color;
+    }
+
+    public boolean getKeepAwakeStatus(){
+        return sharedPreferences.getBoolean("prefKeepAwakeOn", false);
     }
 }

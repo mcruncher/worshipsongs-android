@@ -21,6 +21,7 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.VerseParser;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -41,11 +42,13 @@ public class SongsListActivity extends Activity
     private List<Verse> verseList;
     private ArrayAdapter<Song> adapter;
     private String[] dataArray;
+    private UserPreferenceSettingService userPreferenceSettingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        userPreferenceSettingService = new UserPreferenceSettingService();
         setContentView(R.layout.songs_list_activity);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         songListView = (ListView) findViewById(R.id.list_view);
@@ -166,10 +169,10 @@ public class SongsListActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             Intent intent = new Intent(SongsListActivity.this, SettingsActivity.class);
             startActivity(intent);
-        }
+        }*/
         if (id == R.id.action_about) {
             Intent intent = new Intent(SongsListActivity.this, AboutWebViewActivity.class);
             startActivity(intent);

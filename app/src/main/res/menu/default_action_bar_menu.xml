@@ -10,10 +10,10 @@
         android:title="@string/action_search"
         tools:ignore="AppCompatResource" />
 
-    <item android:id="@+id/action_settings"
+   <!-- <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         tools:ignore="AppCompatResource"/>
-
+-->
     <item android:id="@+id/action_about"
         android:title="@string/action_about"
         tools:ignore="AppCompatResource"/>
