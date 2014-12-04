@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
@@ -74,23 +75,34 @@ public class SongsListActivity extends Activity
                     verseContent.add(verses.getContent());
                     verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
                 }
-
+                Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
+                Log.d(this.getClass().getName(),"Verse Content :"+ verseName);
+                Log.d(this.getClass().getName(),"Verse Data map :"+ verseDataMap);
 
                 List<String> verseListDataContent = new ArrayList<String>();
                 List<String> verseListData = new ArrayList<String>();
                 String verseOrder = selectedValue.getVerseOrder();
-                verseListData = getVerseByVerseOrder(verseOrder);
+                if(StringUtils.isNotBlank(verseOrder))
+                {
+                    verseListData = getVerseByVerseOrder(verseOrder);
+                }
+                Log.d(this.getClass().getName(),"Verse List data :"+ verseListData);
+                Log.d(this.getClass().getName(),"Verse List data sizze :"+ verseListData.size());
 
 
                 Intent intent = new Intent(SongsListActivity.this, SongsColumnViewActivity.class);
-                if(verseListData.size()>0){
+                if(verseListData.size() > 0){
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                     for(int i=0; i<verseListData.size();i++){
                         verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
                     }
                     intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
+                    Log.d(this.getClass().getName(),"Verse List data content :"+ verseListDataContent);
                 }
                 else{
+                    Log.d(this.getClass().getName(),"Else Part :");
+                    Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
+                    Log.d(this.getClass().getName(),"Verse Content :"+ verseName);
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
                     intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                 }
