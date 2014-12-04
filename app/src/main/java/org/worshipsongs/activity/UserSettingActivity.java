@@ -44,7 +44,7 @@ public class UserSettingActivity extends PreferenceActivity {
             listPreferenceSettingsListener("prefSetFontFace");
 
             //Initialize Preference
-            resetPreferenceListener("reset_settings");
+            resetPreferenceListener("resetDialog");
         }
 
         private void resetPreferenceListener(String preferenceKey) {
