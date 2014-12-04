@@ -35,7 +35,7 @@
             android:key="secondaryColor"
             android:title="@string/secondary_color"
             android:summary="@string/secondary_summary"
-            android:defaultValue="@integer/COLOR_DARK_GRAY"/>
+            android:defaultValue="@integer/COLOR_RED"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_screen_settings" >
