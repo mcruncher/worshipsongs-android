@@ -15,7 +15,6 @@ import org.worshipsongs.worship.R;
  */
 public class UserSettingActivity extends PreferenceActivity
 {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
