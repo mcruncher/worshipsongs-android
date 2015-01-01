@@ -1,19 +1,23 @@
 package org.worshipsongs.activity;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -34,7 +38,7 @@ import java.util.Map;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SongsListActivity extends Activity
+public class SongsListActivity extends Fragment
 {
     private ListView songListView;
     private VerseParser verseparser;
@@ -45,15 +49,19 @@ public class SongsListActivity extends Activity
     private String[] dataArray;
     private UserPreferenceSettingService userPreferenceSettingService;
 
+    private LinearLayout        llLayout;
+    private FragmentActivity    faActivity;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        faActivity  = (FragmentActivity)    super.getActivity();
+        llLayout    = (LinearLayout)    inflater.inflate(R.layout.songs_list_activity, container, false);
+
         userPreferenceSettingService = new UserPreferenceSettingService();
-        setContentView(R.layout.songs_list_activity);
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        songListView = (ListView) findViewById(R.id.list_view);
-        songDao = new SongDao(this);
+
+        songListView = (ListView) llLayout.findViewById(R.id.list_view);
+        songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
 
@@ -89,8 +97,7 @@ public class SongsListActivity extends Activity
                 Log.d(this.getClass().getName(),"Verse List data :"+ verseListData);
                 Log.d(this.getClass().getName(),"Verse List data sizze :"+ verseListData.size());
 
-
-                Intent intent = new Intent(SongsListActivity.this, SongsColumnViewActivity.class);
+                Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
                 if(verseListData.size() > 0){
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                     for(int i=0; i<verseListData.size();i++){
@@ -109,6 +116,8 @@ public class SongsListActivity extends Activity
                 startActivity(intent);
             }
         });
+
+        return llLayout;
     }
 
     private void initSetUp()
@@ -123,7 +132,7 @@ public class SongsListActivity extends Activity
 
     private List<Verse> getVerse(String lyrics)
     {
-        return verseparser.parseVerseDom(this, lyrics);
+        return verseparser.parseVerseDom(getActivity(), lyrics);
     }
 
     private List<String> getVerseByVerseOrder(String verseOrder)
@@ -140,12 +149,11 @@ public class SongsListActivity extends Activity
     private void loadSongs()
     {
         songs = songDao.findTitles();
-        adapter = new ArrayAdapter<Song>(this,
-                android.R.layout.simple_list_item_1, songs);
+        adapter = new ArrayAdapter<Song>(getActivity(), android.R.layout.simple_list_item_1, songs);
         songListView.setAdapter(adapter);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -172,8 +180,9 @@ public class SongsListActivity extends Activity
         };
         searchView.setOnQueryTextListener(textChangeListener);
         return super.onCreateOptionsMenu(menu);
+        return true;
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -186,7 +195,7 @@ public class SongsListActivity extends Activity
             startActivity(intent);
         }*/
         if (id == R.id.action_about) {
-            Intent intent = new Intent(SongsListActivity.this, AboutWebViewActivity.class);
+            Intent intent = new Intent(getActivity().getApplication(), AboutWebViewActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

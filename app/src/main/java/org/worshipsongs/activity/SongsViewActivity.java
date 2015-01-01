@@ -20,35 +20,31 @@ import org.worshipsongs.page.component.fragment.VerseContentView;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.worshipsongs.activity.SongsListActivity;
 
 /**
  * Created by Seenivasan on 10/8/2014.
  */
 public class SongsViewActivity extends FragmentActivity
 {
-	private ViewPager viewPager;
+    private ViewPager viewPager;
     private ActionBar actionBar;
     List<String> verseName;
     List<String> verseContent;
     private boolean addPadding = true;
 
-	
-	@Override
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-    	super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_page_listener);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Intent intent = getIntent();
-        verseName = new ArrayList<String>();
-        verseContent = new ArrayList<String>();
-        verseName  = intent.getStringArrayListExtra("verseName");
-        verseContent = intent.getStringArrayListExtra("verseContent");
-        Log.d(this.getClass().getName(), "Verse name Size:" + verseName.size());
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         viewPager = (ViewPager) findViewById(R.id.pager);
         setContentView(viewPager);
         //  Init and set ActionBar Properties.
@@ -57,22 +53,14 @@ public class SongsViewActivity extends FragmentActivity
         actionBar.setDisplayShowHomeEnabled(true);
         // Hide Actionbar Title
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        // actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         //  Initialise Adapter for the view pager.
         TabAdapter adapter = new TabAdapter();
-        ArrayList<Bundle> verseBundle = new ArrayList<Bundle>();
-        for(int index = 0; index < verseName.size(); index++)
-        {
-            //  Prepare Bundle object for each tab.
-            Bundle bundle = new Bundle();
-            bundle.putString("verseData", verseContent.get(index));
-            verseBundle.add(bundle);
-            ActionBar.Tab tab = actionBar.newTab().setText(verseName.get(index))
-                    .setTabListener(adapter);
-            actionBar.addTab(tab);
-        }
-        adapter.setBundle(verseBundle);
+
+        actionBar.addTab(actionBar.newTab().setText("Songs").setTabListener(adapter));
+        actionBar.addTab(actionBar.newTab().setText("Service").setTabListener(adapter));
+
         viewPager.setBackgroundResource(R.drawable.rounded_corner);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(adapter);
@@ -87,13 +75,6 @@ public class SongsViewActivity extends FragmentActivity
             super(getSupportFragmentManager());
         }
 
-        /**
-         * ArrayList of bundle's to pass as Arguments to Fragment.
-         * @param bundles  ArrayList of bundle's
-         */
-        void setBundle(ArrayList<Bundle> bundles) {
-            bundleArrayList = bundles;
-        }
         @Override
         public void onPageScrollStateChanged(int position) {
 
@@ -127,17 +108,24 @@ public class SongsViewActivity extends FragmentActivity
         }
 
         @Override
-        public Fragment getItem(int pos) {
-            return Fragment.instantiate(SongsViewActivity.this, VerseContentView.class.getName(), bundleArrayList.get(pos));
+        public Fragment getItem(int pos)
+        {
+            if (pos == 0)
+                return new SongsListActivity();
+            else if(pos == 1)
+                return new ServiceListActivity();
+
+            return null;
         }
 
         @Override
         public int getCount() {
-            return bundleArrayList.size();
+            return 2;
         }
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
@@ -151,21 +139,25 @@ public class SongsViewActivity extends FragmentActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         Intent intent;
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case android.R.id.home:
-                // app icon in action bar clicked; go home
                 intent = new Intent(this, SongsListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-
+            /*case android.R.id.action_settings:
+                intent = new Intent(SongsViewActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case android.R.id.action_about:
+                intent = new Intent(SongsViewActivity.this, AboutWebViewActivity.class);
+                startActivity(intent);
+                break;*/
         }
         return true;
     }
-
 }

@@ -49,7 +49,7 @@ public class SplashScreenActivity extends Activity
             {
                 loadRemoteDatabase();
                 Intent intent = new Intent(SplashScreenActivity.this,
-                        SongsListActivity.class);
+                        SongsViewActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
                 SplashScreenActivity.this.finish();
