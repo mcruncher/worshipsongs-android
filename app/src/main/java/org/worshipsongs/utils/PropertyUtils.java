@@ -23,7 +23,6 @@ import java.util.Properties;
  */
 public final class PropertyUtils
 {
-
     public static void setProperties(Map<String, String> propertiesMap, File propertiesFile)
     {
         Properties properties = new Properties();
@@ -40,11 +39,32 @@ public final class PropertyUtils
         }
     }
 
+    public static void setServiceProperties(Map<String, String> propertiesMap, File propertiesFile)
+    {
+        Properties properties = new Properties();
+        OutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(propertiesFile, true);
+            for (String key : propertiesMap.keySet()) {
+                properties.setProperty(key, propertiesMap.get(key));
+            }
+            properties.store(outputStream, "");
+        } catch (Exception ex) {
+        }
+    }
+
     public static void setProperty(String key, String value, File propertiesFile)
     {
         Map<String, String> propertyMap = new HashMap<String, String>();
         propertyMap.put(key, value);
         setProperties(propertyMap, propertiesFile);
+    }
+
+    public static void setServiceProperty(String key, String value, File propertiesFile)
+    {
+        Map<String, String> propertyMap = new HashMap<String, String>();
+        propertyMap.put(key, value);
+        setServiceProperties(propertyMap, propertiesFile);
     }
 
     public static String getProperty(String key, File propertiesFile)
@@ -54,10 +74,27 @@ public final class PropertyUtils
         try {
             inputStream = new FileInputStream(propertiesFile);
             properties.load(inputStream);
+
             return properties.get(key).toString();
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    public static File getServicePropertyFile(Context context)
+    {
+        File servicePropertyFile = null;
+        try {
+            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
+            File configDir = new File(configDirPath);
+            servicePropertyFile = new File(configDir, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+            if (!servicePropertyFile.exists()) {
+                FileUtils.touch(servicePropertyFile);
+            }
+        } catch (Exception ex) {
+            Log.e("PropertyUtils Service File:", "Error" + ex);
+        }
+        return servicePropertyFile;
     }
 
     public static File getCommonPropertyFile(Context context)

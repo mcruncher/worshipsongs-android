@@ -20,9 +20,9 @@ import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomTabSettings;
-import org.worshipsongs.activity.SongsListActivity;
 import org.worshipsongs.activity.SongsViewActivity;
 import org.worshipsongs.activity.UserSettingActivity;
+import org.worshipsongs.page.component.fragment.SongsListFragment;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
@@ -199,7 +199,7 @@ public class PinnedSectionListActivity extends ListActivity implements OnClickLi
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                intent = new Intent(this, SongsListActivity.class);
+                intent = new Intent(this, SongsListFragment.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

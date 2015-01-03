@@ -1,12 +1,8 @@
-package org.worshipsongs.activity;
+package org.worshipsongs.page.component.fragment;
 
-import android.support.v4.app.Fragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.activity.AboutWebViewActivity;
+import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
@@ -38,7 +35,7 @@ import java.util.Map;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SongsListActivity extends Fragment
+public class SongsListFragment extends Fragment
 {
     private ListView songListView;
     private VerseParser verseparser;
@@ -49,18 +46,18 @@ public class SongsListActivity extends Fragment
     private String[] dataArray;
     private UserPreferenceSettingService userPreferenceSettingService;
 
-    private LinearLayout        llLayout;
-    private FragmentActivity    faActivity;
+    private LinearLayout FragentLayout;
+    private FragmentActivity FragmentActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        faActivity  = (FragmentActivity)    super.getActivity();
-        llLayout    = (LinearLayout)    inflater.inflate(R.layout.songs_list_activity, container, false);
+        FragmentActivity  = (FragmentActivity)    super.getActivity();
+        FragentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
 
         userPreferenceSettingService = new UserPreferenceSettingService();
 
-        songListView = (ListView) llLayout.findViewById(R.id.list_view);
+        songListView = (ListView) FragentLayout.findViewById(R.id.list_view);
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
@@ -117,7 +114,7 @@ public class SongsListActivity extends Fragment
             }
         });
 
-        return llLayout;
+        return FragentLayout;
     }
 
     private void initSetUp()
@@ -183,6 +180,7 @@ public class SongsListActivity extends Fragment
         return true;
     }
 */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

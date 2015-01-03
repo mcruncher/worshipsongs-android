@@ -108,7 +108,7 @@ public class SongsColumnViewActivity extends ListActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                intent = new Intent(this, SongsListActivity.class);
+                intent = new Intent(this, SongsViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
