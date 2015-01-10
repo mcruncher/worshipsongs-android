@@ -9,6 +9,13 @@
         android:icon="@drawable/ic_settings"
         android:showAsAction="always"
         tools:ignore="AppCompatResource"/>
+
+    <item android:id="@+id/action_service"
+        android:title="@string/action_settings"
+        android:icon="@drawable/add_service"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource"/>
+
     <!--
         <group android:checkableBehavior="single">
             <item android:id="@+id/sectionView"

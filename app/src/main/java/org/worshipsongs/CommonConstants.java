@@ -10,6 +10,7 @@ import java.io.File;
  */
 public final class CommonConstants {
     public static final String COMMON_PROPERTY_TEMP_FILENAME ="common.properties";
+    public static final String SERVICE_PROPERTY_TEMP_FILENAME ="service.properties";
     public static final String CUSTOM_TAG_FILE_EXTENSION="properties";
     public static final String START_TAG_PATTERN = "\\{[\\w,\\W,\\d,\\D]\\}";
     public static final String END_TAG_PATTERN  = "\\{\\[\\w,\\W,\\d,\\D]\\}";
@@ -21,9 +22,7 @@ public final class CommonConstants {
             }
         }
         catch (Exception ex){
-
         }
     return tagFile;
     }
-
 }
