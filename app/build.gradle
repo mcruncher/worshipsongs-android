@@ -23,18 +23,19 @@ android {
 
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-           // signingConfig signingConfigs.releaseConfig
+            minifyEnabled false
+            signingConfig signingConfigs.releaseConfig
             applicationVariants.all { variant ->
-                def file = variant.outputFile
-                variant.outputFile = new File(file.parent,"worshipsongs-" + defaultConfig.versionName + ".apk")
+                variant.outputs.each { output ->
+                    output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
+                }
             }
         }
         debug{
             applicationVariants.all { variant ->
-                def file = variant.outputFile
-                variant.outputFile = new File(file.parent,"worshipsongs-" + defaultConfig.versionName + ".apk")
+                variant.outputs.each { output ->
+                    output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
+                }
             }
         }
     }
