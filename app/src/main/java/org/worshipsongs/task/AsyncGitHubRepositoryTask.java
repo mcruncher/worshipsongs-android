@@ -35,6 +35,7 @@ public class AsyncGitHubRepositoryTask extends AsyncTask<String, Void, Boolean>
             String latestChangesetInPropertyFile = PropertyUtils.getProperty(LATEST_CHANGE_SET, commonPropertyFile);
             Log.i(this.getClass().getSimpleName(), "Latest changeset in property file: " + latestChangesetInPropertyFile);
             final RepositoryId repo = new RepositoryId("crunchersaspire", "worshipsongs-db");
+
             final CommitService commitService = new CommitService();
             PageIterator<RepositoryCommit> repositoryCommits = commitService.pageCommits(repo, 1);
             Collection<RepositoryCommit> repositoryCommitCollection = repositoryCommits.iterator().next();

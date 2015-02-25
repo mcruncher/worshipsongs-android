@@ -47,7 +47,7 @@ public class SplashScreenActivity extends Activity
             @Override
             public void run()
             {
-                loadRemoteDatabase();
+              loadRemoteDatabase();
                 Intent intent = new Intent(SplashScreenActivity.this,
                         SongsViewActivity.class);
                 startActivity(intent);
@@ -68,6 +68,7 @@ public class SplashScreenActivity extends Activity
     private void loadRemoteDatabase()
     {
         try {
+
             if (isInternetOn()) {
                 AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
                 if (asyncGitHubRepositoryTask.execute().get()) {
@@ -95,7 +96,6 @@ public class SplashScreenActivity extends Activity
                 }
             }
         } catch (Exception e) {
-
         }
     }
 
@@ -137,6 +137,8 @@ public class SplashScreenActivity extends Activity
                 File destinationFile = new File(destinationPath);
                 URL url = new URL(remoteUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(60000);
+                urlConnection.setReadTimeout(120000);
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setDoOutput(true);
                 urlConnection.connect();

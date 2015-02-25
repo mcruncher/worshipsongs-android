@@ -12,9 +12,13 @@ import org.worshipsongs.CommonConstants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,9 +37,8 @@ public final class PropertyUtils
             for (String key : propertiesMap.keySet()) {
                 properties.setProperty(key, propertiesMap.get(key));
             }
-            properties.store(outputStream, "");
+        properties.store(outputStream, "");
         } catch (Exception ex) {
-
         }
     }
 
@@ -44,9 +47,14 @@ public final class PropertyUtils
         Properties properties = new Properties();
         OutputStream outputStream = null;
         try {
+            properties.load(new FileInputStream(propertiesFile));
+            //properties.remove("A");
+            //properties.put("C", "OVERWRITE_VALUE");
             outputStream = new FileOutputStream(propertiesFile, true);
+            System.out.println("Key value:");
             for (String key : propertiesMap.keySet()) {
-                properties.setProperty(key, propertiesMap.get(key));
+                System.out.println("Key value:"+key);
+                properties.put(key, propertiesMap.get(key));
             }
             properties.store(outputStream, "");
         } catch (Exception ex) {
@@ -66,6 +74,33 @@ public final class PropertyUtils
         propertyMap.put(key, value);
         setServiceProperties(propertyMap, propertiesFile);
     }
+
+    public static void setServiceCsv(String key, String value, File propertiesFile)
+    {
+        Map<String, String> propertyMap = new HashMap<String, String>();
+        propertyMap.put(key, value);
+        setServiceCsv(propertyMap, propertiesFile);
+    }
+
+
+
+    public static void setServiceCsv(Map<String, String> propertiesMap, File propertiesFile)
+    {
+        Properties properties = new Properties();
+        OutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(propertiesFile, true);
+            System.out.println("Key value:");
+            for (String key : propertiesMap.keySet()) {
+                System.out.println("Key value:"+key);
+                properties.setProperty(key, propertiesMap.get(key));
+            }
+            properties.store(outputStream, "");
+        } catch (Exception ex) {
+        }
+    }
+
+
 
     public static String getProperty(String key, File propertiesFile)
     {
@@ -96,6 +131,24 @@ public final class PropertyUtils
         }
         return servicePropertyFile;
     }
+
+
+    public static File getServiceCsvFile(Context context)
+    {
+        File servicePropertyFile = null;
+        try {
+            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
+            File configDir = new File(configDirPath);
+            servicePropertyFile = new File(configDir, CommonConstants.SERVICE_PROPERTY_CSV_FILENAME);
+            if (!servicePropertyFile.exists()) {
+                FileUtils.touch(servicePropertyFile);
+            }
+        } catch (Exception ex) {
+            Log.e("PropertyUtils Service File:", "Error" + ex);
+        }
+        return servicePropertyFile;
+    }
+
 
     public static File getCommonPropertyFile(Context context)
     {

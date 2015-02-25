@@ -1,17 +1,28 @@
 package org.worshipsongs.page.component.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+import org.worshipsongs.domain.Service;
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -35,6 +46,10 @@ public class ServiceListFragment extends Fragment
     private File serviceFile = null;
     private ArrayAdapter<String> adapter;
     List<String> service = new ArrayList<String>();
+    Button favourites;
+    final Context context = getActivity();
+    String serviceName;
+    private ArrayAdapter<Service> adapter1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -45,6 +60,17 @@ public class ServiceListFragment extends Fragment
 
         loadService();
 
+        serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick (AdapterView < ? > parent, View view, int position, long id)
+            {
+                System.out.println("Selected service:"+position);
+                Service selectedValue = adapter1.getItem(position);
+                String key = selectedValue.getKey();
+                System.out.println("Selected service:"+key);
+            }
+        });
         return linearLayout;
     }
 
@@ -58,7 +84,13 @@ public class ServiceListFragment extends Fragment
     public void onPrepareOptionsMenu(Menu menu)
     {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_service).setVisible(false);
+    }
+
+    public void loadService()
+    {
+        readServiceName();
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
+        serviceListView.setAdapter(adapter);
     }
 
     public List readServiceName()
@@ -76,35 +108,31 @@ public class ServiceListFragment extends Fragment
             while (e.hasMoreElements())
             {
                 String key = (String) e.nextElement();
-                //String value = prop.getProperty(key);
+                String value = property.getProperty(key);
+                System.out.println("Service Key:"+key);
+                System.out.println("Service Value:"+value);
                 service.add(key);
             }
+            inputStream.close();
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
         }
-        finally
-        {
-            if (inputStream != null)
-            {
-                try
-                {
-                    inputStream.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
         return service;
     }
 
-    public void loadService()
+    private void saveIntoFile(String serviceName)
     {
-        readServiceName();
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
-        serviceListView.setAdapter(adapter);
+        try {
+            serviceFile = PropertyUtils.getServicePropertyFile(context);
+            System.out.println("FilePath:" + serviceFile);
+            if (!serviceFile.exists()) {
+                FileUtils.touch(serviceFile);
+            }
+            PropertyUtils.setServiceProperty(serviceName, "", serviceFile);
+            } catch (Exception e) {
+            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
+        }
     }
 }

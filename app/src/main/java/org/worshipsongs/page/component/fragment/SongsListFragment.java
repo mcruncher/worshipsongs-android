@@ -1,5 +1,8 @@
 package org.worshipsongs.page.component.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,23 +16,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.activity.AboutWebViewActivity;
+import org.worshipsongs.activity.SettingsActivity;
 import org.worshipsongs.activity.SongsColumnViewActivity;
+import org.worshipsongs.activity.SongsViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.VerseParser;
 import org.worshipsongs.service.UserPreferenceSettingService;
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @Author : Seenivasan
@@ -45,9 +64,14 @@ public class SongsListFragment extends Fragment
     private ArrayAdapter<Song> adapter;
     private String[] dataArray;
     private UserPreferenceSettingService userPreferenceSettingService;
+    ArrayAdapter<String> dataAdapter;
 
     private LinearLayout FragentLayout;
     private FragmentActivity FragmentActivity;
+    private List<String> service = new ArrayList<String>();
+    ServiceListFragment serviceListFragment = new ServiceListFragment();
+    private File serviceFile = null;
+    private String song;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -62,11 +86,100 @@ public class SongsListFragment extends Fragment
         verseparser = new VerseParser();
         initSetUp();
 
+        service.add("Add favourites");
+        service = readServiceName();
+
+        songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
+            {
+                song = songListView.getItemAtPosition(position).toString();
+                System.out.println("Selected Song for Service:"+song);
+
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View promptsView = li.inflate(R.layout.service_name_dialog, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setView(promptsView);
+
+                final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
+
+                dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, service);
+                serviceListView.setAdapter(dataAdapter);
+
+                serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        String service = serviceListView.getItemAtPosition(position).toString();
+                        System.out.println("Selected Song for Service:"+service);
+
+                        if(position == 0)
+                        {
+                            LayoutInflater li = LayoutInflater.from(getActivity());
+                            View promptsView = li.inflate(R.layout.add_service_dialog, null);
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+                            alertDialogBuilder.setView(promptsView);
+
+                            final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
+
+                            alertDialogBuilder.setCancelable(false).setPositiveButton("OK",new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog,int id)
+                                {
+                                    String service_name;
+                                    if (serviceName.getText().toString().equals(""))
+                                        Toast.makeText(getActivity(), "Enter Service Name...!", Toast.LENGTH_LONG).show();
+                                    else
+                                    {
+                                        service_name = serviceName.getText().toString();
+                                        saveIntoFile(service_name, song);
+                                        Toast.makeText(getActivity(), "Song added to favourites...!", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(getActivity(), SongsViewActivity.class));
+                                    }
+                                }
+                            }).setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog,int id)
+                                {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+                        else
+                        {
+                            saveIntoFile(service, song);
+                            Toast.makeText(getActivity(), "Song added to favourites...!", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getActivity(), SongsViewActivity.class));
+                        }
+                    }
+                });
+
+                /*
+                alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }); */
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                return true;
+            }
+        });
+
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Song selectedValue = adapter.getItem(position);
                 String lyrics = selectedValue.getLyrics();
@@ -113,7 +226,6 @@ public class SongsListFragment extends Fragment
                 startActivity(intent);
             }
         });
-
         return FragentLayout;
     }
 
@@ -150,7 +262,7 @@ public class SongsListFragment extends Fragment
         songListView.setAdapter(adapter);
     }
 
-    /*@Override
+    /* @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -182,6 +294,12 @@ public class SongsListFragment extends Fragment
 */
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         // Handle action bar item clicks here. The action bar will
@@ -197,5 +315,47 @@ public class SongsListFragment extends Fragment
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public List readServiceName()
+    {
+        Properties property = new Properties();
+        InputStream inputStream = null;
+        int i = 0;
+        try
+        {
+            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+            inputStream = new FileInputStream(serviceFile);
+            property.load(inputStream);
+
+            Enumeration<?> e = property.propertyNames();
+            while (e.hasMoreElements())
+            {
+                String key = (String) e.nextElement();
+                //String value = prop.getProperty(key);
+                service.add(key);
+            }
+            inputStream.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        return service;
+    }
+
+    private void saveIntoFile(String serviceName, String song) {
+        try {
+            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+
+            System.out.println("FilePath:" + serviceFile);
+
+            if (!serviceFile.exists()) {
+                FileUtils.touch(serviceFile);
+            }
+            PropertyUtils.setServiceProperty(serviceName, song, serviceFile);
+        } catch (Exception e) {
+            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
+        }
     }
 }

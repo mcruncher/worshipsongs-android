@@ -44,11 +44,11 @@ public class SongsViewActivity extends FragmentActivity
     List<String> verseContent;
     private boolean addPadding = true;
     final Context context = this;
-
     ServiceListFragment serviceListFragment = new ServiceListFragment();
     private File serviceFile = null;
     String serviceName;
-    
+    Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -129,7 +129,6 @@ public class SongsViewActivity extends FragmentActivity
                 return new SongsListFragment();
             else if(pos == 1)
                 return new ServiceListFragment();
-
             return null;
         }
 
@@ -143,13 +142,13 @@ public class SongsViewActivity extends FragmentActivity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        this.menu = menu;
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        //menu.findItem(R.id.action_service).setVisible(false);
         return true;
     }
 
@@ -169,60 +168,6 @@ public class SongsViewActivity extends FragmentActivity
             intent = new Intent(SongsViewActivity.this, AboutWebViewActivity.class);
             startActivity(intent);
         }
-        else if (id == R.id.action_service)
-        {
-            LayoutInflater li = LayoutInflater.from(context);
-            View promptsView = li.inflate(R.layout.add_service_dialog, null);
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-            alertDialogBuilder.setView(promptsView);
-
-            final EditText service_name = (EditText) promptsView.findViewById(R.id.service_name);
-
-            alertDialogBuilder.setCancelable(false).setPositiveButton("OK",new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog,int id)
-                {
-                    if (service_name.getText().toString().equals(""))
-                        Toast.makeText(SongsViewActivity.this, "Enter Service Name...!", Toast.LENGTH_LONG).show();
-                    else
-                    {
-                        serviceName = service_name.getText().toString();
-                        saveIntoFile(serviceName);
-                    }
-                }
-            }).setNegativeButton("Cancel",new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog,int id)
-                {
-                    dialog.cancel();
-                }
-            });
-
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            alertDialog.show();
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    private void saveIntoFile(String serviceName) {
-        try {
-            serviceFile = PropertyUtils.getServicePropertyFile(context);
-
-            System.out.println("FilePath:" + serviceFile);
-
-            if (!serviceFile.exists()) {
-                FileUtils.touch(serviceFile);
-            }
-            PropertyUtils.setServiceProperty(serviceName, "", serviceFile);
-
-//            serviceListFragment.loadService();
-
-        } catch (Exception e) {
-            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
-        }
     }
 }
