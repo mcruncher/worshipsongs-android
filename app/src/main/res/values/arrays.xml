@@ -46,5 +46,11 @@
         <item></item>
     </string-array>
 
+    <string-array name="updateInterval">
+        <item name="1">DAILY</item>
+        <item name="2">WEEK</item>
+        <item name="3">MONTH</item>
+    </string-array>
+
 
 </resources>

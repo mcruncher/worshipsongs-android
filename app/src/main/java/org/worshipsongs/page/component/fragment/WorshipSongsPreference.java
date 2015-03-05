@@ -38,7 +38,10 @@ public class WorshipSongsPreference extends PreferenceFragment {
 
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
+
+        updateIntervalSettings("updateInterval");
     }
+
 
     public void resetPreferenceSettings(String preferenceKey) {
         this.resetDialogPreference = findPreference(preferenceKey);
@@ -93,6 +96,20 @@ public class WorshipSongsPreference extends PreferenceFragment {
         int color = primaryColorPreference.getValue();
         primaryColorPreference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(color))));
     }
+
+    private void updateIntervalSettings(String updateInterval) {
+
+        ListPreference preferenceFont = (ListPreference) findPreference(updateInterval);
+        setListPreferenceSettingValue(updateInterval);
+        preferenceFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary(newValue.toString());
+                return true;
+            }
+        });
+    }
+
 
     public void setListPreferenceSettingValue(String preferenceSettingKey) {
         ListPreference preferenceFont = (ListPreference) findPreference(preferenceSettingKey);

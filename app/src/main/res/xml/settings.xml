@@ -60,5 +60,16 @@
         </org.worshipsongs.service.ResetDefaultSettingsService>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_update_interval_setting" >
+        <ListPreference
+            android:key="updateInterval"
+            android:entries="@array/updateInterval"
+            android:summary="To update database by daily, week and month"
+            android:defaultValue="MONTH"
+            android:entryValues="@array/updateInterval"
+            android:title="@string/pref_update_interval_setting" />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>
