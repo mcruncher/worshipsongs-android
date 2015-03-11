@@ -57,6 +57,15 @@ public class SongDao extends AbstractDao
         return songs;
     }
 
+    private Song getSongByTitle(String title)
+    {
+        Song song;
+        String query = "SELECT title,lyrics, verse_order FROM "+ TABLE_NAME_AUTHOR +" WHERE title =\""+ title +"\";";
+        Cursor cursor = getDatabase().rawQuery(query, null);
+        song = cursorToSong(cursor);
+        return song;
+    }
+
     private Song cursorToSong(Cursor cursor)
     {
         Song song = new Song();
