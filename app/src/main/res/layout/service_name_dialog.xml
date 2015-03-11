@@ -5,30 +5,19 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp" >
-    <!--
-        <TextView
-            android:id="@+id/text_view"
+    <TextView
+            android:id="@+id/songTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select a service :"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textSize="20dp"
+            android:textColor="#0000ff"
+            android:divider="@color/blue" />
 
-        <TextView
-            android:id="@+id/text_view1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view"/>
-
-        <Spinner
-            android:id="@+id/service_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-     -->
     <ListView
         android:id="@+id/service_list"
+        android:layout_below="@+id/songTitle"
+        android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

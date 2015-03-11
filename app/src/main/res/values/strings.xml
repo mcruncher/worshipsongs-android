@@ -58,5 +58,14 @@
 
     <string name="pref_update_interval_setting">Database update interval</string>
 
+    <string-array name="options">
+        <item >Home</item>
+        <item >URL settings</item>
+        <item >Connectivity status</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 </resources>

@@ -75,33 +75,6 @@ public final class PropertyUtils
         setServiceProperties(propertyMap, propertiesFile);
     }
 
-    public static void setServiceCsv(String key, String value, File propertiesFile)
-    {
-        Map<String, String> propertyMap = new HashMap<String, String>();
-        propertyMap.put(key, value);
-        setServiceCsv(propertyMap, propertiesFile);
-    }
-
-
-
-    public static void setServiceCsv(Map<String, String> propertiesMap, File propertiesFile)
-    {
-        Properties properties = new Properties();
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(propertiesFile, true);
-            System.out.println("Key value:");
-            for (String key : propertiesMap.keySet()) {
-                System.out.println("Key value:"+key);
-                properties.setProperty(key, propertiesMap.get(key));
-            }
-            properties.store(outputStream, "");
-        } catch (Exception ex) {
-        }
-    }
-
-
-
     public static String getProperty(String key, File propertiesFile)
     {
         Properties properties = new Properties();

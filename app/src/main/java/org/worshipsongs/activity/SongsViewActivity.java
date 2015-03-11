@@ -48,6 +48,7 @@ public class SongsViewActivity extends FragmentActivity
     private File serviceFile = null;
     String serviceName;
     Menu menu;
+    int selectedPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,45 +77,55 @@ public class SongsViewActivity extends FragmentActivity
         actionBar.addTab(actionBar.newTab().setText("Songs").setTabListener(adapter));
         actionBar.addTab(actionBar.newTab().setText("Service").setTabListener(adapter));
 
-        viewPager.setBackgroundResource(R.drawable.rounded_corner);
+        /*
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        selectedPage = extras.getInt("selectedPage");
+        getActionBar().setSelectedNavigationItem(selectedPage); */
+
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(adapter);
     }
 
     private class TabAdapter extends FragmentPagerAdapter implements ActionBar.TabListener,
             ViewPager.OnPageChangeListener {
-
         private ArrayList<Bundle> bundleArrayList;
-
         public TabAdapter() {
             super(getSupportFragmentManager());
         }
 
         @Override
-        public void onPageScrollStateChanged(int position) {
-
-        }
+        public void onPageScrollStateChanged(int position)
+        {   }
 
         @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
+        public void onPageScrolled(int arg0, float arg1, int arg2)
+        {   }
 
         @Override
         public void onPageSelected(int position) {
             //  Change the tab selection upon page selection.
+            System.out.println("TabIndex  in page selected:"+actionBar.getSelectedNavigationIndex());
             actionBar.setSelectedNavigationItem(position);
+            /* if(selectedPage == 0)
+                selectedPage = 1;
+            else
+                selectedPage = 0; */
         }
 
         @Override
-        public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
-
-        }
+        public void onTabReselected(Tab arg0, FragmentTransaction arg1)
+        {   }
 
         @Override
         public void onTabSelected(Tab tab, FragmentTransaction arg1) {
             //  On Tab selection change the View Pager's Current item position.
             viewPager.setCurrentItem(tab.getPosition());
+  /*          System.out.println("TabIndex in tab selected:"+actionBar.getSelectedNavigationIndex());
+            if(selectedPage == 0)
+                selectedPage = 1;
+            else
+                selectedPage = 0; */
         }
 
         @Override
@@ -125,6 +136,12 @@ public class SongsViewActivity extends FragmentActivity
         @Override
         public Fragment getItem(int pos)
         {
+            System.out.println("selectedPage:"+selectedPage);
+/*            if (selectedPage == 0)
+                return new SongsListFragment();
+            else if(selectedPage == 1)
+                return new ServiceListFragment();
+*/
             if (pos == 0)
                 return new SongsListFragment();
             else if(pos == 1)
