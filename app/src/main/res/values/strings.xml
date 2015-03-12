@@ -57,6 +57,8 @@
     <string name="pref_color_settings">Color Settings</string>
 
     <string name="pref_update_interval_setting">Database update interval</string>
+    <string name="pre_update_interval_setting_summary">Update interval</string>
+    <string name="pref_update_interval_setting_title">Update interval</string>
 
     <string-array name="options">
         <item >Home</item>
@@ -67,5 +69,6 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
 
 </resources>

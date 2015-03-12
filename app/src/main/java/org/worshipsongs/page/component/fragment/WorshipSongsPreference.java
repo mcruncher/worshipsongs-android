@@ -39,7 +39,7 @@ public class WorshipSongsPreference extends PreferenceFragment {
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
 
-        updateIntervalSettings("updateInterval");
+        updateIntervalSettings("databaseUpdateInterval");
     }
 
 
