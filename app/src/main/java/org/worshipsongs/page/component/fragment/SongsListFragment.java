@@ -137,7 +137,7 @@ public class SongsListFragment extends Fragment
                                     {
                                         service_name = serviceName.getText().toString();
                                         saveIntoFile(service_name, song);
-                                        Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), "Song added to favourites...!", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(getActivity(), MainActivity.class));
                                     }
                                 }
@@ -254,8 +254,6 @@ public class SongsListFragment extends Fragment
     private void loadSongs()
     {
         songs = songDao.findTitles();
-        Log.d(this.getClass().getName(),"Songs sizze :"+ songs.size());
-
         adapter = new ArrayAdapter<Song>(getActivity(), android.R.layout.simple_list_item_1, songs);
         songListView.setAdapter(adapter);
     }
@@ -351,7 +349,6 @@ public class SongsListFragment extends Fragment
             }
 
             String existingProperty = PropertyUtils.getProperty(serviceName, serviceFile);
-
             String propertyValue = "";
             if(StringUtils.isNotBlank(existingProperty))
             {

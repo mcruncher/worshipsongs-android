@@ -1,12 +1,11 @@
 package org.worshipsongs.page.component.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,11 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.worshipsongs.activity.MainActivity;
 import org.worshipsongs.utils.PropertyUtils;
@@ -47,6 +43,7 @@ public class ServiceListFragment extends Fragment
     final Context context = getActivity();
     String serviceName;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -54,37 +51,6 @@ public class ServiceListFragment extends Fragment
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         loadService();
-
-        serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
-            {
-                serviceName = serviceListView.getItemAtPosition(position).toString();
-                System.out.println("Selected Song for Service:"+service);
-                    LayoutInflater li = LayoutInflater.from(getActivity());
-                    View promptsView = li.inflate(R.layout.service_delete_dialog, null);
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                    alertDialogBuilder.setView(promptsView);
-                    alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
-                            PropertyUtils.removeService(serviceName, serviceFile);
-                            Toast.makeText(getActivity(), "Service Deleted...!", Toast.LENGTH_LONG).show();
-                            service.clear();
-                            loadService();
-                        }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                return true;
-            }
-        });
-
         serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -93,11 +59,12 @@ public class ServiceListFragment extends Fragment
                 serviceName = serviceListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Service:"+serviceName);
 
-                Intent intent = new Intent(getActivity().getApplication(), MainActivity.class);
-                Bundle bundle = new Bundle();
+                Bundle bundle=new Bundle();
                 bundle.putString("serviceName", serviceName);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                Fragment fragment=new ServiceSongListFragment();
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frame_container, fragment).commit();
 
                 //String property = PropertyUtils.getProperty(serviceName, serviceFile);
                 //String propertyValues[] = property.split(",");
