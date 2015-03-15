@@ -51,6 +51,37 @@ public class ServiceListFragment extends Fragment
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         loadService();
+
+		serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
+            {
+                serviceName = serviceListView.getItemAtPosition(position).toString();
+                System.out.println("Selected Song for Service:"+service);
+                    LayoutInflater li = LayoutInflater.from(getActivity());
+                    View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    alertDialogBuilder.setView(promptsView);
+                    alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+                            PropertyUtils.removeService(serviceName, serviceFile);
+                            Toast.makeText(getActivity(), "Service Deleted...!", Toast.LENGTH_LONG).show();
+                            service.clear();
+                            loadService();
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                return true;
+            }
+        });
+
         serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
