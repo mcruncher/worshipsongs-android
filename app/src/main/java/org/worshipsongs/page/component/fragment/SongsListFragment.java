@@ -299,15 +299,6 @@ public class SongsListFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
-        /*if (id == R.id.action_settings) {
-            Intent intent = new Intent(SongsListActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        }*/
-//        if (id == R.id.action_about) {
-//            Intent intent = new Intent(getActivity().getApplication(), AboutWebViewActivity.class);
-//            startActivity(intent);
-//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -353,7 +344,7 @@ public class SongsListFragment extends Fragment
             String propertyValue = "";
             if(StringUtils.isNotBlank(existingProperty))
             {
-                propertyValue = existingProperty+","+song;
+                propertyValue = existingProperty+";"+song;
             }else{
                 propertyValue =song;
             }

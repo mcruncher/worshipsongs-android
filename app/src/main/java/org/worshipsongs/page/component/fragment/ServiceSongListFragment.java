@@ -133,7 +133,7 @@ public class ServiceSongListFragment extends Fragment {
     {
         File serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
-        String propertyValues[] = property.split(",");
+        String propertyValues[] = property.split(";");
 
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, propertyValues);
         songListView.setAdapter(adapter);
