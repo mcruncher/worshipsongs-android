@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.worshipsongs.adapter.CustomListViewAdapter;
+import org.worshipsongs.page.component.fragment.SongsListFragment;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
@@ -58,6 +59,9 @@ public class SongsColumnViewActivity extends ListActivity
         verseContent = new ArrayList<String>();
         verseName = intent.getStringArrayListExtra("verseName");
         verseContent = intent.getStringArrayListExtra("verseContent");
+        Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
+        Log.d(this.getClass().getName(),"Verse Content :"+ verseName);
+
         textView = ((TextView) this.findViewById(R.id.text));
         initializeAdapter();
     }
@@ -67,6 +71,7 @@ public class SongsColumnViewActivity extends ListActivity
         customListViewAdapter = new CustomListViewAdapter(this);
         if (verseName != null) {
             for (int i = 0; i < verseName.size(); i++) {
+                Log.d(this.getClass().getName(),"customListViewAdapter Verse Content :"+ verseContent.get(i));
                 customListViewAdapter.addItem(verseContent.get(i));
             }
         }
@@ -108,14 +113,14 @@ public class SongsColumnViewActivity extends ListActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                intent = new Intent(this, SongsViewActivity.class);
+                intent = new Intent(this, SongsListFragment.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.action_settings:
-                intent = new Intent(this, UserSettingActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.action_settings:
+//                intent = new Intent(this, UserSettingActivity.class);
+//                startActivity(intent);
+//                break;
         }
         return true;
     }

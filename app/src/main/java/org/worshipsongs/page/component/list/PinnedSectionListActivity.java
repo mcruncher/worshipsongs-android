@@ -19,9 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.CustomTabSettings;
-import org.worshipsongs.activity.SongsViewActivity;
-import org.worshipsongs.activity.UserSettingActivity;
 import org.worshipsongs.page.component.fragment.SongsListFragment;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -201,10 +198,6 @@ public class PinnedSectionListActivity extends ListActivity implements OnClickLi
                 // app icon in action bar clicked; go home
                 intent = new Intent(this, SongsListFragment.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.action_settings:
-                intent = new Intent(this, UserSettingActivity.class);
                 startActivity(intent);
                 break;
         }

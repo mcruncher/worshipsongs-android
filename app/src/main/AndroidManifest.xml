@@ -17,16 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="org.worshipsongs.activity.ServiceSongsActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.UserSettingActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.SongsColumnViewActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.SettingsActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.AboutWebViewActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.SongsViewActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.FilePickerActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.CustomTabSettings"></activity>
-
+        <activity android:name="org.worshipsongs.MainActivity"></activity>
     </application>
 
     <!--permissions to access remote url-->

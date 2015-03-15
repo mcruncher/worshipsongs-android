@@ -17,6 +17,7 @@ import android.widget.Toast;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.worshipsongs.MainActivity;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.task.AsyncGitHubRepositoryTask;
@@ -61,7 +62,7 @@ public class SplashScreenActivity extends Activity {
             public void run() {
                 loadRemoteDatabase();
                 Intent intent = new Intent(SplashScreenActivity.this,
-                        SongsViewActivity.class);
+                        MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
                 SplashScreenActivity.this.finish();

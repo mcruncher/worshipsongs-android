@@ -83,7 +83,6 @@ public class ServiceSongsActivity extends Activity
                 Log.d(this.getClass().getName(),"lyrics :"+ lyrics);
                 Log.d(this.getClass().getName(),"verseList :"+ verseList);
 
-                Log.d(this.getClass().getName(),"Song dao :"+ songDao);
 
                 List<String> verseName = new ArrayList<String>();
                 List<String> verseContent = new ArrayList<String>();
@@ -93,19 +92,23 @@ public class ServiceSongsActivity extends Activity
                     verseContent.add(verses.getContent());
                     verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
                 }
-                Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
-                Log.d(this.getClass().getName(),"Verse Content :"+ verseName);
-                Log.d(this.getClass().getName(),"Verse Data map :"+ verseDataMap);
+//                Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
+//                Log.d(this.getClass().getName(),"Verse Content :"+ verseContent);
+//                Log.d(this.getClass().getName(),"Verse Data map :"+ verseDataMap);
 
                 List<String> verseListDataContent = new ArrayList<String>();
                 List<String> verseListData = new ArrayList<String>();
                 String verseOrder = song.getVerseOrder();
+                Log.d(this.getClass().getName(),"Verse Name :"+ verseName);
+                Log.d(this.getClass().getName(),"Verse Content :"+ verseContent);
+                Log.d(this.getClass().getName(),"Verse Data map :"+ verseDataMap);
+                Log.d(this.getClass().getName(),"Verse Data map :"+ verseOrder);
                 if(StringUtils.isNotBlank(verseOrder))
                 {
                     verseListData = getVerseByVerseOrder(verseOrder);
+                    Log.d(this.getClass().getName(),"Verse List data :"+ verseListData);
+                    Log.d(this.getClass().getName(),"Verse List data sizze :"+ verseListData.size());
                 }
-                Log.d(this.getClass().getName(),"Verse List data :"+ verseListData);
-                Log.d(this.getClass().getName(),"Verse List data sizze :"+ verseListData.size());
 
                 Intent intent = new Intent(context, SongsColumnViewActivity.class);
                 if(verseListData.size() > 0){
@@ -142,12 +145,12 @@ public class ServiceSongsActivity extends Activity
         switch (item.getItemId())
         {
             case android.R.id.home:
-                Intent intent = new Intent(this, SongsViewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("selectedPage", 1);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                return true;
+//                Intent intent = new Intent(this, SongsViewActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("selectedPage", 1);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

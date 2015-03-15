@@ -93,7 +93,7 @@ public class CustomListViewAdapter extends BaseAdapter
                 case TYPE_ITEM:
                     convertView = layoutInflater.inflate(R.layout.custom_list_view_adapter_item, null);
                     holder.textView = (TextView) convertView.findViewById(R.id.text);
-                    //loadTextStyle(holder.textView);
+                    loadTextStyle(holder.textView);
                     String text = holder.textView.getText().toString();
                     break;
                 case TYPE_SEPARATOR:

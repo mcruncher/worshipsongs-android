@@ -1,11 +1,14 @@
 package org.worshipsongs.page.component.fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
+import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,21 +19,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.worshipsongs.activity.AboutWebViewActivity;
-import org.worshipsongs.activity.SettingsActivity;
+import org.worshipsongs.MainActivity;
 import org.worshipsongs.activity.SongsColumnViewActivity;
-import org.worshipsongs.activity.SongsViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
@@ -78,10 +77,11 @@ public class SongsListFragment extends Fragment
     {
         FragmentActivity  = (FragmentActivity)    super.getActivity();
         FragentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
-
+        setHasOptionsMenu(true);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         userPreferenceSettingService = new UserPreferenceSettingService();
 
-        songListView = (ListView) FragentLayout.findViewById(R.id.list_view);
+        songListView = (ListView) FragentLayout.findViewById(R.id.song_list_view);
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
@@ -113,7 +113,7 @@ public class SongsListFragment extends Fragment
                 serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
                     {
                         String service = serviceListView.getItemAtPosition(position).toString();
                         System.out.println("Selected Song for Service:"+service);
@@ -124,13 +124,11 @@ public class SongsListFragment extends Fragment
                             View promptsView = li.inflate(R.layout.add_service_dialog, null);
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
                             alertDialogBuilder.setView(promptsView);
-
                             final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
-
                             alertDialogBuilder.setCancelable(false).setPositiveButton("OK",new DialogInterface.OnClickListener()
                             {
+
                                 public void onClick(DialogInterface dialog,int id)
                                 {
                                     String service_name;
@@ -141,7 +139,7 @@ public class SongsListFragment extends Fragment
                                         service_name = serviceName.getText().toString();
                                         saveIntoFile(service_name, song);
                                         Toast.makeText(getActivity(), "Song added to favourites...!", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(getActivity(), SongsViewActivity.class));
+                                        startActivity(new Intent(getActivity(), MainActivity.class));
                                     }
                                 }
                             }).setNegativeButton("Cancel",new DialogInterface.OnClickListener()
@@ -159,7 +157,7 @@ public class SongsListFragment extends Fragment
                         {
                             saveIntoFile(service, song);
                             Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getActivity(), SongsViewActivity.class));
+                            startActivity(new Intent(getActivity(), MainActivity.class));
                         }
                     }
                 });
@@ -257,18 +255,20 @@ public class SongsListFragment extends Fragment
     private void loadSongs()
     {
         songs = songDao.findTitles();
+        Log.d(this.getClass().getName(),"Songs sizze :"+ songs.size());
+
         adapter = new ArrayAdapter<Song>(getActivity(), android.R.layout.simple_list_item_1, songs);
         songListView.setAdapter(adapter);
     }
 
-    /* @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        MenuInflater inflater = getMenuInflater();
+        inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
         searchView.setIconifiedByDefault(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
@@ -287,10 +287,10 @@ public class SongsListFragment extends Fragment
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-        return super.onCreateOptionsMenu(menu);
-        return true;
+        super.onCreateOptionsMenu(menu,inflater);
+
     }
-*/
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu)
@@ -306,10 +306,10 @@ public class SongsListFragment extends Fragment
             Intent intent = new Intent(SongsListActivity.this, SettingsActivity.class);
             startActivity(intent);
         }*/
-        if (id == R.id.action_about) {
-            Intent intent = new Intent(getActivity().getApplication(), AboutWebViewActivity.class);
-            startActivity(intent);
-        }
+//        if (id == R.id.action_about) {
+//            Intent intent = new Intent(getActivity().getApplication(), AboutWebViewActivity.class);
+//            startActivity(intent);
+//        }
         return super.onOptionsItemSelected(item);
     }
 
