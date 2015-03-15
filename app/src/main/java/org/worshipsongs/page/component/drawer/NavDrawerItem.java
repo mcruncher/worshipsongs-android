@@ -1,4 +1,4 @@
-package org.worshipsongs;
+package org.worshipsongs.page.component.drawer;
 
 public class NavDrawerItem {
 	

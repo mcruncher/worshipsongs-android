@@ -1,4 +1,4 @@
-package org.worshipsongs;
+package org.worshipsongs.adapter;
 
 
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.worshipsongs.page.component.drawer.NavDrawerItem;
 import org.worshipsongs.worship.R;
 
 public class NavDrawerListAdapter extends BaseAdapter {

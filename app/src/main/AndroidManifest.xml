@@ -17,7 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.worshipsongs.MainActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.MainActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.SongsColumnViewActivity"></activity>
+
     </application>
 
     <!--permissions to access remote url-->

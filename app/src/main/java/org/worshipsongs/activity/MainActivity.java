@@ -1,4 +1,4 @@
-package org.worshipsongs;
+package org.worshipsongs.activity;
 
 
 
@@ -23,7 +23,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.worshipsongs.activity.AboutWebViewActivity;
+import org.worshipsongs.page.component.drawer.NavDrawerItem;
+import org.worshipsongs.adapter.NavDrawerListAdapter;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.page.component.fragment.ServiceListFragment;

@@ -2,7 +2,6 @@ package org.worshipsongs.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -12,12 +11,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.worshipsongs.MainActivity;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.task.AsyncGitHubRepositoryTask;
@@ -30,7 +27,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -103,10 +99,10 @@ public class SplashScreenActivity extends Activity {
                                     songDao.open();
                                     Log.i(this.getClass().getName(), "Copied successfully");
                                 } else {
-                                    Log.w(SettingsActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
+                                    Log.w(UserSettingActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
                                 }
                             } catch (Exception e) {
-                                Log.e(SettingsActivity.class.getSimpleName(), "Error occurred while downloading file" + e);
+                                Log.e(UserSettingActivity.class.getSimpleName(), "Error occurred while downloading file" + e);
                             } finally {
                                 downloadSongFile.deleteOnExit();
                             }

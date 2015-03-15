@@ -1,7 +1,6 @@
 package org.worshipsongs.page.component.fragment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,7 @@ import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.worshipsongs.MainActivity;
+import org.worshipsongs.activity.MainActivity;
 import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
