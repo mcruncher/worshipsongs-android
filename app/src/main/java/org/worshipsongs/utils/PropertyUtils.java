@@ -42,14 +42,40 @@ public final class PropertyUtils
         }
     }
 
+    public static void removeService(String service, File propertiesFile)
+    {
+        try
+        {
+            Properties props = new Properties();
+            FileInputStream in = new FileInputStream(propertiesFile);
+            props.load(in);
+            in.close();
+            if (props.remove(service) != null)
+            {
+                FileOutputStream out = new FileOutputStream(propertiesFile);
+                props.store(out, "");
+                out.close();
+            }
+        }
+        catch (Exception ex) { }
+
+        /*
+        Properties properties = new Properties();
+        OutputStream outputStream = null;
+        try {
+            properties.load(new FileInputStream(propertiesFile));
+            properties.remove(service);
+            properties.store(outputStream, null);
+        } catch (Exception ex) {
+        } */
+    }
+
     public static void setServiceProperties(Map<String, String> propertiesMap, File propertiesFile)
     {
         Properties properties = new Properties();
         OutputStream outputStream = null;
         try {
             properties.load(new FileInputStream(propertiesFile));
-            //properties.remove("A");
-            //properties.put("C", "OVERWRITE_VALUE");
             outputStream = new FileOutputStream(propertiesFile, true);
             System.out.println("Key value:");
             for (String key : propertiesMap.keySet()) {
