@@ -85,6 +85,7 @@ public class ServiceSongListFragment extends Fragment {
                     verseListData = getVerseByVerseOrder(verseOrder);
                 }
                 Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
+                intent.putExtra("serviceName", selectedValue);
                 if(verseListData.size() > 0){
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                     for(int i=0; i<verseListData.size();i++){

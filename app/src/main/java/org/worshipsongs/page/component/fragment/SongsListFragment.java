@@ -204,6 +204,7 @@ public class SongsListFragment extends Fragment
                 Log.d(this.getClass().getName(),"Verse List data sizze :"+ verseListData.size());
 
                 Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
+                intent.putExtra("serviceName", selectedValue.getTitle());
                 if(verseListData.size() > 0){
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                     for(int i=0; i<verseListData.size();i++){

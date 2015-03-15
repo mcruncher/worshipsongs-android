@@ -47,13 +47,12 @@ public class SongsColumnViewActivity extends ListActivity
             isSectionView = savedInstanceState.getBoolean("isSectionView");
             isTabView = savedInstanceState.getBoolean("isTabView");
         }
-
+        Intent intent = getIntent();
         actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Intent intent = getIntent();
+        actionBar.setTitle(intent.getStringExtra("serviceName"));
         verseName = new ArrayList<String>();
         verseContent = new ArrayList<String>();
         verseName = intent.getStringArrayListExtra("verseName");
