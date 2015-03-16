@@ -43,9 +43,7 @@ public class ServiceListFragment extends Fragment
     private File serviceFile = null;
     private ArrayAdapter<String> adapter;
     List<String> service = new ArrayList<String>();
-    final Context context = getActivity();
     String serviceName;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -70,7 +68,7 @@ public class ServiceListFragment extends Fragment
                         public void onClick(DialogInterface dialog, int id) {
                             serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
                             PropertyUtils.removeService(serviceName, serviceFile);
-                            Toast.makeText(getActivity(), "Service Deleted...!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Service " +serviceName + " Deleted...!", Toast.LENGTH_LONG).show();
                             service.clear();
                             loadService();
                         }
@@ -99,11 +97,6 @@ public class ServiceListFragment extends Fragment
                 fragment.setArguments(bundle);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.frame_container, fragment).commit();
-
-                //String property = PropertyUtils.getProperty(serviceName, serviceFile);
-                //String propertyValues[] = property.split(",");
-                //System.out.println("property:"+property);
-                //System.out.println("propertyValues length:"+propertyValues.length);
             }
         });
         return linearLayout;

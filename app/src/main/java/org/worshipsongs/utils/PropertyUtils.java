@@ -58,16 +58,6 @@ public final class PropertyUtils
             }
         }
         catch (Exception ex) { }
-
-        /*
-        Properties properties = new Properties();
-        OutputStream outputStream = null;
-        try {
-            properties.load(new FileInputStream(propertiesFile));
-            properties.remove(service);
-            properties.store(outputStream, null);
-        } catch (Exception ex) {
-        } */
     }
 
     public static void setServiceProperties(Map<String, String> propertiesMap, File propertiesFile)

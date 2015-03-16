@@ -1,7 +1,9 @@
 package org.worshipsongs.page.component.fragment;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.dao.SongDao;
@@ -24,16 +30,20 @@ import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by Seenivasan on 3/15/2015.
  */
 public class ServiceSongListFragment extends Fragment {
-
     private ListView songListView;
     private VerseParser verseparser;
     private List<Song> songs;
@@ -43,9 +53,10 @@ public class ServiceSongListFragment extends Fragment {
     private LinearLayout FragentLayout;
     private android.support.v4.app.FragmentActivity FragmentActivity;
     private String serviceName;
+    private String songTitle;
     private SongDao songDao;
     private Song song;
-
+    private File serviceFile = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -60,6 +71,38 @@ public class ServiceSongListFragment extends Fragment {
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         loadSongs();
+
+        songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
+            {
+                songTitle = songListView.getItemAtPosition(position).toString();
+                System.out.println("Selected title:"+songTitle);
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
+                deleteMsg.setText("Are you sure, you want to delete the song?");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setView(promptsView);
+                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+                        removeSong();
+                        loadSongs();
+                        Toast.makeText(getActivity(), "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -137,6 +180,26 @@ public class ServiceSongListFragment extends Fragment {
 
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, propertyValues);
         songListView.setAdapter(adapter);
+    }
 
+    private void removeSong() {
+        try
+        {
+            String propertyValue = "";
+            File serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+            String property = PropertyUtils.getProperty(serviceName, serviceFile);
+            String propertyValues[] = property.split(";");
+            System.out.println("File:"+serviceFile);
+            for(int i = 0; i < propertyValues.length; i++)
+            {
+                if(!propertyValues[i].equalsIgnoreCase(songTitle))
+                {
+                    propertyValue = propertyValue+propertyValues[i]+";";
+                }
+            }
+            PropertyUtils.setServiceProperty(serviceName, propertyValue, serviceFile);
+        } catch (Exception e) {
+            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
+        }
     }
 }

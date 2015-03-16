@@ -138,7 +138,7 @@ public class SongsListFragment extends Fragment
                                     {
                                         service_name = serviceName.getText().toString();
                                         saveIntoFile(service_name, song);
-                                        Toast.makeText(getActivity(), "Song added to favourites...!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(getActivity(), MainActivity.class));
                                     }
                                 }
