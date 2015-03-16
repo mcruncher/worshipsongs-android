@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,11 +39,13 @@ public class SplashScreenActivity extends Activity {
 
     public static final String DATABASE_UPDATED_DATE_KEY = "databaseUpdatedDateKey";
     public static final String DATE_PATTERN = "dd/MM/yyyy";
-    private static final int TIME = 4 * 1000;// 4 seconds
+    private static final int TIME = 1 * 1000;// 4 seconds
     private SongDao songDao;
     TextView messageAlert;
     private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
     private SharedPreferences sharedPreferences;
+    private TextView message;
 
 
     @Override
@@ -52,7 +56,9 @@ public class SplashScreenActivity extends Activity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
         progressDialog = new ProgressDialog(SplashScreenActivity.this);
         messageAlert = (TextView) findViewById(R.id.message);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+        messageAlert.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -83,6 +89,8 @@ public class SplashScreenActivity extends Activity {
             } else {
                 if (isDownloadDatabaseUpdates(commonPropertyFile)) {
                     if (isInternetOn()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        messageAlert.setVisibility(View.VISIBLE);
                         AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
                         if (asyncGitHubRepositoryTask.execute().get()) {
                             Log.i(this.getClass().getName(), "Preparing to load database...");
