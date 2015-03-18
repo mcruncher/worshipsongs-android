@@ -3,9 +3,11 @@ package org.worshipsongs.page.component.fragment;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 
 import android.util.Log;
@@ -71,12 +73,13 @@ public class ServiceSongListFragment extends Fragment {
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         loadSongs();
-
+        final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
+                vibrator.vibrate(15);
                 songTitle = songListView.getItemAtPosition(position).toString();
                 System.out.println("Selected title:"+songTitle);
                 LayoutInflater li = LayoutInflater.from(getActivity());

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,12 +53,14 @@ public class ServiceListFragment extends Fragment
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         loadService();
+        final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
 		serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
+                vibrator.vibrate(15);
                 serviceName = serviceListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Song for Service:"+service);
                     LayoutInflater li = LayoutInflater.from(getActivity());
