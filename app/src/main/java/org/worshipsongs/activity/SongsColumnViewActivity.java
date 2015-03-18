@@ -1,6 +1,9 @@
 package org.worshipsongs.activity;
 
 import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.worshipsongs.adapter.CustomListViewAdapter;
+import org.worshipsongs.page.component.fragment.ServiceListFragment;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
@@ -107,13 +111,9 @@ public class SongsColumnViewActivity extends ListActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        Intent intent;
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; go home
-                intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
         }
         return true;
