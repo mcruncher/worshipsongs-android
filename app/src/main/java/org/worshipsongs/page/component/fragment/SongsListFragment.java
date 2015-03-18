@@ -102,8 +102,8 @@ public class SongsListFragment extends Fragment
                 final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
                 final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
 
-                //title.setText(song);
                 title.setText("Select a service to add song");
+				title.setTypeface(Typeface.DEFAULT_BOLD);
                 service.add("Click to create new service");
                 service = readServiceName();
 

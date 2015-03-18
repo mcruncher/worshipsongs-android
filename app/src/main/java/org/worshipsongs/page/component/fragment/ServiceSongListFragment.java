@@ -85,7 +85,7 @@ public class ServiceSongListFragment extends Fragment {
                 LayoutInflater li = LayoutInflater.from(getActivity());
                 View promptsView = li.inflate(R.layout.service_delete_dialog, null);
                 TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-                deleteMsg.setText("Are you sure, you want to delete the song?");
+                deleteMsg.setText("Do you want to delete the song?");
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                 alertDialogBuilder.setView(promptsView);
                 alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
