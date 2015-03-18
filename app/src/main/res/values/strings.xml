@@ -62,7 +62,7 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item >Home</item>
+        <item >Songs</item>
         <item >Services</item>
         <item >Settings</item>
         <item >About</item>
@@ -71,7 +71,7 @@
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_songs</item>
         <item>@drawable/ic_communities</item>
         <item>@drawable/ic_settings</item>
         <item>@drawable/ic_about</item>
