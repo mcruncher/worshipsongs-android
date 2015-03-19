@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Fragment;
@@ -106,7 +107,7 @@ public class SongsListFragment extends Fragment
 				title.setTypeface(Typeface.DEFAULT_BOLD);
                 service.add("Click to create new service");
                 service = readServiceName();
-
+                
                 dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, service);
                 serviceListView.setAdapter(dataAdapter);
 
