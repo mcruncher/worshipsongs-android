@@ -105,9 +105,9 @@ public class SongsListFragment extends Fragment
                 final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
                 final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
 
-                title.setText("Select a service to add song");
+                title.setText("Add to service");
 				title.setTypeface(Typeface.DEFAULT_BOLD);
-                service.add("Click to create new service");
+                service.add("New service");
                 service = readServiceName();
                 
                 dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, service);
@@ -120,7 +120,7 @@ public class SongsListFragment extends Fragment
                     {
                         String service = serviceListView.getItemAtPosition(position).toString();
                         System.out.println("Selected Song for Service:"+service);
-
+                        
                         if(position == 0)
                         {
                             LayoutInflater li = LayoutInflater.from(getActivity());
