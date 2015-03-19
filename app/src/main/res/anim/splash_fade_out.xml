@@ -2,5 +2,5 @@
      android:fillAfter="true">
      <alpha android:fromAlpha="1.0" 
             android:toAlpha="0.0"
-            android:duration="4000"/> //Miliseconds
+            android:duration="500"/> //Miliseconds
 </set>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -85,12 +86,13 @@ public class SongsListFragment extends Fragment
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
-
+        final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
+                vibrator.vibrate(15);
                 song = songListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Song for Service:"+song);
 
