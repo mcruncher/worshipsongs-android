@@ -2,9 +2,11 @@ package org.worshipsongs.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,7 +90,7 @@ public class SplashScreenActivity extends Activity {
                 PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
             } else {
                 if (isDownloadDatabaseUpdates(commonPropertyFile)) {
-                    if (isInternetOn()) {
+                    if (isWifi()) {
                         progressBar.setVisibility(View.VISIBLE);
                         messageAlert.setVisibility(View.VISIBLE);
                         AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
@@ -122,20 +124,17 @@ public class SplashScreenActivity extends Activity {
         }
     }
 
-    public final boolean isInternetOn() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
-            //Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
-            return true;
-        } else if (connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
-                connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
-            //Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
-            return false;
+    public final boolean isWifi() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null) {
+            if (networkInfo.isConnected()) {
+                if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI)) {
+                    return true;
+                }
+            }
         }
+        Log.i(UserSettingActivity.class.getSimpleName(), "System does not connect with wifi");
         return false;
     }
 
@@ -153,7 +152,6 @@ public class SplashScreenActivity extends Activity {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Finally database updated date: " + lastDatabaseUpdatedDateString);
                 if (StringUtils.isNotBlank(lastDatabaseUpdatedDateString)) {
                     Date lastDatabaseUpdatedDate = DateUtils.parseDate(lastDatabaseUpdatedDateString, new String[]{DATE_PATTERN});
-                    Log.i(SplashScreenActivity.class.getSimpleName(), "Finally database updated date: " + lastDatabaseUpdatedDateString);
                     long daysInBetween = getDaysInBetween(lastDatabaseUpdatedDate, new Date());
                     if (databaseUpdateInterval.equalsIgnoreCase("daily") && daysInBetween >= 2) {
                         PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
