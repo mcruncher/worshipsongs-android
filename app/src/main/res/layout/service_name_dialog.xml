@@ -10,7 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select a service :"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textColor="@color/darkGray" />
 
     <ListView

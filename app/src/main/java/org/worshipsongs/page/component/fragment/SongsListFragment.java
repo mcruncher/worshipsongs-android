@@ -112,7 +112,7 @@ public class SongsListFragment extends Fragment
                 
                 dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, service);
                 serviceListView.setAdapter(dataAdapter);
-
+				
                 serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
                     @Override
