@@ -107,6 +107,7 @@ public class SplashScreenActivity extends Activity {
                                 if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
                                     songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
                                     songDao.open();
+                                    PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
                                     Log.i(this.getClass().getName(), "Copied successfully");
                                 } else {
                                     Log.w(UserSettingActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
@@ -154,23 +155,16 @@ public class SplashScreenActivity extends Activity {
                     Date lastDatabaseUpdatedDate = DateUtils.parseDate(lastDatabaseUpdatedDateString, new String[]{DATE_PATTERN});
                     long daysInBetween = getDaysInBetween(lastDatabaseUpdatedDate, new Date());
                     if (databaseUpdateInterval.equalsIgnoreCase("daily") && daysInBetween >= 2) {
-                        PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
-                        Log.i(SplashScreenActivity.class.getSimpleName(), "Updates download daily");
                         return true;
                     } else if (databaseUpdateInterval.equalsIgnoreCase("weekly") && daysInBetween >= 7) {
-                        PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
-                        Log.i(SplashScreenActivity.class.getSimpleName(), "Updates download weekly");
                         return true;
                     } else if (databaseUpdateInterval.equalsIgnoreCase("monthly") && daysInBetween >= 30) {
-                        Log.i(SplashScreenActivity.class.getSimpleName(), "Updates download monthly");
-                        PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
                         return true;
                     } else {
                         Log.i(SplashScreenActivity.class.getSimpleName(), "System does not reach download update interval");
                     }
                 } else {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Application open first time it should download updates");
-                    PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
                     return true;
                 }
             }
