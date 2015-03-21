@@ -47,6 +47,15 @@
         </CheckBoxPreference>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_update_interval_setting" >
+        <ListPreference
+            android:key="databaseUpdateInterval"
+            android:entries="@array/databaseUpdateIntervalKey"
+            android:summary="@string/pre_update_interval_setting_summary"
+            android:defaultValue="MONTHLY"
+            android:entryValues="@array/databaseUpdateIntervalValue"
+            android:title="@string/pref_update_interval_setting_title" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_restore_default_settings" >
         <org.worshipsongs.service.ResetDefaultSettingsService
@@ -59,17 +68,5 @@
             android:title="Reset to default" >
         </org.worshipsongs.service.ResetDefaultSettingsService>
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_update_interval_setting" >
-        <ListPreference
-            android:key="databaseUpdateInterval"
-            android:entries="@array/databaseUpdateIntervalKey"
-            android:summary="@string/pre_update_interval_setting_summary"
-            android:defaultValue="MONTHLY"
-            android:entryValues="@array/databaseUpdateIntervalValue"
-            android:title="@string/pref_update_interval_setting_title" />
-
-    </PreferenceCategory>
-
 
 </PreferenceScreen>

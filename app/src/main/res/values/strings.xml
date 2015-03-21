@@ -19,6 +19,7 @@
     <string name="pref_font_face_summary">Change font face</string>
     <string name="pref_change_font_face">Font Face</string>
 
+
     <!--Download remote url-->
     <string name="remoteUrlTitle">Remote url</string>
     <string name="ok">Ok</string>
@@ -55,6 +56,9 @@
     <string name="pref_screen_settings">Screen Settings</string>
     <string name="pref_restore_default_settings">Restore settings</string>
     <string name="pref_color_settings">Color Settings</string>
+    <string name="update_interval_setting">Update interval</string>
+    <string name="update_interval">Update interval</string>
+
 
     <string name="pref_update_interval_setting">Database update interval</string>
     <string name="pre_update_interval_setting_summary">Update interval</string>

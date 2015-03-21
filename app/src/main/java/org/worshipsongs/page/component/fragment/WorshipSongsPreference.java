@@ -35,11 +35,9 @@ public class WorshipSongsPreference extends PreferenceFragment {
         fontPreferenceSettings("prefSetFont");
         fontPreferenceSettings("prefSetFontStyle");
         fontPreferenceSettings("prefSetFontFace");
-
+        updateIntervalSettings("databaseUpdateInterval");
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
-
-        updateIntervalSettings("databaseUpdateInterval");
     }
 
 
