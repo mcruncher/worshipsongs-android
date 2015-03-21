@@ -59,12 +59,12 @@
 
     <PreferenceCategory android:title="@string/pref_restore_default_settings" >
         <org.worshipsongs.service.ResetDefaultSettingsService
-            android:dialogMessage="Revert all values to their defaults?"
+            android:dialogMessage="Reset all values to their defaults"
             android:key="resetDialog"
-            android:negativeButtonText="No, KEEP current values"
+            android:negativeButtonText="No"
             android:persistent="false"
-            android:positiveButtonText="Yes, RESET all values"
-            android:summary="Reset all settings to their initial values."
+            android:positiveButtonText="Yes"
+            android:summary="Reset all settings values to their initial values."
             android:title="Reset to default" >
         </org.worshipsongs.service.ResetDefaultSettingsService>
     </PreferenceCategory>
