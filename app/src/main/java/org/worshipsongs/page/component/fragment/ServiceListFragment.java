@@ -120,6 +120,9 @@ public class ServiceListFragment extends Fragment
     public void loadService()
     {
         readServiceName();
+        if(service.size() <= 0)
+            service.add("You haven't created any service yet!\n" +
+                    "Services are a great way to organize selected songs for events. To add a song to the service, go the Songs screen and long press a song.");
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
         serviceListView.setAdapter(adapter);
     }
