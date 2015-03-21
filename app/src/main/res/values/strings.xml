@@ -52,7 +52,8 @@
     <string name="save">Save</string>
     <string name="action_about">About</string>
     <string name="text_settings">Text settings</string>
-    <string name="pref_keep_awake_on">Awake keep on screen</string>
+    <string name="awakeScreenTitle">Keep the screen awake</string>
+    <string name="awakeScreenSummary">Keep the screen awake while viewing a song</string>
     <string name="pref_screen_settings">Screen Settings</string>
     <string name="pref_restore_default_settings">Restore settings</string>
     <string name="pref_color_settings">Color Settings</string>
@@ -85,4 +86,5 @@
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+
 </resources>
