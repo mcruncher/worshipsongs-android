@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.worshipsongs.activity.MainActivity;
+import org.worshipsongs.activity.ServiceSongListActivity;
+import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -93,13 +95,9 @@ public class ServiceListFragment extends Fragment
             {
                 serviceName = serviceListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Service:"+serviceName);
-
-                Bundle bundle=new Bundle();
-                bundle.putString("serviceName", serviceName);
-                Fragment fragment=new ServiceSongListFragment();
-                fragment.setArguments(bundle);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, fragment).commit();
+                Intent intent = new Intent(getActivity(), ServiceSongListActivity.class);
+                intent.putExtra("serviceName", serviceName);
+                startActivity(intent);
             }
         });
         return linearLayout;

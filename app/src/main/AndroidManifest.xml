@@ -19,6 +19,8 @@
         </activity>
         <activity android:name="org.worshipsongs.activity.MainActivity"></activity>
         <activity android:name="org.worshipsongs.activity.SongsColumnViewActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.ServiceSongListActivity"></activity>
+
 
     </application>
 
