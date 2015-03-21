@@ -107,7 +107,7 @@ public class SongsListFragment extends Fragment
 
                 title.setText("Add to service");
 				title.setTypeface(Typeface.DEFAULT_BOLD);
-                service.add("New service");
+                service.add("New service...");
                 service = readServiceName();
                 
                 dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, service);
