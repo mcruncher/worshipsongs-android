@@ -167,7 +167,9 @@ public class ColorPickerPreference
     }
 
     public boolean onPreferenceClick(Preference preference) {
-		ColorPickerDialog picker = new ColorPickerDialog(getContext(), getValue());
+        String title = preference.getTitle().toString();
+        Log.d(this.getClass().getName(),"Preference Title:"+ title);
+        ColorPickerDialog picker = new ColorPickerDialog(getContext(), getValue(), title);
 		picker.setOnColorChangedListener(this);
 		if (mAlphaSliderEnabled) {
 			picker.setAlphaSliderVisible(true);
