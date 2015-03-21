@@ -56,7 +56,8 @@ public class WorshipSongsPreference extends PreferenceFragment {
                 userSettingActivity.activityFinish();
                 //Again, don't set an animation for the transition
                 // userSettingActivity.applyOverrideConfiguration();
-                startActivity(startIntent);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frame_container, new WorshipSongsPreference()).commit();
                 return false;
             }
         });
