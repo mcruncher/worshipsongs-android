@@ -71,6 +71,7 @@ public class SongsListFragment extends Fragment {
     ServiceListFragment serviceListFragment = new ServiceListFragment();
     private File serviceFile = null;
     private String song;
+    AlertDialog alertDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -142,13 +143,12 @@ public class SongsListFragment extends Fragment {
                                     dialog.cancel();
                                 }
                             });
-
                             AlertDialog alertDialog = alertDialogBuilder.create();
                             alertDialog.show();
                         } else {
                             saveIntoFile(service, song);
                             Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            alertDialog.dismiss();
                         }
                     }
                 });
@@ -158,7 +158,7 @@ public class SongsListFragment extends Fragment {
                         dialog.cancel();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
                 return true;
             }
