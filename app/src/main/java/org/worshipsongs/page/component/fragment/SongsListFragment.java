@@ -128,6 +128,8 @@ public class SongsListFragment extends Fragment
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                             alertDialogBuilder.setView(promptsView);
+                            final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
+                            textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
                             final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
                             alertDialogBuilder.setCancelable(false).setPositiveButton("OK",new DialogInterface.OnClickListener()
                             {
