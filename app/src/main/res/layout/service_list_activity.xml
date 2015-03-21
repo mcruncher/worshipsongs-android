@@ -5,9 +5,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <TextView
+        android:id="@+id/serviceMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/darkGray"
+        android:textSize="17dp"/>
+
     <ListView
         android:id="@+id/list_view"
+        android:layout_below="@+id/serviceMsg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.worshipsongs.activity.MainActivity;
@@ -47,6 +48,7 @@ public class ServiceListFragment extends Fragment
     private ArrayAdapter<String> adapter;
     List<String> service = new ArrayList<String>();
     String serviceName;
+    TextView serviceMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -54,9 +56,9 @@ public class ServiceListFragment extends Fragment
         FragmentActivity  = (FragmentActivity) super.getActivity();
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
+        serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
         loadService();
         final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
 		serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
@@ -94,7 +96,7 @@ public class ServiceListFragment extends Fragment
             public void onItemClick (AdapterView < ? > parent, View view, int position, long id)
             {
                 serviceName = serviceListView.getItemAtPosition(position).toString();
-                System.out.println("Selected Service:"+serviceName);
+                System.out.println("Selected Service:" + serviceName);
                 Intent intent = new Intent(getActivity(), ServiceSongListActivity.class);
                 intent.putExtra("serviceName", serviceName);
                 startActivity(intent);
@@ -119,8 +121,11 @@ public class ServiceListFragment extends Fragment
     {
         readServiceName();
         if(service.size() <= 0)
-            service.add("You haven't created any service yet!\n" +
-                    "Services are a great way to organize selected songs for events. To add a song to the service, go the Songs screen and long press a song.");
+        {
+            serviceMsg.setText("You haven't created any service yet!\n" +
+                    "Services are a great way to organize selected songs for events.\n" +
+                    "To add a song to the service, go the Songs screen and long press a song.");
+        }
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
         serviceListView.setAdapter(adapter);
     }
