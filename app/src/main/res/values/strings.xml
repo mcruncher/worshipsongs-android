@@ -35,10 +35,10 @@
 
     <!-- Preferences -->
     <string name="pref_category">Category</string>
-    <string name="primary_color">Primary language color</string>
-    <string name="primary_summary">Change primary language color</string>
-    <string name="secondary_color">Secondary language color</string>
-    <string name="secondary_summary">Change secondary language color</string>
+    <string name="primary_color">English/Romanised</string>
+    <string name="primary_summary">Change the color for English/Romanised</string>
+    <string name="secondary_color">Tamil</string>
+    <string name="secondary_summary">Change the color for Tamil</string>
 
 
     <string name="color_tag_title">Tag Color</string>

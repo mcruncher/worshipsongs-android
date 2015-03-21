@@ -82,7 +82,7 @@ public class WorshipSongsPreference extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 preference.setDefaultValue(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(newValue))));
-                preference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(newValue))));
+                //preference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(newValue))));
                 return true;
             }
 
@@ -93,7 +93,7 @@ public class WorshipSongsPreference extends PreferenceFragment {
     public void setColorPickerPreferenceValue(String colorPickerKey) {
         ColorPickerPreference primaryColorPreference = (ColorPickerPreference) findPreference(colorPickerKey);
         int color = primaryColorPreference.getValue();
-        primaryColorPreference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(color))));
+        //primaryColorPreference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(color))));
     }
 
     private void updateIntervalSettings(String updateInterval) {
