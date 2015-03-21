@@ -40,7 +40,7 @@
 
     <PreferenceCategory android:title="@string/pref_screen_settings" >
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="prefKeepAwakeOn"
             android:summary="@string/awakeScreenSummary"
             android:title="@string/awakeScreenTitle" >
