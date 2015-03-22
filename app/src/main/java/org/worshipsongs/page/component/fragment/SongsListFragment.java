@@ -64,10 +64,9 @@ public class SongsListFragment extends Fragment {
     private String[] dataArray;
     private UserPreferenceSettingService userPreferenceSettingService;
     ArrayAdapter<String> dataAdapter;
-
     private LinearLayout FragentLayout;
     private FragmentActivity FragmentActivity;
-    private List<String> service = new ArrayList<String>();
+    private List<String> serviceList = new ArrayList<String>();
     ServiceListFragment serviceListFragment = new ServiceListFragment();
     private File serviceFile = null;
     private String song;
@@ -80,7 +79,6 @@ public class SongsListFragment extends Fragment {
         setHasOptionsMenu(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         userPreferenceSettingService = new UserPreferenceSettingService();
-
         songListView = (ListView) FragentLayout.findViewById(R.id.song_list_view);
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
@@ -91,35 +89,27 @@ public class SongsListFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 vibrator.vibrate(15);
                 song = songListView.getItemAtPosition(position).toString();
-                System.out.println("Selected Song for Service:" + song);
-
                 LayoutInflater li = LayoutInflater.from(getActivity());
                 View promptsView = li.inflate(R.layout.service_name_dialog, null);
-
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                 alertDialogBuilder.setView(promptsView);
-
                 final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
                 final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
-
                 title.setText("Add to service");
                 title.setTypeface(Typeface.DEFAULT_BOLD);
-                service.add("New service...");
-                service = readServiceName();
-
-                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
+                serviceList.clear();
+                serviceList.add("New service...");
+                serviceList = readServiceName();
+                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceList);
                 serviceListView.setAdapter(dataAdapter);
-
                 serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                         String service = serviceListView.getItemAtPosition(position).toString();
                         System.out.println("Selected Song for Service:" + service);
-
                         if (position == 0) {
                             LayoutInflater li = LayoutInflater.from(getActivity());
                             View promptsView = li.inflate(R.layout.add_service_dialog, null);
-
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                             alertDialogBuilder.setView(promptsView);
                             final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
@@ -154,7 +144,6 @@ public class SongsListFragment extends Fragment {
                 });
                 alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        service.clear();
                         dialog.cancel();
                     }
                 });
@@ -170,7 +159,6 @@ public class SongsListFragment extends Fragment {
                 Song selectedValue = adapter.getItem(position);
                 String lyrics = selectedValue.getLyrics();
                 verseList = getVerse(lyrics);
-
                 List<String> verseName = new ArrayList<String>();
                 List<String> verseContent = new ArrayList<String>();
                 Map<String, String> verseDataMap = new HashMap<String, String>();
@@ -182,7 +170,6 @@ public class SongsListFragment extends Fragment {
                 Log.d(this.getClass().getName(), "Verse Name :" + verseName);
                 Log.d(this.getClass().getName(), "Verse Content :" + verseName);
                 Log.d(this.getClass().getName(), "Verse Data map :" + verseDataMap);
-
                 List<String> verseListDataContent = new ArrayList<String>();
                 List<String> verseListData = new ArrayList<String>();
                 String verseOrder = selectedValue.getVerseOrder();
@@ -191,7 +178,6 @@ public class SongsListFragment extends Fragment {
                 }
                 Log.d(this.getClass().getName(), "Verse List data :" + verseListData);
                 Log.d(this.getClass().getName(), "Verse List data sizze :" + verseListData.size());
-
                 Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
                 intent.putExtra("serviceName", selectedValue.getTitle());
                 if (verseListData.size() > 0) {
@@ -266,9 +252,7 @@ public class SongsListFragment extends Fragment {
         };
         searchView.setOnQueryTextListener(textChangeListener);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
-
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -293,25 +277,21 @@ public class SongsListFragment extends Fragment {
             while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();
                 //String value = prop.getProperty(key);
-                service.add(key);
+                serviceList.add(key);
             }
             inputStream.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return service;
+        return serviceList;
     }
 
     private void saveIntoFile(String serviceName, String song) {
         try {
             serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
-
-            System.out.println("FilePath:" + serviceFile);
-
             if (!serviceFile.exists()) {
                 FileUtils.touch(serviceFile);
             }
-
             String existingProperty = PropertyUtils.getProperty(serviceName, serviceFile);
             String propertyValue = "";
             if (StringUtils.isNotBlank(existingProperty)) {
