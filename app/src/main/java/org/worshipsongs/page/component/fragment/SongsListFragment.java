@@ -116,7 +116,6 @@ public class SongsListFragment extends Fragment {
                             textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
                             final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
                             alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
                                 public void onClick(DialogInterface dialog, int id) {
                                     String service_name;
                                     if (serviceName.getText().toString().equals(""))
