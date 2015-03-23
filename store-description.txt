@@ -1,15 +1,16 @@
 This app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.
 
-Why Worship Songs?
----------------------------------
-
 Why develop another app when there are tons of similar apps?
-Worship Songs was developed as we couldn't find an app with latest Praise & Worship songs with both Tamil and Romanised text. So, Worship Songs is the world's first mobile app that offers Romanised text for Tamil lyrics. Many Tamil congregations also sing English songs. Worship Songs provides many popular English songs as well so you need not look for another app. And finally, the songs database evolves rapidly. New songs are added often, so you will never miss your favourite song. Did we mention that Worship Songs is open source? Yes, you can be a part of this project. Isn't that great?
+Worship Songs was developed as we couldn't find an app with latest Praise & Worship songs with both Tamil and Romanised text. 
+So, Worship Songs is the world's first mobile app that offers Romanised text for Tamil Christian lyrics. 
 
-What are the features offered?
----------------------------------------------
+Many Tamil congregations also sing English songs. Worship Songs provides many popular English songs as well so you need not look for another app. 
 
-Worship Songs offers the following features:
+And finally, the songs database evolves rapidly. New songs are added often, so you will never miss your favourite song. 
+
+Did we mention that Worship Songs is open source? Yes, you can be a part of this project. Isn't that great?
+
+FEATURES
 
 - A large collection of latest Tamil and English Praise & Worship song lyrics.
 - Romanised text for Tamil songs.
@@ -17,10 +18,9 @@ Worship Songs offers the following features:
 - Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
 - Keep the screen awake while viewing a song.
 - Automatically update the song database over wifi.
-- Add selected songs to a service. This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+- Manage song lists through "Services". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
 
 FAQ
--------
 
 Q. I couldn't find a song that I am looking for. What should I do?
 
