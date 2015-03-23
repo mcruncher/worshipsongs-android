@@ -1,0 +1,7 @@
+Version 1.1.0
+
+- Manage custom song lists through "Services".
+- Faster startup time.
+- Optimised for users on slower networks.
+- Option to choose the frequency of songs db update.
+- Songs db shall be updated only over wifi.
