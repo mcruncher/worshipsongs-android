@@ -40,5 +40,56 @@ import java.util.Map;
  */
 public class SongListActivity extends Activity {
 
+    private ListView songListView;
+    private VerseParser verseparser;
+    private String songTitle;
+    private SongDao songDao;
+    private List<Song> songs;
+    private List<Verse> verseList;
+    private ArrayAdapter<String> adapter;
+    private String[] dataArray;
+    private Song song;
+
+    private Context context = WorshipSongApplication.getContext();
+    private File serviceFile = null;
+    List<String> songName;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.songs_list_activity);
+        Intent intent = getIntent();
+        songName = intent.getStringArrayListExtra("songNames");
+        songListView = (ListView) findViewById(R.id.song_list_view);
+        songDao = new SongDao(this);
+        verseparser = new VerseParser();
+        loadSongs();
+    }
+
+    private void loadSongs()
+    {
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songName);
+        songListView.setAdapter(adapter);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
 
 }
