@@ -39,7 +39,49 @@ import java.util.List;
  * Created by Seenivasan on 3/25/2015.
  */
 public class SongBookListFragment extends Fragment {
+    private ListView songListView;
+    private VerseParser verseparser;
+    private AuthorDao authorDao;
+    private SongBookDao songBookDao;
+    private SongDao songDao;
+    private AuthorSongDao authorSongDao;
+    private List<AuthorSong> authorSongs;
+    private List<Author> authors;
+    private List<SongBook> songBooks;
+    private List<Song> songs;
+    private List<Verse> verseList;
+    private ArrayAdapter<SongBook> adapter;
+    private String[] dataArray;
+    private LinearLayout FragmentLayout;
+    private android.support.v4.app.FragmentActivity FragmentActivity;
+    List<String> songName;
+    @Override
 
-   
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentActivity = (android.support.v4.app.FragmentActivity) super.getActivity();
+        FragmentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
+        setHasOptionsMenu(true);
+        songListView = (ListView) FragmentLayout.findViewById(R.id.song_list_view);
+        authorDao = new AuthorDao(getActivity());
+        songBookDao = new SongBookDao(getActivity());
+        authorSongDao = new AuthorSongDao(getActivity());
+        songDao = new SongDao(getActivity());
+        verseparser = new VerseParser();
+        songs = new ArrayList<Song>();
+        songName = new ArrayList<String>();
+        initSetUp();
+        return FragmentLayout;
+    }
 
+    private void initSetUp() {
+        songBookDao.open();
+        loadSongBooks();
+    }
+
+    private void loadSongBooks() {
+        authors = authorDao.findAll();
+        songBooks = songBookDao.findAll();
+        adapter = new ArrayAdapter<SongBook>(getActivity(), android.R.layout.simple_list_item_1, songBooks);
+        songListView.setAdapter(adapter);
+    }
 }
