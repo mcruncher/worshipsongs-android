@@ -37,5 +37,48 @@ import java.util.List;
  * Created by Seenivasan on 3/24/2015.
  */
 public class AuthorListFragment extends Fragment {
+    private ListView songListView;
+    private VerseParser verseparser;
+    private AuthorDao authorDao;
+    private SongDao songDao;
+    private AuthorSongDao authorSongDao;
+    private List<AuthorSong> authorSongs;
+    private List<Author> authors;
+    private List<Song> songs;
+    private List<Verse> verseList;
+    private ArrayAdapter<Author> adapter;
+    private String[] dataArray;
+    private LinearLayout FragmentLayout;
+    private android.support.v4.app.FragmentActivity FragmentActivity;
+    List<String> songName;
 
+    @Override
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentActivity = (FragmentActivity) super.getActivity();
+        FragmentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
+        setHasOptionsMenu(true);
+        songListView = (ListView) FragmentLayout.findViewById(R.id.song_list_view);
+        authorDao = new AuthorDao(getActivity());
+        authorSongDao = new AuthorSongDao(getActivity());
+        songDao = new SongDao(getActivity());
+        verseparser = new VerseParser();
+        initSetUp();
+        return FragmentLayout;
+    }
+
+    private void initSetUp() {
+        authorDao.open();
+        loadAuthors();
+        dataArray = new String[authors.size()];
+        for (int i = 0; i < authors.size(); i++) {
+            dataArray[i] = authors.get(i).toString();
+        }
+    }
+
+    private void loadAuthors() {
+        authors = authorDao.findAll();
+        adapter = new ArrayAdapter<Author>(getActivity(), android.R.layout.simple_list_item_1, authors);
+        songListView.setAdapter(adapter);
+    }
 }
