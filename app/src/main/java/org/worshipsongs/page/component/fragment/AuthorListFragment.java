@@ -64,6 +64,41 @@ public class AuthorListFragment extends Fragment {
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
+
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Author selectedAuthor = adapter.getItem(position);
+
+                Log.d(this.getClass().getName(), "Author ID" + selectedAuthor.getId());
+                authorSongs = authorSongDao.findSongId(selectedAuthor.getId());
+                Log.d(this.getClass().getName(), "Author songs count" + authorSongs.size());
+                for (AuthorSong authorSong : authorSongs) {
+                    songs = new ArrayList<Song>();
+                    try {
+                        if(authorSong.getSongId() > 0) {
+                            Log.d(this.getClass().getName(), "Song ID" + authorSong.getSongId());
+                            Song songById = songDao.getSongById(authorSong.getSongId());
+                            if (songById != null) {
+                                songs.add(songById);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.d(this.getClass().getName(), "songs count" + songs.size());
+                songName = new ArrayList<String>();
+                for (Song song : songs) {
+                    songName.add(song.getTitle());
+                }
+                Intent intent = new Intent(getActivity(), SongListActivity.class);
+                intent.putStringArrayListExtra("songNames", new ArrayList<String>(songName));
+                startActivity(intent);
+            }
+        });
+
+
         return FragmentLayout;
     }
 
