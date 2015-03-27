@@ -6,6 +6,8 @@ package org.worshipsongs.domain;
  */
 public class SongBook
 {
+
+    private int id;
     private String name;
     private String publisher;
 
@@ -32,6 +34,14 @@ public class SongBook
     @Override
     public String toString()
     {
-        return "SongBook[name=" + name + ", publisher=" + publisher + "]";
+        return  name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
