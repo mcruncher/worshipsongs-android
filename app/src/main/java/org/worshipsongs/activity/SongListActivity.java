@@ -65,6 +65,64 @@ public class SongListActivity extends Activity {
         songDao = new SongDao(this);
         verseparser = new VerseParser();
         loadSongs();
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id)
+            {
+                String selectedValue = songListView.getItemAtPosition(position).toString();
+                song = songDao.getSongByTitle(selectedValue);
+                String lyrics = song.getLyrics();
+                verseList = getVerse(lyrics);
+                List<String> verseName = new ArrayList<String>();
+                List<String> verseContent = new ArrayList<String>();
+                Map<String,String> verseDataMap = new HashMap<String, String>();
+                for (Verse verses : verseList) {
+                    verseName.add(verses.getType() + verses.getLabel());
+                    verseContent.add(verses.getContent());
+                    verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
+                }
+                List<String> verseListDataContent = new ArrayList<String>();
+                List<String> verseListData = new ArrayList<String>();
+                String verseOrder = song.getVerseOrder();
+                if(StringUtils.isNotBlank(verseOrder))
+                {
+                    verseListData = getVerseByVerseOrder(verseOrder);
+                }
+                Intent intent = new Intent(SongListActivity.this, SongsColumnViewActivity.class);
+                intent.putExtra("serviceName", selectedValue);
+                if(verseListData.size() > 0){
+                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
+                    for(int i=0; i<verseListData.size();i++){
+                        verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
+                    }
+                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
+                    Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
+                }
+                else{
+                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
+                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
+                }
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+    private List<Verse> getVerse(String lyrics) {
+        return verseparser.parseVerseDom(this, lyrics);
+    }
+
+    private List<String> getVerseByVerseOrder(String verseOrder) {
+        String split[] = verseOrder.split("\\s+");
+        List<String> verses = new ArrayList<String>();
+        for (int i = 0; i < split.length; i++) {
+            verses.add(split[i].toLowerCase());
+        }
+        Log.d("Verses list: ", verses.toString());
+        return verses;
     }
 
     private void loadSongs()
@@ -72,7 +130,7 @@ public class SongListActivity extends Activity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songName);
         songListView.setAdapter(adapter);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
