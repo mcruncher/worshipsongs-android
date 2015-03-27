@@ -71,6 +71,21 @@ public class SongBookListFragment extends Fragment {
         songs = new ArrayList<Song>();
         songName = new ArrayList<String>();
         initSetUp();
+
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SongBook selectedBook = adapter.getItem(position);
+                songs = songDao.getSongTitlesByBookId(selectedBook.getId());
+                for(Song song:songs){
+                    songName.add(song.getTitle());
+                }
+                Intent intent = new Intent(getActivity(), SongListActivity.class);
+                intent.putStringArrayListExtra("songNames", new ArrayList<String>(songName));
+                startActivity(intent);
+            }
+        });
+
         return FragmentLayout;
     }
 
