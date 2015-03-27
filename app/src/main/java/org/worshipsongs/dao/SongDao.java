@@ -69,6 +69,51 @@ public class SongDao extends AbstractDao
         return song;
     }
 
+    public Song getSongById(int songId)
+    {
+        Song song = new Song();
+        try{
+            Log.d(this.getClass().getName(), "Song ID" + songId);
+            String whereClause = " id="+songId+";";
+            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+                    new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
+            cursor.moveToFirst();
+            song = cursorToSong(cursor);
+            Log.d(this.getClass().getName(), "Song:" + song);
+            cursor.close();
+        }
+        catch (Exception e){
+            Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
+        }
+        finally {
+            return song;
+        }
+    }
+
+    public List<Song> getSongTitlesByBookId(int songBookId)
+    {
+        List<Song> songs = new ArrayList<Song>();
+        try{
+            Log.d(this.getClass().getName(), "Song ID" + songBookId);
+            String whereClause = " id="+songBookId+";";
+            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+                    new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Song song = cursorToSong(cursor);
+                songs.add(song);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        catch (Exception e){
+            Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
+        }
+        finally {
+            return songs;
+        }
+    }
+
     private Song cursorToSong(Cursor cursor)
     {
         Song song = new Song();
