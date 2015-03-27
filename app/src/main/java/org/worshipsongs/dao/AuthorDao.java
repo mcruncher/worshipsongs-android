@@ -29,21 +29,21 @@ public class AuthorDao extends AbstractDao
 
     public List<Author> findAll()
     {
-        List<Author> songs = new ArrayList<Author>();
-        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
-                allColumns, null, null, null, null, null);
+        List<Author> authors = new ArrayList<Author>();
+        Cursor cursor = getDatabase().query(true, TABLE_NAME_AUTHOR,
+                allColumns, null, null, null, null, COLUMN_DISPLAY_NAME, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Author song = cursorToSong(cursor);
-            songs.add(song);
+            Author author = cursorToAuthor(cursor);
+            authors.add(author);
             cursor.moveToNext();
         }
         // make sure to close the cursor
         cursor.close();
-        return songs;
+        return authors;
     }
 
-    private Author cursorToSong(Cursor cursor)
+    private Author cursorToAuthor(Cursor cursor)
     {
         Author author = new Author();
         author.setId(cursor.getInt(0));
