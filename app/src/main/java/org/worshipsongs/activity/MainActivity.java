@@ -28,7 +28,9 @@ import org.worshipsongs.adapter.NavDrawerListAdapter;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.page.component.fragment.AuthorListFragment;
 import org.worshipsongs.page.component.fragment.ServiceListFragment;
+import org.worshipsongs.page.component.fragment.SongBookListFragment;
 import org.worshipsongs.page.component.fragment.SongsListFragment;
 import org.worshipsongs.page.component.fragment.WorshipSongsPreference;
 import org.worshipsongs.worship.R;
@@ -74,16 +76,18 @@ public class MainActivity extends FragmentActivity {
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 
 		// adding nav drawer items to array
-		// Home
+		// Songs
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1),true, Integer.toString(songs.size())));
-		// Find People
+		// Authors
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-		// Photos
+		// Song books
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-		// Communities, Will add a counter here
+		// Services
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-		// Pages
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        // Settings
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+		// About
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 		// What's hot, We  will add a counter here
 //		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
 		
@@ -185,12 +189,18 @@ public class MainActivity extends FragmentActivity {
                 fragment = new SongsListFragment();
                 break;
             case 1:
-                fragment = new ServiceListFragment();
+                fragment = new AuthorListFragment();
                 break;
             case 2:
-                preferenceFragment = new WorshipSongsPreference();
+                fragment = new SongBookListFragment();
                 break;
             case 3:
+                fragment = new ServiceListFragment();
+                break;
+            case 4:
+                preferenceFragment = new WorshipSongsPreference();
+                break;
+            case 5:
              fragment = new AboutWebViewActivity();
                 break;
             default:
