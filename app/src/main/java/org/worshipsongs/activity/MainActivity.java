@@ -226,15 +226,15 @@ public class MainActivity extends FragmentActivity
                 Log.i(MainActivity.class.getSimpleName(), "System does connect with wifi");
                 AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
                 if (asyncGitHubRepositoryTask.execute().get()) {
-                    alertDialogBuilder.setTitle("Update is available");
-                    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                    alertDialogBuilder.setTitle(R.string.updateAvailableTitle);
+                    alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int which)
                         {
                             // continue to download database updates.
                         }
                     });
-                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                    alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int which)
                         {
@@ -243,8 +243,8 @@ public class MainActivity extends FragmentActivity
                     });
 //
                 } else {
-                    alertDialogBuilder.setTitle("Update is not available");
-                    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                    alertDialogBuilder.setTitle(R.string.updateNotAvailableTitle);
+                    alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int which)
                         {
@@ -254,12 +254,11 @@ public class MainActivity extends FragmentActivity
                 }
 
             } else {
-                alertDialogBuilder.setMessage("Atleast you need mobile data or wifi to check database updates");
-                alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                alertDialogBuilder.setMessage(R.string.noInternetConnectionWarningMessage);
+                alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        // continue with delete
                     }
                 });
             }

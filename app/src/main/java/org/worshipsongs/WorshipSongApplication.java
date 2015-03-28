@@ -17,9 +17,6 @@ public class WorshipSongApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         context = getApplicationContext();
-
     }
-
 }
