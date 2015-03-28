@@ -2,7 +2,6 @@ package org.worshipsongs.activity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -52,10 +51,10 @@ public class MainActivity extends FragmentActivity
     private CharSequence drawerTitle;
     private List<Song> songList;
     // used to store app title
-    private CharSequence mTitle;
+    private CharSequence appTitle;
 
     // slide menu items
-    private String[] navMenuTitles;
+    private String[] navigationMenuTitles;
     private TypedArray navMenuIcons;
 
     private ArrayList<NavDrawerItem> navDrawerItems;
@@ -68,12 +67,12 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
 
-        mTitle = drawerTitle = getTitle();
+        appTitle = drawerTitle = getTitle();
         songDao = new SongDao(this);
         songDao.open();
         songList = songDao.findTitles();
         // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+        navigationMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
         // nav drawer icons from resources
         navMenuIcons = getResources()
@@ -86,22 +85,19 @@ public class MainActivity extends FragmentActivity
 
         // adding nav drawer items to array
         // Songs
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
         // Authors
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         // Song books
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Services
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
         // Settings
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         //Check database updates
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         // About
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
-        // What's hot, We  will add a counter here
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -125,7 +121,7 @@ public class MainActivity extends FragmentActivity
         {
             public void onDrawerClosed(View view)
             {
-                getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(appTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -245,7 +241,7 @@ public class MainActivity extends FragmentActivity
             // update selected item and title, then close the drawer
             drawerListView.setItemChecked(position, true);
             drawerListView.setSelection(position);
-            setTitle(navMenuTitles[position]);
+            setTitle(navigationMenuTitles[position]);
             drawerLayout.closeDrawer(drawerListView);
         } else {
             // error in creating fragment
@@ -322,8 +318,8 @@ public class MainActivity extends FragmentActivity
     @Override
     public void setTitle(CharSequence title)
     {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
+        appTitle = title;
+        getActionBar().setTitle(appTitle);
     }
 
     /**
