@@ -5,12 +5,9 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -201,7 +198,7 @@ public class MainActivity extends FragmentActivity
                 preferenceFragment = new WorshipSongsPreference();
                 break;
             case 5:
-                checkUpdates();
+                checkDatabaseUpdates();
                 break;
             case 6:
                 fragment = new AboutWebViewActivity();
@@ -228,22 +225,7 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    public final boolean isWifi()
-    {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            if (networkInfo.isConnected()) {
-                if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI)) {
-                    return true;
-                }
-            }
-        }
-        Log.i(MainActivity.class.getSimpleName(), "System does not connect with wifi");
-        return false;
-    }
-
-    private void checkUpdates()
+    private void checkDatabaseUpdates()
     {
         try {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
