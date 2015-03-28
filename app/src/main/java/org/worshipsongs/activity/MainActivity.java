@@ -120,7 +120,6 @@ public class MainActivity extends FragmentActivity
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         if (savedInstanceState == null) {
-            // on first time display view for first nav item
             displaySelectedFragment(0);
         }
     }
@@ -131,11 +130,9 @@ public class MainActivity extends FragmentActivity
     private class SlideMenuClickListener implements ListView.OnItemClickListener
     {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        public void onItemClick(AdapterView<?> parent, View view, int fragmentPosition, long id)
         {
-            // display view for selected nav drawer item
-            displaySelectedFragment(position);
-
+            displaySelectedFragment(fragmentPosition);
         }
     }
 
@@ -174,14 +171,11 @@ public class MainActivity extends FragmentActivity
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /**
-     * Diplaying fragment view for selected nav drawer list item
-     */
-    private void displaySelectedFragment(int position)
+    private void displaySelectedFragment(int fragmentPosition)
     {
         Fragment fragment = null;
         PreferenceFragment preferenceFragment = null;
-        switch (position) {
+        switch (fragmentPosition) {
             case 0:
                 fragment = new SongsListFragment();
                 break;
@@ -209,16 +203,14 @@ public class MainActivity extends FragmentActivity
 
         if (fragment != null || preferenceFragment != null) {
             if (preferenceFragment != null) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, new WorshipSongsPreference()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, new WorshipSongsPreference()).commit();
             } else {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, fragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
             }
             // update selected item and title, then close the drawer
-            drawerListView.setItemChecked(position, true);
-            drawerListView.setSelection(position);
-            setTitle(navigationMenuTitles[position]);
+            drawerListView.setItemChecked(fragmentPosition, true);
+            drawerListView.setSelection(fragmentPosition);
+            setTitle(navigationMenuTitles[fragmentPosition]);
             drawerLayout.closeDrawer(drawerListView);
         } else {
             Log.w(this.getClass().getSimpleName(), "No fragment are selected");
