@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">openlp-lite</string>
+    <string name="app_name">Worship songs</string>
     <string name="hello_world">Songs will be listed soon ...</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>

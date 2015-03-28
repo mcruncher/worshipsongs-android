@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity
 
     // slide menu items
     private String[] navigationMenuTitles;
-    private TypedArray navMenuIcons;
+    private TypedArray navigationMenuIcons;
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
@@ -73,51 +73,38 @@ public class MainActivity extends FragmentActivity
         songList = songDao.findTitles();
         // load slide menu items
         navigationMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
         // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_icons);
-
+        navigationMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerListView = (ListView) findViewById(R.id.list_slidermenu);
-
         navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        // adding nav drawer items to array
         // Songs
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navigationMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
         // Authors
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[1], navigationMenuIcons.getResourceId(1, -1)));
         // Song books
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[2], navigationMenuIcons.getResourceId(2, -1)));
         // Services
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navigationMenuIcons.getResourceId(3, -1)));
         // Settings
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navigationMenuIcons.getResourceId(4, -1)));
         //Check database updates
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
         // About
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
-
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[6], navigationMenuIcons.getResourceId(5, -1)));
         // Recycle the typed array
-        navMenuIcons.recycle();
-
+        navigationMenuIcons.recycle();
         drawerListView.setOnItemClickListener(new SlideMenuClickListener());
-
         // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(),
-                navDrawerItems);
+        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         drawerListView.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.ic_drawer, //nav menu toggle icon
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
-        )
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
+                R.string.app_name, R.string.app_name )
         {
             public void onDrawerClosed(View view)
             {
@@ -249,7 +236,8 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    public final boolean isWifi() {
+    public final boolean isWifi()
+    {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null) {
@@ -267,7 +255,7 @@ public class MainActivity extends FragmentActivity
     {
         try {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            if(mobileNetworkService.isWifi(getSystemService(Context.CONNECTIVITY_SERVICE)) ||
+            if (mobileNetworkService.isWifi(getSystemService(Context.CONNECTIVITY_SERVICE)) ||
                     mobileNetworkService.isMobileData(getSystemService(CONNECTIVITY_SERVICE))) {
                 Log.i(MainActivity.class.getSimpleName(), "System does connect with wifi");
                 AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
@@ -299,7 +287,7 @@ public class MainActivity extends FragmentActivity
                     });
                 }
 
-            }else{
+            } else {
                 alertDialogBuilder.setMessage("Atleast you need mobile data or wifi to check database updates");
                 alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
                 {
