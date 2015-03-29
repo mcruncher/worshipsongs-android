@@ -1,17 +1,9 @@
 package org.worshipsongs.activity;
 
-import android.app.ActionBar;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.MenuItem;
 
-import org.worshipsongs.page.component.fragment.WorshipSongsPreference;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.fragment.WorshipSongsPreference;
 
 /**
  * @Author : Seenivasan

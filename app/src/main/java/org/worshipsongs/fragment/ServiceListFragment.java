@@ -1,4 +1,4 @@
-package org.worshipsongs.page.component.fragment;
+package org.worshipsongs.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.worshipsongs.activity.MainActivity;
 import org.worshipsongs.activity.ServiceSongListActivity;
-import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 

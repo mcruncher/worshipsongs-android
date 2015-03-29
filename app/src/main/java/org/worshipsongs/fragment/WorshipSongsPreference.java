@@ -1,4 +1,4 @@
-package org.worshipsongs.page.component.fragment;
+package org.worshipsongs.fragment;
 
 import android.content.Context;
 import android.content.Intent;

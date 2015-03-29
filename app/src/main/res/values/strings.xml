@@ -70,7 +70,8 @@
         <item>Song books</item>
         <item>Services</item>
         <item>Settings</item>
-        <item>Check DB updates</item>
+        <item>Check DB updates </item>
+        <!--<item>Check DB updates Dia</item>-->
         <item>About</item>
     </string-array>
 
@@ -89,8 +90,8 @@
     <string name="desc_list_item_icon">Item Icon</string>
 
     <!--Manual updates-->
-    <string name="updateAvailableTitle">Update is available</string>
-    <string name="updateNotAvailableTitle">Update is not available</string>
+    <string name="updateAvailableTitle">Update is available. Do you want do download it?</string>
+    <string name="updateNotAvailableTitle">Update is not available.</string>
     <string name="noInternetConnectionWarningMessage">Atleast you need mobile data or wifi to check database updates</string>
 
 </resources>

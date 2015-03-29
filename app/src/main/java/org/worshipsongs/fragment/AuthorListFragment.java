@@ -1,4 +1,4 @@
-package org.worshipsongs.page.component.fragment;
+package org.worshipsongs.fragment;
 
 import android.app.Fragment;
 import android.app.SearchManager;
@@ -53,7 +53,6 @@ public class AuthorListFragment extends Fragment {
     List<String> songName;
 
     @Override
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity = (FragmentActivity) super.getActivity();
         FragmentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);

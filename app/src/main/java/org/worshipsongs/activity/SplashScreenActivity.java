@@ -21,7 +21,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.task.AsyncGitHubRepositoryTask;
+
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -93,31 +93,31 @@ public class SplashScreenActivity extends Activity {
                     if (isWifi()) {
                         progressBar.setVisibility(View.VISIBLE);
                         messageAlert.setVisibility(View.VISIBLE);
-                        AsyncGitHubRepositoryTask asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
-                        if (asyncGitHubRepositoryTask.execute().get()) {
-                            Log.i(this.getClass().getName(), "Preparing to load database...");
-                            final AsyncRemoteDownloadTask asyncDownloadTask = new AsyncRemoteDownloadTask();
-                            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
-                            File externalCacheDir = this.getExternalCacheDir();
-                            File downloadSongFile = null;
-                            messageAlert.setText("Downloading latest songs database...");
-                            try {
-                                downloadSongFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
-                                Log.i(this.getClass().getName(), "Download file from " + remoteUrl + " to" + downloadSongFile.getAbsolutePath());
-                                if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
-                                    songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
-                                    songDao.open();
-                                    PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
-                                    Log.i(this.getClass().getName(), "Copied successfully");
-                                } else {
-                                    Log.w(UserSettingActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
-                                }
-                            } catch (Exception e) {
-                                Log.e(UserSettingActivity.class.getSimpleName(), "Error occurred while downloading file" + e);
-                            } finally {
-                                downloadSongFile.deleteOnExit();
-                            }
-                        }
+                     //   GithubRepositoryService asyncGitHubRepositoryTask = new GithubRepositoryService(this);
+//                        if (asyncGitHubRepositoryTask.execute().get()) {
+//                            Log.i(this.getClass().getName(), "Preparing to load database...");
+//                            final AsyncRemoteDownloadTask asyncDownloadTask = new AsyncRemoteDownloadTask();
+//                            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
+//                            File externalCacheDir = this.getExternalCacheDir();
+//                            File downloadSongFile = null;
+//                            messageAlert.setText("Downloading latest songs database...");
+//                            try {
+//                                downloadSongFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
+//                                Log.i(this.getClass().getName(), "Download file from " + remoteUrl + " to" + downloadSongFile.getAbsolutePath());
+//                                if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
+//                                    songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
+//                                    songDao.open();
+//                                    PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
+//                                    Log.i(this.getClass().getName(), "Copied successfully");
+//                                } else {
+//                                    Log.w(UserSettingActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
+//                                }
+//                            } catch (Exception e) {
+//                                Log.e(UserSettingActivity.class.getSimpleName(), "Error occurred while downloading file" + e);
+//                            } finally {
+//                                downloadSongFile.deleteOnExit();
+//                            }
+//                        }
                     }
                 }
             }

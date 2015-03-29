@@ -32,7 +32,6 @@ public final class PropertyUtils
         Properties properties = new Properties();
         OutputStream outputStream = null;
         try {
-
             outputStream = new FileOutputStream(propertiesFile, true);
             for (String key : propertiesMap.keySet()) {
                 properties.setProperty(key, propertiesMap.get(key));

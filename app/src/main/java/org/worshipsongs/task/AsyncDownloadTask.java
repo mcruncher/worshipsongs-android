@@ -5,12 +5,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.utils.PropertyUtils;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * @Author : Madasamy
@@ -19,7 +25,11 @@ import java.net.URL;
 public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
 {
     public static final String GET_REQUEST = "GET";
-    private ProgressDialog progressDialog;
+    public static final String DATABASE_UPDATED_DATE_KEY = "databaseUpdatedDateKey";
+    public static final String DATE_PATTERN = "dd/MM/yyyy";
+    private File externalCacheDir;
+    private File commonPropertyFile;
+    private SongDao songDao;
 
     public AsyncDownloadTask()
     {
@@ -28,37 +38,36 @@ public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
 
     public AsyncDownloadTask(Context context)
     {
-        progressDialog = new ProgressDialog(context);
+        songDao = new SongDao(context);
+        commonPropertyFile = PropertyUtils.getCommonPropertyFile(context);
+        externalCacheDir = context.getExternalCacheDir();
     }
-
-
 
     @Override
     protected void onPreExecute()
     {
 
-        Log.d(this.getClass().getName(), "Preparing to show dialog" + progressDialog);
-        if (progressDialog != null) {
-            progressDialog.setMessage("Please wait..");
-            progressDialog.show();
-            Log.d(this.getClass().getName(), "Displayed the progress bar");
-        }
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values)
+    {
+
     }
 
     @Override
     protected Boolean doInBackground(String... strings)
     {
+        File destinationFile = null;
         try {
-
-            String remoteUrl = strings[0];
-            String destinationPath = strings[1];
+            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
             String className = this.getClass().getSimpleName();
-            Log.i(className, "Preparing to download " + destinationPath + " from " + remoteUrl);
-            File destinationFile = new File(destinationPath);
+            destinationFile =  File.createTempFile("download-songs", "sqlite", externalCacheDir);
             URL url = new URL(remoteUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
             urlConnection.setRequestMethod(GET_REQUEST);
+            urlConnection.setConnectTimeout(1000);
+            urlConnection.setReadTimeout(60000);
             urlConnection.setDoOutput(true);
             urlConnection.connect();
             DataInputStream dataInputStream = new DataInputStream(urlConnection.getInputStream());
@@ -72,18 +81,21 @@ public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
             dataOutputStream.flush();
             dataOutputStream.close();
             Log.i(className, "Finished downloading file!");
+            songDao.copyDatabase(destinationFile.getAbsolutePath(), true);
+            songDao.open();
+            PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
             return true;
         } catch (Exception ex) {
             Log.e(this.getClass().getSimpleName(), "Error", ex);
             return false;
+        } finally {
+            destinationFile.deleteOnExit();
         }
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean)
     {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+
     }
 }

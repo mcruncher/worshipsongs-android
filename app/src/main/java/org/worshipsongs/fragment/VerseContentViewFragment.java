@@ -1,4 +1,4 @@
-package org.worshipsongs.page.component.fragment;
+package org.worshipsongs.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import org.worshipsongs.worship.R;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class VerseContentView extends Fragment
+public class VerseContentViewFragment extends Fragment
 {
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService = new CustomTagColorService();
@@ -40,7 +40,7 @@ public class VerseContentView extends Fragment
             textView.setTextSize(preferenceSettingService.getFontSize());
             textView.setVerticalScrollBarEnabled(true);
             //textView.setTextColor(preferenceSettingService.getColor());
-            Log.d("VerseContentView", "preferenceSettingService.getColor: " + preferenceSettingService.getColor());
+            Log.d("VerseContentViewFragment", "preferenceSettingService.getColor: " + preferenceSettingService.getColor());
             textView.setTextColor(preferenceSettingService.getColor());
         }
         return rootView;

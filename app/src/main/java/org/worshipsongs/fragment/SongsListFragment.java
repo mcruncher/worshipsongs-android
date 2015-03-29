@@ -1,4 +1,4 @@
-package org.worshipsongs.page.component.fragment;
+package org.worshipsongs.fragment;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.worshipsongs.activity.MainActivity;
 import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
@@ -54,7 +53,8 @@ import java.util.Properties;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SongsListFragment extends Fragment {
+public class SongsListFragment extends Fragment
+{
     private ListView songListView;
     private VerseParser verseparser;
     private SongDao songDao;
@@ -73,7 +73,8 @@ public class SongsListFragment extends Fragment {
     AlertDialog alertDialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         FragmentActivity = (FragmentActivity) super.getActivity();
         FragentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
         setHasOptionsMenu(true);
@@ -84,9 +85,11 @@ public class SongsListFragment extends Fragment {
         verseparser = new VerseParser();
         initSetUp();
         final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
+            {
                 vibrator.vibrate(15);
                 song = songListView.getItemAtPosition(position).toString();
                 LayoutInflater li = LayoutInflater.from(getActivity());
@@ -102,9 +105,11 @@ public class SongsListFragment extends Fragment {
                 serviceList = readServiceName();
                 dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceList);
                 serviceListView.setAdapter(dataAdapter);
-                serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                    public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
+                    {
                         String service = serviceListView.getItemAtPosition(position).toString();
                         System.out.println("Selected Song for Service:" + service);
                         if (position == 0) {
@@ -115,8 +120,10 @@ public class SongsListFragment extends Fragment {
                             final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
                             textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
                             final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
-                            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
                                     String service_name;
                                     if (serviceName.getText().toString().equals(""))
                                         Toast.makeText(getActivity(), "Enter Service Name...!", Toast.LENGTH_LONG).show();
@@ -127,8 +134,10 @@ public class SongsListFragment extends Fragment {
                                         alertDialog.dismiss();
                                     }
                                 }
-                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
                                     dialog.cancel();
                                 }
                             });
@@ -141,8 +150,10 @@ public class SongsListFragment extends Fragment {
                         }
                     }
                 });
-                alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         dialog.cancel();
                     }
                 });
@@ -152,9 +163,11 @@ public class SongsListFragment extends Fragment {
             }
         });
 
-        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
                 Song selectedValue = adapter.getItem(position);
                 String lyrics = selectedValue.getLyrics();
                 verseList = getVerse(lyrics);
@@ -199,7 +212,8 @@ public class SongsListFragment extends Fragment {
         return FragentLayout;
     }
 
-    private void initSetUp() {
+    private void initSetUp()
+    {
         songDao.open();
         loadSongs();
         dataArray = new String[songs.size()];
@@ -208,11 +222,13 @@ public class SongsListFragment extends Fragment {
         }
     }
 
-    private List<Verse> getVerse(String lyrics) {
+    private List<Verse> getVerse(String lyrics)
+    {
         return verseparser.parseVerseDom(getActivity(), lyrics);
     }
 
-    private List<String> getVerseByVerseOrder(String verseOrder) {
+    private List<String> getVerseByVerseOrder(String verseOrder)
+    {
         String split[] = verseOrder.split("\\s+");
         List<String> verses = new ArrayList<String>();
         for (int i = 0; i < split.length; i++) {
@@ -222,29 +238,34 @@ public class SongsListFragment extends Fragment {
         return verses;
     }
 
-    private void loadSongs() {
+    private void loadSongs()
+    {
         songs = songDao.findTitles();
         adapter = new ArrayAdapter<Song>(getActivity(), android.R.layout.simple_list_item_1, songs);
         songListView.setAdapter(adapter);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
         SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
         searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String newText)
+            {
                 adapter.getFilter().filter(newText);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
                 adapter.getFilter().filter(query);
                 return true;
             }
@@ -254,16 +275,19 @@ public class SongsListFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu)
+    {
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         return super.onOptionsItemSelected(item);
     }
 
-    public List readServiceName() {
+    public List readServiceName()
+    {
         Properties property = new Properties();
         InputStream inputStream = null;
         int i = 0;
@@ -285,7 +309,8 @@ public class SongsListFragment extends Fragment {
         return serviceList;
     }
 
-    private void saveIntoFile(String serviceName, String song) {
+    private void saveIntoFile(String serviceName, String song)
+    {
         try {
             serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
             if (!serviceFile.exists()) {
