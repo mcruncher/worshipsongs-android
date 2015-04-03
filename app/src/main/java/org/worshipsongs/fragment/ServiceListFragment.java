@@ -73,7 +73,7 @@ public class ServiceListFragment extends Fragment
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+                        serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
                         Toast.makeText(getActivity(), "Service " + serviceName + " Deleted...!", Toast.LENGTH_LONG).show();
                         service.clear();
