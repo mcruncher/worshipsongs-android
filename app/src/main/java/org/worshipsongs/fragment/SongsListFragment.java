@@ -79,6 +79,7 @@ public class SongsListFragment extends Fragment
     private Song songClass;
     public ArrayList<Song> songList = new ArrayList<Song>();
     ListAdapter listAdapter;
+    ServiceListAdapter serviceListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -202,7 +203,8 @@ public class SongsListFragment extends Fragment
                 {
                     final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(15);
-                    song = songListView.getItemAtPosition(temp).toString();
+                    final Song selectedSong = adapter.getItem(temp);
+                    //song = songListView.getItemAtPosition(temp).toString();
                     LayoutInflater li = LayoutInflater.from(getActivity());
                     View promptsView = li.inflate(R.layout.service_name_dialog, null);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -214,14 +216,16 @@ public class SongsListFragment extends Fragment
                     serviceList.clear();
                     serviceList.add("New service...");
                     serviceList = readServiceName();
-                    dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceList);
-                    serviceListView.setAdapter(dataAdapter);
+                    dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.service_alertdialog_content, serviceList);
+                    serviceListAdapter = new ServiceListAdapter(getActivity());
+                    serviceListView.setAdapter(serviceListAdapter);
                     serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override
                         public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
                         {
-                            String service = serviceListView.getItemAtPosition(position).toString();
+                            //String service = serviceListView.getItemAtPosition(position).toString();
+                            String service = dataAdapter.getItem(position);
                             System.out.println("Selected Song for Service:" + service);
                             if (position == 0) {
                                 LayoutInflater li = LayoutInflater.from(getActivity());
@@ -240,7 +244,7 @@ public class SongsListFragment extends Fragment
                                             Toast.makeText(getActivity(), "Enter Service Name...!", Toast.LENGTH_LONG).show();
                                         else {
                                             service_name = serviceName.getText().toString();
-                                            saveIntoFile(service_name, song);
+                                            saveIntoFile(service_name, selectedSong.toString());
                                             Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
                                             alertDialog.dismiss();
                                         }
@@ -255,12 +259,13 @@ public class SongsListFragment extends Fragment
                                 AlertDialog alertDialog = alertDialogBuilder.create();
                                 alertDialog.show();
                             } else {
-                                saveIntoFile(service, song);
+                                saveIntoFile(service, selectedSong.toString());
                                 Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
                                 alertDialog.dismiss();
                             }
                         }
                     });
+
                     alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int id)
@@ -414,6 +419,41 @@ public class SongsListFragment extends Fragment
             PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
+        }
+    }
+
+    private class ServiceListAdapter extends BaseAdapter
+    {
+        LayoutInflater inflater;
+        public ServiceListAdapter(Context context)
+        {
+            inflater = LayoutInflater.from(context);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            convertView = inflater.inflate(R.layout.service_alertdialog_content, null);
+            TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
+            ImageView serviceIcon = (ImageView) convertView.findViewById(R.id.serviceIcon);
+            if(position == 0)
+                serviceIcon.setImageResource(R.drawable.file);
+            serviceName.setText(serviceList.get(position).toString().trim());
+            return  convertView;
+        }
+
+        @Override
+        public int getCount() {
+            return serviceList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
         }
     }
 }
