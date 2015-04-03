@@ -35,7 +35,6 @@ public class WorshipSongsPreference extends PreferenceFragment {
         fontPreferenceSettings("prefSetFont");
         fontPreferenceSettings("prefSetFontStyle");
         fontPreferenceSettings("prefSetFontFace");
-        updateIntervalSettings("databaseUpdateInterval");
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
     }
@@ -94,19 +93,6 @@ public class WorshipSongsPreference extends PreferenceFragment {
         ColorPickerPreference primaryColorPreference = (ColorPickerPreference) findPreference(colorPickerKey);
         int color = primaryColorPreference.getValue();
         //primaryColorPreference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(color))));
-    }
-
-    private void updateIntervalSettings(String updateInterval) {
-
-        ListPreference preferenceFont = (ListPreference) findPreference(updateInterval);
-        setListPreferenceSettingValue(updateInterval);
-        preferenceFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(newValue.toString());
-                return true;
-            }
-        });
     }
 
 
