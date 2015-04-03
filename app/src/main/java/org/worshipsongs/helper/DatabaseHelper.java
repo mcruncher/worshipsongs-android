@@ -72,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
      *
      * @return true if it exists, false if it doesn't
      */
-    private boolean checkDataBase()
+    public boolean checkDataBase()
     {
         SQLiteDatabase checkDB = null;
         try {

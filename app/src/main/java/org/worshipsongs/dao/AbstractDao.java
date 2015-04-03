@@ -27,6 +27,11 @@ public class AbstractDao
         databaseHelper.createDataBase(databasePath, dropDatabase);
     }
 
+    public boolean isDatabaseExist()
+    {
+        return databaseHelper.checkDataBase();
+    }
+
     public void open()
     {
         database = databaseHelper.openDataBase();

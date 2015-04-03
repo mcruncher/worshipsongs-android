@@ -89,37 +89,7 @@ public class SplashScreenActivity extends Activity {
                 songDao.open();
                 PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
             } else {
-                if (isDownloadDatabaseUpdates(commonPropertyFile)) {
-                    if (isWifi()) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        messageAlert.setVisibility(View.VISIBLE);
-                     //   GithubRepositoryService asyncGitHubRepositoryTask = new GithubRepositoryService(this);
-//                        if (asyncGitHubRepositoryTask.execute().get()) {
-//                            Log.i(this.getClass().getName(), "Preparing to load database...");
-//                            final AsyncRemoteDownloadTask asyncDownloadTask = new AsyncRemoteDownloadTask();
-//                            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
-//                            File externalCacheDir = this.getExternalCacheDir();
-//                            File downloadSongFile = null;
-//                            messageAlert.setText("Downloading latest songs database...");
-//                            try {
-//                                downloadSongFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
-//                                Log.i(this.getClass().getName(), "Download file from " + remoteUrl + " to" + downloadSongFile.getAbsolutePath());
-//                                if (asyncDownloadTask.execute(remoteUrl, downloadSongFile.getAbsolutePath()).get()) {
-//                                    songDao.copyDatabase(downloadSongFile.getAbsolutePath(), true);
-//                                    songDao.open();
-//                                    PropertyUtils.setProperty(DATABASE_UPDATED_DATE_KEY, DateFormatUtils.format(new Date(), DATE_PATTERN), commonPropertyFile);
-//                                    Log.i(this.getClass().getName(), "Copied successfully");
-//                                } else {
-//                                    Log.w(UserSettingActivity.class.getSimpleName(), "File is not downloaded from " + remoteUrl);
-//                                }
-//                            } catch (Exception e) {
-//                                Log.e(UserSettingActivity.class.getSimpleName(), "Error occurred while downloading file" + e);
-//                            } finally {
-//                                downloadSongFile.deleteOnExit();
-//                            }
-//                        }
-                    }
-                }
+                
             }
         } catch (Exception e) {
         }
