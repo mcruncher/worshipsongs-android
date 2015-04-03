@@ -2,7 +2,6 @@ package org.worshipsongs.activity;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -22,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryId;
@@ -34,7 +32,6 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.NavDrawerItem;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.AuthorListFragment;
-import org.worshipsongs.fragment.CheckUpdateFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
@@ -69,10 +66,6 @@ public class MainActivity extends FragmentActivity
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter navDrawerListAdapter;
-    private IMobileNetworkService mobileNetworkService = new MobileNetworkService();
-    private AsyncDownloadTask asyncDownloadTask;
-    private AlertDialog alertDialog;
-    private AlertDialog.Builder checkUpdateAlertDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -101,12 +94,8 @@ public class MainActivity extends FragmentActivity
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navigationMenuIcons.getResourceId(3, -1)));
         // Settings
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navigationMenuIcons.getResourceId(4, -1)));
-        //Check database updates fragment
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
-        //check updates dialog
-       // navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[6], navigationMenuIcons.getResourceId(5, -1)));
         // About
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[6], navigationMenuIcons.getResourceId(5, -1)));
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
         // Recycle the typed array
         navigationMenuIcons.recycle();
         drawerListView.setOnItemClickListener(new SlideMenuClickListener());
@@ -140,7 +129,6 @@ public class MainActivity extends FragmentActivity
         if (savedInstanceState == null) {
             displaySelectedFragment(0);
         }
-        asyncDownloadTask = new AsyncDownloadTask(this);
     }
 
     /**
@@ -211,13 +199,6 @@ public class MainActivity extends FragmentActivity
                 preferenceFragment = new WorshipSongsPreference();
                 break;
             case 5:
-                //checkDatabaseUpdates();
-                fragment = new CheckUpdateFragment();
-                break;
-//            case 6:
-//                checkDatabaseUpdates();
-//                break;
-            case 6:
                 fragment = new AboutWebViewActivity();
                 break;
             default:
@@ -237,113 +218,6 @@ public class MainActivity extends FragmentActivity
             drawerLayout.closeDrawer(drawerListView);
         } else {
             Log.w(this.getClass().getSimpleName(), "No fragment are selected");
-        }
-    }
-
-    private void checkDatabaseUpdates()
-    {
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View checkUpdateDialogView = layoutInflater.inflate(R.layout.check_update_dialog, null);
-            checkUpdateAlertDialogBuilder = new AlertDialog.Builder(this);
-            checkUpdateAlertDialogBuilder.setView(checkUpdateDialogView);
-            TextView checkUpdateDialogTextView = (TextView) checkUpdateDialogView.findViewById(R.id.checkUpdateDialogTextView);
-            ProgressBar progressBar = (ProgressBar) checkUpdateDialogView.findViewById(R.id.checkUpdateDialogProgressBar);
-            progressBar.setVisibility(View.VISIBLE);
-
-            if (mobileNetworkService.isWifi(getSystemService(Context.CONNECTIVITY_SERVICE)) ||
-                    mobileNetworkService.isMobileData(getSystemService(CONNECTIVITY_SERVICE))) {
-                final AsyncGitHubRepositoryTask asyncGthubRepositoryTask = new AsyncGitHubRepositoryTask(this);
-                asyncGthubRepositoryTask.execute();
-                if (asyncGthubRepositoryTask.get()) {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    checkUpdateDialogTextView.setText(R.string.updateAvailableTitle);
-
-                } else {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    checkUpdateDialogTextView.setText(R.string.updateNotAvailableTitle);
-                    checkUpdateAlertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                            dialog.cancel();
-                        }
-                    });
-                }
-            } else {
-                progressBar.setVisibility(View.INVISIBLE);
-                checkUpdateDialogTextView.setText(R.string.noInternetConnectionWarningMessage);
-
-            }
-            checkUpdateAlertDialogBuilder.setCancelable(true);
-            alertDialog = checkUpdateAlertDialogBuilder.create();
-            alertDialog.show();
-        } catch (Exception ex) {
-
-        }
-    }
-
-    public class AsyncGitHubRepositoryTask extends AsyncTask<String, Void, Boolean>
-    {
-        public static final String LATEST_CHANGE_SET = "latestChangeSet";
-        private final Context context;
-        //ProgressDialog progressDialog;
-
-        public AsyncGitHubRepositoryTask(Context context)
-        {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute()
-        {
-            //  progressDialog = ProgressDialog.show(context, "Check updates", "Check updates", true, true);
-//            progressDialog.setMessage("Downloading file...");
-//            progressDialog.setIndeterminate(false);
-//            progressDialog.setCancelable(false);
-//            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean)
-        {
-            //progressDialog.dismiss();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values)
-        {
-
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params)
-        {
-            try {
-                File commonPropertyFile = PropertyUtils.getCommonPropertyFile(context);
-                String latestChangesetInPropertyFile = PropertyUtils.getProperty(LATEST_CHANGE_SET, commonPropertyFile);
-                Log.i(this.getClass().getSimpleName(), "Latest changeset in property file: " + latestChangesetInPropertyFile);
-                final RepositoryId repo = new RepositoryId("crunchersaspire", "worshipsongs-db");
-
-                final CommitService commitService = new CommitService();
-                PageIterator<RepositoryCommit> repositoryCommits = commitService.pageCommits(repo, 1);
-                Collection<RepositoryCommit> repositoryCommitCollection = repositoryCommits.iterator().next();
-                RepositoryCommit repositoryCommit = repositoryCommitCollection.iterator().next();
-
-                String latestChangeSet = repositoryCommit.getSha();
-                Log.i(this.getClass().getSimpleName(), "Latest changeset in repository: " + latestChangeSet);
-                if (latestChangesetInPropertyFile == null || !(latestChangesetInPropertyFile.equalsIgnoreCase(latestChangeSet))) {
-                    PropertyUtils.setProperty(LATEST_CHANGE_SET, latestChangeSet, commonPropertyFile);
-                    Log.i(this.getClass().getSimpleName(), "Changeset are different");
-                    return true;
-                } else {
-                    Log.i(this.getClass().getSimpleName(), "Changeset are same");
-                    return false;
-                }
-            } catch (Exception e) {
-                Log.e(this.getClass().getSimpleName(), "Error occurred while checking new changeset" + e);
-                return false;
-            }
         }
     }
 
