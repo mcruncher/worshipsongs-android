@@ -16,8 +16,6 @@
     <string name="pref_text_style">Set Font Style</string>
     <string name="pref_text_style_summary">Change font style</string>
     <string name="pref_change_font_style">Font Style</string>
-    <string name="pref_font_face_summary">Change font face</string>
-    <string name="pref_change_font_face">Font Face</string>
 
 
     <!--Download remote url-->

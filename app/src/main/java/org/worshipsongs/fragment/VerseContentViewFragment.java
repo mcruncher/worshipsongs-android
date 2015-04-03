@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -36,11 +37,11 @@ public class VerseContentViewFragment extends Fragment
         if (getArguments() != null) {
             text = getArguments().getString("verseData");
             customTagColorService.setCustomTagTextView(context, text, textView);
-            textView.setTypeface(preferenceSettingService.getTypeFace(), preferenceSettingService.getFontStyle());
+
+            textView.setTypeface(Typeface.DEFAULT, preferenceSettingService.getFontStyle());
             textView.setTextSize(preferenceSettingService.getFontSize());
             textView.setVerticalScrollBarEnabled(true);
-            //textView.setTextColor(preferenceSettingService.getColor());
-            Log.d("VerseContentViewFragment", "preferenceSettingService.getColor: " + preferenceSettingService.getColor());
+            Log.d(this.getClass().getSimpleName(), "Preference setting color: " + preferenceSettingService.getColor());
             textView.setTextColor(preferenceSettingService.getColor());
         }
         return rootView;
@@ -50,7 +51,7 @@ public class VerseContentViewFragment extends Fragment
     public void onResume()
     {
         super.onResume();
-        textView.setTypeface(preferenceSettingService.getTypeFace(), preferenceSettingService.getFontStyle());
+        textView.setTypeface(Typeface.DEFAULT, preferenceSettingService.getFontStyle());
         textView.setTextSize(preferenceSettingService.getFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);

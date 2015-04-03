@@ -35,11 +35,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment {
         //Initialize list preference
         fontPreferenceSettings("prefSetFont");
         fontPreferenceSettings("prefSetFontStyle");
-        fontPreferenceSettings("prefSetFontFace");
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
     }
-
 
     public void resetPreferenceSettings(String preferenceKey) {
         this.resetDialogPreference = findPreference(preferenceKey);

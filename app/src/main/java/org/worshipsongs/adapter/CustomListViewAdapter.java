@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +120,7 @@ public class CustomListViewAdapter extends BaseAdapter
         String text = textView.getText().toString();
         textView.setText("");
         customTagColorService.setCustomTagTextView(context, text, textView);
-        textView.setTypeface(preferenceSettingService.getTypeFace(), preferenceSettingService.getFontStyle());
+        textView.setTypeface(Typeface.DEFAULT, preferenceSettingService.getFontStyle());
         textView.setTextSize(preferenceSettingService.getFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
