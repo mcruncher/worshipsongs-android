@@ -7,6 +7,7 @@ import android.util.Log;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -39,7 +40,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     public AsyncDownloadTask(Context context)
     {
         songDao = new SongDao(context);
-        commonPropertyFile = PropertyUtils.getCommonPropertyFile(context);
+        commonPropertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
         externalCacheDir = context.getExternalCacheDir();
     }
 

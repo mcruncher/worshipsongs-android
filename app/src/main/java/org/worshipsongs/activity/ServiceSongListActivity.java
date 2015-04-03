@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
@@ -92,7 +93,7 @@ public class ServiceSongListActivity extends Activity {
                 alertDialogBuilder.setView(promptsView);
                 alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        serviceFile = PropertyUtils.getServicePropertyFile(ServiceSongListActivity.this);
+                        serviceFile = PropertyUtils.getPropertyFile(ServiceSongListActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         removeSong();
                         loadSongs();
                         Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
@@ -167,7 +168,7 @@ public class ServiceSongListActivity extends Activity {
 
     private void loadSongs()
     {
-        File serviceFile = PropertyUtils.getServicePropertyFile(this);
+        File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, propertyValues);
@@ -178,7 +179,7 @@ public class ServiceSongListActivity extends Activity {
         try
         {
             String propertyValue = "";
-            File serviceFile = PropertyUtils.getServicePropertyFile(this);
+            File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             String property = PropertyUtils.getProperty(serviceName, serviceFile);
             String propertyValues[] = property.split(";");
             System.out.println("File:"+serviceFile);
@@ -189,7 +190,7 @@ public class ServiceSongListActivity extends Activity {
                     propertyValue = propertyValue+propertyValues[i]+";";
                 }
             }
-            PropertyUtils.setServiceProperty(serviceName, propertyValue, serviceFile);
+            PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
         }

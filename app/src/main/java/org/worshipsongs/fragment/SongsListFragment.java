@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.MainActivity;
 import org.worshipsongs.activity.SongsColumnViewActivity;
 import org.worshipsongs.dao.SongDao;
@@ -80,7 +81,8 @@ public class SongsListFragment extends Fragment
     ListAdapter listAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         FragmentActivity = (FragmentActivity) super.getActivity();
         FragentLayout = (LinearLayout) inflater.inflate(R.layout.songs_list_activity, container, false);
         setHasOptionsMenu(true);
@@ -93,7 +95,8 @@ public class SongsListFragment extends Fragment
         return FragentLayout;
     }
 
-    private void initSetUp() {
+    private void initSetUp()
+    {
         songDao.open();
         loadSongs();
         dataArray = new String[songs.size()];
@@ -102,11 +105,13 @@ public class SongsListFragment extends Fragment
         }
     }
 
-    private List<Verse> getVerse(String lyrics) {
+    private List<Verse> getVerse(String lyrics)
+    {
         return verseparser.parseVerseDom(getActivity(), lyrics);
     }
 
-    private List<String> getVerseByVerseOrder(String verseOrder) {
+    private List<String> getVerseByVerseOrder(String verseOrder)
+    {
         String split[] = verseOrder.split("\\s+");
         List<String> verses = new ArrayList<String>();
         for (int i = 0; i < split.length; i++) {
@@ -116,7 +121,8 @@ public class SongsListFragment extends Fragment
         return verses;
     }
 
-    private void loadSongs() {
+    private void loadSongs()
+    {
         songs = songDao.findTitles();
         for (Song song : songs) {
             songClass = new Song();
@@ -132,17 +138,22 @@ public class SongsListFragment extends Fragment
     {
         SongsFilter songsFilter;
         LayoutInflater inflater;
+
         public ListAdapter(Context context)
         {
             inflater = LayoutInflater.from(context);
         }
-        public View getView(int position, View convertView, ViewGroup parent) {
+
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
             convertView = inflater.inflate(R.layout.songs_listview_content, null);
             TextView title = (TextView) convertView.findViewById(R.id.title);
             title.setText(songList.get(position).getTitle().trim());
             final int temp = position;
-            (convertView.findViewById(R.id.title)).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View arg0) {
+            (convertView.findViewById(R.id.title)).setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View arg0)
+                {
                     Song selectedValue = adapter.getItem(temp);
                     String lyrics = selectedValue.getLyrics();
                     verseList = getVerse(lyrics);
@@ -185,8 +196,10 @@ public class SongsListFragment extends Fragment
                 }
             });
 
-            (convertView.findViewById(R.id.serviceIcon)).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View arg0) {
+            (convertView.findViewById(R.id.serviceIcon)).setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View arg0)
+                {
                     final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(15);
                     song = songListView.getItemAtPosition(temp).toString();
@@ -203,9 +216,11 @@ public class SongsListFragment extends Fragment
                     serviceList = readServiceName();
                     dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceList);
                     serviceListView.setAdapter(dataAdapter);
-                    serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
+                        {
                             String service = serviceListView.getItemAtPosition(position).toString();
                             System.out.println("Selected Song for Service:" + service);
                             if (position == 0) {
@@ -216,8 +231,10 @@ public class SongsListFragment extends Fragment
                                 final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
                                 textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
                                 final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
-                                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                                {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
                                         String service_name;
                                         if (serviceName.getText().toString().equals(""))
                                             Toast.makeText(getActivity(), "Enter Service Name...!", Toast.LENGTH_LONG).show();
@@ -228,8 +245,10 @@ public class SongsListFragment extends Fragment
                                             alertDialog.dismiss();
                                         }
                                     }
-                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                                {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
                                         dialog.cancel();
                                     }
                                 });
@@ -242,8 +261,10 @@ public class SongsListFragment extends Fragment
                             }
                         }
                     });
-                    alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                    alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
                             dialog.cancel();
                         }
                     });
@@ -270,24 +291,26 @@ public class SongsListFragment extends Fragment
         }
 
         @Override
-        public Filter getFilter() {
+        public Filter getFilter()
+        {
             if (songsFilter == null)
                 songsFilter = new SongsFilter();
             return songsFilter;
         }
 
-        private class SongsFilter extends Filter {
+        private class SongsFilter extends Filter
+        {
             @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
+            protected FilterResults performFiltering(CharSequence constraint)
+            {
                 FilterResults results = new FilterResults();
                 if (constraint == null || constraint.length() == 0) {
                     results.values = songs;
                     results.count = songs.size();
-                }
-                else {
+                } else {
                     ArrayList<Song> filteredContacts = new ArrayList<Song>();
                     for (Song s : songs) {
-                        if (s.getTitle().toUpperCase().contains( constraint.toString().toUpperCase() )) {
+                        if (s.getTitle().toUpperCase().contains(constraint.toString().toUpperCase())) {
                             filteredContacts.add(s);
                         }
                     }
@@ -298,7 +321,8 @@ public class SongsListFragment extends Fragment
             }
 
             @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
+            protected void publishResults(CharSequence constraint, FilterResults results)
+            {
                 songList = (ArrayList<Song>) results.values;
                 notifyDataSetChanged();
             }
@@ -306,22 +330,26 @@ public class SongsListFragment extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
         SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
         searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String newText)
+            {
                 listAdapter.getFilter().filter(newText);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
                 listAdapter.getFilter().filter(query);
                 return true;
             }
@@ -331,21 +359,24 @@ public class SongsListFragment extends Fragment
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu)
+    {
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         return super.onOptionsItemSelected(item);
     }
 
-    public List readServiceName() {
+    public List readServiceName()
+    {
         Properties property = new Properties();
         InputStream inputStream = null;
         int i = 0;
         try {
-            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+            serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             inputStream = new FileInputStream(serviceFile);
             property.load(inputStream);
 
@@ -362,9 +393,10 @@ public class SongsListFragment extends Fragment
         return serviceList;
     }
 
-    private void saveIntoFile(String serviceName, String song) {
+    private void saveIntoFile(String serviceName, String song)
+    {
         try {
-            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+            serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             if (!serviceFile.exists()) {
                 FileUtils.touch(serviceFile);
             }
@@ -379,7 +411,7 @@ public class SongsListFragment extends Fragment
             } else {
                 propertyValue = song;
             }
-            PropertyUtils.setServiceProperty(serviceName, propertyValue, serviceFile);
+            PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
         }

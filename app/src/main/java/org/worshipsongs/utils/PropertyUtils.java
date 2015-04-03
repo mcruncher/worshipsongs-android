@@ -23,53 +23,62 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Created by Seenivasan on 10/26/2014.
+ * author:Seenivasan
+ * author:Madasamy
+ * version:1.0.0
  */
 public final class PropertyUtils
 {
+    public static File getPropertyFile(Context context, String propertyFileName)
+    {
+        File commonPropertyFile = null;
+        try {
+            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
+            File configDir = new File(configDirPath);
+            commonPropertyFile = new File(configDir, propertyFileName);
+            if (!commonPropertyFile.exists()) {
+                FileUtils.touch(commonPropertyFile);
+            }
+        } catch (Exception ex) {
+            Log.e("PropertyUtils", "Error" + ex);
+        }
+        return commonPropertyFile;
+    }
+
+    public static Properties getProperties(File propertyFile)
+    {
+        Properties properties = new Properties();
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(propertyFile);
+            properties.load(inputStream);
+            return properties;
+        } catch (Exception ex) {
+            return properties;
+        }
+    }
+
+    public static String getProperty(String key, File propertiesFile)
+    {
+        Properties properties = new Properties();
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(propertiesFile);
+            properties.load(inputStream);
+            return properties.get(key).toString();
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
     public static void setProperties(Map<String, String> propertiesMap, File propertiesFile)
     {
-        Properties properties = new Properties();
+        Properties properties = getProperties(propertiesFile);
         OutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(propertiesFile, true);
+            outputStream = new FileOutputStream(propertiesFile);
             for (String key : propertiesMap.keySet()) {
                 properties.setProperty(key, propertiesMap.get(key));
-            }
-        properties.store(outputStream, "");
-        } catch (Exception ex) {
-        }
-    }
-
-    public static void removeService(String service, File propertiesFile)
-    {
-        try
-        {
-            Properties props = new Properties();
-            FileInputStream in = new FileInputStream(propertiesFile);
-            props.load(in);
-            in.close();
-            if (props.remove(service) != null)
-            {
-                FileOutputStream out = new FileOutputStream(propertiesFile);
-                props.store(out, "");
-                out.close();
-            }
-        }
-        catch (Exception ex) { }
-    }
-
-    public static void setServiceProperties(Map<String, String> propertiesMap, File propertiesFile)
-    {
-        Properties properties = new Properties();
-        OutputStream outputStream = null;
-        try {
-            properties.load(new FileInputStream(propertiesFile));
-            outputStream = new FileOutputStream(propertiesFile, true);
-            System.out.println("Key value:");
-            for (String key : propertiesMap.keySet()) {
-                System.out.println("Key value:"+key);
-                properties.put(key, propertiesMap.get(key));
             }
             properties.store(outputStream, "");
         } catch (Exception ex) {
@@ -83,75 +92,20 @@ public final class PropertyUtils
         setProperties(propertyMap, propertiesFile);
     }
 
-    public static void setServiceProperty(String key, String value, File propertiesFile)
+    public static void removeProperty(String key, File propertiesFile)
     {
-        Map<String, String> propertyMap = new HashMap<String, String>();
-        propertyMap.put(key, value);
-        setServiceProperties(propertyMap, propertiesFile);
-    }
-
-    public static String getProperty(String key, File propertiesFile)
-    {
-        Properties properties = new Properties();
-        InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(propertiesFile);
-            properties.load(inputStream);
-
-            return properties.get(key).toString();
-        } catch (Exception ex) {
-            return "";
-        }
-    }
-
-    public static File getServicePropertyFile(Context context)
-    {
-        File servicePropertyFile = null;
-        try {
-            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
-            File configDir = new File(configDirPath);
-            servicePropertyFile = new File(configDir, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-            if (!servicePropertyFile.exists()) {
-                FileUtils.touch(servicePropertyFile);
+            Properties properties = new Properties();
+            FileInputStream fileInputStream = new FileInputStream(propertiesFile);
+            properties.load(fileInputStream);
+            fileInputStream.close();
+            if (properties.remove(key) != null) {
+                FileOutputStream out = new FileOutputStream(propertiesFile);
+                properties.store(out, "");
+                out.close();
             }
         } catch (Exception ex) {
-            Log.e("PropertyUtils Service File:", "Error" + ex);
         }
-        return servicePropertyFile;
-    }
-
-
-    public static File getServiceCsvFile(Context context)
-    {
-        File servicePropertyFile = null;
-        try {
-            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
-            File configDir = new File(configDirPath);
-            servicePropertyFile = new File(configDir, CommonConstants.SERVICE_PROPERTY_CSV_FILENAME);
-            if (!servicePropertyFile.exists()) {
-                FileUtils.touch(servicePropertyFile);
-            }
-        } catch (Exception ex) {
-            Log.e("PropertyUtils Service File:", "Error" + ex);
-        }
-        return servicePropertyFile;
-    }
-
-
-    public static File getCommonPropertyFile(Context context)
-    {
-        File commonPropertyFile = null;
-        try {
-            String configDirPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/config";
-            File configDir = new File(configDirPath);
-            commonPropertyFile = new File(configDir, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-            if (!commonPropertyFile.exists()) {
-                FileUtils.touch(commonPropertyFile);
-            }
-        } catch (Exception ex) {
-            Log.e("PropertyUtils", "Error" + ex);
-        }
-        return commonPropertyFile;
     }
 
     public static void appendColoredText(TextView tv, String text, int color)
@@ -162,5 +116,10 @@ public final class PropertyUtils
         int end = tv.getText().length();
         Spannable spannableText = (Spannable) tv.getText();
         spannableText.setSpan(new ForegroundColorSpan(color), start, end, 0);
+    }
+
+    public static String getClassName()
+    {
+        return "PropertyUtils";
     }
 }

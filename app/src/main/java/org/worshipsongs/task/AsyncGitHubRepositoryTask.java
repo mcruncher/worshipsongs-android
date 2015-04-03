@@ -8,6 +8,7 @@ import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class AsyncGitHubRepositoryTask extends AsyncTask<String, Void, Boolean>
     protected Boolean doInBackground(String... params)
     {
         try {
-            File commonPropertyFile = PropertyUtils.getCommonPropertyFile(context);
+            File commonPropertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
             String latestChangesetInPropertyFile = PropertyUtils.getProperty(LATEST_CHANGE_SET, commonPropertyFile);
             Log.i(this.getClass().getSimpleName(), "Latest changeset in property file: " + latestChangesetInPropertyFile);
             final RepositoryId repo = new RepositoryId("crunchersaspire", "worshipsongs-db");

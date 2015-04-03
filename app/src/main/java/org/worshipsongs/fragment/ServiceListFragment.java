@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.ServiceSongListActivity;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
@@ -50,39 +51,43 @@ public class ServiceListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        FragmentActivity  = (FragmentActivity) super.getActivity();
+        FragmentActivity = (FragmentActivity) super.getActivity();
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
         loadService();
-        final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-		serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
                 vibrator.vibrate(15);
                 serviceName = serviceListView.getItemAtPosition(position).toString();
-                System.out.println("Selected Song for Service:"+service);
-                    LayoutInflater li = LayoutInflater.from(getActivity());
-                    View promptsView = li.inflate(R.layout.service_delete_dialog, null);
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                    alertDialogBuilder.setView(promptsView);
-                    alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
-                            PropertyUtils.removeService(serviceName, serviceFile);
-                            Toast.makeText(getActivity(), "Service " +serviceName + " Deleted...!", Toast.LENGTH_LONG).show();
-                            service.clear();
-                            loadService();
-                        }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                System.out.println("Selected Song for Service:" + service);
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setView(promptsView);
+                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+                        PropertyUtils.removeProperty(serviceName, serviceFile);
+                        Toast.makeText(getActivity(), "Service " + serviceName + " Deleted...!", Toast.LENGTH_LONG).show();
+                        service.clear();
+                        loadService();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
                 return true;
             }
         });
@@ -90,7 +95,7 @@ public class ServiceListFragment extends Fragment
         serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick (AdapterView < ? > parent, View view, int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 serviceName = serviceListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Service:" + serviceName);
@@ -117,7 +122,7 @@ public class ServiceListFragment extends Fragment
     public void loadService()
     {
         readServiceName();
-        if(service.size() <= 0)
+        if (service.size() <= 0)
             serviceMsg.setText("You haven't created any service yet!\n" +
                     "Services are a great way to organize selected songs for events.\n" +
                     "To add a song to the service, go to the Songs screen and long press a song.");
@@ -131,23 +136,19 @@ public class ServiceListFragment extends Fragment
     {
         Properties property = new Properties();
         InputStream inputStream = null;
-        try
-        {
-            serviceFile = PropertyUtils.getServicePropertyFile(getActivity());
+        try {
+            serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             inputStream = new FileInputStream(serviceFile);
             property.load(inputStream);
 
             Enumeration<?> e = property.propertyNames();
-            while (e.hasMoreElements())
-            {
+            while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();
                 //String value = property.getProperty(key);
                 service.add(key);
             }
             inputStream.close();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return service;

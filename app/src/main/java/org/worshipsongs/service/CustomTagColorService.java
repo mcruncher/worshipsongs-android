@@ -32,7 +32,7 @@ public class CustomTagColorService
     public void setCustomTagTextView(Context context, String text, TextView textView) {
         preferenceSettingService = new UserPreferenceSettingService();
         externalCacheDir = context.getExternalCacheDir();
-        customTagFile = PropertyUtils.getCommonPropertyFile(context);
+        customTagFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
         List<String> strings;
         strings = getStrings(text);
         String tagKey = null;
