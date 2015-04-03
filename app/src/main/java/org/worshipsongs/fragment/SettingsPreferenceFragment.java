@@ -13,9 +13,10 @@ import org.worshipsongs.picker.ColorPickerPreference;
 import org.worshipsongs.worship.R;
 
 /**
- * Created by Seenivasan on 12/6/2014.
+ *Author:Seenivasan, Madasamy
+ * version:1.0.0
  */
-public class WorshipSongsPreference extends PreferenceFragment {
+public class SettingsPreferenceFragment extends PreferenceFragment {
 
     private Preference resetDialogPreference;
     private Intent startIntent;
@@ -56,7 +57,7 @@ public class WorshipSongsPreference extends PreferenceFragment {
                 //Again, don't set an animation for the transition
                 // userSettingActivity.applyOverrideConfiguration();
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, new WorshipSongsPreference()).commit();
+                        .replace(R.id.frame_container, new SettingsPreferenceFragment()).commit();
                 return false;
             }
         });

@@ -24,9 +24,9 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.AboutWebViewFragment;
 import org.worshipsongs.fragment.AuthorListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
+import org.worshipsongs.fragment.SettingsPreferenceFragment;
 import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
-import org.worshipsongs.fragment.WorshipSongsPreference;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -181,7 +181,7 @@ public class MainActivity extends FragmentActivity
                 fragment = new ServiceListFragment();
                 break;
             case 4:
-                preferenceFragment = new WorshipSongsPreference();
+                preferenceFragment = new SettingsPreferenceFragment();
                 break;
             case 5:
                 fragment = new AboutWebViewFragment();
@@ -192,7 +192,7 @@ public class MainActivity extends FragmentActivity
 
         if (fragment != null || preferenceFragment != null) {
             if (preferenceFragment != null) {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new WorshipSongsPreference()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsPreferenceFragment()).commit();
             } else {
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
             }
