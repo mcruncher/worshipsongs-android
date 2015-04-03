@@ -1,50 +1,35 @@
 package org.worshipsongs.activity;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.RepositoryId;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.service.CommitService;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.NavDrawerListAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.NavDrawerItem;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.fragment.AboutWebViewFragment;
 import org.worshipsongs.fragment.AuthorListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 import org.worshipsongs.fragment.WorshipSongsPreference;
-import org.worshipsongs.service.IMobileNetworkService;
-import org.worshipsongs.service.MobileNetworkService;
-import org.worshipsongs.task.AsyncDownloadTask;
-import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity
@@ -199,7 +184,7 @@ public class MainActivity extends FragmentActivity
                 preferenceFragment = new WorshipSongsPreference();
                 break;
             case 5:
-                fragment = new AboutWebViewActivity();
+                fragment = new AboutWebViewFragment();
                 break;
             default:
                 break;
