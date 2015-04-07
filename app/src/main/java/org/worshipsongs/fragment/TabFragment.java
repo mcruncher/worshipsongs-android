@@ -23,9 +23,36 @@ import org.worshipsongs.worship.R;
  */
 public class TabFragment  extends Fragment implements ActionBar.TabListener {
 
+    private TabHost tabHost;
+    // Tab titles
+    private String[] tabsTitles = {"Songs", "Authors", "Albums"};
+    private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private DrawerLayout FragentLayout;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        FragentLayout = (DrawerLayout) inflater.inflate(R.layout.activity_main_drawer, container, false);
+        tabHost=(TabHost)FragentLayout.findViewById(android.R.id.tabhost);
+        viewPager = (ViewPager) FragentLayout.findViewById(R.id.pager);
+        tabHost.setup();
+        setRetainInstance(true);
+        for (int i = 0; i < tabsTitles.length; i++) {
+            String tabName = tabsTitles[i];
+            TabHost.TabSpec spec=tabHost.newTabSpec(tabName);
+            spec.setContent(R.id.fakeTabContent);
+            spec.setIndicator(tabName);
+            tabHost.addTab(spec);
+        }
+        mAdapter = new TabsPagerAdapter(getChildFragmentManager(), tabsTitles.length);
+        viewPager.setAdapter(mAdapter);
+        return FragentLayout;
+    }
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-     
+
     }
 
     @Override
