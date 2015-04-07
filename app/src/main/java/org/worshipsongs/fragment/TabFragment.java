@@ -47,6 +47,19 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
         }
         mAdapter = new TabsPagerAdapter(getChildFragmentManager(), tabsTitles.length);
         viewPager.setAdapter(mAdapter);
+
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                for (int i = 0; i < tabsTitles.length; i++) {
+                    if (tabId.equals(tabsTitles[i])) {
+                        viewPager.setCurrentItem(i);
+                        break;
+                    }
+                }
+            }
+        });
+
         return FragentLayout;
     }
 
