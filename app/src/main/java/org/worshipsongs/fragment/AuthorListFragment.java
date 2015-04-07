@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment;
 
-import android.app.Fragment;
+import android.app.ActionBar;
+import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -63,7 +64,6 @@ public class AuthorListFragment extends Fragment {
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
         initSetUp();
-
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

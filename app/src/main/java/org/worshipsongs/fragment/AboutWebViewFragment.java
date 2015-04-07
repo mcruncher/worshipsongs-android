@@ -2,7 +2,7 @@ package org.worshipsongs.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +24,8 @@ public class AboutWebViewFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
         View rootView = inflater.inflate(R.layout.about_webview_activity, container, false);
+        getActivity().getActionBar().setTitle("About");
         webView = (WebView) rootView.findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(ABOUT_FILE_PATH);
