@@ -21,5 +21,20 @@ import org.worshipsongs.worship.R;
 /**
  * Created by Seenivasan on 4/5/2015.
  */
-public class TabFragment{
+public class TabFragment  extends Fragment implements ActionBar.TabListener {
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+     
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
 }
