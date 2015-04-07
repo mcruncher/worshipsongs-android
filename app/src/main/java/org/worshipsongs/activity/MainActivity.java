@@ -1,6 +1,8 @@
 package org.worshipsongs.activity;
 
-import android.app.Fragment;
+import android.app.ActionBar;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -8,25 +10,27 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TabHost;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.NavDrawerListAdapter;
+import org.worshipsongs.adapter.TabsPagerAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.NavDrawerItem;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.AboutWebViewFragment;
-import org.worshipsongs.fragment.AuthorListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
-import org.worshipsongs.fragment.SongBookListFragment;
-import org.worshipsongs.fragment.SongsListFragment;
+import org.worshipsongs.fragment.TabFragment;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -34,6 +38,15 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity
 {
+    private DrawerLayout FragentLayout;
+
+    private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private ActionBar actionBar;
+    private TabHost tabHost;
+    // Tab titles
+    private String[] tabsTitles = {"Songs", "Authors"};
+
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private SongDao songDao;
@@ -51,13 +64,14 @@ public class MainActivity extends FragmentActivity
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter navDrawerListAdapter;
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
-
+        tabHost=(TabHost)findViewById(android.R.id.tabhost);
         appTitle = drawerTitle = getTitle();
         songDao = new SongDao(this);
         songDao.open();
@@ -67,7 +81,9 @@ public class MainActivity extends FragmentActivity
         // nav drawer icons from resources
         navigationMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        frameLayout = (FrameLayout)findViewById(R.id.frame_container);
         drawerListView = (ListView) findViewById(R.id.list_slidermenu);
+
         navDrawerItems = new ArrayList<NavDrawerItem>();
         // Songs
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navigationMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
@@ -77,10 +93,10 @@ public class MainActivity extends FragmentActivity
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[2], navigationMenuIcons.getResourceId(2, -1)));
         // Services
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navigationMenuIcons.getResourceId(3, -1)));
-        // Settings
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navigationMenuIcons.getResourceId(4, -1)));
-        // About
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
+//        // Settings
+//        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navigationMenuIcons.getResourceId(4, -1)));
+//        // About
+//        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
         // Recycle the typed array
         navigationMenuIcons.recycle();
         drawerListView.setOnItemClickListener(new SlideMenuClickListener());
@@ -91,20 +107,21 @@ public class MainActivity extends FragmentActivity
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle(R.string.app_name);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
                 R.string.app_name, R.string.app_name)
         {
             public void onDrawerClosed(View view)
             {
-                getActionBar().setTitle(appTitle);
+                //getActionBar().setTitle(R.string.app_name);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView)
             {
-                getActionBar().setTitle(drawerTitle);
+                //getActionBar().setTitle(drawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -114,6 +131,8 @@ public class MainActivity extends FragmentActivity
         if (savedInstanceState == null) {
             displaySelectedFragment(0);
         }
+
+
     }
 
     /**
@@ -167,34 +186,38 @@ public class MainActivity extends FragmentActivity
     {
         Fragment fragment = null;
         PreferenceFragment preferenceFragment = null;
+
         switch (fragmentPosition) {
             case 0:
-                fragment = new SongsListFragment();
+                // Initialization
+//                frameLayout.removeAllViews();
+                fragment = new TabFragment();
+                //fragment = new SongsListFragment();
                 break;
             case 1:
-                fragment = new AuthorListFragment();
-                break;
-            case 2:
-                fragment = new SongBookListFragment();
-                break;
-            case 3:
+                frameLayout.removeAllViews();
                 fragment = new ServiceListFragment();
                 break;
-            case 4:
-                preferenceFragment = new SettingsPreferenceFragment();
+            case 2:
+                Intent intent = new Intent(this,
+                        UserSettingActivity.class);
+                startActivity(intent);
                 break;
-            case 5:
+            case 3:
+                frameLayout.removeAllViews();
                 fragment = new AboutWebViewFragment();
                 break;
+
             default:
                 break;
         }
 
         if (fragment != null || preferenceFragment != null) {
+            frameLayout.removeAllViews();
             if (preferenceFragment != null) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsPreferenceFragment()).commit();
             } else {
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
             }
             // update selected item and title, then close the drawer
             drawerListView.setItemChecked(fragmentPosition, true);
@@ -210,7 +233,7 @@ public class MainActivity extends FragmentActivity
     public void setTitle(CharSequence title)
     {
         appTitle = title;
-        getActionBar().setTitle(appTitle);
+        //getActionBar().setTitle(appTitle);
     }
 
     /**
