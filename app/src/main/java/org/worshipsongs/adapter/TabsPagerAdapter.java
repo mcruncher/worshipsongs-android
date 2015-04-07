@@ -23,6 +23,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int index) {
+        switch(index) {
+            case 0:
+                return new SongsListFragment();
+            case 1:
+                return new AuthorListFragment();
+            case 2:
+                return new SongBookListFragment();
+        }
         return null;
     }
 
