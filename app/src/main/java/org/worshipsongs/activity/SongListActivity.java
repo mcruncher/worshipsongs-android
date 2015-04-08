@@ -78,6 +78,11 @@ public class SongListActivity extends Activity {
         songName = intent.getStringArrayListExtra("songNames");
         songListView = (ListView) findViewById(R.id.song_list_view);
         songDao = new SongDao(this);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         verseparser = new VerseParser();
         listAdapter = new ListAdapter(context);
         songListView.setAdapter(listAdapter);
@@ -314,17 +319,6 @@ public class SongListActivity extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return true;
-    }
-
     public List readServiceName()
     {
         Properties property = new Properties();
@@ -405,5 +399,24 @@ public class SongListActivity extends Activity {
         public long getItemId(int i) {
             return i;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+        return true;
     }
 }

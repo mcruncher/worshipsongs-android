@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TabHost;
 
 import org.worshipsongs.adapter.TabsPagerAdapter;
@@ -25,10 +26,11 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
 
     private TabHost tabHost;
     // Tab titles
-    private String[] tabsTitles = {"Songs", "Authors", "Albums","Play lists"};
+    private String[] tabsTitles = {"Songs", "Artists", "Albums","Playlists"};
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private DrawerLayout FragentLayout;
+    private HorizontalScrollView horizontalScrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
