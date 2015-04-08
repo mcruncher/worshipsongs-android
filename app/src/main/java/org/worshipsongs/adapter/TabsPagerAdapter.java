@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
 import org.worshipsongs.fragment.AuthorListFragment;
+import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 
@@ -30,6 +31,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
                 return new AuthorListFragment();
             case 2:
                 return new SongBookListFragment();
+            case 3:
+                return new ServiceListFragment();
         }
         return null;
     }

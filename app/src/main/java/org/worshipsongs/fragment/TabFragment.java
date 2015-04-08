@@ -25,7 +25,7 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
 
     private TabHost tabHost;
     // Tab titles
-    private String[] tabsTitles = {"Songs", "Authors", "Albums"};
+    private String[] tabsTitles = {"Songs", "Authors", "Albums","Play lists"};
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private DrawerLayout FragentLayout;

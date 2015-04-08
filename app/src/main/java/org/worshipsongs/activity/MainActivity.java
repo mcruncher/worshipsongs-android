@@ -86,17 +86,12 @@ public class MainActivity extends FragmentActivity
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
         // Songs
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navigationMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
-        // Authors
+        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navigationMenuIcons.getResourceId(0, -1)));
+        //navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[0], navigationMenuIcons.getResourceId(0, -1), true, Integer.toString(songList.size())));
+        // Settings
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[1], navigationMenuIcons.getResourceId(1, -1)));
-        // Song books
+        // About
         navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[2], navigationMenuIcons.getResourceId(2, -1)));
-        // Services
-        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[3], navigationMenuIcons.getResourceId(3, -1)));
-//        // Settings
-//        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[4], navigationMenuIcons.getResourceId(4, -1)));
-//        // About
-//        navDrawerItems.add(new NavDrawerItem(navigationMenuTitles[5], navigationMenuIcons.getResourceId(5, -1)));
         // Recycle the typed array
         navigationMenuIcons.recycle();
         drawerListView.setOnItemClickListener(new SlideMenuClickListener());
@@ -195,15 +190,11 @@ public class MainActivity extends FragmentActivity
                 //fragment = new SongsListFragment();
                 break;
             case 1:
-                frameLayout.removeAllViews();
-                fragment = new ServiceListFragment();
-                break;
-            case 2:
                 Intent intent = new Intent(this,
                         UserSettingActivity.class);
                 startActivity(intent);
                 break;
-            case 3:
+            case 2:
                 frameLayout.removeAllViews();
                 fragment = new AboutWebViewFragment();
                 break;

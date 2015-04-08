@@ -40,7 +40,6 @@ import java.util.Properties;
 public class ServiceListFragment extends Fragment
 {
     private LinearLayout linearLayout;
-    private FragmentActivity FragmentActivity;
     private ListView serviceListView;
     private File serviceFile = null;
     private ArrayAdapter<String> adapter;
@@ -51,10 +50,10 @@ public class ServiceListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        FragmentActivity = (FragmentActivity) super.getActivity();
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
+        service.clear();
         loadService();
         final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
