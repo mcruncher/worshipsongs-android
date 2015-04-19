@@ -9,11 +9,15 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -64,15 +68,19 @@ public class SplashScreenActivity extends Activity
     private void loadBundleDatabase()
     {
         try {
-            if (!songDao.isDatabaseExist()) {
+            File propertyFile = PropertyUtils.getPropertyFile(SplashScreenActivity.this, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+            String databaseCopy = PropertyUtils.getProperty("copyDatabase", propertyFile);
+            if (StringUtils.isNotBlank(databaseCopy) && databaseCopy.equalsIgnoreCase("copied")) {
+                Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database already copied.");
+            } else {
                 songDao.copyDatabase("", true);
                 songDao.open();
-            }else{
-                Log.i(this.getClass().getSimpleName(), "Database already exists");
+                PropertyUtils.setProperty("copyDatabase", "copied", propertyFile);
             }
         } catch (Exception e) {
         }
     }
+
     /**
      * <p>Returns the days between the two given dates including the start day.</p>
      * NOTE: The start date should be lesser than the end date.
@@ -88,14 +96,14 @@ public class SplashScreenActivity extends Activity
      * @return
      */
 
-    public long getDaysInBetween(Date startDate, Date endDate) {
+    public long getDaysInBetween(Date startDate, Date endDate)
+    {
         if (endDate.getTime() >= startDate.getTime()) {
             long dateDifferenceInMillSeconds = Math.abs(endDate.getTime() - startDate.getTime());
             return (dateDifferenceInMillSeconds / (24 * 60 * 60 * 1000)) + 1;
         }
         return -1;
     }
-
 
 
     @Override
