@@ -17,6 +17,16 @@
             android:title="@string/pref_change_font_style" />
     </PreferenceCategory>
 
+
+    <PreferenceCategory android:title="@string/pref_text_setting">
+        <org.worshipsongs.preference.FontDialogPreference
+            android:key="customFontSize"
+            android:defaultValue="SMALL"
+            android:summary="Font size for text"
+            android:title="Font size" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.picker.ColorPickerPreference
             android:key="secondaryColor"
