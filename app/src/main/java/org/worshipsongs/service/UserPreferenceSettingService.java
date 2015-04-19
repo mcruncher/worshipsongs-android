@@ -1,5 +1,6 @@
 package org.worshipsongs.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -29,16 +30,7 @@ public class UserPreferenceSettingService
 
     public float getFontSize()
     {
-        String sharedFontSize = sharedPreferences.getString("prefSetFont", "NULL");
-        if (sharedFontSize.equals("SMALL"))
-            fontSize = 10;
-        if (sharedFontSize.equals("MEDIUM"))
-            fontSize = 15;
-        if (sharedFontSize.equals("NORMAL"))
-            fontSize = 20;
-        if (sharedFontSize.equals("HIGH"))
-            fontSize = 30;
-        return fontSize;
+        return sharedPreferences.getInt("fontSize", 10);
     }
 
     public int getFontStyle()
