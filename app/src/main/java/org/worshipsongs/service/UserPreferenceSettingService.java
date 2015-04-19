@@ -1,11 +1,9 @@
 package org.worshipsongs.service;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import org.worshipsongs.WorshipSongApplication;
 
