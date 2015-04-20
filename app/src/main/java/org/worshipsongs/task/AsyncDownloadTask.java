@@ -61,9 +61,10 @@ public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     {
         File destinationFile = null;
         try {
-            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
+            // String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db/master/songs.sqlite";
+            String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite";
             String className = this.getClass().getSimpleName();
-            destinationFile =  File.createTempFile("download-songs", "sqlite", externalCacheDir);
+            destinationFile = File.createTempFile("download-songs", "sqlite", externalCacheDir);
             URL url = new URL(remoteUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(GET_REQUEST);
