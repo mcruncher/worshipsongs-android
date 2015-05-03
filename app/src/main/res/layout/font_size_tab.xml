@@ -5,60 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--  Screen Design for Food tab -->
-    <!--<TextView android:text="FOOD TAB DATA"-->
-              <!--android:padding="15dip"-->
-              <!--android:textSize="18dip"-->
-              <!--android:layout_width="fill_parent"-->
-              <!--android:layout_height="wrap_content"/>-->
-
-
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/list_divider"/>
-
     <SeekBar
         android:id="@+id/fontSizeSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="26dp"
-        android:max="100" >
-    </SeekBar>
-
-    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/list_divider"/>
-
-    <TextView
-        android:id="@+id/fontSizeTextView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="Font size: "
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
+
+        android:layout_marginTop="50dp"
+        android:max="30"
+        android:progress="8"
+        android:progressDrawable="@drawable/progressbar"
+        android:secondaryProgress="0" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/tvLabel1"
+            android:paddingLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0" />
+        <TextView
+            android:id="@+id/tvLabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="15" />
+        <TextView
+            android:id="@+id/tvLabel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="20dp"
+            android:text="30" />
+    </RelativeLayout>
+
+    <!--<TextView-->
+        <!--android:id="@+id/fontSizeTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:text="Font size: "-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge" >-->
+    <!--</TextView>-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
-        <Button
+        <!--<Button
             android:id="@+id/fontSizeCancelButton"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:text="Cancel" />
-
+-->
         <Button
             android:id="@+id/fontSizeOkButton"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:text="Done" />
 
     </LinearLayout>
 

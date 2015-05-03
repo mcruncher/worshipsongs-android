@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.worshipsongs.worship.R;
@@ -22,35 +25,53 @@ import java.util.List;
 public class FontStyleActivity extends Activity
 {
     private ArrayAdapter adapter;
-
+    private ListView listView;
+    private Spinner fontSpinner;
+    private Button doneButton;
+    final List<String> stringList = Arrays.asList("DEFAULT", "DEFAULT_BOLD", "MONOSPACE", "SANS_SERIF", "SERIF");
+    private SharedPreferences fontStylePreference;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.font_style_tab);
-            final ListView listView = (ListView) findViewById(R.id.fontStyle);
-            final TextView textView = (TextView) findViewById(R.id.fontStyleTextView);
-            SharedPreferences fontStylePreference = PreferenceManager.getDefaultSharedPreferences(FontStyleActivity.this);
-            textView.setText("Font face: " + fontStylePreference.getString("fontStyle", "DEFAULT"));
-
-            final List<String> stringList = Arrays.asList("DEFAULT", "DEFAULT_BOLD", "MONOSPACE", "SANS_SERIF", "SERIF");
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringList);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
+            fontSpinner = (Spinner)findViewById(R.id.fontStyleSpinner);
+            doneButton = (Button) findViewById(R.id.fontSizeOkButton);
+            fontStylePreference = PreferenceManager.getDefaultSharedPreferences(FontStyleActivity.this);
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringList);
+            fontSpinner.setAdapter(adapter);
+            String fontFace = fontStylePreference.getString("fontStyle", "DEFAULT");
+            fontSpinner.setSelection(stringList.indexOf(fontFace));
+            fontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    textView.setText("Font face: " + stringList.get(position));
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     SharedPreferences fontStylePreference = PreferenceManager.getDefaultSharedPreferences(FontStyleActivity.this);
                     SharedPreferences.Editor editor = fontStylePreference.edit();
-                    String[] split = textView.getText().toString().split(":");
-                    editor.putString("fontStyle", split[1]);
+                    editor.putString("fontStyle", stringList.get(i));
                     editor.commit();
                 }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
             });
+
         } catch (Exception e) {
         }
+
+        doneButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                String fontFace = fontStylePreference.getString("fontStyle", "DEFAULT");
+                Log.i("Font", "Font Face: " + fontFace
+                );
+                finish();
+            }
+        });
+
     }
 }
