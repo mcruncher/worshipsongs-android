@@ -167,17 +167,12 @@ public class SongsListFragment extends Fragment
                         verseContent.add(verses.getContent());
                         verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
                     }
-                    Log.d(this.getClass().getName(), "Verse Name :" + verseName);
-                    Log.d(this.getClass().getName(), "Verse Content :" + verseName);
-                    Log.d(this.getClass().getName(), "Verse Data map :" + verseDataMap);
                     List<String> verseListDataContent = new ArrayList<String>();
                     List<String> verseListData = new ArrayList<String>();
                     String verseOrder = selectedValue.getVerseOrder();
                     if (StringUtils.isNotBlank(verseOrder)) {
                         verseListData = getVerseByVerseOrder(verseOrder);
                     }
-                    Log.d(this.getClass().getName(), "Verse List data :" + verseListData);
-                    Log.d(this.getClass().getName(), "Verse List data sizze :" + verseListData.size());
                     Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
                     intent.putExtra("serviceName", selectedValue.getTitle());
                     if (verseListData.size() > 0) {
@@ -188,9 +183,6 @@ public class SongsListFragment extends Fragment
                         intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
                         Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
                     } else {
-                        Log.d(this.getClass().getName(), "Else Part :");
-                        Log.d(this.getClass().getName(), "Verse Name :" + verseName);
-                        Log.d(this.getClass().getName(), "Verse Content :" + verseName);
                         intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
                         intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                     }

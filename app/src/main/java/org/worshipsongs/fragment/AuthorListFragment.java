@@ -72,13 +72,14 @@ public class AuthorListFragment extends Fragment {
                 Log.d(this.getClass().getName(), "Author ID" + selectedAuthor.getId());
                 authorSongs = authorSongDao.findSongId(selectedAuthor.getId());
                 Log.d(this.getClass().getName(), "Author songs count" + authorSongs.size());
+                songs = new ArrayList<Song>();
                 for (AuthorSong authorSong : authorSongs) {
-                    songs = new ArrayList<Song>();
                     try {
                         if(authorSong.getSongId() > 0) {
-                            Log.d(this.getClass().getName(), "Song ID" + authorSong.getSongId());
+
                             Song songById = songDao.getSongById(authorSong.getSongId());
-                            if (songById != null) {
+                            if (!songById.getTitle().isEmpty()) {
+                                Log.d(this.getClass().getName(), "Song ID Title" + songById.getTitle());
                                 songs.add(songById);
                             }
                         }
