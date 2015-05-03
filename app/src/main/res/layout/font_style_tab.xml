@@ -12,7 +12,10 @@
 
     <Spinner
         android:id="@+id/fontStyleSpinner"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="35dp"
+        android:textSize="24pt"
         android:layout_height="wrap_content" />
 
         <Button
@@ -20,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Done"
+            android:layout_marginTop="30dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />

@@ -56,13 +56,13 @@ public class FontTabBarActivity extends TabActivity implements TabHost.OnTabChan
 //        tabHost.addTab(spec);
 
         // Set drawable images to tab
-        tabHost.getTabWidget().getChildAt(1).findViewById(android.R.id.text2);
+        tabHost.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab2);
         //  tabHost.getTabWidget().getChildAt(2).setBackgroundResource(R.drawable.tab3);
 
         // Set Tab1 as Default tab and change image
         tabHost.getTabWidget().setCurrentTab(0);
-        tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.text2);
-        tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.text1);
+        tabHost.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab2);
+        tabHost.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab1);
 
 
     }
@@ -77,9 +77,9 @@ public class FontTabBarActivity extends TabActivity implements TabHost.OnTabChan
 
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             if (i == 0)
-                tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.text1);
+                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab1);
             else if (i == 1)
-                tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.text2);
+                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab2);
 //            else if(i==2)
 //                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab3);
         }

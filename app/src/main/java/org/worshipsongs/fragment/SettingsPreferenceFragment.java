@@ -40,8 +40,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         colorPickerSettings("secondaryColor");
 
         //Initialize list preference
-        fontPreferenceSettings("prefSetFont");
-        fontPreferenceSettings("prefSetFontStyle");
+//        fontPreferenceSettings("prefSetFont");
+//        fontPreferenceSettings("prefSetFontStyle");
         //customFontSizepreferenceSetting("customFontSize");
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
@@ -80,20 +80,20 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         });
     }
 
-    public void fontPreferenceSettings(String prefSetFont)
-    {
-        ListPreference preferenceFont = (ListPreference) findPreference(prefSetFont);
-        setListPreferenceSettingValue(prefSetFont);
-        preferenceFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
-                preference.setSummary(newValue.toString());
-                return true;
-            }
-        });
-    }
+//    public void fontPreferenceSettings(String prefSetFont)
+//    {
+//        ListPreference preferenceFont = (ListPreference) findPreference(prefSetFont);
+//        setListPreferenceSettingValue(prefSetFont);
+//        preferenceFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+//        {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue)
+//            {
+//                preference.setSummary(newValue.toString());
+//                return true;
+//            }
+//        });
+//    }
 
     public void colorPickerSettings(String colorPickerKey)
     {
@@ -121,14 +121,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment
     }
 
 
-    public void setListPreferenceSettingValue(String preferenceSettingKey)
-    {
-        ListPreference preferenceFont = (ListPreference) findPreference(preferenceSettingKey);
-        if (preferenceFont.getValue() == null) {
-            // to ensure we don't get a null value
-            // set first value by default
-            preferenceFont.setValueIndex(0);
-        }
-        preferenceFont.setSummary(preferenceFont.getValue().toString());
-    }
+//    public void setListPreferenceSettingValue(String preferenceSettingKey)
+//    {
+//        ListPreference preferenceFont = (ListPreference) findPreference(preferenceSettingKey);
+//        if (preferenceFont.getValue() == null) {
+//            // to ensure we don't get a null value
+//            // set first value by default
+//            preferenceFont.setValueIndex(0);
+//        }
+//        preferenceFont.setSummary(preferenceFont.getValue().toString());
+//    }
 }
