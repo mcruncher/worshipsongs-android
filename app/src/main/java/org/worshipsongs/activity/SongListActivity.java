@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -25,6 +27,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +71,9 @@ public class SongListActivity extends Activity {
     ArrayAdapter<String> dataAdapter;
     AlertDialog alertDialog;
     ServiceListAdapter serviceListAdapter;
+    public String popUpContents[];
+    public PopupWindow popupWindow;
+    private String selectedSong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,6 +92,109 @@ public class SongListActivity extends Activity {
         verseparser = new VerseParser();
         listAdapter = new ListAdapter(context);
         songListView.setAdapter(listAdapter);
+
+        List<String> popUpList = new ArrayList<String>();
+        popUpList.add("Add to service");
+        popUpContents = new String[popUpList.size()];
+        popUpList.toArray(popUpContents);
+        popupWindow = popupWindow();
+    }
+
+    public PopupWindow popupWindow() {
+        PopupWindow popupWindow1 = new PopupWindow(this);
+        ListView listView = new ListView(this);
+        listView.setAdapter(popUpAdapter(popUpContents));
+        listView.setOnItemClickListener(new DropdownOnItemClickListener());
+        popupWindow1.setFocusable(true);
+        popupWindow1.setWidth(150);
+        popupWindow1.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow1.setContentView(listView);
+        return popupWindow1;
+    }
+
+    private ArrayAdapter<String> popUpAdapter(String popUpArray[]) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, popUpArray) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                String text = getItem(position);
+                TextView listItem = new TextView(SongListActivity.this);
+                listItem.setText(text);
+                listItem.setTag(position);
+                listItem.setTextSize(18);
+                listItem.setPadding(10, 10, 10, 10);
+                listItem.setTextColor(Color.WHITE);
+                return listItem;
+            }
+        };
+        return adapter;
+    }
+
+    class DropdownOnItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+            popupWindow.dismiss();
+            LayoutInflater li = LayoutInflater.from(context);
+            View promptsView = li.inflate(R.layout.service_name_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setView(promptsView);
+            final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
+            final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
+            title.setText("Add to service");
+            title.setTypeface(Typeface.DEFAULT_BOLD);
+            serviceList.clear();
+            serviceList.add("New service...");
+            serviceList = readServiceName();
+            dataAdapter = new ArrayAdapter<String>(context, R.layout.service_alertdialog_content, serviceList);
+            serviceListAdapter = new ServiceListAdapter(context);
+            serviceListView.setAdapter(serviceListAdapter);
+            serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                    String service = dataAdapter.getItem(position);
+                    System.out.println("Selected Song for Service:" + service);
+                    if (position == 0) {
+                        LayoutInflater li = LayoutInflater.from(context);
+                        View promptsView = li.inflate(R.layout.add_service_dialog, null);
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                        alertDialogBuilder.setView(promptsView);
+                        final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
+                        textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
+                        final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
+                        alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String service_name;
+                                if (serviceName.getText().toString().equals(""))
+                                    Toast.makeText(context, "Enter Service Name...!", Toast.LENGTH_LONG).show();
+                                else {
+                                    service_name = serviceName.getText().toString();
+                                    saveIntoFile(service_name, selectedSong.toString());
+                                    Toast.makeText(context, "Song added to service...!", Toast.LENGTH_LONG).show();
+                                    alertDialog.dismiss();
+                                }
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    } else {
+                        saveIntoFile(service, selectedSong.toString());
+                        Toast.makeText(context, "Song added to service...!", Toast.LENGTH_LONG).show();
+                        alertDialog.dismiss();
+                    }
+                }
+            });
+
+            alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     private class ListAdapter extends BaseAdapter implements Filterable
@@ -142,82 +251,12 @@ public class SongListActivity extends Activity {
                 }
             });
 
-            (convertView.findViewById(R.id.serviceIcon)).setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View arg0)
-                {
+            (convertView.findViewById(R.id.serviceIcon)).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View arg0) {
                     final Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(15);
-                    final String selectedSong = songName.get(temp).toString();
-                    LayoutInflater li = LayoutInflater.from(context);
-                    View promptsView = li.inflate(R.layout.service_name_dialog, null);
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                    alertDialogBuilder.setView(promptsView);
-                    final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
-                    final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
-                    title.setText("Add to service");
-                    title.setTypeface(Typeface.DEFAULT_BOLD);
-                    serviceList.clear();
-                    serviceList.add("New service...");
-                    serviceList = readServiceName();
-                    dataAdapter = new ArrayAdapter<String>(context, R.layout.service_alertdialog_content, serviceList);
-                    serviceListAdapter = new ServiceListAdapter(context);
-                    serviceListView.setAdapter(serviceListAdapter);
-                    serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                    {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
-                        {
-                            String service = dataAdapter.getItem(position);
-                            System.out.println("Selected Song for Service:" + service);
-                            if (position == 0) {
-                                LayoutInflater li = LayoutInflater.from(context);
-                                View promptsView = li.inflate(R.layout.add_service_dialog, null);
-                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                                alertDialogBuilder.setView(promptsView);
-                                final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
-                                textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
-                                final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
-                                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
-                                {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
-                                        String service_name;
-                                        if (serviceName.getText().toString().equals(""))
-                                            Toast.makeText(context, "Enter Service Name...!", Toast.LENGTH_LONG).show();
-                                        else {
-                                            service_name = serviceName.getText().toString();
-                                            saveIntoFile(service_name, selectedSong.toString());
-                                            Toast.makeText(context, "Song added to service...!", Toast.LENGTH_LONG).show();
-                                            alertDialog.dismiss();
-                                        }
-                                    }
-                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                                {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
-                                        dialog.cancel();
-                                    }
-                                });
-                                AlertDialog alertDialog = alertDialogBuilder.create();
-                                alertDialog.show();
-                            } else {
-                                saveIntoFile(service, selectedSong.toString());
-                                Toast.makeText(context, "Song added to service...!", Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
-                            }
-                        }
-                    });
-
-                    alertDialogBuilder.setCancelable(false).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                            dialog.cancel();
-                        }
-                    });
-                    alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    selectedSong = songName.get(temp).toString();
+                    popupWindow.showAsDropDown(arg0, -5, 0);
                 }
             });
             return convertView;
