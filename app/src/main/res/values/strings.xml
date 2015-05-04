@@ -84,5 +84,7 @@
     <string name="updateNotAvailableTitle">Update is not available.</string>
     <string name="noInternetConnectionWarningMessage">Atleast you need mobile data or wifi to check database updates</string>
     <string name="spinner_prompt">spinner</string>
+    <string name="fontStyle">Style</string>
+    <string name="fontSize">Size</string>
 
 </resources>

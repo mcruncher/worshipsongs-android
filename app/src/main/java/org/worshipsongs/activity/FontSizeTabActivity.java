@@ -18,8 +18,7 @@ import org.worshipsongs.worship.R;
 public class FontSizeTabActivity extends Activity
 {
     private Button okButton;
-    int fontSizeValue;
-
+    private int fontSizeValue;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,11 +26,9 @@ public class FontSizeTabActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.font_size_tab);
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
-  //      fontSizeTextView = (TextView) findViewById(R.id.fontSizeTextView);
         okButton = (Button) findViewById(R.id.fontSizeOkButton);
-        //cancelButton = (Button) findViewById(R.id.fontSizeCancelButton);
         SeekBar fontSizeSeekBar = (SeekBar) findViewById(R.id.fontSizeSeekBar);
-        final int fontSize = customSharedPreference.getInt("fontSize", 10);
+        final int fontSize = customSharedPreference.getInt("fontSize", 14);
         fontSizeSeekBar.setProgress(fontSize);
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {

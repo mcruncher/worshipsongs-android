@@ -24,20 +24,16 @@ public class FontTabBarActivity extends TabActivity implements TabHost.OnTabChan
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.font_tab_bar);
-
         // Get TabHost Refference
         tabHost = getTabHost();
-
         // Set TabChangeListener called when tab changed
         tabHost.setOnTabChangedListener(this);
-
         TabHost.TabSpec spec;
         Intent intent;
-
         /************* TAB1 ************/
         // Create  Intents to launch an Activity for the tab (to be reused)
         intent = new Intent().setClass(this, FontSizeTabActivity.class);
-        spec = tabHost.newTabSpec("First").setIndicator("")
+        spec = tabHost.newTabSpec("Size").setIndicator(getString(R.string.fontSize))
                 .setContent(intent);
 
         //Add intent to tab
@@ -45,54 +41,29 @@ public class FontTabBarActivity extends TabActivity implements TabHost.OnTabChan
 
         /************* TAB2 ************/
         intent = new Intent().setClass(this, FontStyleActivity.class);
-        spec = tabHost.newTabSpec("Second").setIndicator("")
+        spec = tabHost.newTabSpec("Style").setIndicator(getString(R.string.fontStyle))
                 .setContent(intent);
         tabHost.addTab(spec);
-
-        /************* TAB3 ************/
-//        intent = new Intent().setClass(this, Tab3.class);
-//        spec = tabHost.newTabSpec("Third").setIndicator("")
-//                .setContent(intent);
-//        tabHost.addTab(spec);
-
-        // Set drawable images to tab
-        tabHost.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab2);
-        //  tabHost.getTabWidget().getChildAt(2).setBackgroundResource(R.drawable.tab3);
-
-        // Set Tab1 as Default tab and change image
+        tabHost.getTabWidget().getChildAt(1);
         tabHost.getTabWidget().setCurrentTab(0);
-        tabHost.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab2);
-        tabHost.getTabWidget().getChildAt(0).setBackgroundResource(R.drawable.tab1);
-
-
+        tabHost.getTabWidget().getChildAt(0);
+        tabHost.getTabWidget().getChildAt(0);
     }
 
     @Override
     public void onTabChanged(String tabId)
     {
-
         /************ Called when tab changed *************/
-
         //********* Check current selected tab and change according images *******/
-
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             if (i == 0)
-                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab1);
+                tabHost.getTabWidget().getChildAt(i);
             else if (i == 1)
-                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab2);
-//            else if(i==2)
-//                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab3);
+                tabHost.getTabWidget().getChildAt(i);
         }
-
-
-        Log.i("tabs", "CurrentTab: " + tabHost.getCurrentTab());
-
         if (tabHost.getCurrentTab() == 0)
-            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab1_over);
+            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
         else if (tabHost.getCurrentTab() == 1)
-            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab2_over);
-//        else if(tabHost.getCurrentTab()==2)
-//            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab3_over);
-
+            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab());
     }
 }
