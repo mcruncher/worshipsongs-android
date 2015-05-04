@@ -261,7 +261,7 @@ public class SongListActivity extends Activity {
             });
             return convertView;
         }
-
+        
         public int getCount()
         {
             return songName.size();

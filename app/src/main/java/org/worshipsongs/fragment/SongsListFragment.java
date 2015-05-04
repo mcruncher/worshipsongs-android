@@ -365,14 +365,14 @@ public class SongsListFragment extends Fragment
                     results.values = songs;
                     results.count = songs.size();
                 } else {
-                    ArrayList<Song> filteredContacts = new ArrayList<Song>();
+                    ArrayList<Song> filteredSongs = new ArrayList<Song>();
                     for (Song s : songs) {
                         if (s.getTitle().toUpperCase().contains(constraint.toString().toUpperCase())) {
-                            filteredContacts.add(s);
+                            filteredSongs.add(s);
                         }
                     }
-                    results.values = filteredContacts;
-                    results.count = filteredContacts.size();
+                    results.values = filteredSongs;
+                    results.count = filteredSongs.size();
                 }
                 return results;
             }

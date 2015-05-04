@@ -118,9 +118,9 @@ public class ServiceListFragment extends Fragment
     {
         readServiceName();
         if (service.size() <= 0)
-            serviceMsg.setText("You haven't created any service yet!\n" +
-                    "Services are a great way to organize selected songs for events.\n" +
-                    "To add a song to the service, go to the Songs screen and long press a song.");
+            serviceMsg.setText("You haven't created any Playlist yet!\n"+
+        "Playlists are a great way to organize selected songs for events.\n"+
+            "To add a song to a Playlist, tap the : icon near a song and select the "+"Add to Playlist"+" action.");
         else
             serviceMsg.setVisibility(View.GONE);
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
