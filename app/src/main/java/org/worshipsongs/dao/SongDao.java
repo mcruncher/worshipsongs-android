@@ -95,7 +95,7 @@ public class SongDao extends AbstractDao
         List<Song> songs = new ArrayList<Song>();
         try{
             Log.d(this.getClass().getName(), "Song ID" + songBookId);
-            String whereClause = " id="+songBookId+";";
+            String whereClause = " song_book_id="+songBookId+";";
             Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
                     new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
             cursor.moveToFirst();
