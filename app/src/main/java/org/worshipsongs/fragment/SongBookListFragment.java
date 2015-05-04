@@ -67,12 +67,12 @@ public class SongBookListFragment extends Fragment {
         authorSongDao = new AuthorSongDao(getActivity());
         songDao = new SongDao(getActivity());
         verseparser = new VerseParser();
-        songs = new ArrayList<Song>();
-        songName = new ArrayList<String>();
         initSetUp();
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                songs = new ArrayList<Song>();
+                songName = new ArrayList<String>();
                 SongBook selectedBook = adapter.getItem(position);
                 songs = songDao.getSongTitlesByBookId(selectedBook.getId());
                 for(Song song:songs){
