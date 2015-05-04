@@ -76,24 +76,28 @@ public class SplashScreenActivity extends Activity
     {
         try {
             SplashScreenActivity context = SplashScreenActivity.this;
-            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            Log.i(SplashScreenActivity.class.getSimpleName(), "Version name." + versionName);
-            if (versionName.contains("SNAPSHOT") && isWifi()) {
-                if(asyncGitHubRepositoryTask.execute().get()) {
+            String projectVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            Log.i(SplashScreenActivity.class.getSimpleName(), "Project version." + projectVersion);
+            if (projectVersion.contains("SNAPSHOT") && isWifi()) {
+                if (asyncGitHubRepositoryTask.execute().get()) {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy remote database.");
                     AsyncDownloadTask asyncDownloadTask = new AsyncDownloadTask(context);
-                    asyncDownloadTask.execute();
+                    if (asyncDownloadTask.execute().get()) {
+                        Log.i(SplashScreenActivity.class.getSimpleName(), "Remote development database copied successfully.");
+                    }
                 }
             } else {
-                File propertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-                String databaseCopy = PropertyUtils.getProperty("copyDatabase", propertyFile);
-                if (StringUtils.isNotBlank(databaseCopy) && databaseCopy.equalsIgnoreCase("copied")) {
+                File commonPropertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+                String existingVersion = PropertyUtils.getProperty(CommonConstants.VERSION_KEY, commonPropertyFile);
+                Log.i(SplashScreenActivity.class.getSimpleName(), "Project version in property file" + existingVersion);
+                if (StringUtils.isNotBlank(existingVersion) && existingVersion.equalsIgnoreCase(projectVersion)) {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database already copied.");
                 } else {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
                     songDao.copyDatabase("", true);
                     songDao.open();
-                    PropertyUtils.setProperty("copyDatabase", "copied", propertyFile);
+                    PropertyUtils.setProperty(CommonConstants.VERSION_KEY, projectVersion, commonPropertyFile);
+                    Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
                 }
             }
         } catch (Exception e) {

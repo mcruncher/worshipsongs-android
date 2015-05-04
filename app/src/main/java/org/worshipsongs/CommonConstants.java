@@ -16,6 +16,8 @@ public final class CommonConstants {
     public static final String START_TAG_PATTERN = "\\{[\\w,\\W,\\d,\\D]\\}";
     public static final String END_TAG_PATTERN  = "\\{\\[\\w,\\W,\\d,\\D]\\}";
 
+    public static final String VERSION_KEY = "version";
+
     public static File getTagFile(File tagFile) {
         try{
             if(!tagFile.exists()){

@@ -68,7 +68,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
             URL url = new URL(remoteUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(GET_REQUEST);
-            urlConnection.setConnectTimeout(1000);
+            urlConnection.setConnectTimeout(60000);
             urlConnection.setReadTimeout(60000);
             urlConnection.setDoOutput(true);
             urlConnection.connect();
