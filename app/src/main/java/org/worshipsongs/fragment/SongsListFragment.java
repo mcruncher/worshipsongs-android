@@ -145,7 +145,7 @@ public class SongsListFragment extends Fragment
         songListView.setAdapter(listAdapter);
 
         List<String> popUpList = new ArrayList<String>();
-        popUpList.add("Add to service");
+        popUpList.add("Add to playlist");
         popUpContents = new String[popUpList.size()];
         popUpList.toArray(popUpContents);
         popupWindow = popupWindow();
@@ -190,10 +190,10 @@ public class SongsListFragment extends Fragment
             alertDialogBuilder.setView(promptsView);
             final TextView title = (TextView) promptsView.findViewById(R.id.songTitle);
             final ListView serviceListView = (ListView) promptsView.findViewById(R.id.service_list);
-            title.setText("Add to service");
+            title.setText("Add to playlist");
             title.setTypeface(Typeface.DEFAULT_BOLD);
             serviceList.clear();
-            serviceList.add("New service...");
+            serviceList.add("New playlist...");
             serviceList = readServiceName();
             dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.service_alertdialog_content, serviceList);
             serviceListAdapter = new ServiceListAdapter(getActivity());
@@ -220,11 +220,11 @@ public class SongsListFragment extends Fragment
                             {
                                 String service_name;
                                 if (serviceName.getText().toString().equals(""))
-                                    Toast.makeText(getActivity(), "Enter Service Name...!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Enter playlist name...!", Toast.LENGTH_LONG).show();
                                 else {
                                     service_name = serviceName.getText().toString();
                                     saveIntoFile(service_name, selectedSong.toString());
-                                    Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
                                     alertDialog.dismiss();
                                 }
                             }
@@ -239,7 +239,7 @@ public class SongsListFragment extends Fragment
                         alertDialog.show();
                     } else {
                         saveIntoFile(service, selectedSong.toString());
-                        Toast.makeText(getActivity(), "Song added to service...!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
                         alertDialog.dismiss();
                     }
                 }
