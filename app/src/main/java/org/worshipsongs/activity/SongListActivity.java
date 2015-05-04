@@ -106,7 +106,7 @@ public class SongListActivity extends Activity {
         listView.setAdapter(popUpAdapter(popUpContents));
         listView.setOnItemClickListener(new DropdownOnItemClickListener());
         popupWindow1.setFocusable(true);
-        popupWindow1.setWidth(150);
+        popupWindow1.setWidth(250);
         popupWindow1.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
         popupWindow1.setContentView(listView);
         return popupWindow1;
@@ -261,7 +261,7 @@ public class SongListActivity extends Activity {
             });
             return convertView;
         }
-        
+
         public int getCount()
         {
             return songName.size();
