@@ -21,6 +21,7 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,6 +71,7 @@ public class AuthorListAdapterService {
                         for (Song song : songs) {
                             songNames.add(song.getTitle());
                         }
+                        Collections.sort(songNames);
                         Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songNames));
