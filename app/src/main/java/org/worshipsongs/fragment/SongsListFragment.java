@@ -277,8 +277,8 @@ public class SongsListFragment extends Fragment
             {
                 public void onClick(View arg0)
                 {
-                    Song selectedValue = adapter.getItem(temp);
-                    String lyrics = selectedValue.getLyrics();
+                    selectedSong = adapter.getItem(temp);
+                    String lyrics = selectedSong.getLyrics();
                     verseList = getVerse(lyrics);
                     List<String> verseName = new ArrayList<String>();
                     List<String> verseContent = new ArrayList<String>();
@@ -293,14 +293,14 @@ public class SongsListFragment extends Fragment
                     Log.d(this.getClass().getName(), "Verse Data map :" + verseDataMap);
                     List<String> verseListDataContent = new ArrayList<String>();
                     List<String> verseListData = new ArrayList<String>();
-                    String verseOrder = selectedValue.getVerseOrder();
+                    String verseOrder = selectedSong.getVerseOrder();
                     if (StringUtils.isNotBlank(verseOrder)) {
                         verseListData = getVerseByVerseOrder(verseOrder);
                     }
                     Log.d(this.getClass().getName(), "Verse List data :" + verseListData);
                     Log.d(this.getClass().getName(), "Verse List data sizze :" + verseListData.size());
                     Intent intent = new Intent(getActivity().getApplication(), SongsColumnViewActivity.class);
-                    intent.putExtra("serviceName", selectedValue.getTitle());
+                    intent.putExtra("serviceName", selectedSong.getTitle());
                     if (verseListData.size() > 0) {
                         intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
                         for (int i = 0; i < verseListData.size(); i++) {
