@@ -24,11 +24,11 @@ import org.worshipsongs.service.UserPreferenceSettingService;
  */
 public class CustomListViewAdapter extends BaseAdapter
 {
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_SEPARATOR = 1;
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
     private Context context = WorshipSongApplication.getContext();
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_SEPARATOR = 1;
     private ArrayList<String> mData = new ArrayList<String>();
     private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
     private LayoutInflater layoutInflater;
@@ -120,7 +120,7 @@ public class CustomListViewAdapter extends BaseAdapter
         String text = textView.getText().toString();
         textView.setText("");
         customTagColorService.setCustomTagTextView(context, text, textView);
-        textView.setTypeface(Typeface.DEFAULT, preferenceSettingService.getFontStyle());
+        textView.setTypeface(preferenceSettingService.getFontStyle());
         textView.setTextSize(preferenceSettingService.getFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);

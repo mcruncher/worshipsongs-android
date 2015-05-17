@@ -14,20 +14,17 @@ import java.util.List;
  * @Author : Madasamy
  * @Version : 1.0
  */
-public class SongDao extends AbstractDao
-{
+public class SongDao extends AbstractDao {
     public static final String TABLE_NAME_AUTHOR = "songs";
     public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
             "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
 
-    public SongDao(Context context)
-    {
+    public SongDao(Context context) {
         super(context);
     }
 
-    public List<Song> findByTag(String tag)
-    {
+    public List<Song> findByTag(String tag) {
         List<Song> songList = new ArrayList<Song>();
         if (StringUtils.isNotBlank(tag)) {
             for (Song song : findTitles()) {
@@ -42,8 +39,7 @@ public class SongDao extends AbstractDao
         return songList;
     }
 
-    public List<Song> findTitles()
-    {
+    public List<Song> findTitles() {
         List<Song> songs = new ArrayList<Song>();
         Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
                 new String[]{"title", "lyrics", "verse_order"}, null, null, null, null, "title");
@@ -57,47 +53,41 @@ public class SongDao extends AbstractDao
         return songs;
     }
 
-    public Song getSongByTitle(String title)
-    {
+    public Song getSongByTitle(String title) {
         Song song = new Song();
-        String whereClause = " title" + "=\""+title+"\"";
+        String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
-                new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
+                new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
         cursor.moveToFirst();
         song = cursorToSong(cursor);
         cursor.close();
         return song;
     }
 
-    public Song getSongById(int songId)
-    {
+    public Song getSongById(int songId) {
         Song song = new Song();
-        try{
+        try {
             Log.d(this.getClass().getName(), "Song ID" + songId);
-            String whereClause = " id="+songId+";";
+            String whereClause = " id=" + songId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
-                    new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             song = cursorToSong(cursor);
             Log.d(this.getClass().getName(), "Song:" + song);
             cursor.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
-        }
-        finally {
+        } finally {
             return song;
         }
     }
 
-    public List<Song> getSongTitlesByBookId(int songBookId)
-    {
+    public List<Song> getSongTitlesByBookId(int songBookId) {
         List<Song> songs = new ArrayList<Song>();
-        try{
-            Log.d(this.getClass().getName(), "Song ID" + songBookId);
-            String whereClause = " song_book_id="+songBookId+";";
+        try {
+            String whereClause = " song_book_id=" + songBookId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
-                    new String[]{"title", "lyrics", "verse_order"},whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Song song = cursorToSong(cursor);
@@ -105,17 +95,14 @@ public class SongDao extends AbstractDao
                 cursor.moveToNext();
             }
             cursor.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
-        }
-        finally {
+        } finally {
             return songs;
         }
     }
 
-    private Song cursorToSong(Cursor cursor)
-    {
+    private Song cursorToSong(Cursor cursor) {
         Song song = new Song();
         song.setTitle(cursor.getString(0));
         song.setLyrics(cursor.getString(1));

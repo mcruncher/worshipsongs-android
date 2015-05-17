@@ -3,11 +3,10 @@ package org.worshipsongs.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
-import org.worshipsongs.fragment.AuthorListFragment;
+import org.worshipsongs.fragment.NewAuthorListFragment;
+import org.worshipsongs.fragment.NewSongBookListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
-import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
@@ -24,13 +23,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int index) {
-        switch(index) {
+        switch (index) {
             case 0:
                 return new SongsListFragment();
             case 1:
-                return new AuthorListFragment();
+                return new NewAuthorListFragment();
             case 2:
-                return new SongBookListFragment();
+                return new NewSongBookListFragment();
             case 3:
                 return new ServiceListFragment();
         }

@@ -58,6 +58,13 @@ import java.util.Properties;
  * Created by Seenivasan on 3/24/2015.
  */
 public class SongListActivity extends Activity {
+    public String popUpContents[];
+    public PopupWindow popupWindow;
+    List<String> songName;
+    ListAdapter listAdapter;
+    ArrayAdapter<String> dataAdapter;
+    AlertDialog alertDialog;
+    ServiceListAdapter serviceListAdapter;
     private ListView songListView;
     private VerseParser verseparser;
     private SongDao songDao;
@@ -65,19 +72,11 @@ public class SongListActivity extends Activity {
     private Song song;
     private Context context = this;
     private File serviceFile = null;
-    List<String> songName;
-    ListAdapter listAdapter;
     private List<String> serviceList = new ArrayList<String>();
-    ArrayAdapter<String> dataAdapter;
-    AlertDialog alertDialog;
-    ServiceListAdapter serviceListAdapter;
-    public String popUpContents[];
-    public PopupWindow popupWindow;
     private String selectedSong;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
@@ -129,6 +128,106 @@ public class SongListActivity extends Activity {
         return adapter;
     }
 
+    private List<Verse> getVerse(String lyrics) {
+        return verseparser.parseVerseDom(this, lyrics);
+    }
+
+    private List<String> getVerseByVerseOrder(String verseOrder) {
+        String split[] = verseOrder.split("\\s+");
+        List<String> verses = new ArrayList<String>();
+        for (int i = 0; i < split.length; i++) {
+            verses.add(split[i].toLowerCase());
+        }
+        Log.d("Verses list: ", verses.toString());
+        return verses;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.default_action_bar_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                listAdapter.getFilter().filter(newText);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                listAdapter.getFilter().filter(query);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public List readServiceName() {
+        Properties property = new Properties();
+        InputStream inputStream = null;
+        int i = 0;
+        try {
+            serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+            inputStream = new FileInputStream(serviceFile);
+            property.load(inputStream);
+
+            Enumeration<?> e = property.propertyNames();
+            while (e.hasMoreElements()) {
+                String key = (String) e.nextElement();
+                //String value = prop.getProperty(key);
+                serviceList.add(key);
+            }
+            inputStream.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return serviceList;
+    }
+
+    private void saveIntoFile(String serviceName, String song) {
+        try {
+            serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+            if (!serviceFile.exists()) {
+                FileUtils.touch(serviceFile);
+            }
+            String existingProperty = PropertyUtils.getProperty(serviceName, serviceFile);
+            String propertyValue = "";
+            if (StringUtils.isNotBlank(existingProperty)) {
+                if (existingProperty.contains(song)) {
+                    propertyValue = existingProperty;
+                } else {
+                    propertyValue = existingProperty + ";" + song;
+                }
+            } else {
+                propertyValue = song;
+            }
+            PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
+        } catch (Exception e) {
+            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
+
     class DropdownOnItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
@@ -157,8 +256,6 @@ public class SongListActivity extends Activity {
                         View promptsView = li.inflate(R.layout.add_service_dialog, null);
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                         alertDialogBuilder.setView(promptsView);
-                        final TextView textViewServiceName = (TextView) promptsView.findViewById(R.id.textViewServiceName);
-                        textViewServiceName.setTypeface(Typeface.DEFAULT_BOLD);
                         final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
                         alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -197,32 +294,28 @@ public class SongListActivity extends Activity {
         }
     }
 
-    private class ListAdapter extends BaseAdapter implements Filterable
-    {
+    private class ListAdapter extends BaseAdapter implements Filterable {
         SongsFilter songsFilter;
         LayoutInflater inflater;
-        public ListAdapter(Context context)
-        {
+
+        public ListAdapter(Context context) {
             inflater = LayoutInflater.from(context);
         }
 
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             convertView = inflater.inflate(R.layout.songs_listview_content, null);
-            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView title = (TextView) convertView.findViewById(R.id.songsTextView);
             title.setText(songName.get(position).toString().trim());
             final int temp = position;
-            (convertView.findViewById(R.id.title)).setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View arg0)
-                {
+            (convertView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View arg0) {
                     String selectedValue = songName.get(temp).toString();
                     song = songDao.getSongByTitle(selectedValue);
                     String lyrics = song.getLyrics();
                     verseList = getVerse(lyrics);
                     List<String> verseName = new ArrayList<String>();
                     List<String> verseContent = new ArrayList<String>();
-                    Map<String,String> verseDataMap = new HashMap<String, String>();
+                    Map<String, String> verseDataMap = new HashMap<String, String>();
                     for (Verse verses : verseList) {
                         verseName.add(verses.getType() + verses.getLabel());
                         verseContent.add(verses.getContent());
@@ -231,19 +324,18 @@ public class SongListActivity extends Activity {
                     List<String> verseListDataContent = new ArrayList<String>();
                     List<String> verseListData = new ArrayList<String>();
                     String verseOrder = song.getVerseOrder();
-                    if(StringUtils.isNotBlank(verseOrder))
+                    if (StringUtils.isNotBlank(verseOrder))
                         verseListData = getVerseByVerseOrder(verseOrder);
                     Intent intent = new Intent(SongListActivity.this, SongsColumnViewActivity.class);
                     intent.putExtra("serviceName", selectedValue);
-                    if(verseListData.size() > 0){
+                    if (verseListData.size() > 0) {
                         intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-                        for(int i=0; i<verseListData.size();i++){
+                        for (int i = 0; i < verseListData.size(); i++) {
                             verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
                         }
                         intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
                         Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
-                    }
-                    else{
+                    } else {
                         intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
                         intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                     }
@@ -262,34 +354,28 @@ public class SongListActivity extends Activity {
             return convertView;
         }
 
-        public int getCount()
-        {
+        public int getCount() {
             return songName.size();
         }
 
-        public Object getItem(int position)
-        {
+        public Object getItem(int position) {
             return position;
         }
 
-        public long getItemId(int position)
-        {
+        public long getItemId(int position) {
             return position;
         }
 
         @Override
-        public Filter getFilter()
-        {
+        public Filter getFilter() {
             if (songsFilter == null)
                 songsFilter = new SongsFilter();
             return songsFilter;
         }
 
-        private class SongsFilter extends Filter
-        {
+        private class SongsFilter extends Filter {
             @Override
-            protected FilterResults performFiltering(CharSequence constraint)
-            {
+            protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 if (constraint == null || constraint.length() == 0) {
                     results.values = songName;
@@ -308,120 +394,28 @@ public class SongListActivity extends Activity {
             }
 
             @Override
-            protected void publishResults(CharSequence constraint, FilterResults results)
-            {
+            protected void publishResults(CharSequence constraint, FilterResults results) {
                 songName = (ArrayList<String>) results.values;
                 notifyDataSetChanged();
             }
         }
     }
 
-    private List<Verse> getVerse(String lyrics) {
-        return verseparser.parseVerseDom(this, lyrics);
-    }
-
-    private List<String> getVerseByVerseOrder(String verseOrder) {
-        String split[] = verseOrder.split("\\s+");
-        List<String> verses = new ArrayList<String>();
-        for (int i = 0; i < split.length; i++) {
-            verses.add(split[i].toLowerCase());
-        }
-        Log.d("Verses list: ", verses.toString());
-        return verses;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                listAdapter.getFilter().filter(newText);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                listAdapter.getFilter().filter(query);
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public List readServiceName()
-    {
-        Properties property = new Properties();
-        InputStream inputStream = null;
-        int i = 0;
-        try {
-            serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-            inputStream = new FileInputStream(serviceFile);
-            property.load(inputStream);
-
-            Enumeration<?> e = property.propertyNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                //String value = prop.getProperty(key);
-                serviceList.add(key);
-            }
-            inputStream.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return serviceList;
-    }
-
-    private void saveIntoFile(String serviceName, String song)
-    {
-        try {
-            serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-            if (!serviceFile.exists()) {
-                FileUtils.touch(serviceFile);
-            }
-            String existingProperty = PropertyUtils.getProperty(serviceName, serviceFile);
-            String propertyValue = "";
-            if (StringUtils.isNotBlank(existingProperty)) {
-                if (existingProperty.contains(song)) {
-                    propertyValue = existingProperty;
-                } else {
-                    propertyValue = existingProperty + ";" + song;
-                }
-            } else {
-                propertyValue = song;
-            }
-            PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
-        } catch (Exception e) {
-            Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
-        }
-    }
-
-    private class ServiceListAdapter extends BaseAdapter
-    {
+    private class ServiceListAdapter extends BaseAdapter {
         LayoutInflater inflater;
-        public ServiceListAdapter(Context context)
-        {
+
+        public ServiceListAdapter(Context context) {
             inflater = LayoutInflater.from(context);
         }
 
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             convertView = inflater.inflate(R.layout.service_alertdialog_content, null);
             TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
             ImageView serviceIcon = (ImageView) convertView.findViewById(R.id.serviceIcon);
-            if(position == 0)
+            if (position == 0)
                 serviceIcon.setImageResource(R.drawable.file);
             serviceName.setText(serviceList.get(position).toString().trim());
-            return  convertView;
+            return convertView;
         }
 
         @Override
@@ -438,24 +432,5 @@ public class SongListActivity extends Activity {
         public long getItemId(int i) {
             return i;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return true;
-    }
-
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        super.onPrepareOptionsMenu(menu);
-        return true;
     }
 }

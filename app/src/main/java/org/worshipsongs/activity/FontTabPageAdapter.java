@@ -3,17 +3,11 @@ package org.worshipsongs.activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
-import org.worshipsongs.fragment.AuthorListFragment;
-import org.worshipsongs.fragment.ServiceListFragment;
-import org.worshipsongs.fragment.SongBookListFragment;
-import org.worshipsongs.fragment.SongsListFragment;
 
 /**
  * Created by Seenivasan on 4/26/2015.
  */
-public class FontTabPageAdapter extends FragmentPagerAdapter{
+public class FontTabPageAdapter extends FragmentPagerAdapter {
 
     /**
      * The total number of tabs
@@ -27,7 +21,7 @@ public class FontTabPageAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int index) {
-        switch(index) {
+        switch (index) {
             case 0:
                 return new FontSizeFragment();
             case 1:
