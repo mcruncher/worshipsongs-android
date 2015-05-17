@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.worshipsongs.worship" >
+    package="org.worshipsongs.worship">
 
     <application
         android:name="org.worshipsongs.WorshipSongApplication"
         android:allowBackup="true"
-        android:label="Worship Songs"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme" >
+        android:label="Worship Songs"
+        android:theme="@style/AppTheme">
 
         <activity
             android:name="org.worshipsongs.activity.SplashScreenActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,31 +22,28 @@
         <activity android:name="org.worshipsongs.activity.ServiceSongListActivity"></activity>
         <activity android:name="org.worshipsongs.activity.SongListActivity"></activity>
         <activity android:name="org.worshipsongs.activity.UserSettingActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.NewSongListActivity"></activity>
+
 
         <activity
             android:name="org.worshipsongs.activity.FontTabBarActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"></activity>
 
         <activity
             android:name="org.worshipsongs.activity.FontSizeTabActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
 
         <activity
             android:name="org.worshipsongs.activity.FontStyleActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
 
         <activity
             android:name="org.worshipsongs.activity.FontStyleSettingsActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
-        </activity>
-
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
 
 
     </application>
@@ -59,6 +56,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

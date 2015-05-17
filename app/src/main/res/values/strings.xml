@@ -86,5 +86,7 @@
     <string name="spinner_prompt">spinner</string>
     <string name="fontStyle">Style</string>
     <string name="fontSize">Size</string>
+    <string name="addToPlayList">Add to play list</string>
+    <string name="newList">New list</string>
 
 </resources>

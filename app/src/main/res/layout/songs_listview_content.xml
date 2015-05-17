@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:padding="5dp">
+
     <TextView
-        android:layout_width="300dp"
+        android:id="@+id/songsTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/title"
+        android:clickable="false"
+        android:longClickable="false"
+        android:padding="10dp"
         android:text="Title"
-        android:textSize="16dp"/>
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
     <ImageView
+        android:id="@+id/optionMenuIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_drawer"
-        android:id="@+id/serviceIcon" />
+        android:layout_marginTop="5dp"
+        android:contentDescription="optionMenu"
+        android:src="@drawable/ic_action_overflow" />
 </RelativeLayout>
