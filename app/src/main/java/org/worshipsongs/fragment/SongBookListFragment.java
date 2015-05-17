@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class NewSongBookListFragment extends ListFragment {
+public class SongBookListFragment extends ListFragment {
 
     private SongBookDao songBookDao;
     private List<SongBook> songBooks;

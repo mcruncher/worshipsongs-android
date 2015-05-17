@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class NewAuthorListFragment extends ListFragment {
+public class AuthorListFragment extends ListFragment {
 
     private AuthorDao authorDao;
     private List<Author> authors = new ArrayList<Author>();

@@ -3,7 +3,6 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.NewSongListActivity;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.dao.SongBookDao;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.Author;
-import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongBook;
 import org.worshipsongs.worship.R;
@@ -52,7 +48,7 @@ public class SongBookListAdapterService {
                         for (Song song : songs) {
                             songName.add(song.getTitle());
                         }
-                        Intent intent = new Intent(application.getContext(), NewSongListActivity.class);
+                        Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songName));
                         application.getContext().startActivity(intent);

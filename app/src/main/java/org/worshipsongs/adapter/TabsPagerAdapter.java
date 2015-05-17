@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.worshipsongs.fragment.NewAuthorListFragment;
-import org.worshipsongs.fragment.NewSongBookListFragment;
+import org.worshipsongs.fragment.AuthorListFragment;
+import org.worshipsongs.fragment.SongBookListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 
@@ -27,9 +27,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new SongsListFragment();
             case 1:
-                return new NewAuthorListFragment();
+                return new AuthorListFragment();
             case 2:
-                return new NewSongBookListFragment();
+                return new SongBookListFragment();
             case 3:
                 return new ServiceListFragment();
         }

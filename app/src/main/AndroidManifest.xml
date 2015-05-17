@@ -20,9 +20,8 @@
         <activity android:name="org.worshipsongs.activity.MainActivity"></activity>
         <activity android:name="org.worshipsongs.activity.SongsColumnViewActivity"></activity>
         <activity android:name="org.worshipsongs.activity.ServiceSongListActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.SongListActivity"></activity>
         <activity android:name="org.worshipsongs.activity.UserSettingActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.NewSongListActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.SongListActivity"></activity>
 
 
         <activity
@@ -39,12 +38,6 @@
             android:name="org.worshipsongs.activity.FontStyleActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
-
-        <activity
-            android:name="org.worshipsongs.activity.FontStyleSettingsActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
-
 
     </application>
 

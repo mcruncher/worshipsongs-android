@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.NewSongListActivity;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.dao.AuthorDao;
 import org.worshipsongs.dao.AuthorSongDao;
@@ -71,7 +70,7 @@ public class AuthorListAdapterService {
                         for (Song song : songs) {
                             songNames.add(song.getTitle());
                         }
-                        Intent intent = new Intent(application.getContext(), NewSongListActivity.class);
+                        Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songNames));
                         application.getContext().startActivity(intent);
