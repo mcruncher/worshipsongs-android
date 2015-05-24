@@ -2,6 +2,7 @@ package org.worshipsongs.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,14 +22,14 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class AuthorListFragment extends ListFragment {
+public class AuthorListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private AuthorDao authorDao;
     private List<Author> authors = new ArrayList<Author>();
     private List<String> authorsNames = new ArrayList<String>();
     private AuthorListAdapterService adapterService = new AuthorListAdapterService();
     private ArrayAdapter<String> adapter;
-
+    private SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,8 @@ public class AuthorListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setIconified(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -75,6 +77,7 @@ public class AuthorListFragment extends ListFragment {
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
+        searchView.onActionViewCollapsed();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -90,11 +93,19 @@ public class AuthorListFragment extends ListFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQuery("", false);
+        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.d("On refresh in Song book list", "");
     }
 }

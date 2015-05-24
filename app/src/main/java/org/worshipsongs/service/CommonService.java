@@ -1,46 +1,35 @@
 package org.worshipsongs.service;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.adapter.SongListAdapter;
-import org.worshipsongs.component.DropDownList;
-import org.worshipsongs.domain.Song;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Created by Seenivasan on 5/9/2015.
  */
 public class CommonService {
 
-    private List<String> serviceList = new ArrayList<String>();
+    private Set<String> serviceList;
     private File serviceFile = null;
     private WorshipSongApplication application = new WorshipSongApplication();
 
-    public List<String> readServiceName() {
+    public Set<String> readServiceName() {
         Properties property = new Properties();
         InputStream inputStream = null;
+        serviceList = new HashSet<String>();
         int i = 0;
         try {
             serviceFile = PropertyUtils.getPropertyFile(application.getContext(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);

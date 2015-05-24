@@ -76,7 +76,6 @@ public class AuthorListAdapterService {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songNames));
                         application.getContext().startActivity(intent);
-
                     }
                 });
                 return rowView;

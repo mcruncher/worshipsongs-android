@@ -2,6 +2,8 @@ package org.worshipsongs.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,14 +22,14 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class SongBookListFragment extends ListFragment {
+public class SongBookListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SongBookDao songBookDao;
     private List<SongBook> songBooks;
     private List<String> songBookNames = new ArrayList<String>();
     private SongBookListAdapterService adapterService = new SongBookListAdapterService();
     private ArrayAdapter<String> adapter;
-
+    private SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,8 @@ public class SongBookListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setIconified(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -90,6 +93,9 @@ public class SongBookListFragment extends ListFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQuery("", false);
+        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -98,4 +104,7 @@ public class SongBookListFragment extends ListFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRefresh() {
+    }
 }

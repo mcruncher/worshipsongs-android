@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,17 +41,16 @@ import java.util.Properties;
 /**
  * Created by Pitchu on 12/30/2014.
  */
-public class ServiceListFragment extends Fragment
-{
+public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    List<String> service = new ArrayList<String>();
+    String serviceName;
+    TextView serviceMsg;
+    ListAdapter listAdapter;
     private LinearLayout linearLayout;
     private FragmentActivity FragmentActivity;
     private ListView serviceListView;
     private File serviceFile = null;
     private ArrayAdapter<String> adapter;
-    List<String> service = new ArrayList<String>();
-    String serviceName;
-    TextView serviceMsg;
-    ListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -70,7 +70,7 @@ public class ServiceListFragment extends Fragment
                 vibrator.vibrate(15);
                 //serviceName = serviceListView.getItemAtPosition(position).toString();
                 serviceName = adapter.getItem(position).toString();
-                System.out.println("Selected Song for Service:" + service);
+                System.out.println("Selected Song for Service:" + serviceName);
                 LayoutInflater li = LayoutInflater.from(getActivity());
                 View promptsView = li.inflate(R.layout.service_delete_dialog, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -81,7 +81,10 @@ public class ServiceListFragment extends Fragment
                     {
                         serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
-                        Toast.makeText(getActivity(), "Service " + serviceName + " deleted...!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Service " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
+
+                        SongsListFragment listFragment = new SongsListFragment();
+                        listFragment.onRefresh();
                         service.clear();
                         loadService();
                     }
@@ -128,37 +131,12 @@ public class ServiceListFragment extends Fragment
         serviceListView.setAdapter(listAdapter);
     }
 
-    private class ListAdapter extends BaseAdapter {
-        LayoutInflater inflater;
+    @Override
+    public void onRefresh() {
 
-        public ListAdapter(Context context) {
-            inflater = LayoutInflater.from(context);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = inflater.inflate(R.layout.service_listview_content, null);
-            TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
-            Button delete = (Button) convertView.findViewById(R.id.delete);
-            delete.setVisibility(View.GONE);
-            serviceName.setText(service.get(position).trim());
-            return convertView;
-        }
-
-        public int getCount() {
-            return service.size();
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
     }
 
-    public List readServiceName()
-    {
+    public List readServiceName() {
         Properties property = new Properties();
         InputStream inputStream = null;
         try {
@@ -187,18 +165,15 @@ public class ServiceListFragment extends Fragment
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
         searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
-        {
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextChange(String newText)
-            {
+            public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query)
-            {
+            public boolean onQueryTextSubmit(String query) {
                 adapter.getFilter().filter(query);
                 return true;
             }
@@ -217,5 +192,34 @@ public class ServiceListFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         return super.onOptionsItemSelected(item);
+    }
+
+    private class ListAdapter extends BaseAdapter {
+        LayoutInflater inflater;
+
+        public ListAdapter(Context context) {
+            inflater = LayoutInflater.from(context);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = inflater.inflate(R.layout.service_listview_content, null);
+            TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
+            Button delete = (Button) convertView.findViewById(R.id.delete);
+            delete.setVisibility(View.GONE);
+            serviceName.setText(service.get(position).trim());
+            return convertView;
+        }
+
+        public int getCount() {
+            return service.size();
+        }
+
+        public Object getItem(int position) {
+            return position;
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
     }
 }

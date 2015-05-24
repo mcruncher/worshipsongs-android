@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,27 +23,26 @@ import org.worshipsongs.worship.R;
 /**
  * Created by Seenivasan on 4/5/2015.
  */
-public class TabFragment  extends Fragment implements ActionBar.TabListener {
+public class TabFragment extends Fragment implements ActionBar.TabListener {
 
     private TabHost tabHost;
     // Tab titles
-    private String[] tabsTitles = {"Songs", "Artists", "Albums","Playlists"};
+    private String[] tabsTitles = {"Songs", "Artists", "Albums", "Playlists"};
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private DrawerLayout FragentLayout;
     private HorizontalScrollView horizontalScrollView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragentLayout = (DrawerLayout) inflater.inflate(R.layout.activity_main_drawer, container, false);
-        tabHost=(TabHost)FragentLayout.findViewById(android.R.id.tabhost);
+        tabHost = (TabHost) FragentLayout.findViewById(android.R.id.tabhost);
         viewPager = (ViewPager) FragentLayout.findViewById(R.id.pager);
         tabHost.setup();
         setRetainInstance(true);
         for (int i = 0; i < tabsTitles.length; i++) {
             String tabName = tabsTitles[i];
-            TabHost.TabSpec spec=tabHost.newTabSpec(tabName);
+            TabHost.TabSpec spec = tabHost.newTabSpec(tabName);
             spec.setContent(R.id.fakeTabContent);
             spec.setIndicator(tabName);
             tabHost.addTab(spec);
@@ -65,7 +65,11 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                Log.w(this.getClass().getSimpleName(), "Tab page position" +position);
+                SwipeRefreshLayout.OnRefreshListener fragment = (SwipeRefreshLayout.OnRefreshListener)
+                        mAdapter.instantiateItem(viewPager, position);
+                if (fragment != null) {
+                    fragment.onRefresh();
+                }
                 tabHost.setCurrentTab(position);
             }
 
@@ -87,6 +91,13 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        viewPager.setCurrentItem(tab.getPosition());
+        SwipeRefreshLayout.OnRefreshListener fragment = (SwipeRefreshLayout.OnRefreshListener)
+                mAdapter.instantiateItem(viewPager, tab.getPosition());
+        if (fragment != null) {
+            fragment.onRefresh();
+        }
+        tabHost.setCurrentTab(tab.getPosition());
 
     }
 
@@ -101,8 +112,7 @@ public class TabFragment  extends Fragment implements ActionBar.TabListener {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
     }
 

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongsColumnViewActivity;
-import org.worshipsongs.component.DropDownList;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CommonService;
@@ -49,7 +48,6 @@ public class SongListAdapter extends BaseAdapter implements Filterable {
     private Song selectedSong;
     private CommonService commonService = new CommonService();
     private Context context;
-    private DropDownList dropDownList = new DropDownList();
 
     public SongListAdapter(Context context, List<Song> songs, ArrayAdapter<Song> adapter) {
         this.context = context;
@@ -167,7 +165,7 @@ public class SongListAdapter extends BaseAdapter implements Filterable {
         ListView listView = new ListView(context);
         listView.setAdapter(popUpAdapter(popUpContents));
         SongListAdapter listAdapter = new SongListAdapter();
-        listView.setOnItemClickListener(new DropDownList(context, popupWindow1, selectedSong));
+        //listView.setOnItemClickListener(new DropDownList(context, popupWindow1, selectedSong));
         popupWindow1.setFocusable(true);
         popupWindow1.setWidth(250);
         popupWindow1.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);

@@ -65,39 +65,7 @@ public class SongListAdapterService {
                 (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View arg0) {
                         selectedSong = textView.getText().toString();
-                        Log.d("Selected song:", selectedSong);
-                        Song song = songDao.getSongByTitle(selectedSong);
-                        String lyrics = song.getLyrics();
-                        verseList = utilitiesService.getVerse(lyrics);
-                        List<String> verseName = new ArrayList<String>();
-                        List<String> verseContent = new ArrayList<String>();
-                        Map<String, String> verseDataMap = new HashMap<String, String>();
-                        for (Verse verses : verseList) {
-                            verseName.add(verses.getType() + verses.getLabel());
-                            verseContent.add(verses.getContent());
-                            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-                        }
-                        List<String> verseListDataContent = new ArrayList<String>();
-                        List<String> verseListData = new ArrayList<String>();
-                        String verseOrder = song.getVerseOrder();
-                        if (StringUtils.isNotBlank(verseOrder)) {
-                            verseListData = utilitiesService.getVerseByVerseOrder(verseOrder);
-                        }
-                        Intent intent = new Intent(application.getContext(), SongsColumnViewActivity.class);
-                        intent.putExtra("serviceName", song.getTitle());
-                        if (verseListData.size() > 0) {
-                            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-                            for (int i = 0; i < verseListData.size(); i++) {
-                                verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
-                            }
-                            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
-                            Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
-                        } else {
-                            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
-                        }
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        application.getContext().startActivity(intent);
+                        displaySelectedSong();
                     }
                 });
                 return rowView;
@@ -109,7 +77,6 @@ public class SongListAdapterService {
         final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
         final Song song = songDao.getSongByTitle(songName);
-
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(final MenuItem item) {
                 switch (item.getItemId()) {
@@ -117,7 +84,15 @@ public class SongListAdapterService {
                         dialogFragment = new ListDialogFragment() {
                             @Override
                             public String[] getProductListsArray() {
-                                return getServiceNames();
+
+                                List<String> services = new ArrayList<String>();
+                                services.addAll(commonService.readServiceName());
+                                services.add(0, "New playlist...");
+                                Log.d("service names list", commonService.readServiceName().toString());
+                                serviceNames = new String[services.size()];
+                                services.toArray(serviceNames);
+                                Log.d("service names are", services.toString());
+                                return serviceNames;
                             }
 
                             @Override
@@ -132,8 +107,11 @@ public class SongListAdapterService {
                                     };
                                     addPlayListsDialog.show(fragmentManager, "addToListFragment");
                                 } else {
-                                    String[] serviceNames = getServiceNames();
-                                    commonService.saveIntoFile(serviceNames[which].toString(), songName);
+                                    List<String> services = new ArrayList<String>();
+                                    services.addAll(commonService.readServiceName());
+                                    serviceNames = new String[services.size()];
+                                    String[] selectedServiceNames = services.toArray(serviceNames);
+                                    commonService.saveIntoFile(selectedServiceNames[which].toString(), songName);
                                     Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -148,13 +126,39 @@ public class SongListAdapterService {
         popupMenu.show();
     }
 
-    public String[] getServiceNames() {
-        return serviceNames;
-    }
-
-    public void setServiceNames(List<String> names) {
-        names.add(0, "New play list...");
-        serviceNames = new String[names.size()];
-        names.toArray(serviceNames);
+    public void displaySelectedSong() {
+        Log.d("Selected song:", selectedSong);
+        Song song = songDao.getSongByTitle(selectedSong);
+        String lyrics = song.getLyrics();
+        verseList = utilitiesService.getVerse(lyrics);
+        List<String> verseName = new ArrayList<String>();
+        List<String> verseContent = new ArrayList<String>();
+        Map<String, String> verseDataMap = new HashMap<String, String>();
+        for (Verse verses : verseList) {
+            verseName.add(verses.getType() + verses.getLabel());
+            verseContent.add(verses.getContent());
+            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
+        }
+        List<String> verseListDataContent = new ArrayList<String>();
+        List<String> verseListData = new ArrayList<String>();
+        String verseOrder = song.getVerseOrder();
+        if (StringUtils.isNotBlank(verseOrder)) {
+            verseListData = utilitiesService.getVerseByVerseOrder(verseOrder);
+        }
+        Intent intent = new Intent(application.getContext(), SongsColumnViewActivity.class);
+        intent.putExtra("serviceName", song.getTitle());
+        if (verseListData.size() > 0) {
+            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
+            for (int i = 0; i < verseListData.size(); i++) {
+                verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
+            }
+            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
+            Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
+        } else {
+            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
+            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        application.getContext().startActivity(intent);
     }
 }

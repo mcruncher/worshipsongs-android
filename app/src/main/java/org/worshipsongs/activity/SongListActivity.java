@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class SongListActivity extends FragmentActivity {
+public class SongListActivity extends FragmentActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ListView songListView;
     private List<String> songNames = new ArrayList<String>();
@@ -44,7 +46,7 @@ public class SongListActivity extends FragmentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         fragmentManager = getSupportFragmentManager();
         adapter = adapterService.getSongListAdapter(songNames, fragmentManager);
-        adapterService.setServiceNames(commonService.readServiceName());
+        initializeServiceNames();
         songListView.setAdapter(adapter);
     }
 
@@ -97,5 +99,16 @@ public class SongListActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        initializeServiceNames();
+    }
+
+    private void initializeServiceNames() {
+        List<String> serviceNames = new ArrayList<String>();
+        serviceNames.addAll(commonService.readServiceName());
+        // adapterService.setServiceNames(serviceNames);
     }
 }

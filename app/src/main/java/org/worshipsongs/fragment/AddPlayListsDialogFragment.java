@@ -17,6 +17,9 @@ import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Seenivasan on 5/17/2015.
  */
@@ -41,10 +44,14 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment {
                     Toast.makeText(getActivity(), "Enter playlist name...!", Toast.LENGTH_LONG).show();
                 else {
                     service_name = serviceName.getText().toString();
-                    adapterService.setServiceNames(commonService.readServiceName());
+                    List<String> serviceNames = new ArrayList<String>();
+                    serviceNames.addAll(commonService.readServiceName());
+                    //adapterService.setServiceNames(serviceNames);
                     commonService.saveIntoFile(service_name, getSelectedSong().toString());
-                    Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    SongsListFragment listFragment = new SongsListFragment();
+                    listFragment.onRefresh();
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

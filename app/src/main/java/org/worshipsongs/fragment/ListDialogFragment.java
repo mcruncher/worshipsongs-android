@@ -7,14 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 /**
- * Author: Arunachalam
- * Since: 1.0.0
+ * Created by Seenivasan on 5/17/2015.
  */
+
 public abstract class ListDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add to play lists")
+        builder.setTitle("Add to playlists")
                 .setItems(getProductListsArray(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         ListDialogFragment.this.onClick(which);

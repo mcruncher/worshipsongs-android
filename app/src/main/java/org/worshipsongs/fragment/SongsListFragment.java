@@ -1,17 +1,33 @@
 package org.worshipsongs.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +36,23 @@ import java.util.List;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SongsListFragment extends ListFragment {
+public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    public PopupWindow popupWindow;
     private SongDao songDao;
     private List<Song> songs;
     private List<String> songsTitleList = new ArrayList<String>();
-    private CommonService commonService = new CommonService();
     private ArrayAdapter<String> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
+    private SearchView searchView;
+    private WorshipSongApplication application = new WorshipSongApplication();
+    private String selectedSong;
+    private UtilitiesService utilitiesService = new UtilitiesService();
+    private List<Verse> verseList;
+    private String[] serviceNames;
+    private CommonService commonService = new CommonService();
+    private ListDialogFragment dialogFragment;
+    private MenuItem mSearchMenuItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,16 +75,20 @@ public class SongsListFragment extends ListFragment {
                 songsTitleList.add(song.getTitle());
             }
         }
+        List<String> serviceNames = new ArrayList<String>();
+        serviceNames.addAll(commonService.readServiceName());
+        setServiceNames(serviceNames);
         adapter = adapterService.getSongListAdapter(songsTitleList, getFragmentManager());
-        //adapterService.setServiceNames(commonService.readServiceName());
         setListAdapter(adapter);
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater = new MenuInflater(getActivity().getApplicationContext());
         inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setIconified(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -91,6 +120,9 @@ public class SongsListFragment extends ListFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQuery("", false);
+        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -98,4 +130,25 @@ public class SongsListFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRefresh() {
+        Log.d("On refresh in Song list", "");
+        List<String> serviceNames = new ArrayList<String>();
+        serviceNames.addAll(commonService.readServiceName());
+        //setServiceNames(serviceNames);
+        setListAdapter(adapterService.getSongListAdapter(songsTitleList, getFragmentManager()));
+    }
+
+    public String[] getServiceNames() {
+        return serviceNames;
+    }
+
+    public void setServiceNames(List<String> names) {
+        names.add(0, "New playlist...");
+        serviceNames = new String[names.size()];
+        names.toArray(serviceNames);
+
+    }
+
 }
