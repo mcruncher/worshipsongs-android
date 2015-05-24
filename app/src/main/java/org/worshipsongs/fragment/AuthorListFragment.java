@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 
 import org.worshipsongs.dao.AuthorDao;
+import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.domain.Author;
+import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.service.AuthorListAdapterService;
 import org.worshipsongs.worship.R;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public class AuthorListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private AuthorDao authorDao;
+    private AuthorSongDao authorSongDao;
     private List<Author> authors = new ArrayList<Author>();
     private List<String> authorsNames = new ArrayList<String>();
     private AuthorListAdapterService adapterService = new AuthorListAdapterService();
@@ -40,12 +43,19 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
 
     private void initSetUp() {
         authorDao = new AuthorDao(getActivity());
+        authorSongDao = new AuthorSongDao(getActivity());
         loadAuthors();
     }
 
     private void loadAuthors() {
         authorDao.open();
-        authors = authorDao.findAll();
+        authorSongDao.open();
+        List<AuthorSong> authorSongList = new ArrayList<AuthorSong>();
+        authorSongList = authorSongDao.findAuthorsFromAuthorBooks();
+        for (AuthorSong authorSong : authorSongList) {
+            authors.add(authorDao.findAuthorByID(authorSong.getAuthorId()));
+        }
+        //authors = authorDao.findAll();
         for (Author author : authors) {
             if (!author.getDisplayName().toLowerCase().contains("unknown") && author.getDisplayName() != null) {
                 authorsNames.add(author.getDisplayName());

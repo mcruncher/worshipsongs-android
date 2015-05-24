@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.AuthorSong;
 
 import java.util.ArrayList;
@@ -16,8 +17,10 @@ public class AuthorSongDao extends AbstractDao {
 
     public static final String TABLE_NAME_AUTHOR = "authors_songs";
     public static final String AUTHOR_ID = "author_id";
+    private String[] columns = {AUTHOR_ID};
     public static final String SONG_ID = "song_id";
     private String[] allColumns = {AUTHOR_ID, SONG_ID};
+
 
     public AuthorSongDao(Context context)
     {
@@ -31,7 +34,7 @@ public class AuthorSongDao extends AbstractDao {
                 allColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            AuthorSong authorSong = cursorToSong(cursor);
+            AuthorSong authorSong = cursorToAuthorSong(cursor);
             authors.add(authorSong);
             cursor.moveToNext();
         }
@@ -48,7 +51,7 @@ public class AuthorSongDao extends AbstractDao {
                 allColumns, whereClause, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            AuthorSong authorSong = cursorToSong(cursor);
+            AuthorSong authorSong = cursorToAuthorSong(cursor);
             authors.add(authorSong);
             cursor.moveToNext();
         }
@@ -59,11 +62,34 @@ public class AuthorSongDao extends AbstractDao {
     }
 
 
-    private AuthorSong cursorToSong(Cursor cursor)
+    public List<AuthorSong> findAuthorsFromAuthorBooks() {
+        List<AuthorSong> authorSongList = new ArrayList<AuthorSong>();
+        String havingStatement = "COUNT(*) > 1";
+        Cursor cursor = getDatabase().query(true, TABLE_NAME_AUTHOR,
+                columns, null, null, AUTHOR_ID, havingStatement, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            AuthorSong authorSong = cursorToAuthorId(cursor);
+            authorSongList.add(authorSong);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return authorSongList;
+    }
+
+
+    private AuthorSong cursorToAuthorSong(Cursor cursor)
     {
         AuthorSong authorSong = new AuthorSong();
         authorSong.setAuthorId(cursor.getInt(0));
         authorSong.setSongId(cursor.getInt(1));
+        return authorSong;
+    }
+
+    private AuthorSong cursorToAuthorId(Cursor cursor) {
+        AuthorSong authorSong = new AuthorSong();
+        authorSong.setAuthorId(cursor.getInt(0));
         return authorSong;
     }
 }

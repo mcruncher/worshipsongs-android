@@ -2,8 +2,10 @@ package org.worshipsongs.dao;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import org.worshipsongs.domain.Author;
+import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Song;
 
 import java.util.ArrayList;
@@ -21,6 +23,12 @@ public class AuthorDao extends AbstractDao {
     public static final String COLUMN_DISPLAY_NAME = "display_name";
     private String[] allColumns = {COLUMN_ID, COLUMN_FIRST_NAME,
             COLUMN_LAST_NAME, COLUMN_DISPLAY_NAME};
+
+    public static final String TABLE_NAME_AUTHOR_SONGS = "authors_songs";
+    public static final String COLUMN_AUTHOR_ID = "author_id";
+    private String[] columns = {COLUMN_AUTHOR_ID};
+    public static final String COLUMN_SONG_ID = "song_id";
+
 
     public AuthorDao(Context context) {
         super(context);
@@ -41,25 +49,22 @@ public class AuthorDao extends AbstractDao {
         return authors;
     }
 
-//    public List<String> findAuthors(){
-//        List<Author> authors = new ArrayList<Author>();
-//        String whereClause = " inner join (select * from authors_songs Group by author_id Having Count(author_id) > 1) as authorsList on authors.id = authorsList.author_id;";
-//        Cursor cursor = getDatabase().query(true, TABLE_NAME,
-//                allColumns, whereClause, null, null, null, COLUMN_DISPLAY_NAME, null);
-//        cursor.moveToFirst();
-//        while (!cursor.isAfterLast()) {
-//            Author author = cursorToAuthor(cursor);
-//            authors.add(author);
-//            cursor.moveToNext();
-//        }
-//        // make sure to close the cursor
-//        cursor.close();
-//        return authors;
-//    }
 
     public Author findAuthorByName(String authorName) {
         Author author = new Author();
         String whereClause = " display_name" + "=\"" + authorName + "\"";
+        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+                allColumns, whereClause, null, null, null, null);
+        cursor.moveToFirst();
+        author = cursorToAuthor(cursor);
+        cursor.close();
+        return author;
+
+    }
+
+    public Author findAuthorByID(int id) {
+        Author author = new Author();
+        String whereClause = " id=" + id;
         Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
                 allColumns, whereClause, null, null, null, null);
         cursor.moveToFirst();
