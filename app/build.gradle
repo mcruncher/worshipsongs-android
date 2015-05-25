@@ -7,10 +7,8 @@ android {
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 20
-
         versionCode 3
-
-        versionName "2.0.0-SNAPSHOT"
+        versionName "2.0.0-milestone1"
     }
 
     signingConfigs {
