@@ -18,6 +18,7 @@ import org.worshipsongs.service.AuthorListAdapterService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -60,6 +61,7 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
             if (!author.getDisplayName().toLowerCase().contains("unknown") && author.getDisplayName() != null) {
                 authorsNames.add(author.getDisplayName());
             }
+            Collections.sort(authorsNames);
             adapter = adapterService.getAuthorListAdapter(authorsNames, getFragmentManager());
             setListAdapter(adapter);
         }
