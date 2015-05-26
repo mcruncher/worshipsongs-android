@@ -130,18 +130,6 @@ public class MainActivity extends FragmentActivity
 
     }
 
-    /**
-     * Slide menu item click listener
-     */
-    private class SlideMenuClickListener implements ListView.OnItemClickListener
-    {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int fragmentPosition, long id)
-        {
-            displaySelectedFragment(fragmentPosition);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -185,9 +173,8 @@ public class MainActivity extends FragmentActivity
         switch (fragmentPosition) {
             case 0:
                 // Initialization
-//                frameLayout.removeAllViews();
+                getActionBar().setTitle(R.string.app_name);
                 fragment = new TabFragment();
-                //fragment = new SongsListFragment();
                 break;
             case 1:
                 Intent intent = new Intent(this,
@@ -246,6 +233,17 @@ public class MainActivity extends FragmentActivity
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * Slide menu item click listener
+     */
+    private class SlideMenuClickListener implements ListView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int fragmentPosition, long id) {
+            displaySelectedFragment(fragmentPosition);
+        }
     }
 
 }
