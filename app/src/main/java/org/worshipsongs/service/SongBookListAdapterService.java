@@ -29,7 +29,7 @@ public class SongBookListAdapterService {
     List<String> songName = new ArrayList<String>();
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongBookDao songBookDao = new SongBookDao(application.getContext());
-    private List<Song> songs = new ArrayList<Song>();
+    private List<Song> songs;
     private SongDao songDao = new SongDao(application.getContext());
 
     public ArrayAdapter<String> getSongBookListAdapter(final List<String> songBookNames, final FragmentManager fragmentManager) {
@@ -43,6 +43,7 @@ public class SongBookListAdapterService {
 
                 (rowView.findViewById(R.id.listTextView)).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View arg0) {
+                        songs = new ArrayList<Song>();
                         String bookName = textView.getText().toString();
                         SongBook selectedBook = songBookDao.findBookByName(bookName);
                         songs = songDao.getSongTitlesByBookId(selectedBook.getId());
