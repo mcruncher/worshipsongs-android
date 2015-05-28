@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class SongBookListAdapterService {
 
-    List<String> songName = new ArrayList<String>();
+    List<String> songName;
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongBookDao songBookDao = new SongBookDao(application.getContext());
     private List<Song> songs;
@@ -44,6 +44,7 @@ public class SongBookListAdapterService {
                 (rowView.findViewById(R.id.listTextView)).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View arg0) {
                         songs = new ArrayList<Song>();
+                        songName = new ArrayList<String>();
                         String bookName = textView.getText().toString();
                         SongBook selectedBook = songBookDao.findBookByName(bookName);
                         songs = songDao.getSongTitlesByBookId(selectedBook.getId());
