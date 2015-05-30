@@ -111,7 +111,7 @@ public class SongListAdapterService {
                                     services.addAll(commonService.readServiceName());
                                     serviceNames = new String[services.size()];
                                     String[] selectedServiceNames = services.toArray(serviceNames);
-                                    commonService.saveIntoFile(selectedServiceNames[which].toString(), songName);
+                                    commonService.saveIntoFile(selectedServiceNames[which - 1].toString(), songName);
                                     Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
                                 }
                             }
