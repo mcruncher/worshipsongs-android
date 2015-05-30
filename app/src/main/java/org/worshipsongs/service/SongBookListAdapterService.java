@@ -54,6 +54,7 @@ public class SongBookListAdapterService {
                         Collections.sort(songName);
                         Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("title", selectedBook.getName());
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songName));
                         application.getContext().startActivity(intent);
                     }

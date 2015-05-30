@@ -40,10 +40,12 @@ public class SongListActivity extends FragmentActivity implements SwipeRefreshLa
         Intent intent = getIntent();
         songNames = intent.getStringArrayListExtra("songNames");
         songListView = (ListView) findViewById(R.id.song_list_view);
+        String title = intent.getStringExtra("title");
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(title);
         fragmentManager = getSupportFragmentManager();
         adapter = adapterService.getSongListAdapter(songNames, fragmentManager);
         initializeServiceNames();
