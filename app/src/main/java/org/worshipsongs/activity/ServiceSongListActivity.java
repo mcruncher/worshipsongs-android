@@ -41,7 +41,8 @@ import java.util.Map;
 /**
  * Created by Seenivasan on 3/21/2015.
  */
-public class ServiceSongListActivity extends Activity {
+public class ServiceSongListActivity extends Activity
+{
 
     private ListView songListView;
     private VerseParser verseparser;
@@ -63,7 +64,7 @@ public class ServiceSongListActivity extends Activity {
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
-        System.out.println("Selected Service:"+serviceName);
+        System.out.println("Selected Service:" + serviceName);
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -77,7 +78,7 @@ public class ServiceSongListActivity extends Activity {
         verseparser = new VerseParser();
         loadSongs();
 
-        final Vibrator vibrator = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
+        final Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
         {
             @Override
@@ -85,22 +86,26 @@ public class ServiceSongListActivity extends Activity {
             {
                 vibrator.vibrate(15);
                 songTitle = songListView.getItemAtPosition(position).toString();
-                System.out.println("Selected title:"+songTitle);
+                System.out.println("Selected title:" + songTitle);
                 LayoutInflater li = LayoutInflater.from(ServiceSongListActivity.this);
                 View promptsView = li.inflate(R.layout.service_delete_dialog, null);
                 TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
                 deleteMsg.setText("Do you want to delete the song?");
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ServiceSongListActivity.this);
                 alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         serviceFile = PropertyUtils.getPropertyFile(ServiceSongListActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         removeSong();
                         loadSongs();
                         Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         dialog.cancel();
                     }
                 });
@@ -124,7 +129,7 @@ public class ServiceSongListActivity extends Activity {
                 verseList = getVerse(lyrics);
                 List<String> verseName = new ArrayList<String>();
                 List<String> verseContent = new ArrayList<String>();
-                Map<String,String> verseDataMap = new HashMap<String, String>();
+                Map<String, String> verseDataMap = new HashMap<String, String>();
                 for (Verse verses : verseList) {
                     verseName.add(verses.getType() + verses.getLabel());
                     verseContent.add(verses.getContent());
@@ -133,21 +138,19 @@ public class ServiceSongListActivity extends Activity {
                 List<String> verseListDataContent = new ArrayList<String>();
                 List<String> verseListData = new ArrayList<String>();
                 String verseOrder = song.getVerseOrder();
-                if(StringUtils.isNotBlank(verseOrder))
-                {
+                if (StringUtils.isNotBlank(verseOrder)) {
                     verseListData = getVerseByVerseOrder(verseOrder);
                 }
                 Intent intent = new Intent(ServiceSongListActivity.this, SongsColumnViewActivity.class);
                 intent.putExtra("serviceName", selectedValue);
-                if(verseListData.size() > 0){
+                if (verseListData.size() > 0) {
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-                    for(int i=0; i<verseListData.size();i++){
+                    for (int i = 0; i < verseListData.size(); i++) {
                         verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
                     }
                     intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
-                    Log.d(this.getClass().getName(),"Verse List data content :"+ verseListDataContent);
-                }
-                else{
+                    Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
+                } else {
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
                     intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
                 }
@@ -176,27 +179,29 @@ public class ServiceSongListActivity extends Activity {
         songListView.setAdapter(adapter);
     }
 
-    private void removeSong() {
-        try
-        {
+    private void removeSong()
+    {
+        try {
             String propertyValue = "";
+            System.out.println("Preparing to remove service:" + songTitle);
             File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             String property = PropertyUtils.getProperty(serviceName, serviceFile);
             String propertyValues[] = property.split(";");
-            System.out.println("File:"+serviceFile);
-            for(int i = 0; i < propertyValues.length; i++)
-            {
-                if(!propertyValues[i].equalsIgnoreCase(songTitle))
-                {
-                    propertyValue = propertyValue+propertyValues[i]+";";
+            System.out.println("File:" + serviceFile.getAbsolutePath());
+            for (int i = 0; i < propertyValues.length; i++) {
+                System.out.println("Property length: " + propertyValues.length);
+                Log.i(this.getClass().getSimpleName(), "Property value  " + propertyValues[i]);
+                if (StringUtils.isNotBlank(propertyValues[i]) && !propertyValues[i].equalsIgnoreCase(songTitle)) {
+                    Log.i(this.getClass().getSimpleName(), "Append property value" + propertyValues[i]);
+                    propertyValue = propertyValue + propertyValues[i] + ";";
                 }
             }
+            Log.i(this.getClass().getSimpleName(), "Property value after removed  " + propertyValue);
             PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
         }
     }
-
 
 
     private List<Verse> getVerse(String lyrics)
@@ -216,7 +221,8 @@ public class ServiceSongListActivity extends Activity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.default_action_bar_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

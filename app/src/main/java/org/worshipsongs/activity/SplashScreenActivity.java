@@ -78,7 +78,7 @@ public class SplashScreenActivity extends Activity
             SplashScreenActivity context = SplashScreenActivity.this;
             String projectVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
             Log.i(SplashScreenActivity.class.getSimpleName(), "Project version." + projectVersion);
-            if (projectVersion.contains("SNAPSHOT") && isWifi()) {
+            if (projectVersion.contains("SNAPSHOT") && isWifi() && false) {
                 if (asyncGitHubRepositoryTask.execute().get()) {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy remote database.");
                     AsyncDownloadTask asyncDownloadTask = new AsyncDownloadTask(context);

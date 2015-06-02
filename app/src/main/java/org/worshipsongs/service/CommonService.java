@@ -20,13 +20,15 @@ import java.util.Set;
 /**
  * Created by Seenivasan on 5/9/2015.
  */
-public class CommonService {
+public class CommonService
+{
 
     private Set<String> serviceList;
     private File serviceFile = null;
     private WorshipSongApplication application = new WorshipSongApplication();
 
-    public Set<String> readServiceName() {
+    public Set<String> readServiceName()
+    {
         Properties property = new Properties();
         InputStream inputStream = null;
         serviceList = new HashSet<String>();
@@ -49,7 +51,8 @@ public class CommonService {
         return serviceList;
     }
 
-    public void saveIntoFile(String serviceName, String song) {
+    public void saveIntoFile(String serviceName, String song)
+    {
         try {
             serviceFile = PropertyUtils.getPropertyFile(application.getContext(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             if (!serviceFile.exists()) {
@@ -61,11 +64,16 @@ public class CommonService {
                 if (existingProperty.contains(song)) {
                     propertyValue = existingProperty;
                 } else {
-                    propertyValue = existingProperty + ";" + song;
+                    if (existingProperty.endsWith(";")) {
+                        propertyValue = existingProperty + song;
+                    } else {
+                        propertyValue = existingProperty + ";" + song;
+                    }
                 }
             } else {
                 propertyValue = song;
             }
+            Log.e(this.getClass().getName(), "Save into file " + propertyValue);
             PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
