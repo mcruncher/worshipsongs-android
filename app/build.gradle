@@ -7,9 +7,7 @@ android {
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 20
-
         versionCode 3
-
         versionName "2.0.0-beta1-SNAPSHOT"
     }
 
@@ -21,7 +19,6 @@ android {
             //keyAlias System.getenv("KEY_ALIAS")
             //keyPassword System.getenv("KEY_PASSWORD")
         }
-
     }
 
     buildTypes {
