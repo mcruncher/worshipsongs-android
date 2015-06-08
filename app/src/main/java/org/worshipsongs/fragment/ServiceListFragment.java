@@ -81,7 +81,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                     {
                         serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
-                        Toast.makeText(getActivity(), "Service " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Playlist " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
 
                         SongsListFragment listFragment = new SongsListFragment();
                         listFragment.onRefresh();
