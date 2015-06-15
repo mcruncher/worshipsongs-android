@@ -1,26 +1,107 @@
-Worship songs
-============
-This is an app for Android. It is for worshippers to view the song lyrics on their Android devices. It is available in [Play Store](https://play.google.com/store/apps/details?id=org.worshipsongs).
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+</head>
+<body>
+<h1>About</h1>
+<h3>Description</h3>
+<p>
+This Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.
+</p>
 
-Developer snapshots are available [here](#).
+<h3>Why Worship Songs?</h3>
 
-If the projected screen is far away and you want to view the song lyrics on hand held device or you may wish to carry the song lyrics where ever you go. Either way, this app for Android helps you do this.
+<p>
+Why develop another app when there are tons of similar apps?
+Worship Songs was developed as we couldn't find an app with latest Praise & Worship songs with both Tamil and Romanised text. 
+So, Worship Songs is the world's first mobile app that offers Romanised text for Tamil Christian lyrics. 
+Many Tamil congregations also sing English songs. Worship Songs provides many popular English songs as well so you need not look for another app. 
+And finally, the songs database evolves rapidly. New songs are added often, so you will never miss your favourite song. 
+Did we mention that Worship Songs is open source? Yes, you can be a part of this project. Isn't that great?
+</p>
 
-On starting every time, it attempts to fetch latest songs from internet. The downloads contains both Tamil and English Christian worship songs which can be used in churches. After downloading, the songs are available for you to search and or open one of the songs from the list. Songs lyrics displayed are in regular and romanized Tamil.
+<h3>What are the features offered?</h3>
+ <ul>
+    <li>
+        A large collection of latest Tamil and English Praise & Worship song lyrics.
+    </li>
+    <li>
+        Romanised text for Tamil songs.
+    </li>
+    <li>
+        Ability to quickly search for a song by typing the first few characters in English. For example, typing "Aara" would help you locate the song "Aarathanai Naayagan Neerae" (ஆராதனை நாயகன் நீரே)<br>
+    </li>
+    <li>
+        Songs grouped by Authors & Albums. 
+    </li>
+    <li>
+        Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
+    </li>
+    <li>
+        Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+    </li>
+    <li>
+        Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
+    </li>
+    <li>
+        Keep the screen awake while viewing a song.
+    </li>
+    <li>
+        Professional design with no ads.
+    </li>
+ </ul>
 
-View of the lyrics displayed can be changed with respect to text size, style, and type. You may also set the colour for primary language and secondary language.
+<h3>
+FAQ
+</h3>
 
-While worshipping you can set the screen to be awake such that there won't be a need to touch the device often.
+<h4>Q. I couldn't find a song that I am looking for. What should I do?</h4>
+<p>
+Refine your search terms. For example, instead of "Arathanai", try searching for "Aarathanai". Worship Songs names the song titles that matches closely with their Tamil counterparts.
+</p>
 
-Worship songs uses [OpenLp](http://openlp.org/) database schema. 
+<h4>
+Q. I still couldn't find the song. I bet it's not there in your database. What now?
+</h4>
+<p>
+You can create a new issue at our <a href="https://github.com/crunchersaspire/worshipsongs-db">Github project</a>. Worship Songs is an open source project. Anyone interested can contribute song lyrics. If you are interested, please let us know.
+</p>
 
-This project lives [here](https://github.com/crunchersaspire/worshipsongs)
+<h4>
+Q. I want to request a new feature. How do I go about that?
+</h4>
+<p>
+The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs. You can request for a new feature by creating an issue there.
+</p>
 
-How to build project in command line?
+<h4>
+Q. How do I report bugs?
+</h4>
+<p>
+Please create an issue and apply the label "Bug" in our Github project. Kindly refer the previous question for project details. Please do not report bugs through comments.
+</p>
 
-Clone the project to execute below command
-`git clone https://github.com/crunchersaspire/worshipsongs.git`
-`cd worshipsongs`
-⋅⋅⋅If windows
-`gradlew.bat assembleDebug`
-Then find apk in app\build\outputs\apk directory.
+<h4>
+Q. How can I help you guys?
+</h4>
+<p>
+If you find Worship Songs to be useful, please give it a good rating and share your opinion. Please help others know about this app by spreading word. You can contribute song lyrics or if you are good at Android/iOS development, you can contribute code.
+</p>
+
+<h4>
+Q. Is there a way I can use these songs in my Church?
+</h4>
+<p>
+Absolutely. In fact, the songs database that is shipped with this app is used by <a href="http://tmcsubangjaya.com"> Tamil Methodist Church Subang Jaya</a>. 
+If you want to do that in your Church, you would need to install a software named OpenLP and replace it's default songs database with the one that ships with this app.
+</p>
+
+<h3>Credits</h3>
+
+<ul>
+ <li><a href="http://tmcsubangjaya.com"> Tamil Methodist Church Subang Jaya</a> -  For providing the initial database and actively using the current one.</li>
+ <li>Muthu Vijayan - For designing the app icons.</li>
+</ul>
+
+</body>
+</html>
