@@ -15,10 +15,12 @@ FEATURES
 - A large collection of latest Tamil and English Praise & Worship song lyrics.
 - Romanised text for Tamil songs.
 - Ability to quickly search for a song by typing the first few characters in English. For example, typing "Aara" would help you locate the song "Aarathanai Naayagan Neerae" (ஆராதனை நாயகன் நீரே)
+- Songs grouped by Authors & Albums. 
+- Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
 - Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
 - Keep the screen awake while viewing a song.
-- Automatically update the song database over wifi.
-- Manage song lists through "Services". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+- Simple and sleek design.
+- No advertisements. 
 
 FAQ
 
