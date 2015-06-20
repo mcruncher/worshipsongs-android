@@ -34,10 +34,9 @@ public class SplashScreenActivity extends Activity
 
     public static final String DATABASE_UPDATED_DATE_KEY = "databaseUpdatedDateKey";
     public static final String DATE_PATTERN = "dd/MM/yyyy";
-    private static final int TIME = 3 * 100;// 4 seconds
+    private static final int TIME = 2 * 100;// 4 seconds
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
-    private TextView message;
     private AsyncGitHubRepositoryTask asyncGitHubRepositoryTask;
 
 
