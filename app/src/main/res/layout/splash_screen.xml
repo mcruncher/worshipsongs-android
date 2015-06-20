@@ -8,36 +8,36 @@
         android:id="@+id/imgLogo"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/worship3"
-        android:scaleType="center"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:background="@color/white"
         android:resizeMode="horizontal|vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:scaleType="center"
+        android:src="@drawable/worship3" />
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateDrawable="@drawable/my_progress_indeterminate"
-        android:adjustViewBounds="true"
-        android:resizeMode="horizontal|vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="67dp" />
+    <!--<ProgressBar-->
+    <!--android:id="@+id/progressBar1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:indeterminateDrawable="@drawable/my_progress_indeterminate"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--android:resizeMode="horizontal|vertical"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="67dp" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Checking for database updates..."
-        android:id="@+id/message"
-        android:resizeMode="horizontal|vertical"
-        android:layout_alignBottom="@+id/progressBar1"
-        android:layout_marginBottom="-25dp"
-        android:layout_centerHorizontal="true" />
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+    <!--android:text="Checking for database updates..."-->
+    <!--android:id="@+id/message"-->
+    <!--android:resizeMode="horizontal|vertical"-->
+    <!--android:layout_alignBottom="@+id/progressBar1"-->
+    <!--android:layout_marginBottom="-25dp"-->
+    <!--android:layout_centerHorizontal="true" />-->
 
 
 </RelativeLayout>

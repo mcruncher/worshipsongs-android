@@ -1,3 +1,14 @@
+Version 2.1.0
+
+- Tabbed interface.
+- Songs, Authors, Albums & Playlists (previously called Services) tabs.
+- Easy navigation between various tabs.
+- Search by Author & Album.
+- Redesigned Font settings.
+- Only dev builds shall update the songs db automatically.
+- Release builds shall not update the songs db to improve performance.
+- Extremely fast startup time.
+
 Version 1.1.0
 
 - Manage custom song lists through "Services".

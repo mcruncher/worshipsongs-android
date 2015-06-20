@@ -74,6 +74,7 @@ public class AuthorListAdapterService {
                         Collections.sort(songNames);
                         Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("title", authorName);
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songNames));
                         application.getContext().startActivity(intent);
                     }

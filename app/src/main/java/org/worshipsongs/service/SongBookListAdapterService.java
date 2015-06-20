@@ -26,10 +26,10 @@ import java.util.List;
  */
 public class SongBookListAdapterService {
 
-    List<String> songName = new ArrayList<String>();
+    List<String> songName;
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongBookDao songBookDao = new SongBookDao(application.getContext());
-    private List<Song> songs = new ArrayList<Song>();
+    private List<Song> songs;
     private SongDao songDao = new SongDao(application.getContext());
 
     public ArrayAdapter<String> getSongBookListAdapter(final List<String> songBookNames, final FragmentManager fragmentManager) {
@@ -43,6 +43,8 @@ public class SongBookListAdapterService {
 
                 (rowView.findViewById(R.id.listTextView)).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View arg0) {
+                        songs = new ArrayList<Song>();
+                        songName = new ArrayList<String>();
                         String bookName = textView.getText().toString();
                         SongBook selectedBook = songBookDao.findBookByName(bookName);
                         songs = songDao.getSongTitlesByBookId(selectedBook.getId());
@@ -52,6 +54,7 @@ public class SongBookListAdapterService {
                         Collections.sort(songName);
                         Intent intent = new Intent(application.getContext(), SongListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("title", selectedBook.getName());
                         intent.putStringArrayListExtra("songNames", new ArrayList<String>(songName));
                         application.getContext().startActivity(intent);
                     }
