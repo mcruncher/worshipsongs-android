@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 3
-        versionName "2.0.0-rc2-snapshot"
+        versionName "2.0.0-rc2"
     }
 
     signingConfigs {
