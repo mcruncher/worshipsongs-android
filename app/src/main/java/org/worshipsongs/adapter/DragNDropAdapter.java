@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.worshipsongs.component;
+package org.worshipsongs.adapter;
 
 import android.widget.ListAdapter;
 
