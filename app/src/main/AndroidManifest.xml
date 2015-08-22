@@ -26,7 +26,11 @@
 
         <activity android:name="org.worshipsongs.activity.MainActivity"></activity>
         <activity android:name="org.worshipsongs.activity.SongContentViewActivity"></activity>
-        <activity android:name="org.worshipsongs.activity.ServiceSongListActivity"></activity>
+        <activity android:name="org.worshipsongs.activity.ServiceSongListActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity android:name="org.worshipsongs.activity.UserSettingActivity"
             android:theme="@style/Theme.CustomPreferenceSetting">
             <meta-data

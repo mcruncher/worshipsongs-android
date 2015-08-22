@@ -1,6 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -9,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +41,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Seenivasan on 3/21/2015.
+ * Author: Seenivasan
+ * version 1.0.0
+ *
  */
-public class ServiceSongListActivity extends Activity
+public class ServiceSongListActivity extends AppCompatActivity
 {
 
     private ListView songListView;
@@ -66,7 +70,7 @@ public class ServiceSongListActivity extends Activity
         serviceName = intent.getStringExtra("serviceName");
         System.out.println("Selected Service:" + serviceName);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -224,9 +228,9 @@ public class ServiceSongListActivity extends Activity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
+        inflater.inflate(R.menu.action_bar_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
