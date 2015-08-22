@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+@Deprecated
 public class SwipeListView {
     public static interface SwipeListViewCallback
     {

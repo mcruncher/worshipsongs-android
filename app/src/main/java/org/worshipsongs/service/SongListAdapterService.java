@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.SongsColumnViewActivity;
+import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
@@ -145,7 +145,7 @@ public class SongListAdapterService {
         if (StringUtils.isNotBlank(verseOrder)) {
             verseListData = utilitiesService.getVerseByVerseOrder(verseOrder);
         }
-        Intent intent = new Intent(application.getContext(), SongsColumnViewActivity.class);
+        Intent intent = new Intent(application.getContext(), SongContentViewActivity.class);
         intent.putExtra("serviceName", song.getTitle());
         if (verseListData.size() > 0) {
             intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);

@@ -141,7 +141,7 @@ public class ServiceSongListActivity extends Activity
                 if (StringUtils.isNotBlank(verseOrder)) {
                     verseListData = getVerseByVerseOrder(verseOrder);
                 }
-                Intent intent = new Intent(ServiceSongListActivity.this, SongsColumnViewActivity.class);
+                Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
                 intent.putExtra("serviceName", selectedValue);
                 if (verseListData.size() > 0) {
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);

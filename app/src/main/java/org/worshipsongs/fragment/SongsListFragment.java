@@ -1,25 +1,21 @@
 package org.worshipsongs.fragment;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
+
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
@@ -29,14 +25,16 @@ import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author : Seenivasan
+ * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
+{
 
     public PopupWindow popupWindow;
     private SongDao songDao;
@@ -55,7 +53,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private MenuItem mSearchMenuItem;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         songDao = new SongDao(getActivity());
@@ -63,12 +62,14 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         initSetUp();
     }
 
-    private void initSetUp() {
+    private void initSetUp()
+    {
         songDao.open();
         loadSongs();
     }
 
-    private void loadSongs() {
+    private void loadSongs()
+    {
         songs = songDao.findTitles();
         for (Song song : songs) {
             if (!song.getTitle().equals(null)) {
@@ -84,31 +85,38 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater = new MenuInflater(getActivity().getApplicationContext());
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setIconified(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // Inflate menu to add items to action bar if it is present.
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), getFragmentManager());
-                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), getFragmentManager()));
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
                 adapter = adapterService.getSongListAdapter(getFilteredSong(query), getFragmentManager());
                 setListAdapter(adapterService.getSongListAdapter(getFilteredSong(query), getFragmentManager()));
                 return true;
             }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), getFragmentManager());
+                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), getFragmentManager()));
+                return true;
+
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private List<String> getFilteredSong(String text) {
+    private List<String> getFilteredSong(String text)
+    {
         List<String> filteredSongs = new ArrayList<String>();
         for (String song : songsTitleList) {
             if (song.toLowerCase().contains(text.toLowerCase())) {
@@ -119,20 +127,23 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setQuery("", false);
-        searchView.clearFocus();
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//        searchView.setQuery("", false);
+//        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh()
+    {
         Log.d("On refresh in Song list", "");
         List<String> serviceNames = new ArrayList<String>();
         serviceNames.addAll(commonService.readServiceName());
@@ -140,11 +151,13 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         setListAdapter(adapterService.getSongListAdapter(songsTitleList, getFragmentManager()));
     }
 
-    public String[] getServiceNames() {
+    public String[] getServiceNames()
+    {
         return serviceNames;
     }
 
-    public void setServiceNames(List<String> names) {
+    public void setServiceNames(List<String> names)
+    {
         names.add(0, "New playlist...");
         serviceNames = new String[names.size()];
         names.toArray(serviceNames);

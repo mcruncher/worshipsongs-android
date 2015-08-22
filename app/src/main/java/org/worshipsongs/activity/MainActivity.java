@@ -28,14 +28,14 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.NavDrawerItem;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.AboutWebViewFragment;
-import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
-import org.worshipsongs.fragment.TabFragment;
+import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class MainActivity extends FragmentActivity
 {
     private DrawerLayout FragentLayout;
@@ -174,7 +174,7 @@ public class MainActivity extends FragmentActivity
             case 0:
                 // Initialization
                 getActionBar().setTitle(R.string.app_name);
-                fragment = new TabFragment();
+                fragment = new HomeTabFragment();
                 break;
             case 1:
                 Intent intent = new Intent(this,

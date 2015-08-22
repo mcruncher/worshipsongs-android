@@ -25,7 +25,7 @@ public class UserPreferenceSettingService {
     }
 
     public float getFontSize() {
-        return sharedPreferences.getInt("fontSize", 10);
+        return sharedPreferences.getInt("fontSize", 18);
     }
 
     public Typeface getFontStyle() {

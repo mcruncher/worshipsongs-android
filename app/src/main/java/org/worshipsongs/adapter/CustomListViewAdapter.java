@@ -22,6 +22,8 @@ import org.worshipsongs.service.UserPreferenceSettingService;
  * @Author : Seenivasan
  * @Version : 1.0
  */
+
+@Deprecated
 public class CustomListViewAdapter extends BaseAdapter
 {
     private static final int TYPE_ITEM = 0;

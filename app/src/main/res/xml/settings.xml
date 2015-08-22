@@ -18,7 +18,10 @@
     <!--</PreferenceCategory>-->
 
 
-    <PreferenceCategory android:title="@string/pref_text_setting">
+    <PreferenceCategory
+        android:title="@string/pref_text_setting"
+
+        android:textColor="@color/background_floating_material_dark">
         <org.worshipsongs.preference.FontDialogPreference
             android:key="customFontSize"
             android:summary="Change the Font size and style for text"

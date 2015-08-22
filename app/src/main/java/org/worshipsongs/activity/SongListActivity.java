@@ -1,18 +1,19 @@
 package org.worshipsongs.activity;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
+
 
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
-public class SongListActivity extends FragmentActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SongListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ListView songListView;
     private List<String> songNames = new ArrayList<String>();
@@ -41,7 +42,7 @@ public class SongListActivity extends FragmentActivity implements SwipeRefreshLa
         songNames = intent.getStringArrayListExtra("songNames");
         songListView = (ListView) findViewById(R.id.song_list_view);
         String title = intent.getStringExtra("title");
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -54,25 +55,26 @@ public class SongListActivity extends FragmentActivity implements SwipeRefreshLa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager);
-                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager));
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager);
-                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager));
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
+        //TODO:Add search view
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.default_action_bar_menu, menu);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager);
+//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager));
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                adapter = adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager);
+//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager));
+//                return true;
+//            }
+//        };
+//        searchView.setOnQueryTextListener(textChangeListener);
         super.onCreateOptionsMenu(menu);
         return true;
     }
