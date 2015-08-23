@@ -1,6 +1,7 @@
 package org.worshipsongs.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.NavUtils;
@@ -40,6 +41,15 @@ public class UserSettingActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
+        Intent intent = new Intent(UserSettingActivity.this, NavigationDrawerActivity.class);
+        startActivity(intent);
     }
 
     @Override
