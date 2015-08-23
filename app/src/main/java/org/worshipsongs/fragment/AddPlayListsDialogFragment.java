@@ -2,17 +2,14 @@ package org.worshipsongs.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;

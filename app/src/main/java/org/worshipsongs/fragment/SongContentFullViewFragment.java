@@ -1,6 +1,5 @@
 package org.worshipsongs.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
-
-import java.util.List;
 
 /**
  * author:madasamy

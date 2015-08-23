@@ -8,14 +8,11 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.PopupWindow;
-
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;

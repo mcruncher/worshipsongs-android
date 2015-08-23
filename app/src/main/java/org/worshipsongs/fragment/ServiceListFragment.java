@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -22,13 +22,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.ServiceSongListActivity;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -97,6 +98,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+
                 return true;
             }
         });
@@ -159,26 +161,49 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        inflater = new MenuInflater(getActivity().getApplicationContext());
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
-        searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+            public boolean onQueryTextSubmit(String query)
+            {
+                adapter.getFilter().filter(query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextChange(String query)
+            {
                 adapter.getFilter().filter(query);
                 return true;
+
             }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
+        });
+
+//        inflater = new MenuInflater(getActivity().getApplicationContext());
+//        inflater.inflate(R.menu.default_action_bar_menu, menu);
+//        SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
+//        searchView.setIconifiedByDefault(true);
+//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                adapter.getFilter().filter(query);
+//                return true;
+//            }
+//        };
+//        searchView.setOnQueryTextListener(textChangeListener);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
