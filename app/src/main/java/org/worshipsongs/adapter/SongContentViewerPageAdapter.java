@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.worshipsongs.fragment.SongContentFullViewFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,22 +16,29 @@ import java.util.List;
  */
 public class SongContentViewerPageAdapter extends FragmentStatePagerAdapter
 {
-    private  List<String> contents;
+    private List<String> contents;
+    private List<ArrayList<String>> songList;
 
-    public SongContentViewerPageAdapter(FragmentManager fragmentManager, List<String> contents)
+//    public SongContentViewerPageAdapter(FragmentManager fragmentManager, List<String> contents)
+//    {
+//        super(fragmentManager);
+//        this.contents = contents;
+//    }
+
+    public SongContentViewerPageAdapter(FragmentManager fragmentManager, List<ArrayList<String>> songList)
     {
         super(fragmentManager);
-        this.contents = contents;
+        this.songList = songList;
     }
+
 
     @Override
     public Fragment getItem(int position)
     {
         SongContentFullViewFragment songContentFullViewFragment = new SongContentFullViewFragment();
-        Bundle  bundle = new Bundle();
-        bundle.putString("content", contents.get(position));
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("content", songList.get(position));
         songContentFullViewFragment.setArguments(bundle);
-        //songContentFullViewFragment.setText(contents.get(0));
         return songContentFullViewFragment;
     }
 
@@ -45,6 +53,6 @@ public class SongContentViewerPageAdapter extends FragmentStatePagerAdapter
     public int getCount()
     {
 
-        return contents.size();
+        return songList.size();
     }
 }

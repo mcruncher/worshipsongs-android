@@ -2,6 +2,7 @@ package org.worshipsongs.component;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.worshipsongs.fragment.AuthorListFragment;
@@ -14,23 +15,14 @@ import java.util.List;
 /**
  * Created by madasamy on 8/16/15.
  */
-public class HomeViewerPageAdapter extends FragmentStatePagerAdapter
+public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
 
-    CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when HomeViewerPageAdapter is created
-    int NumbOfTabs; // Store the number of tabs, this will also be passed when the HomeViewerPageAdapter is created
+    //CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when HomeViewerPageAdapter is created
+    //int NumbOfTabs; // Store the number of tabs, this will also be passed when the HomeViewerPageAdapter is created
 
     private List<String> titles;
 
-
-    // Build a Constructor and assign the passed Values to appropriate values in the class
-    public HomeViewerPageAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb)
-    {
-        super(fm);
-        this.Titles = mTitles;
-        this.NumbOfTabs = mNumbOfTabsumb;
-
-    }
 
     public HomeViewerPageAdapter(FragmentManager fragmentManager, List<String> titles)
     {
@@ -55,6 +47,8 @@ public class HomeViewerPageAdapter extends FragmentStatePagerAdapter
         }
         return null;
     }
+
+
 
     // This method return the titles for the Tabs in the Tab Strip
 

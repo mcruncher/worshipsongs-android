@@ -3,6 +3,7 @@ package org.worshipsongs.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class HomeTabFragment extends Fragment
 {
-    private List<String> titles = Arrays.asList("Songs", "Artists", "Albums", "Playlists");
+    private List<String> titles;
     private ViewPager pager;
     private HomeViewerPageAdapter adapter;
     private SlidingTabLayout tabs;
@@ -30,8 +31,12 @@ public class HomeTabFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = (View) inflater.inflate(R.layout.home_tab_layout, container, false);
-        // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        titles = Arrays.asList("Songs", "Artists", "Albums", "Playlists");
+        // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.ome
+        Log.i(this.getClass().getSimpleName(), "Preparing to load home view fragment");
         adapter = new HomeViewerPageAdapter(getChildFragmentManager(), titles);
+        adapter.notifyDataSetChanged();
+
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -50,6 +55,9 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+        Log.i(this.getClass().getSimpleName(), "Finished loading home fragment");
         return view;
     }
+
+
 }

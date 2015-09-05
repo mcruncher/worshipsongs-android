@@ -48,8 +48,7 @@ public class UserSettingActivity extends AppCompatActivity
     {
         super.onBackPressed();
         finish();
-        Intent intent = new Intent(UserSettingActivity.this, NavigationDrawerActivity.class);
-        startActivity(intent);
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override

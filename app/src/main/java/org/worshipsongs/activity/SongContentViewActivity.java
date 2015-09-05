@@ -38,7 +38,7 @@ public class SongContentViewActivity extends AppCompatActivity
     private UserPreferenceSettingService userPreferenceSettingService;
     private List<String> verseName;
     private List<String> verseContent;
-    private List<String> contents = new ArrayList<>();
+    private ArrayList<String> contents = new ArrayList<>();
     private TextView textView;
     private ActionBar actionBar;
     private CustomListViewAdapter customListViewAdapter;
@@ -74,7 +74,6 @@ public class SongContentViewActivity extends AppCompatActivity
         if (verseName != null) {
             for (int i = 0; i < verseName.size(); i++) {
                 Log.d(this.getClass().getName(), "customListViewAdapter Verse Content :" + verseContent.get(i));
-               // customListViewAdapter.addItem(verseContent.get(i));
                 contents.add(verseContent.get(i));
             }
         }
@@ -89,9 +88,10 @@ public class SongContentViewActivity extends AppCompatActivity
             recList.setAdapter(ca);
         } else {
             actionBar.hide();
-            // adapter = new HomeViewerPageAdapter(getChildFragmentManager(), titles);
+            List<ArrayList<String>> contentList = new ArrayList<>();
+            contentList.add(contents);
             SongContentViewerPageAdapter songContentViewerPageAdapter =
-                    new SongContentViewerPageAdapter(getSupportFragmentManager(), contents);
+                    new SongContentViewerPageAdapter(getSupportFragmentManager(), contentList);
             // Assigning ViewPager View and setting the adapter
             ViewPager pager = (ViewPager) findViewById(R.id.pager);
             pager.setAdapter(songContentViewerPageAdapter);
@@ -113,18 +113,6 @@ public class SongContentViewActivity extends AppCompatActivity
             tabs.setViewPager(pager);
         }
     }
-
-//    private void initializeAdapter()
-//    {
-//        customListViewAdapter = new CustomListViewAdapter(this);
-//        if (verseName != null) {
-//            for (int i = 0; i < verseName.size(); i++) {
-//                Log.d(this.getClass().getName(),"customListViewAdapter Verse Content :"+ verseContent.get(i));
-//                customListViewAdapter.addItem(verseContent.get(i));
-//            }
-//        }
-//        setListAdapter(customListViewAdapter);
-//    }
 
     public void onResume()
     {

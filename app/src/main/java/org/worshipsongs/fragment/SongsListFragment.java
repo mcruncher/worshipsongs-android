@@ -53,6 +53,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.i(this.getClass().getSimpleName(), "Preparing to load db..");
         setHasOptionsMenu(true);
         songDao = new SongDao(getActivity());
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
@@ -161,4 +162,10 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY",  "WORKAROUND_FOR_BUG_19917_VALUE");
+        super.onSaveInstanceState(outState);
+    }
 }
