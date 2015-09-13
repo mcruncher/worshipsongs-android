@@ -17,9 +17,9 @@ public final class CommonConstants
     public static final String START_TAG_PATTERN = "\\{[\\w,\\W,\\d,\\D]\\}";
     public static final String END_TAG_PATTERN = "\\{\\[\\w,\\W,\\d,\\D]\\}";
 
-    @Deprecated
+
     public static final String TITLE_LIST_KEY = "titles";
-    public static final String SIZE_KEY = "size";
+
     public static final String TITLE_KEY = "title";
     public static final String POSITION_KEY = "position";
 

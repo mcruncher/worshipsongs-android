@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
@@ -20,19 +21,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Seenivasan on 5/17/2015.
+ * author: Seenivasan, Madasamy
+ * version: 2.1.0
  */
-public class SongListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-
+public class SongListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
+{
     private ListView songListView;
     private List<String> songNames = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
     private FragmentManager fragmentManager;
     private CommonService commonService = new CommonService();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
@@ -45,13 +48,20 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
         fragmentManager = getSupportFragmentManager();
-        adapter = adapterService.getSongListAdapter(songNames, fragmentManager);
+        List<Song> songs = new ArrayList<>();
+        for (String songTitle : songNames) {
+            Song song = new Song();
+            song.setTitle(songTitle);
+            songs.add(song);
+        }
+        adapter = adapterService.getNewSongListAdapter(songs, fragmentManager);
         initializeServiceNames();
         songListView.setAdapter(adapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         //TODO:Add search view
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.default_action_bar_menu, menu);
@@ -76,7 +86,8 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
         return true;
     }
 
-    private List<String> getFilteredSong(String text) {
+    private List<String> getFilteredSong(String text)
+    {
         List<String> filteredSongs = new ArrayList<String>();
         for (String song : songNames) {
             if (song.toLowerCase().contains(text.toLowerCase())) {
@@ -87,7 +98,8 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -97,17 +109,20 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
         super.onPrepareOptionsMenu(menu);
         return true;
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh()
+    {
         initializeServiceNames();
     }
 
-    private void initializeServiceNames() {
+    private void initializeServiceNames()
+    {
         List<String> serviceNames = new ArrayList<String>();
         serviceNames.addAll(commonService.readServiceName());
         // adapterService.setServiceNames(serviceNames);
