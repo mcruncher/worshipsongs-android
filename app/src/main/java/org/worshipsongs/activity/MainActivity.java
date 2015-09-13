@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity
         appTitle = drawerTitle = getTitle();
         songDao = new SongDao(this);
         songDao.open();
-        songList = songDao.findTitles();
+        songList = songDao.findAll();
         // load slide menu items
         navigationMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         // nav drawer icons from resources

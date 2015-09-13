@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,16 +14,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.CustomListViewAdapter;
-import org.worshipsongs.adapter.SongCardViewAdapter;
-import org.worshipsongs.adapter.SongContentViewerPageAdapter;
-import org.worshipsongs.component.HomeViewerPageAdapter;
+import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
+import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -36,9 +32,6 @@ import java.util.List;
 public class SongContentViewActivity extends AppCompatActivity
 {
     private UserPreferenceSettingService userPreferenceSettingService;
-    private List<String> verseName;
-    private List<String> verseContent;
-    private ArrayList<String> contents = new ArrayList<>();
     private TextView textView;
     private ActionBar actionBar;
     private CustomListViewAdapter customListViewAdapter;
@@ -64,39 +57,20 @@ public class SongContentViewActivity extends AppCompatActivity
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(intent.getStringExtra("serviceName"));
-        verseName = new ArrayList<String>();
-        verseContent = new ArrayList<String>();
-        verseName = intent.getStringArrayListExtra("verseName");
-        verseContent = intent.getStringArrayListExtra("verseContent");
-        Log.d(this.getClass().getName(), "Verse Name :" + verseName);
-        Log.d(this.getClass().getName(), "Verse Content :" + verseName);
-        if (verseName != null) {
-            for (int i = 0; i < verseName.size(); i++) {
-                Log.d(this.getClass().getName(), "customListViewAdapter Verse Content :" + verseContent.get(i));
-                contents.add(verseContent.get(i));
-            }
-        }
+
+        ArrayList<String> songList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
+        int position = intent.getExtras().getInt(CommonConstants.POSITION_KEY);
+
+        //actionBar.setTitle(songList.get(0));
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
-            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-            recList.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(this);
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            recList.setLayoutManager(llm);
-            //ContactAdapter ca = new ContactAdapter(createList(30));
-            SongCardViewAdapter ca = new SongCardViewAdapter(contents, this);
-            recList.setAdapter(ca);
-        } else {
-            actionBar.hide();
-            List<ArrayList<String>> contentList = new ArrayList<>();
-            contentList.add(contents);
-            SongContentViewerPageAdapter songContentViewerPageAdapter =
-                    new SongContentViewerPageAdapter(getSupportFragmentManager(), contentList);
+            SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
+                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), songList);
             // Assigning ViewPager View and setting the adapter
             ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            pager.setAdapter(songContentViewerPageAdapter);
+            pager.setAdapter(songContentLandScapeViewerPageAdapter);
             // Assiging the Sliding Tab Layout View
             SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+            //tabs.setVerticalScrollbarPosition();
             tabs.setDistributeEvenly(false);
             // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
             // Setting Custom Color for the Scroll bar indicator of the Tab View
@@ -108,9 +82,35 @@ public class SongContentViewActivity extends AppCompatActivity
                     return getResources().getColor(android.R.color.background_dark);
                 }
             });
-            tabs.setVisibility(View.INVISIBLE);
+            tabs.setVisibility(View.GONE);
             // Setting the ViewPager For the SlidingTabsLayout
             tabs.setViewPager(pager);
+            pager.setCurrentItem(position);
+        } else {
+            actionBar.hide();
+            SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
+                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), songList);
+            // Assigning ViewPager View and setting the adapter
+            ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
+            pager.setAdapter(songContentLandScapeViewerPageAdapter);
+            // Assiging the Sliding Tab Layout View
+            SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.land_tabs);
+            //tabs.setVerticalScrollbarPosition();
+            tabs.setDistributeEvenly(false);
+            // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+            // Setting Custom Color for the Scroll bar indicator of the Tab View
+            tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
+            {
+                @Override
+                public int getIndicatorColor(int position)
+                {
+                    return getResources().getColor(android.R.color.background_dark);
+                }
+            });
+            tabs.setVisibility(View.GONE);
+            // Setting the ViewPager For the SlidingTabsLayout
+            tabs.setViewPager(pager);
+            pager.setCurrentItem(position);
         }
     }
 
