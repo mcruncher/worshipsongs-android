@@ -127,50 +127,36 @@ public class SongDao extends AbstractDao
         return song;
     }
 
-//
-//
-//    public void setVersesAndContent(Song song)
-//    {
-//
-//        //Song song = songDao.getSongByTitle(selectedSong);
-//        String lyrics = song.getLyrics();
-//        List<Verse> verseList = utilitiesService.getVerse(lyrics);
-//        List<Column> verseNames = new ArrayList<Column>();
-//        List<Column> verseContent = new ArrayList<Column>();
-//        Map<String, String> verseDataMap = new HashMap<String, String>();
-//        for (Verse verses : verseList) {
-//            verseNames.add(new Column( verses.getType() + verses.getLabel()));
-//            verseContent.add(new Column( verses.getContent()));
-//            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-//        }
-//        List<Column> verseListDataContent = new ArrayList<Column>();
-//        List<Column> verseListData = new ArrayList<Column>();
-//        String verseOrder = song.getVerseOrder();
-//        if (StringUtils.isNotBlank(verseOrder)) {
-//            List<String> verseByVerseOrder = utilitiesService.getVerseByVerseOrder(verseOrder);
-//            for (String verse : verseByVerseOrder) {
-//                verseListData.add(new Column(verse));
-//            }
-//        }
-////        Intent intent = new Intent(application.getContext(), SongContentViewActivity.class);
-////        intent.putExtra("serviceName", song.getTitle());
-//        if (verseListData.size() > 0) {
-//            song.setVerseColumns(verseListData);
-////            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-//            for (int i = 0; i < verseListData.size(); i++) {
-//                //verseListDataContent.add(verseDataMap.get(verseListData.get(i).getName()));
-//                verseListDataContent.add(new Column(verseDataMap.get(verseListData.get(i).getName())));
-//            }
-//            song.setContentColumns(verseListDataContent);
-////            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
-//            //  Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
-//        } else {
-//            song.setVerseColumns(verseNames);
-//            song.setContentColumns(verseContent);
-////            intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-////            intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
-//        }
-////        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////        application.getContext().startActivity(intent);
-   // }
+    public List<String> findContentsByTitle(String title)
+    {
+        Song song = getSongByTitle(title);
+        String lyrics = song.getLyrics();
+        ArrayList<String> contents = new ArrayList<>();
+        List<Verse> verseList = utilitiesService.getVerse(lyrics);
+        List<String> verseName = new ArrayList<String>();
+        List<String> contentsByDefaultOrder = new ArrayList<String>();
+        Map<String, String> verseDataMap = new HashMap<String, String>();
+        for (Verse verses : verseList) {
+            verseName.add(verses.getType() + verses.getLabel());
+            contentsByDefaultOrder.add(verses.getContent());
+            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
+        }
+        List<String> contentsByVerseOrder = new ArrayList<String>();
+        List<String> verseOrderList = new ArrayList<String>();
+        String verseOrder = song.getVerseOrder();
+        if (StringUtils.isNotBlank(verseOrder)) {
+            verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
+        }
+
+        if (verseOrderList.size() > 0) {
+            for (int i = 0; i < verseOrderList.size(); i++) {
+                contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
+            }
+            contents.addAll(contentsByVerseOrder);
+            Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
+        } else {
+            contents.addAll(contentsByDefaultOrder);
+        }
+        return contents;
+    }
 }

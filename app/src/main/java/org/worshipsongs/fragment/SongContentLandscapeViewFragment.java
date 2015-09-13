@@ -50,46 +50,12 @@ public class SongContentLandscapeViewFragment extends Fragment
         preferenceSettingService = new UserPreferenceSettingService();
         textView = (TextView) view.findViewById(R.id.text);
         Bundle bundle = getArguments();
-        setText(getContents(bundle.getString(CommonConstants.TITLE_KEY)));
+        setText(songDao.findContentsByTitle(bundle.getString(CommonConstants.TITLE_KEY)));
         return view;
     }
 
-    ArrayList<String> getContents(String title)
+    private void setText(final List<String> content)
     {
-        Song song = songDao.getSongByTitle(title);
-        String lyrics = song.getLyrics();
-        ArrayList<String> contents = new ArrayList<>();
-        List<Verse> verseList = utilitiesService.getVerse(lyrics);
-        List<String> verseName = new ArrayList<String>();
-        List<String> contentsByDefaultOrder = new ArrayList<String>();
-        Map<String, String> verseDataMap = new HashMap<String, String>();
-        for (Verse verses : verseList) {
-            verseName.add(verses.getType() + verses.getLabel());
-            contentsByDefaultOrder.add(verses.getContent());
-            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-        }
-        List<String> contentsByVerseOrder = new ArrayList<String>();
-        List<String> verseOrderList = new ArrayList<String>();
-        String verseOrder = song.getVerseOrder();
-        if (StringUtils.isNotBlank(verseOrder)) {
-            verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
-        }
-
-        if (verseOrderList.size() > 0) {
-            for (int i = 0; i < verseOrderList.size(); i++) {
-                contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
-            }
-            contents.addAll(contentsByVerseOrder);
-            Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
-        } else {
-            contents.addAll(contentsByDefaultOrder);
-        }
-        return contents;
-    }
-
-    private void setText(final ArrayList<String> content)
-    {
-        //textView.setAnimation();
         textView.setOnTouchListener(new SwipeTouchListener(SongContentLandscapeViewFragment.this.getActivity())
         {
             @Override
