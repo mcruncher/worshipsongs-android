@@ -43,16 +43,14 @@ import java.util.Map;
 /**
  * Author: Seenivasan
  * version 1.0.0
- *
  */
 public class ServiceSongListActivity extends AppCompatActivity
 {
-
     private ListView songListView;
     private VerseParser verseparser;
     private String songTitle;
     private SongDao songDao;
-    private List<Song> songs;
+    private ArrayList<String> titles;
     private List<Verse> verseList;
     private ArrayAdapter<String> adapter;
     private String[] dataArray;
@@ -68,7 +66,7 @@ public class ServiceSongListActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
-        System.out.println("Selected Service:" + serviceName);
+        //System.out.println("Selected Service:" + serviceName);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -126,52 +124,17 @@ public class ServiceSongListActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id)
             {
-
                 String selectedValue = songListView.getItemAtPosition(position).toString();
-                song = songDao.getSongByTitle(selectedValue);
-                String lyrics = song.getLyrics();
-                verseList = getVerse(lyrics);
-                List<String> verseName = new ArrayList<String>();
-                List<String> verseContent = new ArrayList<String>();
-                Map<String, String> verseDataMap = new HashMap<String, String>();
-                for (Verse verses : verseList) {
-                    verseName.add(verses.getType() + verses.getLabel());
-                    verseContent.add(verses.getContent());
-                    verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-                }
-                List<String> verseListDataContent = new ArrayList<String>();
-                List<String> verseListData = new ArrayList<String>();
-                String verseOrder = song.getVerseOrder();
-                if (StringUtils.isNotBlank(verseOrder)) {
-                    verseListData = getVerseByVerseOrder(verseOrder);
-                }
                 Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
-                intent.putExtra("serviceName", selectedValue);
-                if (verseListData.size() > 0) {
-                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-                    for (int i = 0; i < verseListData.size(); i++) {
-                        verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
-                    }
-                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
-                    Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
-                } else {
-                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
-                }
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
+                bundle.putInt(CommonConstants.POSITION_KEY, position);
+                intent.putExtras(bundle);
+                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
             }
         });
-    }
-
-    private void initSetUp()
-    {
-        songDao.open();
-        loadSongs();
-        dataArray = new String[songs.size()];
-        for (int i = 0; i < songs.size(); i++) {
-            dataArray[i] = songs.get(i).toString();
-        }
     }
 
     private void loadSongs()
@@ -179,6 +142,10 @@ public class ServiceSongListActivity extends AppCompatActivity
         File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
+        titles = new ArrayList<>();
+        for (String title : propertyValues) {
+            titles.add(title);
+        }
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, propertyValues);
         songListView.setAdapter(adapter);
     }
