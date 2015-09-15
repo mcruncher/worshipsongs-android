@@ -54,9 +54,10 @@ public class SongContentViewActivity extends AppCompatActivity
         }
         Intent intent = getIntent();
         actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayShowHomeEnabled(false);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.hide();
 
         ArrayList<String> songList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         int position = intent.getExtras().getInt(CommonConstants.POSITION_KEY);
