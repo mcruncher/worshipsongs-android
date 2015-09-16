@@ -3,6 +3,7 @@ package org.worshipsongs.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -54,15 +55,11 @@ public class SongContentViewActivity extends AppCompatActivity
         }
         Intent intent = getIntent();
         actionBar = getSupportActionBar();
-//        actionBar.setDisplayShowHomeEnabled(false);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.hide();
 
         ArrayList<String> songList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         int position = intent.getExtras().getInt(CommonConstants.POSITION_KEY);
 
-        //actionBar.setTitle(songList.get(0));
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
             SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), songList);
@@ -88,7 +85,6 @@ public class SongContentViewActivity extends AppCompatActivity
             tabs.setViewPager(pager);
             pager.setCurrentItem(position);
         } else {
-            actionBar.hide();
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), songList);
             // Assigning ViewPager View and setting the adapter

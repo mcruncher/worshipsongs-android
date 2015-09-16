@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -14,7 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.component.SwipeTouchListener;
+import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CustomTagColorService;
@@ -39,19 +43,37 @@ public class SongContentLandscapeViewFragment extends Fragment
     private int currentPosition;
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongDao songDao = new SongDao(application.getContext());
-    private UtilitiesService utilitiesService = new UtilitiesService();
+    private AuthorSongDao authorSongDao = new AuthorSongDao(application.getContext());
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = (View) inflater.inflate(R.layout.song_content_landscape_view_fragment, container, false);
+        hideStatusBar();
         customTagColorService = new CustomTagColorService();
         preferenceSettingService = new UserPreferenceSettingService();
         textView = (TextView) view.findViewById(R.id.text);
         Bundle bundle = getArguments();
-        setText(songDao.findContentsByTitle(bundle.getString(CommonConstants.TITLE_KEY)));
+        String title = bundle.getString(CommonConstants.TITLE_KEY);
+        setText(songDao.findContentsByTitle(title));
+       // AuthorSong byTitle = authorSongDao.findByTitle(title);
+        //Log.i(this.getClass().getSimpleName(), "Author song " + byTitle);
         return view;
+    }
+
+    private void hideStatusBar()
+    {
+        if (Build.VERSION.SDK_INT < 16) {
+           getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            View decorView = getActivity().getWindow().getDecorView();
+            // show the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
     }
 
     private void setText(final List<String> content)

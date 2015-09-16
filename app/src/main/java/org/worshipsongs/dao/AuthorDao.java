@@ -24,10 +24,10 @@ public class AuthorDao extends AbstractDao {
     private String[] allColumns = {COLUMN_ID, COLUMN_FIRST_NAME,
             COLUMN_LAST_NAME, COLUMN_DISPLAY_NAME};
 
-    public static final String TABLE_NAME_AUTHOR_SONGS = "authors_songs";
+   // public static final String TABLE_NAME_AUTHOR_SONGS = "authors_songs";
     public static final String COLUMN_AUTHOR_ID = "author_id";
     private String[] columns = {COLUMN_AUTHOR_ID};
-    public static final String COLUMN_SONG_ID = "song_id";
+    //public static final String COLUMN_SONG_ID = "song_id";
 
 
     public AuthorDao(Context context) {

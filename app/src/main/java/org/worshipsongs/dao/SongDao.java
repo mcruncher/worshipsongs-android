@@ -1,13 +1,10 @@
 package org.worshipsongs.dao;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
-import org.worshipsongs.activity.SongContentViewActivity;
-import org.worshipsongs.domain.Column;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.UtilitiesService;
@@ -23,7 +20,7 @@ import java.util.Map;
  */
 public class SongDao extends AbstractDao
 {
-    public static final String TABLE_NAME_AUTHOR = "songs";
+    public static final String TABLE_NAME = "songs";
     public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
             "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
@@ -53,7 +50,7 @@ public class SongDao extends AbstractDao
     public List<Song> findAll()
     {
         List<Song> songs = new ArrayList<Song>();
-        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+        Cursor cursor = getDatabase().query(TABLE_NAME,
                 new String[]{"title", "lyrics", "verse_order"}, null, null, null, null, "title");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -69,7 +66,7 @@ public class SongDao extends AbstractDao
     {
         Song song = new Song();
         String whereClause = " title" + "=\"" + title + "\"";
-        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+        Cursor cursor = getDatabase().query(TABLE_NAME,
                 new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
         cursor.moveToFirst();
         song = cursorToSong(cursor);
@@ -83,7 +80,7 @@ public class SongDao extends AbstractDao
         try {
             Log.d(this.getClass().getName(), "Song ID" + songId);
             String whereClause = " id=" + songId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+            Cursor cursor = getDatabase().query(TABLE_NAME,
                     new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             song = cursorToSong(cursor);
@@ -101,7 +98,7 @@ public class SongDao extends AbstractDao
         List<Song> songs = new ArrayList<Song>();
         try {
             String whereClause = " song_book_id=" + songBookId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+            Cursor cursor = getDatabase().query(TABLE_NAME,
                     new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
