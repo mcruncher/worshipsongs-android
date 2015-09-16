@@ -12,24 +12,17 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.component.SwipeTouchListener;
 import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.AuthorSong;
-import org.worshipsongs.domain.Song;
-import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * author:madasamy
@@ -44,6 +37,7 @@ public class SongContentLandscapeViewFragment extends Fragment
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongDao songDao = new SongDao(application.getContext());
     private AuthorSongDao authorSongDao = new AuthorSongDao(application.getContext());
+    private TextView songSlideTextView;
 
 
     @Nullable
@@ -57,20 +51,24 @@ public class SongContentLandscapeViewFragment extends Fragment
         textView = (TextView) view.findViewById(R.id.text);
         Bundle bundle = getArguments();
         String title = bundle.getString(CommonConstants.TITLE_KEY);
-        setText(songDao.findContentsByTitle(title));
-       // AuthorSong byTitle = authorSongDao.findByTitle(title);
-        //Log.i(this.getClass().getSimpleName(), "Author song " + byTitle);
+        List<String> contents = songDao.findContentsByTitle(title);
+        setText(contents);
+        AuthorSong authorSong = authorSongDao.findByTitle(title);
+        Log.i(this.getClass().getSimpleName(), "Author song " + authorSong);
+        setSongTitle(view, title);
+        setAuthorName(view, authorSong);
+        setSongSlide(view, contents.size());
         return view;
     }
+
 
     private void hideStatusBar()
     {
         if (Build.VERSION.SDK_INT < 16) {
-           getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             View decorView = getActivity().getWindow().getDecorView();
-            // show the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
         }
@@ -85,11 +83,11 @@ public class SongContentLandscapeViewFragment extends Fragment
             {
                 if (content != null && !content.isEmpty()) {
                     if (currentPosition >= 0) {
-                        Log.i(this.getClass().getSimpleName(), "Current position: " + currentPosition);
                         setContent(content.get(currentPosition), textView);
                         if (currentPosition != 0) {
                             currentPosition = currentPosition - 1;
                         }
+                        songSlideTextView.setText(getSongSlideValue(currentPosition, content.size()));
                     }
                 }
             }
@@ -105,6 +103,7 @@ public class SongContentLandscapeViewFragment extends Fragment
                         if (currentPosition != (content.size() - 1)) {
                             currentPosition = currentPosition + 1;
                         }
+                        songSlideTextView.setText(getSongSlideValue(currentPosition, content.size()));
                     }
                 }
             }
@@ -122,5 +121,29 @@ public class SongContentLandscapeViewFragment extends Fragment
         textView.setTextSize(preferenceSettingService.getFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
+    }
+
+    private void setSongTitle(View view, String title)
+    {
+        TextView songTitleTextView = (TextView) view.findViewById(R.id.song_title);
+        songTitleTextView.setText(title);
+    }
+
+    private void setAuthorName(View view, AuthorSong authorSong)
+    {
+        TextView authorNameTextView = (TextView) view.findViewById(R.id.author_name);
+        authorNameTextView.setText(authorSong.getAuthor().getDisplayName());
+    }
+
+    private void setSongSlide(View view, int size)
+    {
+        songSlideTextView = (TextView) view.findViewById(R.id.song_slide);
+        songSlideTextView.setText(getSongSlideValue(0, size));
+    }
+
+    private String getSongSlideValue(int currentPosition, int size)
+    {
+        int slidePosition = currentPosition + 1;
+        return slidePosition + " of " + size;
     }
 }

@@ -88,5 +88,8 @@
     <string name="fontSize">Size</string>
     <string name="addToPlayList">Add to playlist</string>
     <string name="newList">New list</string>
+    <string name="title">Title :</string>
+    <string name="author">Author :</string>
+    <string name="slide">Slide :</string>
 
 </resources>
