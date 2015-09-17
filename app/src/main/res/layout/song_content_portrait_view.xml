@@ -21,7 +21,7 @@
                 android:id="@+id/back_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow_back_white_18dp"/>
+                android:src="@drawable/arrow_back_white"/>
         </LinearLayout>
 
         <TextView
