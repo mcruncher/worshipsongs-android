@@ -3,6 +3,7 @@ package org.worshipsongs.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ public class HomeTabFragment extends Fragment
     private ViewPager pager;
     private HomeViewerPageAdapter adapter;
     private SlidingTabLayout tabs;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -50,7 +50,7 @@ public class HomeTabFragment extends Fragment
             @Override
             public int getIndicatorColor(int position)
             {
-                return getResources().getColor(android.R.color.background_dark);
+                return getResources().getColor(R.color.bright_foreground_material_dark);
             }
         });
         // Setting the ViewPager For the SlidingTabsLayout
@@ -58,6 +58,4 @@ public class HomeTabFragment extends Fragment
         Log.i(this.getClass().getSimpleName(), "Finished loading home fragment");
         return view;
     }
-
-
 }

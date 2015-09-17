@@ -31,6 +31,7 @@
     <color name="dark_brown">#880000</color>
     <color name="light_brown">#a20000</color>
 
-    <color name="dark_navy_blue">#1ab3ff</color>
-    <color name="light_navy_blue">#66ccff</color>
+    <color name="dark_navy_blue">#06A1EE</color>
+    <color name="light_navy_blue">#1ab3ff</color>
+    <color name="shade_blue">#9bd9f8</color>
 </resources>
