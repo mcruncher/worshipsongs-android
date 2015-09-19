@@ -64,14 +64,11 @@ public class ServiceSongListActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
-        //System.out.println("Selected Service:" + serviceName);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(serviceName);
-
 
         songListView = (ListView) findViewById(R.id.song_list_view);
         songDao = new SongDao(this);
@@ -115,12 +112,10 @@ public class ServiceSongListActivity extends AppCompatActivity
             }
         });
 
-
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
             {
 
                 Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
