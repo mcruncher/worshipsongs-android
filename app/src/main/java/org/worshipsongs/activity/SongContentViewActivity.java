@@ -75,14 +75,14 @@ public class SongContentViewActivity extends AppCompatActivity
             tabs.setVisibility(View.GONE);
             // Setting the ViewPager For the SlidingTabsLayout
             tabs.setViewPager(pager);
-            pager.setCurrentItem(Setting.getDefault().getPosition());
+            pager.setCurrentItem(Setting.getInstance().getPosition());
 
             pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
             {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
                 {
-                    Setting.getDefault().setPosition(position);
+                    Setting.getInstance().setPosition(position);
                 }
 
                 @Override
@@ -99,7 +99,7 @@ public class SongContentViewActivity extends AppCompatActivity
         } else {
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(),
-                            titleList.get(Setting.getDefault().getPosition()));
+                            titleList.get(Setting.getInstance().getPosition()));
             // Assigning ViewPager View and setting the adapter
             ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
             pager.setAdapter(songContentLandScapeViewerPageAdapter);

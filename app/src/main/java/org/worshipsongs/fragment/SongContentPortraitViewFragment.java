@@ -17,9 +17,7 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.SongCardViewAdapter;
-import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
@@ -77,7 +75,7 @@ public class SongContentPortraitViewFragment extends Fragment
             {
                 Log.i(this.getClass().getSimpleName(), "Position "+tilteList.indexOf(title));
                 int position = tilteList.indexOf(title);
-                Setting.getDefault().setPosition(position);
+                Setting.getInstance().setPosition(position);
                 return true;
             }
         });

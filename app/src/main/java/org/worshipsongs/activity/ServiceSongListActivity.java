@@ -1,6 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -28,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.VerseParser;
@@ -36,9 +36,7 @@ import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Author: Seenivasan
@@ -124,15 +122,14 @@ public class ServiceSongListActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id)
             {
-                String selectedValue = songListView.getItemAtPosition(position).toString();
+
                 Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
                 bundle.putInt(CommonConstants.POSITION_KEY, position);
+                Setting.getInstance().setPosition(position);
                 intent.putExtras(bundle);
-                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-
             }
         });
     }
