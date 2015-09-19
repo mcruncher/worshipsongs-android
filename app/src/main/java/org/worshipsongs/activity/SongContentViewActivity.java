@@ -3,7 +3,6 @@ package org.worshipsongs.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -13,29 +12,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.adapter.CustomListViewAdapter;
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 
-
 /**
- * @Author : Seenivasan
+ * @Author : Seenivasan, Madasamy
  * @Version : 1.0
  */
 public class SongContentViewActivity extends AppCompatActivity
 {
     private UserPreferenceSettingService userPreferenceSettingService;
-    private TextView textView;
-    private ActionBar actionBar;
-    private CustomListViewAdapter customListViewAdapter;
     private boolean isSectionView = true;
     private boolean isTabView = true;
 
@@ -48,23 +42,20 @@ public class SongContentViewActivity extends AppCompatActivity
         if (userPreferenceSettingService.getKeepAwakeStatus()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
         if (savedInstanceState != null) {
             isSectionView = savedInstanceState.getBoolean("isSectionView");
             isTabView = savedInstanceState.getBoolean("isTabView");
         }
         Intent intent = getIntent();
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        ArrayList<String> songList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
-        int position = intent.getExtras().getInt(CommonConstants.POSITION_KEY);
-
+        ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
             SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
-                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), songList);
+                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), titleList);
             // Assigning ViewPager View and setting the adapter
-            ViewPager pager = (ViewPager) findViewById(R.id.pager);
+            final ViewPager pager = (ViewPager) findViewById(R.id.pager);
             pager.setAdapter(songContentLandScapeViewerPageAdapter);
             // Assiging the Sliding Tab Layout View
             SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
@@ -80,13 +71,35 @@ public class SongContentViewActivity extends AppCompatActivity
                     return getResources().getColor(android.R.color.background_dark);
                 }
             });
+
             tabs.setVisibility(View.GONE);
             // Setting the ViewPager For the SlidingTabsLayout
             tabs.setViewPager(pager);
-            pager.setCurrentItem(position);
+            pager.setCurrentItem(Setting.getDefault().getPosition());
+
+            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+            {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+                {
+                    Setting.getDefault().setPosition(position);
+                }
+
+                @Override
+                public void onPageSelected(int position)
+                {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state)
+                {
+                }
+            });
         } else {
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
-                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), songList);
+                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(),
+                            titleList.get(Setting.getDefault().getPosition()));
             // Assigning ViewPager View and setting the adapter
             ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
             pager.setAdapter(songContentLandScapeViewerPageAdapter);
@@ -107,7 +120,6 @@ public class SongContentViewActivity extends AppCompatActivity
             tabs.setVisibility(View.GONE);
             // Setting the ViewPager For the SlidingTabsLayout
             tabs.setViewPager(pager);
-            pager.setCurrentItem(position);
         }
     }
 
@@ -121,8 +133,6 @@ public class SongContentViewActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        //  outState.putBoolean("isSectionView", isSectionView);
-        //outState.putBoolean("isTabView", isTabView);
     }
 
     public boolean onCreateOptionsMenu(Menu menu)

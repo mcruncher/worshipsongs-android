@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,9 +20,11 @@ import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.AuthorSong;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +37,8 @@ public class SongContentPortraitViewFragment extends Fragment
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongDao songDao = new SongDao(application.getContext());
     private UtilitiesService utilitiesService = new UtilitiesService();
+    private String title;
+    private ArrayList<String> tilteList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -46,8 +51,9 @@ public class SongContentPortraitViewFragment extends Fragment
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(linearLayoutManager);
         Bundle bundle = getArguments();
-        String title = bundle.getString(CommonConstants.TITLE_KEY);
-        ImageView imageView  =(ImageView)view.findViewById(R.id.back_navigation);
+        title = bundle.getString(CommonConstants.TITLE_KEY);
+        tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
+        ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
         imageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -56,26 +62,35 @@ public class SongContentPortraitViewFragment extends Fragment
                 getActivity().finish();
             }
         });
-
-        TextView textView = (TextView)view.findViewById(R.id.song_title);
+        TextView textView = (TextView) view.findViewById(R.id.song_title);
         textView.setText(title);
-
 
 
         List<String> contents = songDao.findContentsByTitle(title);
         songCarViewAdapter = new SongCardViewAdapter(contents, this.getActivity());
         songCarViewAdapter.notifyDataSetChanged();
         recList.setAdapter(songCarViewAdapter);
+        view.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                Log.i(this.getClass().getSimpleName(), "Position "+tilteList.indexOf(title));
+                int position = tilteList.indexOf(title);
+                Setting.getDefault().setPosition(position);
+                return true;
+            }
+        });
         return view;
     }
+
 
     private void showStatusBar()
     {
         if (Build.VERSION.SDK_INT < 16) {
-           getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        else {
-            View decorView =getActivity().getWindow().getDecorView();
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            View decorView = getActivity().getWindow().getDecorView();
             // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
             decorView.setSystemUiVisibility(uiOptions);
