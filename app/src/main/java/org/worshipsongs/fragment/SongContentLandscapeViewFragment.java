@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +33,6 @@ public class SongContentLandscapeViewFragment extends Fragment
 {
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
-    private TextView textView;
-    private int currentPosition;
-    private WorshipSongApplication application = new WorshipSongApplication();
-    private SongDao songDao = new SongDao(application.getContext());
-    private AuthorSongDao authorSongDao = new AuthorSongDao(application.getContext());
-    private TextView songSlideTextView;
-
 
     @Nullable
     @Override
@@ -48,19 +42,18 @@ public class SongContentLandscapeViewFragment extends Fragment
         hideStatusBar();
         customTagColorService = new CustomTagColorService();
         preferenceSettingService = new UserPreferenceSettingService();
-        textView = (TextView) view.findViewById(R.id.text);
         Bundle bundle = getArguments();
         String title = bundle.getString(CommonConstants.TITLE_KEY);
-        List<String> contents = songDao.findContentsByTitle(title);
-        setText(contents);
-        AuthorSong authorSong = authorSongDao.findByTitle(title);
-        Log.i(this.getClass().getSimpleName(), "Author song " + authorSong);
+        String content = bundle.getString("content");
+        String authorName = bundle.getString("authorName");
+        String position = bundle.getString("position");
+        String size = bundle.getString("size");
+        setContent(content, view);
         setSongTitle(view, title);
-        setAuthorName(view, authorSong);
-        setSongSlide(view, contents.size());
+        setAuthorName(view, authorName);
+        setSongSlide(view, position, size);
         return view;
     }
-
 
     private void hideStatusBar()
     {
@@ -74,45 +67,9 @@ public class SongContentLandscapeViewFragment extends Fragment
         }
     }
 
-    private void setText(final List<String> content)
+    private void setContent(String content, View view)
     {
-        textView.setOnTouchListener(new SwipeTouchListener(SongContentLandscapeViewFragment.this.getActivity())
-        {
-            @Override
-            public void onTopToBottomSwipe()
-            {
-                if (content != null && !content.isEmpty()) {
-                    if (currentPosition >= 0) {
-                        setContent(content.get(currentPosition), textView);
-                        if (currentPosition != 0) {
-                            currentPosition = currentPosition - 1;
-                        }
-                        songSlideTextView.setText(getSongSlideValue(currentPosition, content.size()));
-                    }
-                }
-            }
-
-            @Override
-            public void onBottomToTopSwipe()
-            {
-                if (content != null && !content.isEmpty()) {
-                    if (currentPosition <= (content.size() - 1)) {
-                        textView.setAnimation(AnimationUtils.loadAnimation(SongContentLandscapeViewFragment.this.getActivity().getApplicationContext()
-                                , android.R.anim.fade_out));
-                        setContent(content.get(currentPosition == 0 ? currentPosition + 1 : currentPosition), textView);
-                        if (currentPosition != (content.size() - 1)) {
-                            currentPosition = currentPosition + 1;
-                        }
-                        songSlideTextView.setText(getSongSlideValue(currentPosition, content.size()));
-                    }
-                }
-            }
-        });
-        setContent(content.get(currentPosition), textView);
-    }
-
-    private void setContent(String content, TextView textView)
-    {
+        TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(content);
         String text = textView.getText().toString();
         textView.setText("");
@@ -129,21 +86,21 @@ public class SongContentLandscapeViewFragment extends Fragment
         songTitleTextView.setText(title);
     }
 
-    private void setAuthorName(View view, AuthorSong authorSong)
+    private void setAuthorName(View view, String authorName)
     {
         TextView authorNameTextView = (TextView) view.findViewById(R.id.author_name);
-        authorNameTextView.setText(authorSong.getAuthor().getDisplayName());
+        authorNameTextView.setText(authorName);
     }
 
-    private void setSongSlide(View view, int size)
+    private void setSongSlide(View view, String position, String size)
     {
-        songSlideTextView = (TextView) view.findViewById(R.id.song_slide);
-        songSlideTextView.setText(getSongSlideValue(0, size));
+        TextView songSlideTextView = (TextView) view.findViewById(R.id.song_slide);
+        songSlideTextView.setText(getSongSlideValue(position, size));
     }
 
-    private String getSongSlideValue(int currentPosition, int size)
+    private String getSongSlideValue(String currentPosition, String size)
     {
-        int slidePosition = currentPosition + 1;
+        int slidePosition = Integer.parseInt(currentPosition) + 1;
         return slidePosition + " of " + size;
     }
 }

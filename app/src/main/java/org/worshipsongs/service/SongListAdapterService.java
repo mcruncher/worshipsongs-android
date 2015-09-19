@@ -21,6 +21,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.fragment.AddPlayListsDialogFragment;
@@ -188,7 +189,8 @@ public class SongListAdapterService
         }
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
-        bundle.putInt(CommonConstants.POSITION_KEY, position);
+        Setting.getDefault().setPosition(position);
+        //bundle.putInt(CommonConstants.POSITION_KEY, position);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         application.getContext().startActivity(intent);
