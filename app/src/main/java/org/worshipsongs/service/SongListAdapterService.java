@@ -189,7 +189,7 @@ public class SongListAdapterService
         }
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
-        Setting.getDefault().setPosition(position);
+        Setting.getInstance().setPosition(position);
         //bundle.putInt(CommonConstants.POSITION_KEY, position);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
