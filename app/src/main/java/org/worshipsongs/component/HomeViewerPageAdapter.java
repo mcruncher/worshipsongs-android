@@ -13,7 +13,8 @@ import org.worshipsongs.fragment.SongsListFragment;
 import java.util.List;
 
 /**
- * Created by madasamy on 8/16/15.
+ *  Author: madasamy.
+ *  version: 1.0.0
  */
 public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
