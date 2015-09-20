@@ -91,5 +91,6 @@
     <string name="title">Title :</string>
     <string name="author">Author :</string>
     <string name="slide">Slide :</string>
+    <string name="playlist_name_hint">Playlist name</string>
 
 </resources>
