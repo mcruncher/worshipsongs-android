@@ -74,11 +74,13 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                 //serviceName = serviceListView.getItemAtPosition(position).toString();
                 serviceName = adapter.getItem(position).toString();
                 System.out.println("Selected Song for Service:" + serviceName);
-                LayoutInflater li = LayoutInflater.from(getActivity());
-                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View promptsView = layoutInflater.inflate(R.layout.delete_confirmation_dialog, null);
+                TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
+                deleteMsg.setText(R.string.message_delete_playlist);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
                 alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -90,7 +92,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                         service.clear();
                         loadService();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
