@@ -21,10 +21,9 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     @Override
     public void init(Bundle bundle)
     {
-        this.addSubheader("Worship songs");
         this.addSection(newSection("Home", new HomeTabFragment()));
-        this.addSection(newSection("About", new AboutWebViewFragment()));
         this.addSection(newSection("Settings", getSettingFragment()));
+        this.addSection(newSection("About", new AboutWebViewFragment()));
     }
 
     @NonNull
