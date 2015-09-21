@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -106,7 +107,16 @@ public class ServiceSongListActivity extends AppCompatActivity
                         dialog.cancel();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+                {
+                    @Override
+                    public void onShow(DialogInterface dialog)
+                    {
+                        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
+                    }
+                });
                 alertDialog.show();
                 return true;
             }
@@ -115,7 +125,7 @@ public class ServiceSongListActivity extends AppCompatActivity
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
 
                 Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
