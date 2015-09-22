@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
@@ -21,7 +22,6 @@ import org.worshipsongs.worship.R;
  */
 public class SettingsPreferenceFragment extends PreferenceFragment
 {
-
     private Preference resetDialogPreference;
     private Intent startIntent;
     private Context context = WorshipSongApplication.getContext();
@@ -44,7 +44,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         //Initialize Preference
         resetPreferenceSettings("resetDialog");
     }
-
 
 
     private void customFontSizepreferenceSetting(String customFontSize)

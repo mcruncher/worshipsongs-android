@@ -1,8 +1,14 @@
 package org.worshipsongs.fragment;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -27,5 +33,19 @@ public class AboutWebViewFragment extends Fragment
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(ABOUT_FILE_PATH);
         return rootView;
+    }
+
+    @Override
+    public void onAttach(final Activity activity)
+    {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(final Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+        menu.clear();
     }
 }

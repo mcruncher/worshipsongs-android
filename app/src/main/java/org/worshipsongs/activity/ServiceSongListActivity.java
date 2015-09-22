@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -83,14 +84,13 @@ public class ServiceSongListActivity extends AppCompatActivity
             {
                 vibrator.vibrate(15);
                 songTitle = songListView.getItemAtPosition(position).toString();
-                System.out.println("Selected title:" + songTitle);
                 LayoutInflater li = LayoutInflater.from(ServiceSongListActivity.this);
-                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
                 TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-                deleteMsg.setText("Do you want to delete the song?");
+                deleteMsg.setText(R.string.message_delete_song);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ServiceSongListActivity.this);
                 alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -99,14 +99,23 @@ public class ServiceSongListActivity extends AppCompatActivity
                         loadSongs();
                         Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+                {
+                    @Override
+                    public void onShow(DialogInterface dialog)
+                    {
+                        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
+                    }
+                });
                 alertDialog.show();
                 return true;
             }
@@ -115,7 +124,7 @@ public class ServiceSongListActivity extends AppCompatActivity
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
 
                 Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
