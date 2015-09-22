@@ -83,19 +83,19 @@ public class SongContentLandscapeViewFragment extends Fragment
     private void setSongTitle(View view, String title)
     {
         TextView songTitleTextView = (TextView) view.findViewById(R.id.song_title);
-        songTitleTextView.setText(title);
+        songTitleTextView.setText(" " + title);
     }
 
     private void setAuthorName(View view, String authorName)
     {
         TextView authorNameTextView = (TextView) view.findViewById(R.id.author_name);
-        authorNameTextView.setText(authorName);
+        authorNameTextView.setText(" " + authorName);
     }
 
     private void setSongSlide(View view, String position, String size)
     {
         TextView songSlideTextView = (TextView) view.findViewById(R.id.song_slide);
-        songSlideTextView.setText(getSongSlideValue(position, size));
+        songSlideTextView.setText(" " + getSongSlideValue(position, size));
     }
 
     private String getSongSlideValue(String currentPosition, String size)
