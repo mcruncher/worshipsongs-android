@@ -21,7 +21,7 @@
         <item name="singleAccount">true</item>
         <item name="android:textColor">@color/background_material_dark</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
-        <item name="drawerColor">@color/light_navy_blue</item>
+        <item name="drawerColor">@color/dark_navy_blue</item>
         <item name="uniqueToolbarColor">false</item>
         <item name="sectionStyle">@style/MaterialSectionTheme</item>
         <item name="subheaderStyle">@style/CustomSubheaderTheme</item>
