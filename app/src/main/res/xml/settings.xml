@@ -1,30 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!--<PreferenceCategory android:title="@string/pref_text_setting">-->
-        <!--<ListPreference-->
-            <!--android:key="prefSetFont"-->
-            <!--android:entries="@array/setFont"-->
-            <!--android:summary="@string/pref_sync_frequency_summary"-->
-            <!--android:defaultValue="NORMAL"-->
-            <!--android:entryValues="@array/setFontValues"-->
-            <!--android:title="@string/pref_change_font_size" />-->
-        <!--<ListPreference-->
-            <!--android:key="prefSetFontStyle"-->
-            <!--android:entries="@array/setFontStyle"-->
-            <!--android:summary="@string/pref_text_style_summary"-->
-            <!--android:defaultValue="NORMAL"-->
-            <!--android:entryValues="@array/setFontStyleValues"-->
-            <!--android:title="@string/pref_change_font_style" />-->
-    <!--</PreferenceCategory>-->
-
-
     <PreferenceCategory
         android:title="@string/pref_text_setting"
 
         android:textColor="@color/background_floating_material_dark">
         <org.worshipsongs.preference.FontDialogPreference
             android:key="customFontSize"
-            android:summary="Change the Font size and style for text"
+            android:summary="@string/font_size_summary"
             android:title="Font" />
 
     </PreferenceCategory>
