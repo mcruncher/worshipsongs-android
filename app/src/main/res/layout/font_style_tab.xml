@@ -19,7 +19,7 @@
         android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/fontSizeOkButton"
+            android:id="@+id/doneButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Done"

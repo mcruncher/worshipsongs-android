@@ -44,7 +44,11 @@
         <activity
             android:name="org.worshipsongs.activity.FontTabBarActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"></activity>
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth"></activity>
+
+        <activity
+            android:name="org.worshipsongs.activity.FontTabActivity"
+            android:theme="@style/MyDialogTheme"></activity>
 
         <activity
             android:name="org.worshipsongs.activity.FontSizeTabActivity"

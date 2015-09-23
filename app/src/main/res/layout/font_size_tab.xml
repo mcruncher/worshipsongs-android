@@ -3,13 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Portrait font size:"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="18sp"
+        android:textColor="@color/background_material_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
 
     <SeekBar
-        android:id="@+id/fontSizeSeekBar"
+        android:id="@+id/portrait_font_size"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:max="30"
         android:progress="8"
         android:progressDrawable="@drawable/progressbar"
@@ -44,13 +55,59 @@
             android:text="30"/>
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Landscape font size:"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="18sp"
+        android:textColor="@color/background_material_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+    <SeekBar
+        android:id="@+id/landscape_font_size"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="30"
+        android:progress="20"
+        android:progressDrawable="@drawable/progressbar"
+        android:secondaryProgress="0"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="15"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="20dp"
+            android:text="30"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1">
 
         <Button
-            android:id="@+id/fontSizeOkButton"
+            android:id="@+id/doneButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"

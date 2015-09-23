@@ -32,9 +32,9 @@ public class FontSizeFragment extends Fragment {
         setHasOptionsMenu(true);
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //      fontSizeTextView = (TextView) findViewById(R.id.fontSizeTextView);
-        okButton = (Button)FragmentLayout.findViewById(R.id.fontSizeOkButton);
+        okButton = (Button)FragmentLayout.findViewById(R.id.doneButton);
         //cancelButton = (Button) findViewById(R.id.fontSizeCancelButton);
-        SeekBar fontSizeSeekBar = (SeekBar)FragmentLayout.findViewById(R.id.fontSizeSeekBar);
+        SeekBar fontSizeSeekBar = (SeekBar)FragmentLayout.findViewById(R.id.portrait_font_size);
         final int fontSize = customSharedPreference.getInt("fontSize", 10);
         fontSizeSeekBar.setProgress(fontSize);
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()

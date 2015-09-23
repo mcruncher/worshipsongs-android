@@ -58,4 +58,10 @@
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
     </style>
+
+    <style name="Theme.MyDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

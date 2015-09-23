@@ -75,7 +75,7 @@ public class SongContentLandscapeViewFragment extends Fragment
         textView.setText("");
         customTagColorService.setCustomTagTextView(this.getActivity(), text, textView);
         textView.setTypeface(preferenceSettingService.getFontStyle());
-        textView.setTextSize(preferenceSettingService.getFontSize());
+        textView.setTextSize(preferenceSettingService.getLandScapeFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
     }

@@ -12,7 +12,8 @@ import java.util.Map;
 /**
  * Created by Seenivasan on 10/23/2014.
  */
-public class UserPreferenceSettingService {
+public class UserPreferenceSettingService
+{
 
     private Context context = WorshipSongApplication.getContext();
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -21,14 +22,22 @@ public class UserPreferenceSettingService {
     private Typeface fontStyle;
     private String color;
 
-    public UserPreferenceSettingService() {
+    public UserPreferenceSettingService()
+    {
     }
 
-    public float getFontSize() {
+    public float getFontSize()
+    {
         return sharedPreferences.getInt("fontSize", 18);
     }
 
-    public Typeface getFontStyle() {
+    public float getLandScapeFontSize()
+    {
+        return sharedPreferences.getInt("landScapeFontSize", 25);
+    }
+
+    public Typeface getFontStyle()
+    {
         String sharedTypeFace = sharedPreferences.getString("fontStyle", "DEFAULT");
         Typeface fontStyle = Typeface.DEFAULT;
         if (sharedTypeFace.equals("DEFAULT_BOLD"))
@@ -42,7 +51,8 @@ public class UserPreferenceSettingService {
         return fontStyle;
     }
 
-    public int getColor() {
+    public int getColor()
+    {
         Map<String, ?> all = sharedPreferences.getAll();
         int color;
         if (all.containsKey("primaryColor")) {
@@ -53,7 +63,8 @@ public class UserPreferenceSettingService {
         return color;
     }
 
-    public Integer getTagColor() {
+    public Integer getTagColor()
+    {
         Map<String, ?> all = sharedPreferences.getAll();
         int color;
         if (all.containsKey("secondaryColor")) {
@@ -64,7 +75,8 @@ public class UserPreferenceSettingService {
         return color;
     }
 
-    public boolean getKeepAwakeStatus() {
+    public boolean getKeepAwakeStatus()
+    {
         return sharedPreferences.getBoolean("prefKeepAwakeOn", false);
     }
 }

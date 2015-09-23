@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import org.worshipsongs.worship.R;
 
@@ -26,8 +25,8 @@ public class FontSizeTabActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.font_size_tab);
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        okButton = (Button) findViewById(R.id.fontSizeOkButton);
-        SeekBar fontSizeSeekBar = (SeekBar) findViewById(R.id.fontSizeSeekBar);
+        okButton = (Button) findViewById(R.id.doneButton);
+        SeekBar fontSizeSeekBar = (SeekBar) findViewById(R.id.portrait_font_size);
         final int fontSize = customSharedPreference.getInt("fontSize", 14);
         fontSizeSeekBar.setProgress(fontSize);
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()

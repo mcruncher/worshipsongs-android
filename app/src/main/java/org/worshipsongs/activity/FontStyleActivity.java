@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.worshipsongs.worship.R;
 
@@ -37,7 +36,7 @@ public class FontStyleActivity extends Activity
         try {
             setContentView(R.layout.font_style_tab);
             fontSpinner = (Spinner)findViewById(R.id.fontStyleSpinner);
-            doneButton = (Button) findViewById(R.id.fontSizeOkButton);
+            doneButton = (Button) findViewById(R.id.doneButton);
             fontStylePreference = PreferenceManager.getDefaultSharedPreferences(FontStyleActivity.this);
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringList);
             fontSpinner.setAdapter(adapter);
