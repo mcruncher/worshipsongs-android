@@ -22,9 +22,6 @@ import org.worshipsongs.worship.R;
  */
 public class FontDialogPreference extends Preference
 {
-    FragmentManager fragmentManager;
-    private Activity activity;
-
     public FontDialogPreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -37,7 +34,7 @@ public class FontDialogPreference extends Preference
         super.onClick();
         LayoutInflater layoutInflater = LayoutInflater.from(FontDialogPreference.this.getContext());
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(FontDialogPreference.this.getContext());
-        View promptsView = layoutInflater.inflate(R.layout.font_size_tab, null);
+        View promptsView = layoutInflater.inflate(R.layout.font_size_dialog, null);
         SeekBar fontSizeSeekBar = (SeekBar) promptsView.findViewById(R.id.portrait_font_size);
         final int portraitFontSize = customSharedPreference.getInt(CommonConstants.PORTRAIT_FONT_SIZE_KEY, 20);
         fontSizeSeekBar.setProgress(portraitFontSize);
@@ -100,8 +97,6 @@ public class FontDialogPreference extends Preference
                 alertDialog.dismiss();
             }
         });
-
-
     }
 
     private void saveFontSizePreference(String key, int fontSize)
