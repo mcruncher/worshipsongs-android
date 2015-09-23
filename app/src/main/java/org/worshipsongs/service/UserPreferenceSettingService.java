@@ -11,7 +11,8 @@ import org.worshipsongs.WorshipSongApplication;
 import java.util.Map;
 
 /**
- * Created by Seenivasan on 10/23/2014.
+ * Author: Seenivasan
+ * Version: 1.0.0
  */
 public class UserPreferenceSettingService
 {
