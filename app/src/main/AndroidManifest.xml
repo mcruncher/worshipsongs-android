@@ -25,7 +25,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name="org.worshipsongs.activity.MainActivity"></activity>
         <activity android:name="org.worshipsongs.activity.SongContentViewActivity"></activity>
         <activity android:name="org.worshipsongs.activity.ServiceSongListActivity">
             <meta-data
@@ -40,21 +39,6 @@
         </activity>
         <activity android:name="org.worshipsongs.activity.SongListActivity"></activity>
 
-
-        <activity
-            android:name="org.worshipsongs.activity.FontTabBarActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"></activity>
-
-        <activity
-            android:name="org.worshipsongs.activity.FontSizeTabActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
-
-        <activity
-            android:name="org.worshipsongs.activity.FontStyleActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
 
     </application>
 

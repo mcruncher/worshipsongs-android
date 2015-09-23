@@ -98,4 +98,6 @@
     <string name="home">Home</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
+    <string name="size">Size</string>
+    <string name="style">Style</string>
 </resources>

@@ -6,7 +6,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 
 /**
- * Created by Seenivasan on 10/26/2014.
+ * Author: Seenivasan
+ * Version: 2.1.0
  */
 public final class CommonConstants
 {
@@ -35,4 +36,8 @@ public final class CommonConstants
         }
         return tagFile;
     }
+
+    //Font size
+    public static final String PORTRAIT_FONT_SIZE_KEY = "portraitFontSize";
+    public static final String LANDSCAPE_FONT_SIZE_KEY = "landscapeFontSize";
 }
