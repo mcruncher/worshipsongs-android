@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:max="30"
-        android:progress="8"
+        android:progress="20"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"/>
 
@@ -70,8 +70,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:max="30"
-        android:progress="20"
+        android:max="50"
+        android:progress="28"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"/>
 
@@ -91,14 +91,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="15"/>
+            android:text="25"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="20dp"
-            android:text="30"/>
+            android:text="50"/>
     </RelativeLayout>
 
     <LinearLayout

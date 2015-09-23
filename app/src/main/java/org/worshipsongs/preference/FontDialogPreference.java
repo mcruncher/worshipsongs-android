@@ -3,26 +3,17 @@ package org.worshipsongs.preference;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.activity.FontTabActivity;
-import org.worshipsongs.activity.FontTabBarActivity;
-import org.worshipsongs.activity.FontTabFragment;
-import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 /**
@@ -48,14 +39,14 @@ public class FontDialogPreference extends Preference
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(FontDialogPreference.this.getContext());
         View promptsView = layoutInflater.inflate(R.layout.font_size_tab, null);
         SeekBar fontSizeSeekBar = (SeekBar) promptsView.findViewById(R.id.portrait_font_size);
-        final int fontSize = customSharedPreference.getInt("fontSize", 18);
-        fontSizeSeekBar.setProgress(fontSize);
+        final int portraitFontSize = customSharedPreference.getInt(CommonConstants.PORTRAIT_FONT_SIZE_KEY, 20);
+        fontSizeSeekBar.setProgress(portraitFontSize);
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                saveFontSizePreference("fontSize", progress);
+                saveFontSizePreference(CommonConstants.PORTRAIT_FONT_SIZE_KEY, progress);
             }
 
             @Override
@@ -72,14 +63,14 @@ public class FontDialogPreference extends Preference
         });
 
         SeekBar landScapeSeekbar = (SeekBar) promptsView.findViewById(R.id.landscape_font_size);
-        final int landScapeFontSize = customSharedPreference.getInt("landScapeFontSize", 20);
+        final int landScapeFontSize = customSharedPreference.getInt(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, 28);
         landScapeSeekbar.setProgress(landScapeFontSize);
         landScapeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                saveFontSizePreference("landScapeFontSize", progress);
+                saveFontSizePreference(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, progress);
             }
 
             @Override
