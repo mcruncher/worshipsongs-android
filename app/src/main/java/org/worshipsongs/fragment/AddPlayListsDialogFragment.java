@@ -31,7 +31,7 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
 {
 
     private CommonService commonService = new CommonService();
-    private SongListAdapterService adapterService = new SongListAdapterService();
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
