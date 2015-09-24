@@ -47,7 +47,7 @@ activity#org.worshipsongs.activity.MainActivity
 ADDED from AndroidManifest.xml:20:9
 	android:name
 		ADDED from AndroidManifest.xml:20:19
-activity#org.worshipsongs.activity.SongsColumnViewActivity
+activity#org.worshipsongs.activity.SongContentViewActivity
 ADDED from AndroidManifest.xml:21:9
 	android:name
 		ADDED from AndroidManifest.xml:21:19

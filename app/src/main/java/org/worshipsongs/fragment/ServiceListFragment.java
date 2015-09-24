@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -22,13 +22,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.ServiceSongListActivity;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,9 +40,11 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Created by Pitchu on 12/30/2014.
+ * author  :Pitchumani, madasamy
+ * version: 1.0.0
  */
-public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+{
     List<String> service = new ArrayList<String>();
     String serviceName;
     TextView serviceMsg;
@@ -71,31 +74,41 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                 //serviceName = serviceListView.getItemAtPosition(position).toString();
                 serviceName = adapter.getItem(position).toString();
                 System.out.println("Selected Song for Service:" + serviceName);
-                LayoutInflater li = LayoutInflater.from(getActivity());
-                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View promptsView = layoutInflater.inflate(R.layout.delete_confirmation_dialog, null);
+                TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
+                deleteMsg.setText(R.string.message_delete_playlist);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
                 alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
                         Toast.makeText(getActivity(), "Playlist " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
-
                         SongsListFragment listFragment = new SongsListFragment();
                         listFragment.onRefresh();
                         service.clear();
                         loadService();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+                {
+                    @Override
+                    public void onShow(DialogInterface dialog)
+                    {
+                        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
+                    }
+                });
                 alertDialog.show();
                 return true;
             }
@@ -121,9 +134,9 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
     {
         readServiceName();
         if (service.size() <= 0)
-            serviceMsg.setText("You haven't created any Playlist yet!\n"+
-        "Playlists are a great way to organize selected songs for events.\n"+
-            "To add a song to a Playlist, tap the : icon near a song and select the "+"Add to Playlist"+" action.");
+            serviceMsg.setText("You haven't created any Playlist yet!\n" +
+                    "Playlists are a great way to organize selected songs for events.\n" +
+                    "To add a song to a Playlist, tap the : icon near a song and select the " + "Add to Playlist" + " action.");
         else
             serviceMsg.setVisibility(View.GONE);
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
@@ -132,11 +145,13 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh()
+    {
 
     }
 
-    public List readServiceName() {
+    public List readServiceName()
+    {
         Properties property = new Properties();
         InputStream inputStream = null;
         try {
@@ -159,26 +174,28 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        inflater = new MenuInflater(getActivity().getApplicationContext());
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        SearchManager searchManager = (SearchManager) this.FragmentActivity.getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.FragmentActivity.getComponentName()));
-        searchView.setIconifiedByDefault(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+            public boolean onQueryTextSubmit(String query)
+            {
+                adapter.getFilter().filter(query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextChange(String query)
+            {
                 adapter.getFilter().filter(query);
                 return true;
+
             }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -194,14 +211,17 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
         return super.onOptionsItemSelected(item);
     }
 
-    private class ListAdapter extends BaseAdapter {
+    private class ListAdapter extends BaseAdapter
+    {
         LayoutInflater inflater;
 
-        public ListAdapter(Context context) {
+        public ListAdapter(Context context)
+        {
             inflater = LayoutInflater.from(context);
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
             convertView = inflater.inflate(R.layout.service_listview_content, null);
             TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
             Button delete = (Button) convertView.findViewById(R.id.delete);
@@ -210,15 +230,18 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
             return convertView;
         }
 
-        public int getCount() {
+        public int getCount()
+        {
             return service.size();
         }
 
-        public Object getItem(int position) {
+        public Object getItem(int position)
+        {
             return position;
         }
 
-        public long getItemId(int position) {
+        public long getItemId(int position)
+        {
             return position;
         }
     }

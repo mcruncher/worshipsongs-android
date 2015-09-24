@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.SongsColumnViewActivity;
+import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CommonService;
@@ -96,7 +96,7 @@ public class SongListAdapter extends BaseAdapter implements Filterable {
                 }
                 Log.d(this.getClass().getName(), "Verse List data :" + verseListData);
                 Log.d(this.getClass().getName(), "Verse List data sizze :" + verseListData.size());
-                Intent intent = new Intent(application.getContext(), SongsColumnViewActivity.class);
+                Intent intent = new Intent(application.getContext(), SongContentViewActivity.class);
                 intent.putExtra("serviceName", selectedSong.getTitle());
                 if (verseListData.size() > 0) {
                     intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);

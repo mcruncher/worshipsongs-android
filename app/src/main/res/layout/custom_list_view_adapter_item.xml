@@ -17,6 +17,6 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="10dp"
 
-            android:text="" />
+            android:text="foo" />
     </LinearLayout>
 </ScrollView>

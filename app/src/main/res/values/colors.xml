@@ -23,4 +23,16 @@
     <color name="rounded_container_bg">#222222</color>
     <color name="rounded_container_border">#3b3f44</color>
     <color name="light_gray_header_color">#646663</color>
+
+    <color name="light_green">#8bc34a</color>
+    <color name="dark_green">#558b2f</color>
+    <color name="tabsScrollColor">#ff99cc00</color>
+    
+    <color name="dark_brown">#880000</color>
+    <color name="light_brown">#a20000</color>
+    <!--#06a1ee-->
+    <color name="dark_navy_blue">#1ea2fa</color>
+    <color name="light_navy_blue">#1ab3ff</color>
+    <color name="shade_blue">#9bd9f8</color>
+    <color name="disabled_white">#F2F2F2</color>
 </resources>

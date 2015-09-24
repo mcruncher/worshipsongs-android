@@ -1,5 +1,6 @@
 package org.worshipsongs.domain;
 
+@Deprecated
 public class NavDrawerItem {
 	
 	private String title;

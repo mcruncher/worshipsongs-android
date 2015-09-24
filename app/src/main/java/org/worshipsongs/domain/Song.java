@@ -1,11 +1,19 @@
 package org.worshipsongs.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author : Madasamy
  * @Version : 1.0
  */
 
-public class Song
+public class Song implements Parcelable
 {
     private int id;
     private int songBookId;
@@ -23,6 +31,10 @@ public class Song
     private String createdDate;
     private String lastModified;
     private boolean temporary;
+    private List<Column> verseColumns;
+    private List<Column> contentColumns;
+//    private List<String> verses;
+//    private List<String> contentList;
 
     public Song()
     {
@@ -194,9 +206,75 @@ public class Song
         this.temporary = temporary;
     }
 
+    public List<Column> getVerseColumns()
+    {
+        return verseColumns;
+    }
+
+    public void setVerseColumns(List<Column> verseColumns)
+    {
+        this.verseColumns = verseColumns;
+    }
+
+    public List<Column> getContentColumns()
+    {
+        return contentColumns;
+    }
+
+    public void setContentColumns(List<Column> contentColumns)
+    {
+        this.contentColumns = contentColumns;
+    }
+
     @Override
     public String toString()
     {
-        return getTitle();
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+        stringBuilder.append("title", getTitle());
+        stringBuilder.append("verse order", getVerseOrder());
+        stringBuilder.append("verses", getVerseColumns());
+        stringBuilder.append("content", getContentColumns());
+        return stringBuilder.toString();
     }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(this.title);
+        dest.writeString(this.verse_order);
+        dest.writeString(this.lyrics);
+        dest.writeTypedList(verseColumns);
+        dest.writeTypedList(contentColumns);
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>()
+    {
+        @Override
+        public Song[] newArray(int size)
+        {
+            return new Song[size];
+        }
+
+        @Override
+        public Song createFromParcel(Parcel parcel)
+        {
+            Song song = new Song();
+            song.title = parcel.readString();
+            song.verse_order = parcel.readString();
+            song.lyrics = parcel.readString();
+            ArrayList<Column> verses = new ArrayList<>();
+            parcel.readTypedList(verses, Column.CREATOR);
+            song.verseColumns = verses;
+            ArrayList<Column> contentList = new ArrayList<>();
+            parcel.readTypedList(contentList, Column.CREATOR);
+            song.contentColumns = contentList;
+            return song;
+        }
+    };
 }

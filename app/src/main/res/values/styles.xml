@@ -5,4 +5,63 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Base application theme. -->
+    <style name="MainAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/light_navy_blue</item>
+        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:textColor">@color/background_material_dark</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
+        <item name="colorPrimary">@color/light_navy_blue</item>
+        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="singleAccount">true</item>
+        <item name="android:textColor">@color/background_material_dark</item>
+        <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
+        <item name="drawerColor">@color/dark_navy_blue</item>
+        <item name="uniqueToolbarColor">false</item>
+        <item name="sectionStyle">@style/MaterialSectionTheme</item>
+        <item name="subheaderStyle">@style/CustomSubheaderTheme</item>
+        <item name="learningPattern">false</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="background">@color/white</item>
+    </style>
+
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="CustomSubheaderTheme">
+        <item name="subheaderTitleColor">#FFF</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="PreferenceListHeader">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">#cccccc</item>
+        <item name="android:paddingTop">6px</item>
+        <item name="android:paddingBottom">6px</item>
+        <item name="android:paddingLeft">12px</item>
+    </style>
+
+    <style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
+        <item name="colorPrimary">@color/light_navy_blue</item>
+        <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+    </style>
+
+    <style name="Theme.MyDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.AuthorSong;
+import org.worshipsongs.domain.Song;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,35 @@ public class AuthorSongDao extends AbstractDao {
     public AuthorSongDao(Context context)
     {
         super(context);
+    }
+
+    public AuthorSong findByTitle(String title)
+    {
+        String query = "select title, lyrics, verse_order, first_name, last_name, display_name" +
+                " from songs as song , authors as author, authors_songs as authorsong where " +
+                "song.id = authorsong.song_id and author.id = authorsong.author_id and song.title = ?";
+        Cursor cursor = getDatabase().rawQuery(query, new String[]{title});
+        cursor.moveToFirst();
+        return getAuthorSong(cursor);
+
+    }
+
+    AuthorSong getAuthorSong(Cursor cursor)
+    {
+        Song song = new Song();
+        song.setTitle(cursor.getString(0));
+        song.setLyrics(cursor.getString(1));
+        song.setVerseOrder(cursor.getString(2));
+
+        Author author = new Author();
+        author.setFirstName(cursor.getString(3));
+        author.setLastName(cursor.getString(4));
+        author.setDisplayName(cursor.getString(5));
+
+        AuthorSong authorSong = new AuthorSong();
+        authorSong.setSong(song);
+        authorSong.setAuthor(author);
+        return authorSong;
     }
 
     public List<AuthorSong> findAll()

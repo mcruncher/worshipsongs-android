@@ -1,14 +1,14 @@
 package org.worshipsongs.fragment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.SearchView;
 
 import org.worshipsongs.dao.AuthorDao;
 import org.worshipsongs.dao.AuthorSongDao;
@@ -23,9 +23,11 @@ import java.util.List;
 
 
 /**
- * Created by Seenivasan on 5/17/2015.
+ * @Author : Seenivasan,Madasamy
+ * @Version : 1.0
  */
-public class AuthorListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class AuthorListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
+{
 
     private AuthorDao authorDao;
     private AuthorSongDao authorSongDao;
@@ -33,22 +35,25 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
     private List<String> authorsNames = new ArrayList<String>();
     private AuthorListAdapterService adapterService = new AuthorListAdapterService();
     private ArrayAdapter<String> adapter;
-    private SearchView searchView;
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initSetUp();
     }
 
-    private void initSetUp() {
+    private void initSetUp()
+    {
         authorDao = new AuthorDao(getActivity());
         authorSongDao = new AuthorSongDao(getActivity());
         loadAuthors();
     }
 
-    private void loadAuthors() {
+    private void loadAuthors()
+    {
         authorDao.open();
         authorSongDao.open();
         List<AuthorSong> authorSongList = new ArrayList<AuthorSong>();
@@ -68,32 +73,39 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater = new MenuInflater(getActivity().getApplicationContext());
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setIconified(true);
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // Inflate menu to add items to action bar if it is present.
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter = adapterService.getAuthorListAdapter(getFilteredAuthors(newText), getFragmentManager());
-                setListAdapter(adapterService.getAuthorListAdapter(getFilteredAuthors(newText), getFragmentManager()));
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
                 adapter = adapterService.getAuthorListAdapter(getFilteredAuthors(query), getFragmentManager());
                 setListAdapter(adapterService.getAuthorListAdapter(getFilteredAuthors(query), getFragmentManager()));
                 return true;
             }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
-        searchView.onActionViewCollapsed();
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                adapter = adapterService.getAuthorListAdapter(getFilteredAuthors(newText), getFragmentManager());
+                setListAdapter(adapterService.getAuthorListAdapter(getFilteredAuthors(newText), getFragmentManager()));
+                return true;
+
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private List<String> getFilteredAuthors(String text) {
+
+    private List<String> getFilteredAuthors(String text)
+    {
         List<String> filteredSongs = new ArrayList<String>();
         for (String author : authorsNames) {
             if (author.toLowerCase().contains(text.toLowerCase())) {
@@ -104,20 +116,21 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setQuery("", false);
-        searchView.clearFocus();
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onRefresh() {
-        Log.d("On refresh in Song book list", "");
+    public void onRefresh()
+    {
+
     }
 }

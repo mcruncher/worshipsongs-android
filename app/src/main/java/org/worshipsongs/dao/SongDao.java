@@ -6,42 +6,51 @@ import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Verse;
+import org.worshipsongs.service.UtilitiesService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : Madasamy
  * @Version : 1.0
  */
-public class SongDao extends AbstractDao {
-    public static final String TABLE_NAME_AUTHOR = "songs";
+public class SongDao extends AbstractDao
+{
+    public static final String TABLE_NAME = "songs";
     public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
             "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
+    private UtilitiesService utilitiesService = new UtilitiesService();
 
-    public SongDao(Context context) {
+    public SongDao(Context context)
+    {
         super(context);
     }
 
-    public List<Song> findByTag(String tag) {
+    public List<Song> findByTag(String tag)
+    {
         List<Song> songList = new ArrayList<Song>();
         if (StringUtils.isNotBlank(tag)) {
-            for (Song song : findTitles()) {
+            for (Song song : findAll()) {
                 if (song.getLyrics().contains(tag)) {
                     songList.add(song);
                 }
             }
         } else {
-            songList.addAll(findTitles());
+            songList.addAll(findAll());
         }
         Log.d(this.getClass().getName(), "No. of songs: " + songList.size());
         return songList;
     }
 
-    public List<Song> findTitles() {
+    public List<Song> findAll()
+    {
         List<Song> songs = new ArrayList<Song>();
-        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+        Cursor cursor = getDatabase().query(TABLE_NAME,
                 new String[]{"title", "lyrics", "verse_order"}, null, null, null, null, "title");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -53,10 +62,11 @@ public class SongDao extends AbstractDao {
         return songs;
     }
 
-    public Song getSongByTitle(String title) {
+    public Song getSongByTitle(String title)
+    {
         Song song = new Song();
         String whereClause = " title" + "=\"" + title + "\"";
-        Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+        Cursor cursor = getDatabase().query(TABLE_NAME,
                 new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
         cursor.moveToFirst();
         song = cursorToSong(cursor);
@@ -64,12 +74,13 @@ public class SongDao extends AbstractDao {
         return song;
     }
 
-    public Song getSongById(int songId) {
+    public Song getSongById(int songId)
+    {
         Song song = new Song();
         try {
             Log.d(this.getClass().getName(), "Song ID" + songId);
             String whereClause = " id=" + songId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+            Cursor cursor = getDatabase().query(TABLE_NAME,
                     new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             song = cursorToSong(cursor);
@@ -82,11 +93,12 @@ public class SongDao extends AbstractDao {
         }
     }
 
-    public List<Song> getSongTitlesByBookId(int songBookId) {
+    public List<Song> getSongTitlesByBookId(int songBookId)
+    {
         List<Song> songs = new ArrayList<Song>();
         try {
             String whereClause = " song_book_id=" + songBookId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME_AUTHOR,
+            Cursor cursor = getDatabase().query(TABLE_NAME,
                     new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -102,11 +114,46 @@ public class SongDao extends AbstractDao {
         }
     }
 
-    private Song cursorToSong(Cursor cursor) {
+    private Song cursorToSong(Cursor cursor)
+    {
         Song song = new Song();
         song.setTitle(cursor.getString(0));
         song.setLyrics(cursor.getString(1));
         song.setVerseOrder(cursor.getString(2));
+
         return song;
+    }
+
+    public List<String> findContentsByTitle(String title)
+    {
+        Song song = getSongByTitle(title);
+        String lyrics = song.getLyrics();
+        ArrayList<String> contents = new ArrayList<>();
+        List<Verse> verseList = utilitiesService.getVerse(lyrics);
+        List<String> verseName = new ArrayList<String>();
+        List<String> contentsByDefaultOrder = new ArrayList<String>();
+        Map<String, String> verseDataMap = new HashMap<String, String>();
+        for (Verse verses : verseList) {
+            verseName.add(verses.getType() + verses.getLabel());
+            contentsByDefaultOrder.add(verses.getContent());
+            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
+        }
+        List<String> contentsByVerseOrder = new ArrayList<String>();
+        List<String> verseOrderList = new ArrayList<String>();
+        String verseOrder = song.getVerseOrder();
+        if (StringUtils.isNotBlank(verseOrder)) {
+            verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
+        }
+
+        if (verseOrderList.size() > 0) {
+            for (int i = 0; i < verseOrderList.size(); i++) {
+                contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
+            }
+            contents.addAll(contentsByVerseOrder);
+            Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
+        } else {
+            contents.addAll(contentsByDefaultOrder);
+        }
+        return contents;
     }
 }

@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
+
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.activity.UserSettingActivity;
 import org.worshipsongs.picker.ColorPickerPreference;
 import org.worshipsongs.preference.FontDialogPreference;
@@ -23,7 +23,6 @@ import org.worshipsongs.worship.R;
  */
 public class SettingsPreferenceFragment extends PreferenceFragment
 {
-
     private Preference resetDialogPreference;
     private Intent startIntent;
     private Context context = WorshipSongApplication.getContext();
@@ -38,21 +37,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         //Initialize Color Picker preference
         colorPickerSettings("primaryColor");
         colorPickerSettings("secondaryColor");
-
-        //Initialize list preference
-//        fontPreferenceSettings("prefSetFont");
-//        fontPreferenceSettings("prefSetFontStyle");
-        //customFontSizepreferenceSetting("customFontSize");
-        //Initialize Preference
         resetPreferenceSettings("resetDialog");
-    }
-
-    private void customFontSizepreferenceSetting(String customFontSize)
-    {
-        final FontDialogPreference fontDialogPreference = (FontDialogPreference) findPreference(customFontSize);
-        Log.i(this.getClass().getSimpleName(), "Preparing to find font size");
-        SharedPreferences fontSizePreference = getActivity().getSharedPreferences("fontSizePreference", Activity.MODE_MULTI_PROCESS);
-        fontDialogPreference.setSummary(fontSizePreference.getInt("fontSize", 0));
     }
 
     public void resetPreferenceSettings(String preferenceKey)
@@ -65,35 +50,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                //Both enter and exit animations are set to zero, so no transition animation is applied
-                // userSettingActivity.applyOverrideConfiguration();
-                //Call this line, just to make sure that the system doesn't apply an animation
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //Close this Activity
                 userSettingActivity.activityFinish();
-                //Again, don't set an animation for the transition
-                // userSettingActivity.applyOverrideConfiguration();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, new SettingsPreferenceFragment()).commit();
+                startActivity(startIntent);
                 return false;
             }
         });
     }
-
-//    public void fontPreferenceSettings(String prefSetFont)
-//    {
-//        ListPreference preferenceFont = (ListPreference) findPreference(prefSetFont);
-//        setListPreferenceSettingValue(prefSetFont);
-//        preferenceFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-//        {
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object newValue)
-//            {
-//                preference.setSummary(newValue.toString());
-//                return true;
-//            }
-//        });
-//    }
 
     public void colorPickerSettings(String colorPickerKey)
     {
@@ -120,15 +84,4 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         //primaryColorPreference.setSummary(ColorPickerPreference.convertToARGB(Integer.valueOf(String.valueOf(color))));
     }
 
-
-//    public void setListPreferenceSettingValue(String preferenceSettingKey)
-//    {
-//        ListPreference preferenceFont = (ListPreference) findPreference(preferenceSettingKey);
-//        if (preferenceFont.getValue() == null) {
-//            // to ensure we don't get a null value
-//            // set first value by default
-//            preferenceFont.setValueIndex(0);
-//        }
-//        preferenceFont.setSummary(preferenceFont.getValue().toString());
-//    }
 }

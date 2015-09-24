@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ import java.util.Date;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SplashScreenActivity extends Activity
+public class SplashScreenActivity extends AppCompatActivity
 {
 
     public static final String DATABASE_UPDATED_DATE_KEY = "databaseUpdatedDateKey";
@@ -44,6 +45,7 @@ public class SplashScreenActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+       // getSupportActionBar().hide();
         asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
         setContentView(R.layout.splash_screen);
         songDao = new SongDao(this);
@@ -55,7 +57,7 @@ public class SplashScreenActivity extends Activity
             {
                 loadBundleDatabase();
                 Intent intent = new Intent(SplashScreenActivity.this,
-                        MainActivity.class);
+                        NavigationDrawerActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
                 SplashScreenActivity.this.finish();

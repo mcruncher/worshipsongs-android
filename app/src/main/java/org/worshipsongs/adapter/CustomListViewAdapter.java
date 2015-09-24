@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,8 @@ import org.worshipsongs.service.UserPreferenceSettingService;
  * @Author : Seenivasan
  * @Version : 1.0
  */
+
+@Deprecated
 public class CustomListViewAdapter extends BaseAdapter
 {
     private static final int TYPE_ITEM = 0;
@@ -121,7 +121,7 @@ public class CustomListViewAdapter extends BaseAdapter
         textView.setText("");
         customTagColorService.setCustomTagTextView(context, text, textView);
         textView.setTypeface(preferenceSettingService.getFontStyle());
-        textView.setTextSize(preferenceSettingService.getFontSize());
+        textView.setTextSize(preferenceSettingService.getPortraitFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
     }
