@@ -1,10 +1,11 @@
 package org.worshipsongs.fragment;
 
-import android.app.AlertDialog;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 
 /**
  * Created by Seenivasan on 5/17/2015.

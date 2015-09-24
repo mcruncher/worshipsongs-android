@@ -1,6 +1,6 @@
 package org.worshipsongs.fragment;
 
-import android.app.AlertDialog;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +10,8 @@ import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,7 +80,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                 View promptsView = layoutInflater.inflate(R.layout.delete_confirmation_dialog, null);
                 TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
                 deleteMsg.setText(R.string.message_delete_playlist);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
                 alertDialogBuilder.setView(promptsView);
                 alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
                 {

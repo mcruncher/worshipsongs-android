@@ -37,15 +37,12 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-    private SearchView searchView;
-    private WorshipSongApplication application = new WorshipSongApplication();
-    private String selectedSong;
-    private UtilitiesService utilitiesService = new UtilitiesService();
-    private List<Verse> verseList;
     private String[] serviceNames;
     private CommonService commonService = new CommonService();
-    private ListDialogFragment dialogFragment;
-    private MenuItem mSearchMenuItem;
+
+    public SongsListFragment()
+    {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -156,7 +153,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putString("WORKAROUND_FOR_BUG_19917_KEY",  "WORKAROUND_FOR_BUG_19917_VALUE");
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
     }
 }
