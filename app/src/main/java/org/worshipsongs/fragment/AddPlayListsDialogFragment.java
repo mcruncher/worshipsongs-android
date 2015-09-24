@@ -1,15 +1,12 @@
 package org.worshipsongs.fragment;
 
-import android.app.AlertDialog;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.worshipsongs.service.CommonService;
-import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -38,7 +34,7 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
     {
         LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.add_service_dialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         alertDialogBuilder.setView(promptsView);
         final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
         alertDialogBuilder.setTitle("Enter the playlist name:");

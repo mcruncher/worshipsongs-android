@@ -8,7 +8,7 @@ compileSdkVersion 22
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 3
-        versionName "2.1.0-SNAPSHOT"
+        versionName "2.1.0-milestone2-SNAPSHOT"
     }
 
     signingConfigs {
