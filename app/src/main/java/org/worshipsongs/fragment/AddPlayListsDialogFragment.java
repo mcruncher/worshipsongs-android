@@ -2,17 +2,20 @@ package org.worshipsongs.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
@@ -21,24 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Seenivasan on 5/17/2015.
+ * Author: Seenivasan, Madasamy
+ * version :1.0.0
  */
-public abstract class AddPlayListsDialogFragment extends DialogFragment {
+public abstract class AddPlayListsDialogFragment extends DialogFragment
+{
 
     private CommonService commonService = new CommonService();
     private SongListAdapterService adapterService = new SongListAdapterService();
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
         LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.add_service_dialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
         alertDialogBuilder.setView(promptsView);
         final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
         alertDialogBuilder.setTitle("Enter the playlist name:");
 
-        alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        alertDialogBuilder.setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
                 String service_name;
                 if (serviceName.getText().toString().equals(""))
                     Toast.makeText(getActivity(), "Enter playlist name...!", Toast.LENGTH_LONG).show();
@@ -54,17 +62,27 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment {
                     listFragment.onRefresh();
                 }
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
                 dialog.cancel();
             }
         });
 
-
-        return alertDialogBuilder.create();
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
+            }
+        });
+        return alertDialog;
     }
 
     public abstract String getSelectedSong();
 
-    //  protected abstract void onClick(int which);
 }

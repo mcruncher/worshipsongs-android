@@ -2,6 +2,7 @@ package org.worshipsongs.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.SongsColumnViewActivity;
+import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.fragment.AddPlayListsDialogFragment;
@@ -33,7 +36,8 @@ import java.util.Map;
 /**
  * Created by Seenivasan on 5/16/2015.
  */
-public class SongListAdapterService {
+public class SongListAdapterService
+{
 
     public PopupWindow popupWindow;
     private WorshipSongApplication application = new WorshipSongApplication();
@@ -45,25 +49,67 @@ public class SongListAdapterService {
     private CommonService commonService = new CommonService();
     private ListDialogFragment dialogFragment;
 
-    public ArrayAdapter<String> getSongListAdapter(final List<String> songs, final FragmentManager fragmentManager) {
-        return new ArrayAdapter<String>(application.getContext(), R.layout.songs_listview_content, songs) {
+    public ArrayAdapter<Song> getNewSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
+    {
+        return new ArrayAdapter<Song>(application.getContext(), R.layout.songs_listview_content, songs)
+        {
             @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, final ViewGroup parent)
+            {
+                LayoutInflater inflater = (LayoutInflater) application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
+                final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
+                textView.setText(songs.get(position).getTitle());
+                final ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
+
+                imageView.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        showPopupMenu(v, String.valueOf(textView.getText()), fragmentManager);
+                    }
+                });
+
+                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View arg0)
+                    {
+                        selectedSong = textView.getText().toString();
+                        newdisplaySelectedSong(songs, position);
+                    }
+                });
+                return rowView;
+            }
+        };
+    }
+
+    public ArrayAdapter<String> getSongListAdapter(final List<String> songs, final FragmentManager fragmentManager)
+    {
+        return new ArrayAdapter<String>(application.getContext(), R.layout.songs_listview_content, songs)
+        {
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent)
+            {
                 LayoutInflater inflater = (LayoutInflater) application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
                 textView.setText(songs.get(position));
                 final ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
 
-                imageView.setOnClickListener(new View.OnClickListener() {
+                imageView.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
                         showPopupMenu(v, String.valueOf(textView.getText()), fragmentManager);
                     }
                 });
 
-                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View arg0) {
+                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View arg0)
+                    {
                         selectedSong = textView.getText().toString();
                         displaySelectedSong();
                     }
@@ -73,17 +119,22 @@ public class SongListAdapterService {
         };
     }
 
-    public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager) {
+    public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
+    {
         final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
         final Song song = songDao.getSongByTitle(songName);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(final MenuItem item) {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(final MenuItem item)
+            {
                 switch (item.getItemId()) {
                     case R.id.addToList:
-                        dialogFragment = new ListDialogFragment() {
+                        dialogFragment = new ListDialogFragment()
+                        {
                             @Override
-                            public String[] getProductListsArray() {
+                            public String[] getProductListsArray()
+                            {
 
                                 List<String> services = new ArrayList<String>();
                                 services.addAll(commonService.readServiceName());
@@ -96,12 +147,15 @@ public class SongListAdapterService {
                             }
 
                             @Override
-                            protected void onClick(int which) {
+                            protected void onClick(int which)
+                            {
                                 Log.d("Clicked position:", String.valueOf(which));
                                 if (which == 0) {
-                                    final AddPlayListsDialogFragment addPlayListsDialog = new AddPlayListsDialogFragment() {
+                                    final AddPlayListsDialogFragment addPlayListsDialog = new AddPlayListsDialogFragment()
+                                    {
                                         @Override
-                                        public String getSelectedSong() {
+                                        public String getSelectedSong()
+                                        {
                                             return songName;
                                         }
                                     };
@@ -126,7 +180,25 @@ public class SongListAdapterService {
         popupMenu.show();
     }
 
-    public void displaySelectedSong() {
+    public void newdisplaySelectedSong(List<Song> songs, int position)
+    {
+        Intent intent = new Intent(application.getContext(), SongContentViewActivity.class);
+        ArrayList<String> songList = new ArrayList<String>();
+        for (Song song : songs) {
+            songList.add(song.getTitle());
+        }
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
+        Setting.getInstance().setPosition(position);
+        //bundle.putInt(CommonConstants.POSITION_KEY, position);
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        application.getContext().startActivity(intent);
+
+    }
+
+    public void displaySelectedSong()
+    {
         Log.d("Selected song:", selectedSong);
         Song song = songDao.getSongByTitle(selectedSong);
         String lyrics = song.getLyrics();
@@ -145,7 +217,7 @@ public class SongListAdapterService {
         if (StringUtils.isNotBlank(verseOrder)) {
             verseListData = utilitiesService.getVerseByVerseOrder(verseOrder);
         }
-        Intent intent = new Intent(application.getContext(), SongsColumnViewActivity.class);
+        Intent intent = new Intent(application.getContext(), SongContentViewActivity.class);
         intent.putExtra("serviceName", song.getTitle());
         if (verseListData.size() > 0) {
             intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);

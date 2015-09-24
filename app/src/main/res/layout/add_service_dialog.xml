@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/layout_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -10,10 +11,13 @@
         android:id="@+id/service_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginLeft="7dp"
+        android:background="@drawable/edit_text_rounded_corner"
+        android:hint="@string/playlist_name_hint"
+        android:textColor="@color/button_material_dark"
+        android:textColorHint="@color/dim_foreground_disabled_material_light"
+        android:textCursorDrawable="@null">
 
-        <requestFocus />
+        <requestFocus/>
     </EditText>
-
 </RelativeLayout>

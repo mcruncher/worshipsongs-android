@@ -1,7 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,6 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,8 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.VerseParser;
@@ -34,21 +37,19 @@ import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Created by Seenivasan on 3/21/2015.
+ * Author: Seenivasan
+ * version 1.0.0
  */
-public class ServiceSongListActivity extends Activity
+public class ServiceSongListActivity extends AppCompatActivity
 {
-
     private ListView songListView;
     private VerseParser verseparser;
     private String songTitle;
     private SongDao songDao;
-    private List<Song> songs;
+    private ArrayList<String> titles;
     private List<Verse> verseList;
     private ArrayAdapter<String> adapter;
     private String[] dataArray;
@@ -64,14 +65,11 @@ public class ServiceSongListActivity extends Activity
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
-        System.out.println("Selected Service:" + serviceName);
-
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(serviceName);
-
 
         songListView = (ListView) findViewById(R.id.song_list_view);
         songDao = new SongDao(this);
@@ -86,14 +84,13 @@ public class ServiceSongListActivity extends Activity
             {
                 vibrator.vibrate(15);
                 songTitle = songListView.getItemAtPosition(position).toString();
-                System.out.println("Selected title:" + songTitle);
                 LayoutInflater li = LayoutInflater.from(ServiceSongListActivity.this);
-                View promptsView = li.inflate(R.layout.service_delete_dialog, null);
+                View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
                 TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-                deleteMsg.setText("Do you want to delete the song?");
+                deleteMsg.setText(R.string.message_delete_song);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ServiceSongListActivity.this);
                 alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -102,72 +99,43 @@ public class ServiceSongListActivity extends Activity
                         loadSongs();
                         Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+                {
+                    @Override
+                    public void onShow(DialogInterface dialog)
+                    {
+                        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
+                    }
+                });
                 alertDialog.show();
                 return true;
             }
         });
 
-
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
 
-                String selectedValue = songListView.getItemAtPosition(position).toString();
-                song = songDao.getSongByTitle(selectedValue);
-                String lyrics = song.getLyrics();
-                verseList = getVerse(lyrics);
-                List<String> verseName = new ArrayList<String>();
-                List<String> verseContent = new ArrayList<String>();
-                Map<String, String> verseDataMap = new HashMap<String, String>();
-                for (Verse verses : verseList) {
-                    verseName.add(verses.getType() + verses.getLabel());
-                    verseContent.add(verses.getContent());
-                    verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-                }
-                List<String> verseListDataContent = new ArrayList<String>();
-                List<String> verseListData = new ArrayList<String>();
-                String verseOrder = song.getVerseOrder();
-                if (StringUtils.isNotBlank(verseOrder)) {
-                    verseListData = getVerseByVerseOrder(verseOrder);
-                }
-                Intent intent = new Intent(ServiceSongListActivity.this, SongsColumnViewActivity.class);
-                intent.putExtra("serviceName", selectedValue);
-                if (verseListData.size() > 0) {
-                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseListData);
-                    for (int i = 0; i < verseListData.size(); i++) {
-                        verseListDataContent.add(verseDataMap.get(verseListData.get(i)));
-                    }
-                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseListDataContent);
-                    Log.d(this.getClass().getName(), "Verse List data content :" + verseListDataContent);
-                } else {
-                    intent.putStringArrayListExtra("verseName", (ArrayList<String>) verseName);
-                    intent.putStringArrayListExtra("verseContent", (ArrayList<String>) verseContent);
-                }
+                Intent intent = new Intent(ServiceSongListActivity.this, SongContentViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
+                bundle.putInt(CommonConstants.POSITION_KEY, position);
+                Setting.getInstance().setPosition(position);
+                intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
-    }
-
-    private void initSetUp()
-    {
-        songDao.open();
-        loadSongs();
-        dataArray = new String[songs.size()];
-        for (int i = 0; i < songs.size(); i++) {
-            dataArray[i] = songs.get(i).toString();
-        }
     }
 
     private void loadSongs()
@@ -175,6 +143,10 @@ public class ServiceSongListActivity extends Activity
         File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
+        titles = new ArrayList<>();
+        for (String title : propertyValues) {
+            titles.add(title);
+        }
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, propertyValues);
         songListView.setAdapter(adapter);
     }
@@ -224,9 +196,9 @@ public class ServiceSongListActivity extends Activity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.default_action_bar_menu, menu);
+        inflater.inflate(R.menu.action_bar_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
