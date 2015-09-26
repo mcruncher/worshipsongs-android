@@ -5,6 +5,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -201,6 +205,9 @@ public class ServiceSongListActivity extends AppCompatActivity
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
+        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        Drawable drawable = image.getDrawable();
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
             @Override

@@ -2,6 +2,9 @@ package org.worshipsongs.fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import org.worshipsongs.dao.AuthorDao;
 import org.worshipsongs.dao.AuthorSongDao;
@@ -81,6 +85,9 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        Drawable drawable = image.getDrawable();
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener()
         {
             @Override

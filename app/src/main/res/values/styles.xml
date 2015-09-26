@@ -1,9 +1,9 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <!--<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--</style>-->
 
     <!-- Base application theme. -->
     <style name="MainAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -11,7 +11,7 @@
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">#FFFFFF</item>
         <item name="android:textColor">@color/background_material_dark</item>
-        <!-- Customize your theme here. -->
+
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -29,6 +29,8 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="background">@color/white</item>
     </style>
+
+
 
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
