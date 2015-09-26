@@ -45,7 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-       // getSupportActionBar().hide();
+        // getSupportActionBar().hide();
         asyncGitHubRepositoryTask = new AsyncGitHubRepositoryTask(this);
         setContentView(R.layout.splash_screen);
         songDao = new SongDao(this);
@@ -78,8 +78,8 @@ public class SplashScreenActivity extends AppCompatActivity
         try {
             SplashScreenActivity context = SplashScreenActivity.this;
             String projectVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            Log.i(SplashScreenActivity.class.getSimpleName(), "Project version." + projectVersion);
-            if (projectVersion.contains("SNAPSHOT") && isWifi() && false) {
+            Log.i(SplashScreenActivity.class.getSimpleName(), "Project version " + projectVersion);
+            if (projectVersion.contains("SNAPSHOT") && isWifi()) {
                 if (asyncGitHubRepositoryTask.execute().get()) {
                     Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy remote database.");
                     AsyncDownloadTask asyncDownloadTask = new AsyncDownloadTask(context);
