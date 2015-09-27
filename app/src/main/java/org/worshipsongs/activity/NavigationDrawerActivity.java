@@ -23,7 +23,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void init(Bundle bundle)
     {
         this.addSubheader("");
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_home_white, new HomeTabFragment()));
+        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
         this.addSection(newSection(getString(R.string.about), R.drawable.about, new AboutWebViewFragment()));
 

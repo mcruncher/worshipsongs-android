@@ -2,6 +2,9 @@ package org.worshipsongs.fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
@@ -12,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import org.worshipsongs.WorshipSongApplication;
@@ -37,15 +41,12 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-    private SearchView searchView;
-    private WorshipSongApplication application = new WorshipSongApplication();
-    private String selectedSong;
-    private UtilitiesService utilitiesService = new UtilitiesService();
-    private List<Verse> verseList;
     private String[] serviceNames;
     private CommonService commonService = new CommonService();
-    private ListDialogFragment dialogFragment;
-    private MenuItem mSearchMenuItem;
+
+    public SongsListFragment()
+    {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -83,6 +84,10 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        Drawable drawable = image.getDrawable();
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
             @Override
@@ -156,7 +161,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putString("WORKAROUND_FOR_BUG_19917_KEY",  "WORKAROUND_FOR_BUG_19917_VALUE");
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
     }
 }
