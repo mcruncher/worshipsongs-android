@@ -1,12 +1,10 @@
 package org.worshipsongs.preference;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,9 @@ import org.worshipsongs.worship.R;
  */
 public class FontDialogPreference extends Preference
 {
+    private int portraitFontSize;
+    private int landscapeFontSize;
+
     public FontDialogPreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -36,14 +37,14 @@ public class FontDialogPreference extends Preference
         SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(FontDialogPreference.this.getContext());
         View promptsView = layoutInflater.inflate(R.layout.font_size_dialog, null);
         SeekBar fontSizeSeekBar = (SeekBar) promptsView.findViewById(R.id.portrait_font_size);
-        final int portraitFontSize = customSharedPreference.getInt(CommonConstants.PORTRAIT_FONT_SIZE_KEY, 20);
+        portraitFontSize = customSharedPreference.getInt(CommonConstants.PORTRAIT_FONT_SIZE_KEY, 20);
         fontSizeSeekBar.setProgress(portraitFontSize);
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                saveFontSizePreference(CommonConstants.PORTRAIT_FONT_SIZE_KEY, progress);
+                portraitFontSize = progress;
             }
 
             @Override
@@ -60,14 +61,15 @@ public class FontDialogPreference extends Preference
         });
 
         SeekBar landScapeSeekbar = (SeekBar) promptsView.findViewById(R.id.landscape_font_size);
-        final int landScapeFontSize = customSharedPreference.getInt(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, 28);
-        landScapeSeekbar.setProgress(landScapeFontSize);
+        landscapeFontSize = customSharedPreference.getInt(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, 28);
+        landScapeSeekbar.setProgress(landscapeFontSize);
         landScapeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                saveFontSizePreference(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, progress);
+
+                landscapeFontSize = progress;
             }
 
             @Override
@@ -93,6 +95,8 @@ public class FontDialogPreference extends Preference
             @Override
             public void onClick(View v)
             {
+                saveFontSizePreference(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, landscapeFontSize);
+                saveFontSizePreference(CommonConstants.PORTRAIT_FONT_SIZE_KEY, portraitFontSize);
                 alertDialog.dismiss();
             }
         });
