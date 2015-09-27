@@ -40,6 +40,8 @@
         </activity>
         <activity
             android:name="org.worshipsongs.activity.UserSettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.CustomPreferenceSetting">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
