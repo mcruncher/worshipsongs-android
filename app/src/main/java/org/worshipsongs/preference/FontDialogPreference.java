@@ -2,6 +2,7 @@ package org.worshipsongs.preference;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 /**
@@ -84,22 +87,25 @@ public class FontDialogPreference extends Preference
 
             }
         });
-        Button doneButton = (Button) promptsView.findViewById(R.id.doneButton);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FontDialogPreference.this.getContext());
         alertDialogBuilder.setView(promptsView);
-        alertDialogBuilder.setCancelable(true);
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-        doneButton.setOnClickListener(new View.OnClickListener()
+        alertDialogBuilder.setCancelable(true).setPositiveButton(getContext().getString(R.string.ok), new DialogInterface.OnClickListener()
         {
-            @Override
-            public void onClick(View v)
+            public void onClick(DialogInterface dialog, int id)
             {
                 saveFontSizePreference(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, landscapeFontSize);
                 saveFontSizePreference(CommonConstants.PORTRAIT_FONT_SIZE_KEY, portraitFontSize);
-                alertDialog.dismiss();
+                dialog.cancel();
+            }
+        }).setNegativeButton(getContext().getString(R.string.cancel), new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                dialog.cancel();
             }
         });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void saveFontSizePreference(String key, int fontSize)
