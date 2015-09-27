@@ -85,8 +85,7 @@ public class FontDialogPreference extends Preference
         Button doneButton = (Button) promptsView.findViewById(R.id.doneButton);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FontDialogPreference.this.getContext());
         alertDialogBuilder.setView(promptsView);
-        alertDialogBuilder.setCancelable(false);
-
+        alertDialogBuilder.setCancelable(true);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         doneButton.setOnClickListener(new View.OnClickListener()
