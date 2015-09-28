@@ -1,6 +1,6 @@
 Version 2.1.0
 
-- Landscape mode to view songs
+- Landscape mode that's optimized for projection to connected devices
 - Portrait/Landscape font setting
 - Swipe option to navigate to next song
 - Bundled db has 596 songs
