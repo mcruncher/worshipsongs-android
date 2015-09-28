@@ -18,7 +18,7 @@ FEATURES
 - Songs grouped by Authors & Albums. 
 - Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
 - Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
-- Landscape mode that's optimized for projecting to connected devices. 
+- Landscape mode that's optimized for projection to connected devices. 
 - Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
 - Keep the screen awake while viewing a song.
 - Professional design with no ads.
