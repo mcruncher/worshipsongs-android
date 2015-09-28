@@ -1,5 +1,12 @@
 Version 2.1.0
 
+- Landscape mode to view songs
+- Portrait/Landscape font setting
+- Swipe option to navigate to next song
+- Bundled db has 596 songs
+
+Version 2.0.0
+
 - Tabbed interface.
 - Songs, Authors, Albums & Playlists (previously called Services) tabs.
 - Easy navigation between various tabs.
