@@ -7,7 +7,7 @@ android {
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 4
+        versionCode 5
         versionName "2.1.0"
     }
 
