@@ -3,6 +3,8 @@ package org.worshipsongs.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -235,6 +237,30 @@ public class Song implements Parcelable
         stringBuilder.append("verses", getVerseColumns());
         stringBuilder.append("content", getContentColumns());
         return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if(object instanceof Song)
+        {
+            Song otherObject = (Song)object;
+            EqualsBuilder equalsBuilder = new EqualsBuilder();
+            equalsBuilder.append(getTitle(), otherObject.getTitle());
+            equalsBuilder.append(getSearchTitle(), otherObject.getSearchTitle());
+            return equalsBuilder.isEquals();
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+        hashCodeBuilder.append(getTitle());
+        hashCodeBuilder.append(getSearchTitle());
+        return hashCodeBuilder.hashCode();
     }
 
     @Override

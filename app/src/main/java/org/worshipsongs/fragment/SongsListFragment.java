@@ -28,7 +28,9 @@ import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author : Seenivasan,Madasamy
@@ -41,8 +43,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-    private String[] serviceNames;
-    private CommonService commonService = new CommonService();
+//    private String[] serviceNames;
+//    private CommonService commonService = new CommonService();
 
     public SongsListFragment()
     {
@@ -69,8 +71,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         songs = songDao.findAll();
         List<String> serviceNames = new ArrayList<String>();
-        serviceNames.addAll(commonService.readServiceName());
-        setServiceNames(serviceNames);
+        // serviceNames.addAll(commonService.readServiceName());
+        //setServiceNames(serviceNames);
         adapter = adapterService.getNewSongListAdapter(songs, getFragmentManager());
         setListAdapter(adapter);
     }
@@ -111,21 +113,31 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
 
     private List<Song> getFilteredSong(String text)
     {
-        List<Song> filteredSongs = new ArrayList<Song>();
+        Set<Song> filteredSongs = new HashSet<>();
         for (Song song : songs) {
-            if (song.getTitle().toLowerCase().contains(text.toLowerCase())) {
+            if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
+                filteredSongs.add(song);
+            }
+            if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
                 filteredSongs.add(song);
             }
         }
-        return filteredSongs;
+        return new ArrayList<>(filteredSongs);
+    }
+
+    private List<String> getTitles(String searchTitle)
+    {
+        List<String> titles = new ArrayList<>();
+        String[] titleArray = searchTitle.split("@");
+        for (String title : titleArray) {
+            titles.add(title);
+        }
+        return titles;
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
-//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setQuery("", false);
-//        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -139,24 +151,9 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void onRefresh()
     {
         Log.d("On refresh in Song list", "");
-        List<String> serviceNames = new ArrayList<String>();
-        serviceNames.addAll(commonService.readServiceName());
-        //setServiceNames(serviceNames);
         setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
     }
 
-    public String[] getServiceNames()
-    {
-        return serviceNames;
-    }
-
-    public void setServiceNames(List<String> names)
-    {
-        names.add(0, "New playlist...");
-        serviceNames = new String[names.size()];
-        names.toArray(serviceNames);
-
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState)

@@ -7,8 +7,8 @@ compileSdkVersion 22
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 3
-        versionName "2.1.0-milestone2-SNAPSHOT"
+        versionCode 5
+        versionName "2.2.0-SNAPSHOT"
     }
 
     signingConfigs {

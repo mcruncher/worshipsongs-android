@@ -51,7 +51,7 @@ public class SongDao extends AbstractDao
     {
         List<Song> songs = new ArrayList<Song>();
         Cursor cursor = getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order"}, null, null, null, null, "title");
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, null, null, null, null, "title");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Song song = cursorToSong(cursor);
@@ -67,7 +67,7 @@ public class SongDao extends AbstractDao
         Song song = new Song();
         String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, whereClause, null, null, null, null);
         cursor.moveToFirst();
         song = cursorToSong(cursor);
         cursor.close();
@@ -81,7 +81,7 @@ public class SongDao extends AbstractDao
             Log.d(this.getClass().getName(), "Song ID" + songId);
             String whereClause = " id=" + songId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order","search_title", "search_lyrics"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             song = cursorToSong(cursor);
             Log.d(this.getClass().getName(), "Song:" + song);
@@ -99,7 +99,7 @@ public class SongDao extends AbstractDao
         try {
             String whereClause = " song_book_id=" + songBookId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order"}, whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Song song = cursorToSong(cursor);
@@ -120,6 +120,8 @@ public class SongDao extends AbstractDao
         song.setTitle(cursor.getString(0));
         song.setLyrics(cursor.getString(1));
         song.setVerseOrder(cursor.getString(2));
+        song.setSearchTitle(cursor.getString(3));
+        song.setSearchLyrics(cursor.getString(4));
 
         return song;
     }
