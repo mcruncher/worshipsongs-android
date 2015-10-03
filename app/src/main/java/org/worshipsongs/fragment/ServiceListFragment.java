@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.ServiceSongListActivity;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -49,9 +51,9 @@ import java.util.Properties;
  * author  :Pitchumani, madasamy
  * version: 1.0.0
  */
-public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public class ServiceListFragment extends Fragment
 {
-    List<String> service = new ArrayList<String>();
+    List<String> serviceNames = new ArrayList<String>();
     String serviceName;
     TextView serviceMsg;
     ListAdapter listAdapter;
@@ -68,7 +70,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
         linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
-        service.clear();
+        serviceNames.clear();
         loadService();
         final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
@@ -95,7 +97,7 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
                         Toast.makeText(getActivity(), "Playlist " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
                         SongsListFragment listFragment = new SongsListFragment();
                         listFragment.onRefresh();
-                        service.clear();
+                        serviceNames.clear();
                         loadService();
                     }
                 }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
@@ -138,23 +140,21 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
 
     public void loadService()
     {
+        serviceNames.clear();
         readServiceName();
-        if (service.size() <= 0)
+        if (serviceNames.size() <= 0) {
             serviceMsg.setText("You haven't created any Playlist yet!\n" +
                     "Playlists are a great way to organize selected songs for events.\n" +
                     "To add a song to a Playlist, tap the : icon near a song and select the " + "Add to Playlist" + " action.");
-        else
+        } else {
             serviceMsg.setVisibility(View.GONE);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, service);
+        }
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceNames);
         listAdapter = new ListAdapter(getActivity());
         serviceListView.setAdapter(listAdapter);
     }
 
-    @Override
-    public void onRefresh()
-    {
 
-    }
 
     public List readServiceName()
     {
@@ -168,13 +168,13 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
             while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();
                 //String value = property.getProperty(key);
-                service.add(key);
+                serviceNames.add(key);
             }
             inputStream.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return service;
+        return serviceNames;
     }
 
     @Override
@@ -220,6 +220,17 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
+        if (isVisibleToUser) {
+            loadService();
+            CommonUtils.hideKeyboard(getActivity());
+        }
+    }
+
     private class ListAdapter extends BaseAdapter
     {
         LayoutInflater inflater;
@@ -235,13 +246,13 @@ public class ServiceListFragment extends Fragment implements SwipeRefreshLayout.
             TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
             Button delete = (Button) convertView.findViewById(R.id.delete);
             delete.setVisibility(View.GONE);
-            serviceName.setText(service.get(position).trim());
+            serviceName.setText(serviceNames.get(position).trim());
             return convertView;
         }
 
         public int getCount()
         {
-            return service.size();
+            return serviceNames.size();
         }
 
         public Object getItem(int position)

@@ -25,6 +25,7 @@ import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UtilitiesService;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -73,8 +74,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         List<String> serviceNames = new ArrayList<String>();
         // serviceNames.addAll(commonService.readServiceName());
         //setServiceNames(serviceNames);
-        adapter = adapterService.getNewSongListAdapter(songs, getFragmentManager());
-        setListAdapter(adapter);
+        //adapter = adapterService.getNewSongListAdapter(songs, getFragmentManager());
+       // setListAdapter(adapter);
     }
 
     @Override
@@ -154,6 +155,16 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
+        if (isVisibleToUser) {
+            setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
+            CommonUtils.hideKeyboard(getActivity());
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState)

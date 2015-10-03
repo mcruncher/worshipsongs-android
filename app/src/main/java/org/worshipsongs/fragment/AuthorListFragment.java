@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.service.AuthorListAdapterService;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -71,8 +73,8 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
                 authorsNames.add(author.getDisplayName());
             }
             Collections.sort(authorsNames);
-            adapter = adapterService.getAuthorListAdapter(authorsNames, getFragmentManager());
-            setListAdapter(adapter);
+//            adapter = adapterService.getAuthorListAdapter(authorsNames, getFragmentManager());
+//            setListAdapter(adapter);
         }
     }
 
@@ -133,6 +135,16 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
     public boolean onOptionsItemSelected(MenuItem item)
     {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            setListAdapter(adapterService.getAuthorListAdapter(authorsNames, getFragmentManager()));
+            CommonUtils.hideKeyboard(getActivity());
+        }
     }
 
     @Override
