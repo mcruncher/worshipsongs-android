@@ -155,7 +155,6 @@ public class ServiceListFragment extends Fragment
     }
 
 
-
     public List readServiceName()
     {
         Properties property = new Properties();
@@ -225,7 +224,7 @@ public class ServiceListFragment extends Fragment
     {
         super.setUserVisibleHint(isVisibleToUser);
         Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && getView() != null) {
             loadService();
             CommonUtils.hideKeyboard(getActivity());
         }
