@@ -1,20 +1,14 @@
 package org.worshipsongs.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.activity.UserSettingActivity;
 import org.worshipsongs.picker.ColorPickerPreference;
-import org.worshipsongs.preference.FontDialogPreference;
 import org.worshipsongs.worship.R;
 
 /**

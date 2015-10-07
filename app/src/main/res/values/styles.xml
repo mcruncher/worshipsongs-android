@@ -66,9 +66,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
         <item name="android:background">#cccccc</item>
-        <item name="android:paddingTop">6px</item>
-        <item name="android:paddingBottom">6px</item>
-        <item name="android:paddingLeft">12px</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -1,3 +1,8 @@
+Version 2.2.0
+
+- Support to search by alternate title and lyrics
+- Bundled db has 606 songs
+ 
 Version 2.1.0
 
 - Landscape mode that's optimized for projection to connected devices
