@@ -11,14 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
@@ -84,40 +89,48 @@ public class SongListAdapterService
         };
     }
 
-    public ArrayAdapter<String> getSongListAdapter(final List<String> songs, final FragmentManager fragmentManager)
+    private void showYouTube()
     {
-        return new ArrayAdapter<String>(application.getContext(), R.layout.songs_listview_content, songs)
-        {
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent)
-            {
-                LayoutInflater inflater = (LayoutInflater) application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
-                final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
-                textView.setText(songs.get(position));
-                final ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
-
-                imageView.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        showPopupMenu(v, String.valueOf(textView.getText()), fragmentManager);
-                    }
-                });
-
-                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
-                {
-                    public void onClick(View arg0)
-                    {
-                        selectedSong = textView.getText().toString();
-                        displaySelectedSong();
-                    }
-                });
-                return rowView;
-            }
-        };
+        Intent lightboxIntent = new Intent(application.getContext(), CustomYoutubeBoxActivity.class);
+        lightboxIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, "yKc-ey5pnNo");
+        lightboxIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        application.getContext().startActivity(lightboxIntent);
     }
+
+//    public ArrayAdapter<String> getSongListAdapter(final List<String> songs, final FragmentManager fragmentManager)
+//    {
+//        return new ArrayAdapter<String>(application.getContext(), R.layout.songs_listview_content, songs)
+//        {
+//            @Override
+//            public View getView(final int position, View convertView, ViewGroup parent)
+//            {
+//                LayoutInflater inflater = (LayoutInflater) application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
+//                final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
+//                textView.setText(songs.get(position));
+//                final ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
+//
+//                imageView.setOnClickListener(new View.OnClickListener()
+//                {
+//                    @Override
+//                    public void onClick(View v)
+//                    {
+//                        showPopupMenu(v, String.valueOf(textView.getText()), fragmentManager);
+//                    }
+//                });
+//
+//                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
+//                {
+//                    public void onClick(View arg0)
+//                    {
+//                        selectedSong = textView.getText().toString();
+//                        displaySelectedSong();
+//                    }
+//                });
+//                return rowView;
+//            }
+//        };
+//    }
 
     public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
     {

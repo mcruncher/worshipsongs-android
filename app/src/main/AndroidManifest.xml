@@ -51,6 +51,10 @@
             android:name="org.worshipsongs.activity.SongListActivity"
             >
         </activity>
+        <activity
+            android:name="org.worshipsongs.activity.CustomYoutubeBoxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme.Translucent" />
 
 
     </application>

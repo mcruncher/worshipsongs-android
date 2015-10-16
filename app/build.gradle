@@ -1,23 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-compileSdkVersion 22
+    compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 5
-        versionName "2.2.0-SNAPSHOT"
+        versionCode 6
+        versionName "2.3.0-SNAPSHOT"
     }
 
     signingConfigs {
         releaseConfig {
-            //TODO: configure env variable
-            //storeFile file(System.getenv("KEYSTORE"))
-            //storePassword System.getenv("KEYSTORE_PASSWORD")
-            //keyAlias System.getenv("KEY_ALIAS")
-            //keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file('/madasamy/projects/android/worshipsongs-key.jks')
+            storePassword "crunchers@123"
+            keyAlias 'worship-songs'
+            keyPassword 'Password123'
         }
 
     }
@@ -32,7 +31,7 @@ compileSdkVersion 22
                 }
             }
         }
-        debug{
+        debug {
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
@@ -56,17 +55,16 @@ compileSdkVersion 22
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/robotium-solo-2.5.jar', 'libs/YouTubeAndroidPlayerApi.jar')
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.1'
     compile "org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5"
 
+    compile 'com.android.support:appcompat-v7:22.2.1'
     //Navigation drawer dependencies
     compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
-    compile files('libs/robotium-solo-2.5.jar',)
-
     //cardview and recyclerview
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.getbase:floatingactionbutton:1.10.0'
 }

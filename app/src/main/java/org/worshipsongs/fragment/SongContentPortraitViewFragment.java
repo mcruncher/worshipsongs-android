@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,8 +15,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
@@ -68,12 +76,14 @@ public class SongContentPortraitViewFragment extends Fragment
         songCarViewAdapter = new SongCardViewAdapter(contents, this.getActivity());
         songCarViewAdapter.notifyDataSetChanged();
         recList.setAdapter(songCarViewAdapter);
+        setFloatingButton(view);
+
         view.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                Log.i(this.getClass().getSimpleName(), "Position "+tilteList.indexOf(title));
+                Log.i(this.getClass().getSimpleName(), "Position " + tilteList.indexOf(title));
                 int position = tilteList.indexOf(title);
                 Setting.getInstance().setPosition(position);
                 return true;
@@ -81,7 +91,6 @@ public class SongContentPortraitViewFragment extends Fragment
         });
         return view;
     }
-
 
     private void showStatusBar()
     {
@@ -94,4 +103,27 @@ public class SongContentPortraitViewFragment extends Fragment
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
+
+    private void setFloatingButton(View view)
+    {
+        FloatingActionButton playSongFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.play_song_fab);
+        playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                showYouTube();
+            }
+        });
+    }
+
+    private void showYouTube()
+    {
+        Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
+        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, "yKc-ey5pnNo");
+        getActivity().startActivity(youTubeIntent);
+
+    }
+
+
 }
