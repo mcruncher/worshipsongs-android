@@ -35,8 +35,8 @@ public class Song implements Parcelable
     private boolean temporary;
     private List<Column> verseColumns;
     private List<Column> contentColumns;
-//    private List<String> verses;
-//    private List<String> contentList;
+    private String urlKey;
+    private List<String> contents;
 
     public Song()
     {
@@ -228,6 +228,26 @@ public class Song implements Parcelable
         this.contentColumns = contentColumns;
     }
 
+    public String getUrlKey()
+    {
+        return urlKey;
+    }
+
+    public void setUrlKey(String urlKey)
+    {
+        this.urlKey = urlKey;
+    }
+
+    public List<String> getContents()
+    {
+        return contents;
+    }
+
+    public void setContents(List<String> contents)
+    {
+        this.contents = contents;
+    }
+
     @Override
     public String toString()
     {
@@ -242,9 +262,8 @@ public class Song implements Parcelable
     @Override
     public boolean equals(Object object)
     {
-        if(object instanceof Song)
-        {
-            Song otherObject = (Song)object;
+        if (object instanceof Song) {
+            Song otherObject = (Song) object;
             EqualsBuilder equalsBuilder = new EqualsBuilder();
             equalsBuilder.append(getTitle(), otherObject.getTitle());
             equalsBuilder.append(getSearchTitle(), otherObject.getSearchTitle());

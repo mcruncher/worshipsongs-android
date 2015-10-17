@@ -39,6 +39,7 @@
             android:textSize="20dp"/>
     </LinearLayout>
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/content_recycle_view"
         android:layout_width="match_parent"
@@ -48,6 +49,15 @@
         android:layout_below="@+id/linearLayout"
         android:paddingTop="@dimen/abc_control_corner_material"/>
 
+    <!--<FrameLayout-->
+        <!--android:id="@+id/fragment_youtube_player"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@+id/content_recycle_view"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"/>-->
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/play_song_fab"
         android:layout_width="wrap_content"
@@ -55,6 +65,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:visibility="gone"
         fab:fab_colorNormal="@color/dark_navy_blue"
         fab:fab_colorPressed="@color/light_navy_blue"
         fab:fab_icon="@drawable/ic_play_arrow_white"/>

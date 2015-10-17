@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -27,6 +31,7 @@ import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
@@ -37,7 +42,7 @@ import java.util.List;
  * Author: Madasamy
  * version: 1.0.0
  */
-public class SongContentPortraitViewFragment extends Fragment
+public class SongContentPortraitViewFragment extends Fragment implements YouTubePlayer.OnInitializedListener
 {
     private SongCardViewAdapter songCarViewAdapter;
     private WorshipSongApplication application = new WorshipSongApplication();
@@ -45,6 +50,12 @@ public class SongContentPortraitViewFragment extends Fragment
     private UtilitiesService utilitiesService = new UtilitiesService();
     private String title;
     private ArrayList<String> tilteList;
+    private YouTubePlayerSupportFragment mYoutubePlayerFragment;
+    private YouTubePlayer mPlayer;
+    private boolean isFullscreen;
+    private FrameLayout frameLayout;
+    private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
+    private int millis;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -71,13 +82,16 @@ public class SongContentPortraitViewFragment extends Fragment
         TextView textView = (TextView) view.findViewById(R.id.song_title);
         textView.setText(title);
 
-
-        List<String> contents = songDao.findContentsByTitle(title);
-        songCarViewAdapter = new SongCardViewAdapter(contents, this.getActivity());
+        if (bundle != null) {
+            millis = bundle.getInt(KEY_VIDEO_TIME);
+            Log.i(this.getClass().getSimpleName(), "Video time " + millis);
+        }
+        Song song = songDao.findContentsByTitle(title);
+        songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this.getActivity());
         songCarViewAdapter.notifyDataSetChanged();
         recList.setAdapter(songCarViewAdapter);
-        setFloatingButton(view);
-
+        // setYouTubeView(view);
+        setFloatingButton(view, song.getUrlKey());
         view.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -92,6 +106,18 @@ public class SongContentPortraitViewFragment extends Fragment
         return view;
     }
 
+    //TODO:To display youtube in same view
+    private void setYouTubeView(View view)
+    {
+//        mYoutubePlayerFragment = new YouTubePlayerSupportFragment();
+//        mYoutubePlayerFragment.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+//        frameLayout = (FrameLayout) view.findViewById(R.id.fragment_youtube_player);
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_youtube_player, mYoutubePlayerFragment);
+//        fragmentTransaction.commit();
+    }
+
     private void showStatusBar()
     {
         if (Build.VERSION.SDK_INT < 16) {
@@ -104,26 +130,64 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
-    private void setFloatingButton(View view)
+    private void setFloatingButton(View view, final String urrlKey)
     {
         FloatingActionButton playSongFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.play_song_fab);
-        playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
+        if (urrlKey != null && urrlKey.length() > 0) {
+            playSongFloatingActionButton.setVisibility(View.VISIBLE);
+            playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
             {
-                showYouTube();
-            }
-        });
+                @Override
+                public void onClick(View v)
+                {
+                    showYouTube(urrlKey);
+                }
+            });
+        }
     }
 
-    private void showYouTube()
+    private void showYouTube(String urlKey)
     {
         Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
-        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, "yKc-ey5pnNo");
+        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
         getActivity().startActivity(youTubeIntent);
-
     }
 
 
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
+    {
+        mPlayer = youTubePlayer;
+        if (!wasRestored) {
+            youTubePlayer.loadVideo("yKc-ey5pnNo");
+        }
+
+        if (wasRestored) {
+            youTubePlayer.seekToMillis(millis);
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        if (mPlayer != null) {
+            outState.putInt(KEY_VIDEO_TIME, mPlayer.getCurrentTimeMillis());
+            Log.i(this.getClass().getSimpleName(), "Video duration: " + mPlayer.getCurrentTimeMillis());
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult result)
+    {
+        if (result.isUserRecoverableError()) {
+            result.getErrorDialog(this.getActivity(), 1).show();
+        } else {
+            Toast.makeText(this.getActivity(),
+                    "YouTubePlayer.onInitializationFailure(): " + result.toString(),
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 }

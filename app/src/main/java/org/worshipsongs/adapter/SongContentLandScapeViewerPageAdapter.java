@@ -12,6 +12,7 @@ import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.SongContentLandscapeViewFragment;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
 
     public void initSetUp()
     {
-        contents = songDao.findContentsByTitle(title);
+        Song song = songDao.findContentsByTitle(title);
+        contents = song.getContents();
         authorSong = authorSongDao.findByTitle(title);
     }
 
