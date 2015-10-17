@@ -26,6 +26,12 @@ public class SongDao extends AbstractDao
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
     private UtilitiesService utilitiesService = new UtilitiesService();
 
+
+    public SongDao()
+    {
+        super();
+    }
+
     public SongDao(Context context)
     {
         super(context);
@@ -159,20 +165,20 @@ public class SongDao extends AbstractDao
         }
         Song parsedSong = new Song();
         parsedSong.setContents(contents);
-        parsedSong.setUrlKey(parseMediaUrl(song.getComments()));
+        parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
         return parsedSong;
     }
 
-    String parseMediaUrl(String comments)
+    String parseMediaUrlKey(String comments)
     {
         String mediaUrl = "";
         if (comments != null) {
             String[] mediaUrls = comments.split("=");
-            if (mediaUrls != null && mediaUrls.length >= 2) {
-                mediaUrl = mediaUrls[1];
+            if (mediaUrls != null && mediaUrls.length >= 3) {
+                mediaUrl = mediaUrls[2];
             }
         }
-        Log.d(this.getClass().getName(), "Parsed media url : " + mediaUrl);
+        //Log.d(this.getClass().getName(), "Parsed media url : " + mediaUrl);
         return mediaUrl;
     }
 }

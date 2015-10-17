@@ -17,6 +17,9 @@ public class AbstractDao
     private DatabaseHelper databaseHelper;
     private Context context;
 
+    public AbstractDao()
+    {}
+
     public AbstractDao(Context context)
     {
         databaseHelper = new DatabaseHelper(context);
