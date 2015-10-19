@@ -1,6 +1,7 @@
 Version 2.3.0
 
-- Added watch youtube video supports
+- Support to watch YouTube video
+- Bundled db has 607 songs
 
 Version 2.2.0
 
