@@ -9,4 +9,5 @@ app.iml
 .idea/**/*.xml
 /.idea
 
+**/*.sqlite
 **/*.jar
