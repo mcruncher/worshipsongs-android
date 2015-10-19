@@ -26,6 +26,12 @@ public class SongDao extends AbstractDao
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
     private UtilitiesService utilitiesService = new UtilitiesService();
 
+
+    public SongDao()
+    {
+        super();
+    }
+
     public SongDao(Context context)
     {
         super(context);
@@ -51,7 +57,7 @@ public class SongDao extends AbstractDao
     {
         List<Song> songs = new ArrayList<Song>();
         Cursor cursor = getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, null, null, null, null, "title");
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, null, null, null, null, "title");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Song song = cursorToSong(cursor);
@@ -67,7 +73,7 @@ public class SongDao extends AbstractDao
         Song song = new Song();
         String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, whereClause, null, null, null, null);
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
         cursor.moveToFirst();
         song = cursorToSong(cursor);
         cursor.close();
@@ -81,7 +87,7 @@ public class SongDao extends AbstractDao
             Log.d(this.getClass().getName(), "Song ID" + songId);
             String whereClause = " id=" + songId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order","search_title", "search_lyrics"}, whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             song = cursorToSong(cursor);
             Log.d(this.getClass().getName(), "Song:" + song);
@@ -99,7 +105,7 @@ public class SongDao extends AbstractDao
         try {
             String whereClause = " song_book_id=" + songBookId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics"}, whereClause, null, null, null, null);
+                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Song song = cursorToSong(cursor);
@@ -122,11 +128,12 @@ public class SongDao extends AbstractDao
         song.setVerseOrder(cursor.getString(2));
         song.setSearchTitle(cursor.getString(3));
         song.setSearchLyrics(cursor.getString(4));
+        song.setComments(cursor.getString(5));
 
         return song;
     }
 
-    public List<String> findContentsByTitle(String title)
+    public Song findContentsByTitle(String title)
     {
         Song song = getSongByTitle(title);
         String lyrics = song.getLyrics();
@@ -156,6 +163,24 @@ public class SongDao extends AbstractDao
         } else {
             contents.addAll(contentsByDefaultOrder);
         }
-        return contents;
+        Song parsedSong = new Song();
+        parsedSong.setContents(contents);
+        parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
+        Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
+        return parsedSong;
+    }
+
+    String parseMediaUrlKey(String comments)
+    {
+        Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
+        String mediaUrl = "";
+        if (comments != null) {
+            String[] mediaUrls = comments.split("=");
+            if (mediaUrls != null && mediaUrls.length >= 3) {
+                mediaUrl = mediaUrls[2];
+            }
+        }
+
+        return mediaUrl;
     }
 }

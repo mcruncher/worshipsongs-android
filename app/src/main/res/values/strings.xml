@@ -70,11 +70,7 @@
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_songs</item>
-        <item>@drawable/ic_settings</item>
-        <item>@drawable/ic_about</item>
-    </array>
+
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
