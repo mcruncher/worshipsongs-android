@@ -148,11 +148,11 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
 
     private void showYouTube(String urlKey)
     {
+        Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
         getActivity().startActivity(youTubeIntent);
     }
-
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)

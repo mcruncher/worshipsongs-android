@@ -166,11 +166,13 @@ public class SongDao extends AbstractDao
         Song parsedSong = new Song();
         parsedSong.setContents(contents);
         parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
+        Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
         return parsedSong;
     }
 
     String parseMediaUrlKey(String comments)
     {
+        Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
         String mediaUrl = "";
         if (comments != null) {
             String[] mediaUrls = comments.split("=");
@@ -178,7 +180,7 @@ public class SongDao extends AbstractDao
                 mediaUrl = mediaUrls[2];
             }
         }
-        //Log.d(this.getClass().getName(), "Parsed media url : " + mediaUrl);
+
         return mediaUrl;
     }
 }
