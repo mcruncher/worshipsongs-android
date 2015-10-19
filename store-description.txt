@@ -22,6 +22,7 @@ FEATURES
 - Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
 - Keep the screen awake while viewing a song.
 - Professional design with no ads.
+- Watch youtube video
 
 FAQ
 

@@ -1,3 +1,7 @@
+Version 2.3.0
+
+- Added watch youtube video supports
+
 Version 2.2.0
 
 - Support to search by alternate title and lyrics
