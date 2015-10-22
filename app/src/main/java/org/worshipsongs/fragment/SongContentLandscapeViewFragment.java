@@ -48,8 +48,9 @@ public class SongContentLandscapeViewFragment extends Fragment
         String authorName = bundle.getString("authorName");
         String position = bundle.getString("position");
         String size = bundle.getString("size");
+        String chord = bundle.getString("chord");
         setContent(content, view);
-        setSongTitle(view, title);
+        setSongTitle(view, title, chord);
         setAuthorName(view, authorName);
         setSongSlide(view, position, size);
         return view;
@@ -80,10 +81,19 @@ public class SongContentLandscapeViewFragment extends Fragment
         textView.setVerticalScrollBarEnabled(true);
     }
 
-    private void setSongTitle(View view, String title)
+    private void setSongTitle(View view, String title, String chord)
     {
         TextView songTitleTextView = (TextView) view.findViewById(R.id.song_title);
-        songTitleTextView.setText(" " + title);
+        songTitleTextView.setText(" " + title + getChord(chord));
+    }
+
+    private String getChord(String chord)
+    {
+
+        if (chord != null && chord.length() > 0) {
+            return " [" + chord + " ]";
+        }
+        return "";
     }
 
     private void setAuthorName(View view, String authorName)

@@ -167,20 +167,42 @@ public class SongDao extends AbstractDao
         parsedSong.setContents(contents);
         parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
         Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
+        parsedSong.setChord(parseChord(song.getComments()));
+        Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
         return parsedSong;
     }
 
     String parseMediaUrlKey(String comments)
     {
-        Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
+        // Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
         String mediaUrl = "";
-        if (comments != null) {
-            String[] mediaUrls = comments.split("=");
-            if (mediaUrls != null && mediaUrls.length >= 3) {
-                mediaUrl = mediaUrls[2];
+        if (comments != null && comments.length() > 0) {
+            String[] commentArray = comments.split("\n");
+            if (commentArray.length >= 1) {
+                String mediaUrlLine = commentArray[0];
+                String[] medialUrlArray = mediaUrlLine.split("=");
+                if (medialUrlArray != null && medialUrlArray.length >= 3) {
+                    mediaUrl = medialUrlArray[2];
+                }
             }
         }
-
         return mediaUrl;
+    }
+
+    String parseChord(String comments)
+    {
+        // Log.i(this.getClass().getSimpleName(), "Preparing to parse chord: " + comments);
+        String chord = "";
+        if (comments != null && comments.length() > 0) {
+            String[] commentArray = comments.split("\n");
+            if (commentArray.length >= 2) {
+                String chordLine = commentArray[1];
+                String[] chordArray = chordLine.split("=");
+                if (chordArray != null && chordArray.length >= 2) {
+                    chord = chordArray[1];
+                }
+            }
+        }
+        return chord;
     }
 }

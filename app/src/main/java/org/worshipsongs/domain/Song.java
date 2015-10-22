@@ -37,6 +37,7 @@ public class Song implements Parcelable
     private List<Column> contentColumns;
     private String urlKey;
     private List<String> contents;
+    private String chord;
 
     public Song()
     {
@@ -241,6 +242,16 @@ public class Song implements Parcelable
     public List<String> getContents()
     {
         return contents;
+    }
+
+    public String getChord()
+    {
+        return chord;
+    }
+
+    public void setChord(String chord)
+    {
+        this.chord = chord;
     }
 
     public void setContents(List<String> contents)
