@@ -91,7 +91,7 @@ public class SongContentLandscapeViewFragment extends Fragment
     {
 
         if (chord != null && chord.length() > 0) {
-            return " [" + chord + " ]";
+            return " [" + chord + "]";
         }
         return "";
     }
