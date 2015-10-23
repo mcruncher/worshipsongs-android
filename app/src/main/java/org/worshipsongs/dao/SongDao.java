@@ -192,7 +192,7 @@ public class SongDao extends AbstractDao
         // Log.i(this.getClass().getSimpleName(), "Preparing to parse chord: " + comments);
         String chord = "";
         if (comments != null && comments.length() > 0) {
-            String chordLine = RegexUtils.getMatchString(comments, "chord" + ".*");
+            String chordLine = RegexUtils.getMatchString(comments, "originalKey" + ".*");
             String[] chordArray = chordLine.split("=");
             if (chordArray != null && chordArray.length >= 2) {
                 chord = chordArray[1];

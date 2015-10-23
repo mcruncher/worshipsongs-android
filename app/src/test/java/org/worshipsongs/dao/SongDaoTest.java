@@ -27,7 +27,7 @@ public class SongDaoTest
     public void testParseMediaUrlKey_ChordDefined() throws Exception
     {
         System.out.println("--parseMediaUrlKey_ChordDefined--");
-        String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\nchord=c";
+        String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\noriginalKey=c";
         assertEquals("Ro59iCBNBdI", songDao.parseMediaUrlKey(comments));
     }
 
@@ -44,15 +44,15 @@ public class SongDaoTest
     {
         System.out.println("--parseChord--");
         String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n" +
-                "chord=G";
+                "originalKey=G";
         assertEquals("G", songDao.parseChord(comments));
     }
     @Test
-    public void testParseChord_SingleLine()
+    public void testParseChord_ChordpresentInfirst()
     {
         System.out.println("--parseChord_SingleLine--");
-        String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdIchord=g";
-        assertEquals("", songDao.parseChord(comments));
+        String comments = "originalKey=g\nmediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI";
+        assertEquals("g", songDao.parseChord(comments));
     }
 
 
