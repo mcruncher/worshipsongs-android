@@ -2,6 +2,9 @@ package org.worshipsongs.dao;
 
 import org.junit.Test;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.*;
 
 /**
@@ -44,6 +47,14 @@ public class SongDaoTest
                 "chord=G";
         assertEquals("G", songDao.parseChord(comments));
     }
+    @Test
+    public void testParseChord_SingleLine()
+    {
+        System.out.println("--parseChord_SingleLine--");
+        String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdIchord=g";
+        assertEquals("", songDao.parseChord(comments));
+    }
+
 
     @Test
     public void testParseChord_NotDefined()
