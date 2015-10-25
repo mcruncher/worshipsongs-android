@@ -94,7 +94,7 @@ public class ServiceListFragment extends Fragment
                     {
                         serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
-                        Toast.makeText(getActivity(), "Playlist " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Favourite " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
                         SongsListFragment listFragment = new SongsListFragment();
                         listFragment.onRefresh();
                         serviceNames.clear();
@@ -143,9 +143,9 @@ public class ServiceListFragment extends Fragment
         serviceNames.clear();
         readServiceName();
         if (serviceNames.size() <= 0) {
-            serviceMsg.setText("You haven't created any Playlist yet!\n" +
-                    "Playlists are a great way to organize selected songs for events.\n" +
-                    "To add a song to a Playlist, tap the : icon near a song and select the " + "Add to Playlist" + " action.");
+            serviceMsg.setText("You haven't created any Favourite yet!\n" +
+                    "Favourites are a great way to organize selected songs for events.\n" +
+                    "To add a song to a Favourites, tap the : icon near a song and select the " + "Add to Favourite" + " action.");
         } else {
             serviceMsg.setVisibility(View.GONE);
         }

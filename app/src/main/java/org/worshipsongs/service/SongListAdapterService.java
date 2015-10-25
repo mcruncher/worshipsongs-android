@@ -151,7 +151,7 @@ public class SongListAdapterService
 
                                 List<String> services = new ArrayList<String>();
                                 services.addAll(commonService.readServiceName());
-                                services.add(0, "New playlist...");
+                                services.add(0, "New favourite...");
                                 Log.d("service names list", commonService.readServiceName().toString());
                                 serviceNames = new String[services.size()];
                                 services.toArray(serviceNames);
