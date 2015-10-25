@@ -98,7 +98,7 @@
     <string name="style">Style</string>
     <string name="font_size_summary">Change the font size for text</string>
     <string name="titles">Titles</string>
-    <string name="artists">Artists</string>
+    <string name="artists">Authors</string>
     <string name="albums">Albums</string>
-    <string name="playlists">Playlists</string>
+    <string name="playlists">Favourites</string>
 </resources>
