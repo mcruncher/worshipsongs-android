@@ -94,7 +94,7 @@ public class AuthorSongDao extends AbstractDao {
 
     public List<AuthorSong> findAuthorsFromAuthorBooks() {
         List<AuthorSong> authorSongList = new ArrayList<AuthorSong>();
-        String havingStatement = "COUNT(*) > 1";
+        String havingStatement = "COUNT(*)";
         Cursor cursor = getDatabase().query(true, TABLE_NAME_AUTHOR,
                 columns, null, null, AUTHOR_ID, havingStatement, null, null);
         cursor.moveToFirst();
