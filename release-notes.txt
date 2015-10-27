@@ -1,3 +1,10 @@
+Version 2.4.0
+
+ - Music Key support
+ - Renamed tabs for clarity
+ - Removed Albums tab
+ - Lots of new songs
+
 Version 2.3.0
 
 - Support to watch YouTube video

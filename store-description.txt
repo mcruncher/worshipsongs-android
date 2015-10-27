@@ -12,14 +12,15 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
 
 FEATURES
 
-- A large collection of latest Tamil and English Praise & Worship song lyrics.
+- A large collection of latest Tamil and English Praise & Worship lyrics, as well as Keerthanaigal, FMPB songs, Jebathoatta Jeyageethangal etc.
 - Romanised text for Tamil songs.
 - Ability to quickly search for a song by any word you can remember in a song. For example, typing "Aara" would help you locate the song "Aarathanai Naayagan Neerae" (ஆராதனை நாயகன் நீரே)
-- Songs grouped by Titles, Authors & Albums. 
+- Songs grouped by Titles & Authors. 
 - Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
-- Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+- Manage song lists through "Favourites". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
 - Landscape mode that's optimized for projection to connected devices. 
 - Watch YouTube video
+- Music Key support
 - Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
 - Keep the screen awake while viewing a song.
 - Professional design with no ads.
