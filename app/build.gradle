@@ -13,10 +13,10 @@ android {
 
     signingConfigs {
         releaseConfig {
-            storeFile file('/madasamy/projects/android/worshipsongs-key.jks')
-            storePassword System.getenv("KEYSTORE")
-            keyAlias System.getenv("KEYALIAS")
-            keyPassword System.getenv("KEYPASSWORD")
+            storeFile file('../worshipsongs-key.jks')
+            storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
+            keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
+            keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
         }
     }
 
