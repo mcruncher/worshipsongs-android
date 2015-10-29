@@ -8,16 +8,15 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 7
-        versionName "2.3.0"
-
+        versionName "2.4.0-rc1"
     }
 
     signingConfigs {
         releaseConfig {
-            storeFile file('/madasamy/projects/android/worshipsongs-key.jks')
-            storePassword System.getenv("KEYSTORE")
-            keyAlias System.getenv("KEYALIAS")
-            keyPassword System.getenv("KEYPASSWORD")
+            storeFile file('../.worshipsongs-key.jks')
+            storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
+            keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
+            keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
         }
     }
 

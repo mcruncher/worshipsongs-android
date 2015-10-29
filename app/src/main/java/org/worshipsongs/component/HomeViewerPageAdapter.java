@@ -42,8 +42,6 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
             case 1:
                 return new AuthorListFragment();
             case 2:
-                return new SongBookListFragment();
-            case 3:
                 return new ServiceListFragment();
         }
         return null;

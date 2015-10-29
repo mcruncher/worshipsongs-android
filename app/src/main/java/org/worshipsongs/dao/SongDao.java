@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.service.UtilitiesService;
+import org.worshipsongs.utils.RegexUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,20 +168,36 @@ public class SongDao extends AbstractDao
         parsedSong.setContents(contents);
         parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
         Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
+        parsedSong.setChord(parseChord(song.getComments()));
+        Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
         return parsedSong;
     }
 
     String parseMediaUrlKey(String comments)
     {
-        Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
+        // Log.i(this.getClass().getSimpleName(), "Preparing to parse media url: " + comments);
         String mediaUrl = "";
-        if (comments != null) {
-            String[] mediaUrls = comments.split("=");
-            if (mediaUrls != null && mediaUrls.length >= 3) {
-                mediaUrl = mediaUrls[2];
+        if (comments != null && comments.length() > 0) {
+            String mediaUrlLine = RegexUtils.getMatchString(comments, "mediaurl" + ".*");
+            String[] medialUrlArray = mediaUrlLine.split("=");
+            if (medialUrlArray != null && medialUrlArray.length >= 3) {
+                mediaUrl = medialUrlArray[2];
             }
         }
-
         return mediaUrl;
+    }
+
+    String parseChord(String comments)
+    {
+        // Log.i(this.getClass().getSimpleName(), "Preparing to parse chord: " + comments);
+        String chord = "";
+        if (comments != null && comments.length() > 0) {
+            String chordLine = RegexUtils.getMatchString(comments, "originalKey" + ".*");
+            String[] chordArray = chordLine.split("=");
+            if (chordArray != null && chordArray.length >= 2) {
+                chord = chordArray[1];
+            }
+        }
+        return chord;
     }
 }

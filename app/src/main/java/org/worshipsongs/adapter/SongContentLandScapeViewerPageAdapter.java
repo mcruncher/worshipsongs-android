@@ -30,6 +30,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
     private AuthorSongDao authorSongDao = new AuthorSongDao(application.getContext());
     private List<String> contents;
     private AuthorSong authorSong;
+    private Song song;
 
 
     public SongContentLandScapeViewerPageAdapter(FragmentManager fragmentManager, String title)
@@ -41,7 +42,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
 
     public void initSetUp()
     {
-        Song song = songDao.findContentsByTitle(title);
+        song = songDao.findContentsByTitle(title);
         contents = song.getContents();
         authorSong = authorSongDao.findByTitle(title);
     }
@@ -57,6 +58,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
         bundle.putString("authorName", authorSong.getAuthor().getDisplayName());
         bundle.putString("position", String.valueOf(position));
         bundle.putString("size", String.valueOf(contents.size()));
+        bundle.putString("chord", song.getChord());
         songContentLandscapeViewFragment.setArguments(bundle);
         return songContentLandscapeViewFragment;
     }

@@ -29,6 +29,8 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,7 +77,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         // serviceNames.addAll(commonService.readServiceName());
         //setServiceNames(serviceNames);
         //adapter = adapterService.getNewSongListAdapter(songs, getFragmentManager());
-       // setListAdapter(adapter);
+        // setListAdapter(adapter);
     }
 
     @Override
@@ -96,37 +98,39 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                adapter = adapterService.getNewSongListAdapter(getFilteredSong(query), getFragmentManager());
-                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(query), getFragmentManager()));
+                adapter = adapterService.getNewSongListAdapter(getFilteredSong(query, songs), getFragmentManager());
+                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(query, songs), getFragmentManager()));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                adapter = adapterService.getNewSongListAdapter(getFilteredSong(newText), getFragmentManager());
-                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(newText), getFragmentManager()));
+                adapter = adapterService.getNewSongListAdapter(getFilteredSong(newText, songs), getFragmentManager());
+                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(newText, songs), getFragmentManager()));
                 return true;
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private List<Song> getFilteredSong(String text)
+    List<Song> getFilteredSong(String text, List<Song> songs)
     {
-        Set<Song> filteredSongs = new HashSet<>();
+        Set<Song> filteredSongSet = new HashSet<>();
         for (Song song : songs) {
             if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
-                filteredSongs.add(song);
+                filteredSongSet.add(song);
             }
             if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
-                filteredSongs.add(song);
+                filteredSongSet.add(song);
             }
         }
-        return new ArrayList<>(filteredSongs);
+        List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
+        Collections.sort(filteredSongs, new SongComparator());
+        return filteredSongs;
     }
 
-    private List<String> getTitles(String searchTitle)
+    List<String> getTitles(String searchTitle)
     {
         List<String> titles = new ArrayList<>();
         String[] titleArray = searchTitle.split("@");
@@ -171,5 +175,15 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
+    }
+
+    private class SongComparator implements Comparator<Song>
+    {
+
+        @Override
+        public int compare(Song song1, Song song2)
+        {
+            return song1.getTitle().compareTo(song2.getTitle());
+        }
     }
 }

@@ -31,8 +31,7 @@ public class HomeTabFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = (View) inflater.inflate(R.layout.home_tab_layout, container, false);
-        titles = Arrays.asList(getResources().getString(R.string.titles), getResources().getString(R.string.artists),
-                getResources().getString(R.string.albums), getResources().getString(R.string.playlists));
+        titles = Arrays.asList(getResources().getString(R.string.titles), getResources().getString(R.string.artists), getResources().getString(R.string.playlists));
         // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.ome
         Log.i(this.getClass().getSimpleName(), "Preparing to load home view fragment");
         adapter = new HomeViewerPageAdapter(getChildFragmentManager(), titles);
@@ -43,7 +42,7 @@ public class HomeTabFragment extends Fragment
         pager.setAdapter(adapter);
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(false);
+        tabs.setDistributeEvenly(true);
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()

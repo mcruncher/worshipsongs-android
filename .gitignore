@@ -52,4 +52,4 @@ app.iml
 
 **/*.sqlite
 **/*.jar
-
+*.jks

@@ -37,7 +37,7 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         alertDialogBuilder.setView(promptsView);
         final EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
-        alertDialogBuilder.setTitle("Enter the playlist name:");
+        alertDialogBuilder.setTitle("Enter the favourite name:");
 
         alertDialogBuilder.setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener()
         {
@@ -45,14 +45,14 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
             {
                 String service_name;
                 if (serviceName.getText().toString().equals(""))
-                    Toast.makeText(getActivity(), "Enter playlist name...!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
                 else {
                     service_name = serviceName.getText().toString();
                     List<String> serviceNames = new ArrayList<String>();
                     serviceNames.addAll(commonService.readServiceName());
                     //adapterService.setServiceNames(serviceNames);
                     commonService.saveIntoFile(service_name, getSelectedSong().toString());
-                    Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     SongsListFragment listFragment = new SongsListFragment();
                     listFragment.onRefresh();
