@@ -51,3 +51,4 @@ app.iml
 .idea/
 **/*.sqlite
 **/*.jar
+*.jks
