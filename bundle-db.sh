@@ -1,3 +1,3 @@
 git clone https://github.com/crunchersaspire/worshipsongs-db-dev.git bundle-db
 cp -rf bundle-db/songs.sqlite app/src/main/assets/
-sudo rm -r bundle-db
+rm -rf bundle-db
