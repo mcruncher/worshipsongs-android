@@ -35,6 +35,15 @@
         </CheckBoxPreference>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_video_settings">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefVideoPlay"
+            android:summary="@string/videoPlaySummary"
+            android:title="@string/playVideoTitle" >
+        </SwitchPreference>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_restore_default_settings">
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="Reset all values to their defaults"

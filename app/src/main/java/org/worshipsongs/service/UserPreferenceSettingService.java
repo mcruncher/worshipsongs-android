@@ -81,4 +81,9 @@ public class UserPreferenceSettingService
     {
         return sharedPreferences.getBoolean("prefKeepAwakeOn", false);
     }
+
+    public boolean getPlayVideoStatus()
+    {
+        return sharedPreferences.getBoolean("prefVideoPlay", true);
+    }
 }

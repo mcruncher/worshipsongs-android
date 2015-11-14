@@ -32,6 +32,7 @@ import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
@@ -44,6 +45,7 @@ import java.util.List;
  */
 public class SongContentPortraitViewFragment extends Fragment implements YouTubePlayer.OnInitializedListener
 {
+    private UserPreferenceSettingService preferenceSettingService;
     private SongCardViewAdapter songCarViewAdapter;
     private WorshipSongApplication application = new WorshipSongApplication();
     private SongDao songDao = new SongDao(application.getContext());
@@ -53,6 +55,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
     private YouTubePlayerSupportFragment mYoutubePlayerFragment;
     private YouTubePlayer mPlayer;
     private boolean isFullscreen;
+    private boolean playVideoStatus;
     private FrameLayout frameLayout;
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private int millis;
@@ -64,6 +67,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         showStatusBar();
         RecyclerView recList = (RecyclerView) view.findViewById(R.id.content_recycle_view);
         recList.setHasFixedSize(true);
+        preferenceSettingService = new UserPreferenceSettingService();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(linearLayoutManager);
@@ -71,17 +75,14 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
-        imageView.setOnClickListener(new View.OnClickListener()
-        {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 getActivity().finish();
             }
         });
         TextView textView = (TextView) view.findViewById(R.id.song_title);
         textView.setText(title);
-
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
@@ -92,17 +93,16 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         recList.setAdapter(songCarViewAdapter);
         // setYouTubeView(view);
         setFloatingButton(view, song.getUrlKey());
-        view.setOnTouchListener(new View.OnTouchListener()
-        {
+        view.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 Log.i(this.getClass().getSimpleName(), "Position " + tilteList.indexOf(title));
                 int position = tilteList.indexOf(title);
                 Setting.getInstance().setPosition(position);
                 return true;
             }
         });
+        Log.i(this.getClass().getSimpleName(), "Video status:" + playVideoStatus);
         return view;
     }
 
@@ -132,8 +132,9 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
 
     private void setFloatingButton(View view, final String urrlKey)
     {
+        playVideoStatus = preferenceSettingService.getPlayVideoStatus();
         FloatingActionButton playSongFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.play_song_fab);
-        if (urrlKey != null && urrlKey.length() > 0) {
+        if (urrlKey != null && urrlKey.length() > 0 && playVideoStatus == true) {
             playSongFloatingActionButton.setVisibility(View.VISIBLE);
             playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
             {
