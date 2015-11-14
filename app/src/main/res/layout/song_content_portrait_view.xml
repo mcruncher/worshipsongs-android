@@ -37,6 +37,14 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="@color/primary_text_default_material_dark"
             android:textSize="20dp"/>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/optionMenu"
+            android:src="@drawable/option_menu"/>
     </LinearLayout>
 
 

@@ -136,7 +136,6 @@ public class SongListAdapterService
     {
         final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
-        final Song song = songDao.getSongByTitle(songName);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)
@@ -179,7 +178,7 @@ public class SongListAdapterService
                                     serviceNames = new String[services.size()];
                                     String[] selectedServiceNames = services.toArray(serviceNames);
                                     commonService.saveIntoFile(selectedServiceNames[which - 1].toString(), songName);
-                                    Toast.makeText(getActivity(), "Song added to playlist...!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_LONG).show();
                                 }
                             }
                         };
