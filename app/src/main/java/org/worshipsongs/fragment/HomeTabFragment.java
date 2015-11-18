@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
@@ -45,14 +48,16 @@ public class HomeTabFragment extends Fragment
         tabs.setDistributeEvenly(true);
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
-        {
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
-            public int getIndicatorColor(int position)
-            {
+            public int getIndicatorColor(int position) {
                 return getResources().getColor(R.color.bright_foreground_material_dark);
             }
         });
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+        tabs.getLayoutParams().width = ((int) dpWidth * 3) + 10;
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
         Log.i(this.getClass().getSimpleName(), "Finished loading home fragment");

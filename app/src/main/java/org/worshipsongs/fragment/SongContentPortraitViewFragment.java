@@ -4,25 +4,20 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -34,14 +29,12 @@ import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Madasamy
@@ -64,9 +57,6 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private int millis;
     private SongListAdapterService songListAdapterService;
-    private String[] serviceNames;
-    private CommonService commonService = new CommonService();
-    private ListDialogFragment dialogFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
