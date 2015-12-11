@@ -42,7 +42,7 @@ public class HomeTabFragment extends Fragment
         pager.setAdapter(adapter);
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true);
+        tabs.setDistributeEvenly(false);
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
