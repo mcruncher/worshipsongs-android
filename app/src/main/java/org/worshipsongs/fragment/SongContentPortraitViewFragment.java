@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -32,12 +29,12 @@ import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Madasamy
@@ -59,11 +56,12 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
     private FrameLayout frameLayout;
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private int millis;
+    private SongListAdapterService songListAdapterService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
+        final View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
         showStatusBar();
         RecyclerView recList = (RecyclerView) view.findViewById(R.id.content_recycle_view);
         recList.setHasFixedSize(true);
@@ -75,10 +73,18 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
+        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+            }
+        });
+        optionMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songListAdapterService = new SongListAdapterService();
+                songListAdapterService.showPopupMenu(v, title, getFragmentManager());
             }
         });
         TextView textView = (TextView) view.findViewById(R.id.song_title);
@@ -136,11 +142,9 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         FloatingActionButton playSongFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.play_song_fab);
         if (urrlKey != null && urrlKey.length() > 0 && playVideoStatus == true) {
             playSongFloatingActionButton.setVisibility(View.VISIBLE);
-            playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
-            {
+            playSongFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     showYouTube(urrlKey);
                 }
             });
