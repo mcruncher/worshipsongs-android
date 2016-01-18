@@ -54,11 +54,7 @@ public class HomeTabFragment extends Fragment
                 return getResources().getColor(R.color.bright_foreground_material_dark);
             }
         });
-        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-
-        tabs.getLayoutParams().width = ((int) dpWidth * 3) + 10;
-        // Setting the ViewPager For the SlidingTabsLayout
+               // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
         Log.i(this.getClass().getSimpleName(), "Finished loading home fragment");
         return view;
