@@ -30,7 +30,6 @@
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
 
-
     <!-- Preferences -->
     <string name="pref_category">Category</string>
     <string name="primary_color">English/Romanised</string>
@@ -38,9 +37,7 @@
     <string name="secondary_color">Tamil</string>
     <string name="secondary_summary">Change the color for Tamil</string>
 
-
     <string name="color_tag_title">Tag Color</string>
-
     <string name="color_tag_summary">Set Tag color</string>
 
 
@@ -104,4 +101,5 @@
     <string name="artists">Authors</string>
     <string name="albums">Albums</string>
     <string name="playlists">Favourites</string>
+    <string name="share">Share</string>
 </resources>

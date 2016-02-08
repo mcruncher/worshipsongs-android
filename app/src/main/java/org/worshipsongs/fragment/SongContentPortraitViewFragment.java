@@ -35,6 +35,7 @@ import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Madasamy
@@ -72,23 +73,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
-        ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
-        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
-        optionMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                songListAdapterService = new SongListAdapterService();
-                songListAdapterService.showPopupMenu(v, title, getFragmentManager());
-            }
-        });
-        TextView textView = (TextView) view.findViewById(R.id.song_title);
-        textView.setText(title);
+
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
@@ -98,10 +83,14 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         songCarViewAdapter.notifyDataSetChanged();
         recList.setAdapter(songCarViewAdapter);
         // setYouTubeView(view);
+        setOptionsImageView(view, song.getContents());
+        setTitleTextView(view);
         setFloatingButton(view, song.getUrlKey());
-        view.setOnTouchListener(new View.OnTouchListener() {
+        view.setOnTouchListener(new View.OnTouchListener()
+        {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, MotionEvent event)
+            {
                 Log.i(this.getClass().getSimpleName(), "Position " + tilteList.indexOf(title));
                 int position = tilteList.indexOf(title);
                 Setting.getInstance().setPosition(position);
@@ -110,6 +99,41 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         });
         Log.i(this.getClass().getSimpleName(), "Video status:" + playVideoStatus);
         return view;
+    }
+
+    private void setTitleTextView(View view)
+    {
+        TextView textView = (TextView) view.findViewById(R.id.song_title);
+        textView.setText(title);
+    }
+
+    private void setOptionsImageView(View view, final List<String> contents)
+    {
+        ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
+        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
+        imageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().finish();
+            }
+        });
+        optionMenu.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.append(title).append("\n").append("\n");
+                for (String string : contents) {
+                    builder.append(string);
+                }
+                String formattedText = builder.toString().replaceAll("\\{\\w\\}", "").replaceAll("\\{/\\w\\}", "");
+                songListAdapterService = new SongListAdapterService();
+                songListAdapterService.ShowSharePopupmenu(v, title, getFragmentManager(), formattedText);
+            }
+        });
     }
 
     //TODO:To display youtube in same view
@@ -142,9 +166,11 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         FloatingActionButton playSongFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.play_song_fab);
         if (urrlKey != null && urrlKey.length() > 0 && playVideoStatus == true) {
             playSongFloatingActionButton.setVisibility(View.VISIBLE);
-            playSongFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            playSongFloatingActionButton.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     showYouTube(urrlKey);
                 }
             });
