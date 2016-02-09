@@ -3,6 +3,7 @@ package org.worshipsongs.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.google.android.gms.plus.PlusShare;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.worship.R;
@@ -30,6 +33,7 @@ public abstract class ShareDialogFragment extends DialogFragment
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptsView = layoutInflater.inflate(R.layout.share_dialog, null);
         setWhatsappImageView(promptsView);
+        setGplusImageView(promptsView);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder.setTitle("");
@@ -44,6 +48,24 @@ public abstract class ShareDialogFragment extends DialogFragment
             }
         });
         return alertDialog;
+    }
+
+    private void setGplusImageView(View promptsView)
+    {
+        ImageView gplusImageView = (ImageView) promptsView.findViewById(R.id.gplus_imageView);
+        gplusImageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent shareIntent = new PlusShare.Builder(application.getContext())
+                        .setType("text/plain")
+                        .setText(getContent())
+                        .setContentUrl(Uri.parse("https://developers.google.com/+/"))
+                        .getIntent();
+                startActivityForResult(shareIntent, 0);
+            }
+        });
     }
 
     private void setWhatsappImageView(View promptsView)
@@ -67,4 +89,3 @@ public abstract class ShareDialogFragment extends DialogFragment
 
     protected abstract String getContent();
 }
-
