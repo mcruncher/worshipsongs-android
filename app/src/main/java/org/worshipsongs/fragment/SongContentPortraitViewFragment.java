@@ -129,6 +129,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
                 for (String string : contents) {
                     builder.append(string);
                 }
+                builder.append(getActivity().getString(R.string.share_info));
                 String formattedText = builder.toString().replaceAll("\\{\\w\\}", "").replaceAll("\\{/\\w\\}", "");
                 songListAdapterService = new SongListAdapterService();
                 songListAdapterService.ShowSharePopupmenu(v, title, getFragmentManager(), formattedText);

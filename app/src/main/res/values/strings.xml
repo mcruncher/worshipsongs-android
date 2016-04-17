@@ -102,4 +102,7 @@
     <string name="albums">Albums</string>
     <string name="playlists">Favourites</string>
     <string name="share">Share</string>
+    <string name="share.info">Content shared from:
+        https://play.google.com/store/apps/details?id=org.worshipsongs
+    </string>
 </resources>

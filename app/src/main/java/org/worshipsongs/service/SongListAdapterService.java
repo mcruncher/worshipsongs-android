@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,6 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.fragment.AddPlayListsDialogFragment;
 import org.worshipsongs.fragment.ListDialogFragment;
-import org.worshipsongs.fragment.ShareDialogFragment;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -127,23 +125,12 @@ public class SongListAdapterService
                         getAddfavouriteDialogFragment(songName, fragmentManager);
                         return true;
                     case R.id.share_whatsapp:
-//                        Log.i(SongListAdapterService.class.getSimpleName(), "Share in whatsapp");
-//                        Intent sendIntent = new Intent();
-//                        sendIntent.setAction(Intent.ACTION_SEND);
-//                        sendIntent.putExtra(Intent.EXTRA_TEXT, content);
-//                        sendIntent.setType("text/plain");
-//                        sendIntent.setPackage("com.whatsapp");
-//                        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        // application.getContext().startActivity(sendIntent);
-                        ShareDialogFragment fragment = new ShareDialogFragment()
-                        {
-                            @Override
-                            protected String getContent()
-                            {
-                                return content;
-                            }
-                        };
-                        fragment.show(fragmentManager, "Share");
+                        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+                        textShareIntent.putExtra(Intent.EXTRA_TEXT, content);
+                        textShareIntent.setType("text/plain");
+                        Intent intent = Intent.createChooser(textShareIntent, "Share "+songName +" with...");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        application.getContext().startActivity(intent);
                         return true;
                     default:
                         return false;
