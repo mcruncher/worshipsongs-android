@@ -1,7 +1,7 @@
 package org.worshipsongs.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.http.auth.AUTH;
+
 
 /**
  * Created by Seenivasan on 3/24/2015.
