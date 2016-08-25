@@ -1,17 +1,11 @@
 <resources>
 
-    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
-    <!--<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <!--</style>-->
-
     <!-- Base application theme. -->
     <style name="MainAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">#FFFFFF</item>
         <item name="android:textColor">@color/background_material_dark</item>
-
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -29,9 +23,6 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="background">@color/white</item>
     </style>
-
-
-
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
         <item name="background">@color/white</item>
@@ -54,7 +45,6 @@
         <item name="android:bottomMedium">@android:color/transparent</item>
         <item name="android:centerMedium">@android:color/transparent</item>
     </style>
-
 
     <style name="CustomSubheaderTheme">
         <item name="subheaderTitleColor">#FFF</item>
@@ -93,6 +83,5 @@
         <item name="colorPrimaryDark">@color/app_primary_dark</item>
         <item name="colorAccent">@color/app_primary_accent</item>
     </style>
-
 
 </resources>
