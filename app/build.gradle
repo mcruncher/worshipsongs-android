@@ -66,10 +66,10 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    //Navigation drawer dependencies
+    // Navigation drawer dependencies
     compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
     compile 'com.google.android.gms:play-services:7.0.0'
-    //cardview and recyclerview
+    // cardview and recyclerview
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.getbase:floatingactionbutton:1.10.0'
