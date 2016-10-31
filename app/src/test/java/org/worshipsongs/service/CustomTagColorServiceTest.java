@@ -20,4 +20,12 @@ public class CustomTagColorServiceTest
       assertEquals(expected, customTagColorService.removeTag(lyricsLine, "y"));
     }
 
+    @Test
+    public void removeCenterTag() throws Exception
+    {
+        String lyricsLine = "song foo {y}year {/y}";
+        String expected = "song foo year ";
+        assertEquals(expected, customTagColorService.removeTag(lyricsLine, "y"));
+    }
+
 }
