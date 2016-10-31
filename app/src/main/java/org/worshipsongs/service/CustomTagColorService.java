@@ -101,12 +101,12 @@ public class CustomTagColorService
     }
 
 
-    private String removeTag(String line, String tagKey)
+    String removeTag(String line, String tagKey)
     {
-        String content1 = line.replaceAll("\\{", "");
-        String content2 = content1.replaceAll("\\}", "");
-        String content3 = content2.replaceAll(tagKey, "");
-        String content4 = content3.replaceAll("/", "");
-        return content4;
+        String firstRemovePattern = "\\{" + tagKey + "\\}";
+        String secondRemovePattern = "\\{/" + tagKey + "\\}";
+        String replacedWithFirstPattern = line.replaceAll(firstRemovePattern, "");
+        String replacedWithSecondPattern = replacedWithFirstPattern.replaceAll(secondRemovePattern, "");
+        return replacedWithSecondPattern;
     }
 }
