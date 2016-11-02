@@ -8,13 +8,13 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
-        versionName "2.5.1"
+        versionName getCurrentVersionName()
     }
 
     signingConfigs {
         releaseConfig {
             storeFile file('../worshipsongs-key.jks')
-            storePassword  System.getenv('WORSHIPSONGS_KEYSTOREPWD')
+            storePassword System.getenv('WORSHIPSONGS_KEYSTOREPWD')
             keyAlias System.getenv('WORSHIPSONGS_KEYALIAS')
             keyPassword System.getenv('WORSHIPSONGS_KEYPASSWORD')
         }
@@ -56,6 +56,31 @@ android {
     lintOptions {
         abortOnError false
     }
+
+}
+
+def getCurrentVersionName() {
+    def gradlePropertyFile = file('../gradle.properties')
+    def majorVersion
+    def minorVersion
+    def currentVersionName = "2.91"
+    if (gradlePropertyFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(gradlePropertyFile))
+        majorVersion = versionProps['MAJOR_VERSION'] ?: "2"
+        minorVersion = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "91"
+        def currentBranch = System.getenv("BRANCH")?:""
+        if (currentBranch.toLowerCase().contains("development")) {
+            currentVersionName = majorVersion + "." + minorVersion
+            versionProps['MAJOR_VERSION'] = majorVersion
+            versionProps["MINOR_VERSION"] = minorVersion
+            versionProps.store(gradlePropertyFile.newWriter(), null)
+        } else {
+            currentVersionName = majorVersion+"."+versionProps["MINOR_VERSION"]
+        }
+
+    }
+    return currentVersionName
 }
 
 dependencies {
