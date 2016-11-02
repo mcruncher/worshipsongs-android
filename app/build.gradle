@@ -8,13 +8,13 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
-        versionName "2.5.1"
+        versionName "2." + System.getenv("BUILD_NUMBER") ?: "5"
     }
 
     signingConfigs {
         releaseConfig {
             storeFile file('../worshipsongs-key.jks')
-            storePassword  System.getenv('WORSHIPSONGS_KEYSTOREPWD')
+            storePassword System.getenv('WORSHIPSONGS_KEYSTOREPWD')
             keyAlias System.getenv('WORSHIPSONGS_KEYALIAS')
             keyPassword System.getenv('WORSHIPSONGS_KEYPASSWORD')
         }
