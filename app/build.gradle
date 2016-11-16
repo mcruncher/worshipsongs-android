@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
-        versionName "2." + System.getenv("BUILD_NUMBER") ?: "5"
+        versionName getCurrentVersionName()
     }
 
     signingConfigs {
@@ -56,6 +56,31 @@ android {
     lintOptions {
         abortOnError false
     }
+
+}
+
+def getCurrentVersionName() {
+    def gradlePropertyFile = file('../version.properties')
+    def majorVersion
+    def minorVersion
+    def currentVersionName = "2.91"
+    if (gradlePropertyFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(gradlePropertyFile))
+        majorVersion = versionProps['MAJOR_VERSION'] ?: "2"
+        minorVersion = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "91"
+        def currentBranch = System.getenv("BRANCH")?:"development"
+        if (currentBranch.toLowerCase().contains("development")) {
+            currentVersionName = majorVersion + "." + minorVersion
+            versionProps['MAJOR_VERSION'] = majorVersion
+            versionProps["MINOR_VERSION"] = minorVersion
+            versionProps.store(gradlePropertyFile.newWriter(), null)
+        } else {
+            currentVersionName = majorVersion+"."+versionProps["MINOR_VERSION"]
+        }
+
+    }
+    return currentVersionName
 }
 
 dependencies {
