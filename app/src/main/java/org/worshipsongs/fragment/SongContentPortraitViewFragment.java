@@ -29,6 +29,7 @@ import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.service.UtilitiesService;
@@ -43,20 +44,23 @@ import java.util.List;
  */
 public class SongContentPortraitViewFragment extends Fragment implements YouTubePlayer.OnInitializedListener
 {
-    private UserPreferenceSettingService preferenceSettingService;
-    private SongCardViewAdapter songCarViewAdapter;
-    private WorshipSongApplication application = new WorshipSongApplication();
-    private SongDao songDao = new SongDao(application.getContext());
-    private UtilitiesService utilitiesService = new UtilitiesService();
+    private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
     private ArrayList<String> tilteList;
-    private YouTubePlayerSupportFragment mYoutubePlayerFragment;
-    private YouTubePlayer mPlayer;
+    private int millis;
     private boolean isFullscreen;
     private boolean playVideoStatus;
+
+    private YouTubePlayerSupportFragment mYoutubePlayerFragment;
+    private YouTubePlayer mPlayer;
     private FrameLayout frameLayout;
-    private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
-    private int millis;
+
+    private SongCardViewAdapter songCarViewAdapter;
+    private WorshipSongApplication application = new WorshipSongApplication();
+    private UserPreferenceSettingService preferenceSettingService;
+    private CustomTagColorService customTagColorService = new CustomTagColorService();
+    private SongDao songDao = new SongDao(application.getContext());
+    private UtilitiesService utilitiesService = new UtilitiesService();
     private SongListAdapterService songListAdapterService;
 
     @Override
@@ -122,17 +126,20 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         optionMenu.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
                 StringBuilder builder = new StringBuilder();
                 builder.append(title).append("\n").append("\n");
-                for (String string : contents) {
-                    builder.append(string);
+                for (String content : contents) {
+                    for (String formattedContent : customTagColorService.getFormattedLines(content)) {
+                        builder.append(formattedContent);
+                        builder.append("\n");
+                    }
+                    builder.append("\n");
                 }
-                builder.append("\n").append("\n").append(getActivity().getString(R.string.share_info));
-                String formattedText = builder.toString().replaceAll("\\{\\w\\}", "").replaceAll("\\{/\\w\\}", "");
+                builder.append(getActivity().getString(R.string.share_info));
                 songListAdapterService = new SongListAdapterService();
-                songListAdapterService.ShowSharePopupmenu(v, title, getFragmentManager(), formattedText);
+                songListAdapterService.ShowSharePopupmenu(view, title, getFragmentManager(), builder.toString());
             }
         });
     }
