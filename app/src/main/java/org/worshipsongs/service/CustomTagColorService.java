@@ -1,21 +1,13 @@
 package org.worshipsongs.service;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.TextView;
 
-import org.apache.commons.io.FileUtils;
 import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.CommonConstants;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,40 +16,52 @@ import java.util.regex.Pattern;
  */
 public class CustomTagColorService
 {
-    private static Pattern pattern;
-    private File externalCacheDir;
+    private static Pattern pattern = Pattern.compile("\\{\\w\\}");
     private UserPreferenceSettingService preferenceSettingService;
-    File customTagFile;
 
-    public void setCustomTagTextView(Context context, String text, TextView textView) {
+    public void setCustomTagTextView(Context context, String text, TextView textView)
+    {
         preferenceSettingService = new UserPreferenceSettingService();
-        externalCacheDir = context.getExternalCacheDir();
-        customTagFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-        List<String> strings;
-        strings = getStrings(text);
+        List<String> strings = getStringsByTag(text);
         String tagKey = null;
         for (int i = 0; i < strings.size(); i++) {
             Matcher matcher = pattern.matcher(strings.get(i));
             if (matcher.find()) {
                 String value = matcher.group(0).replace("{", "");
                 tagKey = value.replace("}", "");
-                if(preferenceSettingService.getTagColor() == null){
+                if (preferenceSettingService.getTagColor() == null) {
                     PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), Color.BLACK);
-                }
-                else
+                } else {
                     PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), preferenceSettingService.getTagColor());
-            }
-            else
+                }
+            } else {
                 PropertyUtils.appendColoredText(textView, strings.get(i), preferenceSettingService.getColor());
+            }
         }
     }
 
+    public List<String> getFormattedLines(String content)
+    {
+        List<String> lyricsListWithTag = getStringsByTag(content);
+        List<String> lyricsList = new ArrayList<>();
+        String tagKey = null;
+        for (int i = 0; i < lyricsListWithTag.size(); i++) {
+            Matcher matcher = pattern.matcher(lyricsListWithTag.get(i));
+            if (matcher.find()) {
+                String value = matcher.group(0).replace("{", "");
+                tagKey = value.replace("}", "");
+                lyricsList.add(removeTag(lyricsListWithTag.get(i), tagKey));
+            } else {
+                lyricsList.add(lyricsListWithTag.get(i));
+            }
+        }
+        return lyricsList;
+    }
 
-    private List<String> getStrings(String foo)
+    private List<String> getStringsByTag(String songContent)
     {
         List<String> strings = new ArrayList<String>();
-        String[] split = foo.split("\\n");
-        pattern = Pattern.compile("\\{\\w\\}");
+        String[] split = songContent.split("\\n");
         Matcher startMatcher = null;
         Pattern endPattern = Pattern.compile("\\{/\\w\\}");
         Matcher endMatcher = null;
@@ -99,7 +103,6 @@ public class CustomTagColorService
         }
         return strings;
     }
-
 
     String removeTag(String line, String tagKey)
     {
