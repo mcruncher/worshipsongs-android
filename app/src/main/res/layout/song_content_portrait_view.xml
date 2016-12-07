@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_weight="1"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="foobar"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="@color/primary_text_default_material_dark"
