@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,48 +70,39 @@ public class ServiceSongListActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
+        setActionBar();
+        songDao = new SongDao(this);
+        verseparser = new VerseParser();
+        setSongListView();
+        loadSongs();
+    }
+
+    private void setSongListView()
+    {
+        songListView = (ListView) findViewById(R.id.song_list_view);
+        songListView.setOnItemLongClickListener(getSongLongClickListener());
+        songListView.setOnItemClickListener(getSongClickListener());
+    }
+
+    private void setActionBar()
+    {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(serviceName);
+    }
 
-        songListView = (ListView) findViewById(R.id.song_list_view);
-        songDao = new SongDao(this);
-        verseparser = new VerseParser();
-        loadSongs();
-
+    private AdapterView.OnItemLongClickListener getSongLongClickListener()
+    {
         final Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        songListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        return new AdapterView.OnItemLongClickListener()
         {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
                 vibrator.vibrate(15);
-                songTitle = songListView.getItemAtPosition(position).toString();
-                LayoutInflater li = LayoutInflater.from(ServiceSongListActivity.this);
-                View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-                TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-                deleteMsg.setText(R.string.message_delete_song);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ServiceSongListActivity.this);
-                alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        serviceFile = PropertyUtils.getPropertyFile(ServiceSongListActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-                        removeSong();
-                        loadSongs();
-                        Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        dialog.cancel();
-                    }
-                });
-                final AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog alertDialog = getDeleteAlertDialogBuilder(position).create();
                 alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
                 {
                     @Override
@@ -123,9 +115,41 @@ public class ServiceSongListActivity extends AppCompatActivity
                 alertDialog.show();
                 return true;
             }
-        });
+        };
+    }
 
-        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+    private AlertDialog.Builder getDeleteAlertDialogBuilder(int position)
+    {
+        songTitle = songListView.getItemAtPosition(position).toString();
+        LayoutInflater li = LayoutInflater.from(ServiceSongListActivity.this);
+        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
+        TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
+        deleteMsg.setText(R.string.message_delete_song);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(ServiceSongListActivity.this, R.style.MyDialogTheme));
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                serviceFile = PropertyUtils.getPropertyFile(ServiceSongListActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+                removeSong();
+                loadSongs();
+                Toast.makeText(ServiceSongListActivity.this, "Song " + songTitle + " Deleted...!", Toast.LENGTH_LONG).show();
+            }
+        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                dialog.cancel();
+            }
+        });
+        return alertDialogBuilder;
+    }
+
+    private AdapterView.OnItemClickListener getSongClickListener()
+    {
+        return new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -139,7 +163,7 @@ public class ServiceSongListActivity extends AppCompatActivity
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
-        });
+        };
     }
 
     private void loadSongs()
