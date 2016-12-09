@@ -139,7 +139,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
                 }
                 builder.append(getActivity().getString(R.string.share_info));
                 songListAdapterService = new SongListAdapterService();
-                songListAdapterService.ShowSharePopupmenu(view, title, getFragmentManager(), builder.toString());
+                songListAdapterService.showSharePopupmenu(view, title, getFragmentManager(), builder.toString());
             }
         });
     }
