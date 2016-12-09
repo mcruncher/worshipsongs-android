@@ -38,14 +38,15 @@ public class SongListAdapterService
 {
 
     public PopupWindow popupWindow;
-    private WorshipSongApplication application = new WorshipSongApplication();
     private String selectedSong;
-    private SongDao songDao = new SongDao(application.getContext());
-    private UtilitiesService utilitiesService = new UtilitiesService();
     private List<Verse> verseList;
     private String[] serviceNames;
-    private CommonService commonService = new CommonService();
     private ListDialogFragment dialogFragment;
+    private WorshipSongApplication application = new WorshipSongApplication();
+    private CustomTagColorService customTagColorService = new CustomTagColorService();
+    private SongDao songDao = new SongDao(application.getContext());
+    private UtilitiesService utilitiesService = new UtilitiesService();
+    private CommonService commonService = new CommonService();
 
     public ArrayAdapter<Song> getNewSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
     {
@@ -63,9 +64,20 @@ public class SongListAdapterService
                 imageView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
-                    public void onClick(View v)
+                    public void onClick(View view)
                     {
-                        showPopupMenu(v, String.valueOf(textView.getText()), fragmentManager);
+                        Song song = songDao.findContentsByTitle(String.valueOf(textView.getText()));
+                        StringBuilder builder = new StringBuilder();
+                        builder.append(String.valueOf(textView.getText())).append("\n").append("\n");
+                        for (String content : song.getContents()) {
+                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
+                                builder.append(formattedContent);
+                                builder.append("\n");
+                            }
+                            builder.append("\n");
+                        }
+                        builder.append(application.getContext().getString(R.string.share_info));
+                        showSharePopupmenu(view, String.valueOf(textView.getText()), fragmentManager, builder.toString());
                     }
                 });
 
@@ -90,6 +102,7 @@ public class SongListAdapterService
         application.getContext().startActivity(lightboxIntent);
     }
 
+    @Deprecated
     public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
     {
         final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
@@ -111,7 +124,7 @@ public class SongListAdapterService
         popupMenu.show();
     }
 
-    public void ShowSharePopupmenu(View view, final String songName, final FragmentManager fragmentManager, final String content)
+    public void showSharePopupmenu(View view, final String songName, final FragmentManager fragmentManager, final String content)
     {
         //Context wrapper = new ContextThemeWrapper(application.getContext(), R.style.PopupMenu);
         final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
@@ -128,7 +141,7 @@ public class SongListAdapterService
                         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
                         textShareIntent.putExtra(Intent.EXTRA_TEXT, content);
                         textShareIntent.setType("text/plain");
-                        Intent intent = Intent.createChooser(textShareIntent, "Share "+songName +" with...");
+                        Intent intent = Intent.createChooser(textShareIntent, "Share " + songName + " with...");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         application.getContext().startActivity(intent);
                         return true;
