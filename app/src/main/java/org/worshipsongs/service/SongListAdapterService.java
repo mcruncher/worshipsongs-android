@@ -41,7 +41,7 @@ public class SongListAdapterService
     private String selectedSong;
     private List<Verse> verseList;
     private String[] serviceNames;
-    private ListDialogFragment dialogFragment;
+    //private ListDialogFragment dialogFragment;
     private WorshipSongApplication application = new WorshipSongApplication();
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private SongDao songDao = new SongDao(application.getContext());
@@ -103,26 +103,26 @@ public class SongListAdapterService
     }
 
     @Deprecated
-    public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
-    {
-        final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
-        popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-        {
-            public boolean onMenuItemClick(final MenuItem item)
-            {
-                switch (item.getItemId()) {
-                    case R.id.addToList:
-                        getAddfavouriteDialogFragment(songName, fragmentManager);
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-        });
-        popupMenu.show();
-    }
+//    public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
+//    {
+//        final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
+//        popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
+//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+//        {
+//            public boolean onMenuItemClick(final MenuItem item)
+//            {
+//                switch (item.getItemId()) {
+//                    case R.id.addToList:
+//                        getAddfavouriteDialogFragment(songName, fragmentManager);
+//                        return true;
+//                    default:
+//                        return false;
+//                }
+//            }
+//
+//        });
+//        popupMenu.show();
+//    }
 
     public void showSharePopupmenu(View view, final String songName, final FragmentManager fragmentManager, final String content)
     {
@@ -135,7 +135,8 @@ public class SongListAdapterService
             {
                 switch (item.getItemId()) {
                     case R.id.addToList:
-                        getAddfavouriteDialogFragment(songName, fragmentManager);
+                        ListDialogFragment listDialogFragment = ListDialogFragment.newInstance(songName);
+                        listDialogFragment.show(fragmentManager, "ListDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
                         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
@@ -153,49 +154,7 @@ public class SongListAdapterService
         popupMenu.show();
     }
 
-    private void getAddfavouriteDialogFragment(final String songName, final FragmentManager fragmentManager)
-    {
-        dialogFragment = new ListDialogFragment()
-        {
-            @Override
-            public String[] getProductListsArray()
-            {
-                List<String> services = new ArrayList<String>();
-                services.addAll(commonService.readServiceName());
-                services.add(0, "New favourite...");
-                Log.d("service names list", commonService.readServiceName().toString());
-                serviceNames = new String[services.size()];
-                services.toArray(serviceNames);
-                Log.d("service names are", services.toString());
-                return serviceNames;
-            }
 
-            @Override
-            protected void onClick(int which)
-            {
-                Log.d("Clicked position:", String.valueOf(which));
-                if (which == 0) {
-                    final AddPlayListsDialogFragment addPlayListsDialog = new AddPlayListsDialogFragment()
-                    {
-                        @Override
-                        public String getSelectedSong()
-                        {
-                            return songName;
-                        }
-                    };
-                    addPlayListsDialog.show(fragmentManager, "addToListFragment");
-                } else {
-                    List<String> services = new ArrayList<String>();
-                    services.addAll(commonService.readServiceName());
-                    serviceNames = new String[services.size()];
-                    String[] selectedServiceNames = services.toArray(serviceNames);
-                    commonService.saveIntoFile(selectedServiceNames[which - 1].toString(), songName);
-                    Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-        dialogFragment.show(fragmentManager, "serviceListFragment");
-    }
 
     public void displaySelectedSong(List<Song> songs, int position)
     {

@@ -11,9 +11,12 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -46,8 +49,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-//    private String[] serviceNames;
-//    private CommonService commonService = new CommonService();
 
     public SongsListFragment()
     {
@@ -58,8 +59,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         super.onCreate(savedInstanceState);
         Log.i(this.getClass().getSimpleName(), "Preparing to load db..");
-        setHasOptionsMenu(true);
         songDao = new SongDao(getActivity());
+        setHasOptionsMenu(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
     }
@@ -85,6 +86,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         // Inflate menu to add items to action bar if it is present.
         inflater.inflate(R.menu.action_bar_menu, menu);
+
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
@@ -143,7 +145,11 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
+        // SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
+        //menu.close();
     }
 
     @Override
@@ -165,8 +171,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         super.setUserVisibleHint(isVisibleToUser);
         Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
         if (isVisibleToUser) {
-            setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
             CommonUtils.hideKeyboard(getActivity());
+            setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
         }
     }
 
