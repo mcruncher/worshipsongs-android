@@ -4,17 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+
+
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -32,12 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Seenivasan on 5/16/2015.
+ * author: Madasamy,Seenivasan
+ * version: 1.0.0
  */
 public class SongListAdapterService
 {
-
-    public PopupWindow popupWindow;
     private String selectedSong;
     private List<Verse> verseList;
     private String[] serviceNames;
@@ -102,32 +104,15 @@ public class SongListAdapterService
         application.getContext().startActivity(lightboxIntent);
     }
 
-    @Deprecated
-//    public void showPopupMenu(View view, final String songName, final FragmentManager fragmentManager)
-//    {
-//        final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
-//        popupMenu.getMenuInflater().inflate(R.menu.song_list_option_menu, popupMenu.getMenu());
-//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-//        {
-//            public boolean onMenuItemClick(final MenuItem item)
-//            {
-//                switch (item.getItemId()) {
-//                    case R.id.addToList:
-//                        getAddfavouriteDialogFragment(songName, fragmentManager);
-//                        return true;
-//                    default:
-//                        return false;
-//                }
-//            }
-//
-//        });
-//        popupMenu.show();
-//    }
-
     public void showSharePopupmenu(View view, final String songName, final FragmentManager fragmentManager, final String content)
     {
-        //Context wrapper = new ContextThemeWrapper(application.getContext(), R.style.PopupMenu);
-        final PopupMenu popupMenu = new PopupMenu(application.getContext(), view);
+        Context wrapper = new ContextThemeWrapper(application.getContext(), R.style.PopupMenu_Theme);
+        final PopupMenu popupMenu;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            popupMenu = new PopupMenu(wrapper, view, Gravity.RIGHT);
+        } else {
+            popupMenu = new PopupMenu(wrapper, view);
+        }
         popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
