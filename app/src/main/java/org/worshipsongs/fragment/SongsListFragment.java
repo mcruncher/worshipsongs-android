@@ -146,8 +146,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void onPrepareOptionsMenu(Menu menu)
     {
         // SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.clearFocus();
+//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
         //menu.close();
     }

@@ -202,7 +202,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     void moveToMainActivity()
     {
-        Intent intent = new Intent(SplashScreenActivity.this, HomeTabActivity.class);
+        Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();

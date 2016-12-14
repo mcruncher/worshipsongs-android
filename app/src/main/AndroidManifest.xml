@@ -23,9 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
-            android:name="org.worshipsongs.activity.HomeTabActivity"
-           >
+            android:name="org.worshipsongs.activity.NavigationDrawerActivity"
+            android:theme="@style/MaterialAppTheme">
 
             <!-- android:launchMode="singleTask"> -->
             <meta-data
