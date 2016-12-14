@@ -27,10 +27,11 @@
         <item name="background">@color/white</item>
     </style>
 
-
     <style name="PopupMenu_Theme" parent="Widget.AppCompat.Light.ListPopupWindow">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">#000000</item>
+        <item name="android:itemPadding">2dp</item>
+        <item name="android:listPreferredItemHeightSmall">35dp</item>
     </style>
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
