@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import org.worshipsongs.fragment.AboutWebViewFragment;
 import org.worshipsongs.fragment.HomeTabFragment;
-import org.worshipsongs.fragment.SettingsFragment;
-import org.worshipsongs.fragment.SettingsPreferenceFragment;
 import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -23,11 +20,8 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void init(Bundle bundle)
     {
         this.addSubheader("");
-
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
-        this.addSection(newSection(getString(R.string.about), R.drawable.about, new AboutWebViewFragment()));
-
     }
 
     @NonNull
@@ -44,4 +38,5 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
             }
         };
     }
+
 }

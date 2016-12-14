@@ -4,6 +4,7 @@ package org.worshipsongs.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
@@ -23,12 +24,20 @@ import java.util.List;
  * Author: Seenivasan, Madasamy
  * version :1.0.0
  */
-public abstract class AddPlayListsDialogFragment extends DialogFragment
+public class AddPlayListsDialogFragment extends DialogFragment
 {
-
     private CommonService commonService = new CommonService();
 
+    public static AddPlayListsDialogFragment newInstance(String songName)
+    {
+        AddPlayListsDialogFragment addPlayListsDialogFragment = new AddPlayListsDialogFragment();
+        Bundle bundleArgs = new Bundle();
+        bundleArgs.putString("songName", songName);
+        addPlayListsDialogFragment.setArguments(bundleArgs);
+        return addPlayListsDialogFragment;
+    }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -43,6 +52,8 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
         {
             public void onClick(DialogInterface dialog, int id)
             {
+                Bundle args = getArguments();
+                String songName = args.getString("songName");
                 String service_name;
                 if (serviceName.getText().toString().equals(""))
                     Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
@@ -51,7 +62,7 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
                     List<String> serviceNames = new ArrayList<String>();
                     serviceNames.addAll(commonService.readServiceName());
                     //adapterService.setServiceNames(serviceNames);
-                    commonService.saveIntoFile(service_name, getSelectedSong().toString());
+                    commonService.saveIntoFile(service_name, songName);
                     Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     SongsListFragment listFragment = new SongsListFragment();
@@ -79,6 +90,6 @@ public abstract class AddPlayListsDialogFragment extends DialogFragment
         return alertDialog;
     }
 
-    public abstract String getSelectedSong();
+
 
 }
