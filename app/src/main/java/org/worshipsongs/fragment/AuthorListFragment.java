@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -51,6 +54,7 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
         initSetUp();
     }
 
+
     private void initSetUp()
     {
         authorDao = new AuthorDao(getActivity());
@@ -82,7 +86,9 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         // Inflate menu to add items to action bar if it is present.
+
         inflater.inflate(R.menu.action_bar_menu, menu);
+
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();

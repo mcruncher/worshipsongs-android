@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="org.worshipsongs.worship"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="org.worshipsongs.worship"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- permissions to access remote url -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name="org.worshipsongs.WorshipSongApplication"
@@ -9,27 +14,27 @@
         android:icon="@drawable/ic_launcher"
         android:label="Worship Songs"
         android:theme="@style/MainAppTheme">
-
         <activity
             android:name="org.worshipsongs.activity.SplashScreenActivity"
             android:theme="@style/MainAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name="org.worshipsongs.activity.NavigationDrawerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="fullSensor"
             android:theme="@style/MaterialAppTheme">
-            <!--android:launchMode="singleTask">-->
+
+            <!-- android:launchMode="singleTask"> -->
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-
-        <activity android:name="org.worshipsongs.activity.SongContentViewActivity"></activity>
+        <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity"/>-->
+        <activity android:name="org.worshipsongs.activity.SongContentViewActivity"/>
         <activity
             android:name="org.worshipsongs.activity.ServiceSongListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -47,19 +52,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.worshipsongs.activity.NavigationDrawerActivity"/>
         </activity>
-        <activity
-            android:name="org.worshipsongs.activity.SongListActivity"
-            >
+        <activity android:name="org.worshipsongs.activity.SongListActivity">
         </activity>
         <activity
             android:name="org.worshipsongs.activity.CustomYoutubeBoxActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.Translucent" />
+            android:theme="@style/AppTheme.Translucent"/>
+        <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity">-->
+        <!--</activity>-->
     </application>
 
-    <!--permissions to access remote url-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>
