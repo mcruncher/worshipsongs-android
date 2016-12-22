@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,7 +43,7 @@ import java.util.List;
  * Author: Madasamy
  * version: 1.0.0
  */
-public class SongContentPortraitViewFragment extends Fragment implements YouTubePlayer.OnInitializedListener
+public class SongContentPortraitViewFragment extends Fragment
 {
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
@@ -51,9 +52,8 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
     private boolean isFullscreen;
     private boolean playVideoStatus;
 
-    private YouTubePlayerSupportFragment mYoutubePlayerFragment;
+
     private YouTubePlayer mPlayer;
-    private FrameLayout frameLayout;
 
     private SongCardViewAdapter songCarViewAdapter;
     private WorshipSongApplication application = new WorshipSongApplication();
@@ -63,32 +63,33 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
     private UtilitiesService utilitiesService = new UtilitiesService();
     private SongListAdapterService songListAdapterService;
 
+    public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles) {
+        SongContentPortraitViewFragment songContentPortraitViewFragment = new SongContentPortraitViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
+        bundle.putString(CommonConstants.TITLE_KEY, title);
+        songContentPortraitViewFragment.setArguments(bundle);
+        return songContentPortraitViewFragment;
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
         showStatusBar();
-        RecyclerView recList = (RecyclerView) view.findViewById(R.id.content_recycle_view);
-        recList.setHasFixedSize(true);
-        preferenceSettingService = new UserPreferenceSettingService();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(linearLayoutManager);
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
-
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
         Song song = songDao.findContentsByTitle(title);
-        songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this.getActivity());
-        songCarViewAdapter.notifyDataSetChanged();
-        recList.setAdapter(songCarViewAdapter);
-        // setYouTubeView(view);
-        setOptionsImageView(view, song.getContents());
+        //setYouTubeView(view);
+        setRecyclerView(view, song);
         setTitleTextView(view);
+        setOptionsImageView(view, song.getContents());
         setFloatingButton(view, song.getUrlKey());
         view.setOnTouchListener(new View.OnTouchListener()
         {
@@ -103,6 +104,22 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         });
         Log.i(this.getClass().getSimpleName(), "Video status:" + playVideoStatus);
         return view;
+    }
+
+
+
+    private void setRecyclerView(View view, Song song)
+    {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.content_recycle_view);
+        recyclerView.setHasFixedSize(true);
+        preferenceSettingService = new UserPreferenceSettingService();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this.getActivity());
+        songCarViewAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(songCarViewAdapter);
     }
 
     private void setTitleTextView(View view)
@@ -144,17 +161,7 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         });
     }
 
-    //TODO:To display youtube in same view
-    private void setYouTubeView(View view)
-    {
-//        mYoutubePlayerFragment = new YouTubePlayerSupportFragment();
-//        mYoutubePlayerFragment.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
-//        frameLayout = (FrameLayout) view.findViewById(R.id.fragment_youtube_player);
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fragment_youtube_player, mYoutubePlayerFragment);
-//        fragmentTransaction.commit();
-    }
+
 
     private void showStatusBar()
     {
@@ -190,43 +197,18 @@ public class SongContentPortraitViewFragment extends Fragment implements YouTube
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
+        youTubeIntent.putExtra("title", title);
         getActivity().startActivity(youTubeIntent);
-    }
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
-    {
-        mPlayer = youTubePlayer;
-        if (!wasRestored) {
-            youTubePlayer.loadVideo("yKc-ey5pnNo");
-        }
-
-        if (wasRestored) {
-            youTubePlayer.seekToMillis(millis);
-        }
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-
         if (mPlayer != null) {
             outState.putInt(KEY_VIDEO_TIME, mPlayer.getCurrentTimeMillis());
             Log.i(this.getClass().getSimpleName(), "Video duration: " + mPlayer.getCurrentTimeMillis());
         }
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult result)
-    {
-        if (result.isUserRecoverableError()) {
-            result.getErrorDialog(this.getActivity(), 1).show();
-        } else {
-            Toast.makeText(this.getActivity(),
-                    "YouTubePlayer.onInitializationFailure(): " + result.toString(),
-                    Toast.LENGTH_LONG).show();
-        }
-    }
 }

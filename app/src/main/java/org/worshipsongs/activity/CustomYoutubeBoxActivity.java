@@ -1,8 +1,14 @@
 package org.worshipsongs.activity;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -11,6 +17,10 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import org.worshipsongs.adapter.SongCardViewAdapter;
+import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 /***********************************************************************************
@@ -49,19 +59,31 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private YouTubePlayer mPlayer;
     private boolean isFullscreen;
 
     private int millis;
     private String mVideoId;
+    private SongDao songDao;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
+        songDao = new SongDao(this);
+//        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+//            requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        }
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.custom_youtube_box_activity);
-
+        Log.i(this.getClass().getSimpleName(), "Orientation " + getResources().getConfiguration().orientation);
         final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
         relativeLayout.setOnClickListener(new View.OnClickListener()
         {
@@ -86,22 +108,47 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         } else {
             finish();
         }
+        Song song = new Song();
+        if (extras!=null && extras.containsKey("title")) {
+            song = songDao.findContentsByTitle(extras.getString("title"));
+        }
+        setRecyclerView(song);
+
+//        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+//            mPlayer.setFullscreen(true);
+//            recyclerView.setVisibility(View.GONE);
+//            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
+//        }
+    }
+
+    private void setRecyclerView(Song song)
+    {
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.content_recycle_view);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this);
+        songCarViewAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(songCarViewAdapter);
     }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
     {
         mPlayer = youTubePlayer;
-        youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
-        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-        youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
-        {
-            @Override
-            public void onFullscreen(boolean b)
-            {
-                isFullscreen = b;
-            }
-        });
+//        youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+//        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+//        youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
+//        {
+//            @Override
+//            public void onFullscreen(boolean b)
+//            {
+//                isFullscreen = b;
+//            }
+//        });
 
         if (mVideoId != null && !wasRestored) {
             youTubePlayer.loadVideo(mVideoId);
@@ -113,9 +160,13 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     }
 
     @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult)
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason)
     {
-        Toast.makeText(this, "Unable to load video", Toast.LENGTH_LONG).show();
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            Toast.makeText(this, "There was an error initializing the YouTubePlayer", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -160,6 +211,19 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         if (finish) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+        }
+    }
+
+    private YouTubePlayer.Provider getYouTubePlayerProvider() {
+        return (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
     }
 
 }
