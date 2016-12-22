@@ -114,11 +114,11 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         }
         setRecyclerView(song);
 
-//        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
-//            mPlayer.setFullscreen(true);
-//            recyclerView.setVisibility(View.GONE);
-//            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
-//        }
+        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+           // mPlayer.setFullscreen(true);
+            recyclerView.setVisibility(View.GONE);
+            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
+        }
     }
 
     private void setRecyclerView(Song song)
@@ -139,16 +139,16 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
     {
         mPlayer = youTubePlayer;
-//        youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
-//        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-//        youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
-//        {
-//            @Override
-//            public void onFullscreen(boolean b)
-//            {
-//                isFullscreen = b;
-//            }
-//        });
+        youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+        youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
+        {
+            @Override
+            public void onFullscreen(boolean b)
+            {
+                isFullscreen = b;
+            }
+        });
 
         if (mVideoId != null && !wasRestored) {
             youTubePlayer.loadVideo(mVideoId);
