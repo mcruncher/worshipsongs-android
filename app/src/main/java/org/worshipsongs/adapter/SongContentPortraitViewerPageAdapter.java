@@ -9,6 +9,7 @@ import android.util.Log;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
+import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,12 @@ import java.util.List;
 public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdapter
 {
     private ArrayList<String> titles;
+    private FragmentManager fragmentManager;
 
     public SongContentPortraitViewerPageAdapter(FragmentManager fragmentManager, ArrayList<String> titles)
     {
         super(fragmentManager);
+        this.fragmentManager = fragmentManager;
         this.titles = titles;
     }
 
@@ -31,12 +34,8 @@ public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdap
     public Fragment getItem(int position)
     {
         Log.i(this.getClass().getSimpleName(), "No of songs" + titles.size());
-        SongContentPortraitViewFragment songContentPortraitViewFragment = new SongContentPortraitViewFragment();
-        Bundle bundle = new Bundle();
         String title = titles.get(position);
-        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
-        bundle.putString(CommonConstants.TITLE_KEY, title);
-        songContentPortraitViewFragment.setArguments(bundle);
+        SongContentPortraitViewFragment songContentPortraitViewFragment =  SongContentPortraitViewFragment.newInstance(title, titles);
         return songContentPortraitViewFragment;
     }
 

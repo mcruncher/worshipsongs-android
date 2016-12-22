@@ -116,7 +116,7 @@ public class SongListAdapterService
                         WorshipSongApplication.getContext().startActivity(intent);
                         return true;
                     case R.id.play_song:
-                        showYouTube(urlKey);
+                        showYouTube(urlKey, songName);
                         return true;
                     default:
                         return false;
@@ -126,11 +126,12 @@ public class SongListAdapterService
         popupMenu.show();
     }
 
-    private void showYouTube(String urlKey)
+    private void showYouTube(String urlKey, String songName)
     {
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(WorshipSongApplication.getContext(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
+        youTubeIntent.putExtra("title", songName);
         youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         WorshipSongApplication.getContext().startActivity(youTubeIntent);
     }
