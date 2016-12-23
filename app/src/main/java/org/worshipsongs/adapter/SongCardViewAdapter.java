@@ -62,7 +62,7 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
     @Override
     public SongContentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_layout, viewGroup, false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.song_content_view_card_layout, viewGroup, false);
         return new SongContentViewHolder(itemView);
     }
 

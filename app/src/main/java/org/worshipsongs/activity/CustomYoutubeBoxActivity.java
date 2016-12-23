@@ -1,8 +1,14 @@
 package org.worshipsongs.activity;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -11,6 +17,10 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import org.worshipsongs.adapter.SongCardViewAdapter;
+import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 /***********************************************************************************
@@ -49,20 +59,47 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private YouTubePlayer mPlayer;
     private boolean isFullscreen;
 
     private int millis;
     private String mVideoId;
+    private SongDao songDao;
+    private RecyclerView recyclerView;
+    private  RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
+        songDao = new SongDao(this);
         setContentView(R.layout.custom_youtube_box_activity);
+        initSetUp(bundle);
+        setRelativeLayout();
+        setYouTubePlayerView();
+        setRecyclerView(getSong());
+    }
 
-        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
+    private void initSetUp(Bundle bundle)
+    {
+        if (bundle != null) {
+            millis = bundle.getInt(KEY_VIDEO_TIME);
+            Log.i(this.getClass().getSimpleName(), "Video time " + millis);
+        }
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(KEY_VIDEO_ID)) {
+            mVideoId = extras.getString(KEY_VIDEO_ID);
+        } else {
+            finish();
+        }
+    }
+
+    private void setRelativeLayout()
+    {
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
         relativeLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -71,21 +108,35 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
                 onBackPressed();
             }
         });
+    }
 
+    private void setYouTubePlayerView()
+    {
         final YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
         playerView.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+    }
 
-        if (bundle != null) {
-            millis = bundle.getInt(KEY_VIDEO_TIME);
-            Log.i(this.getClass().getSimpleName(), "Video time " + millis);
-        }
+    private void setRecyclerView(Song song)
+    {
+        recyclerView = (RecyclerView)findViewById(R.id.content_recycle_view);
+        recyclerView.setHasFixedSize(true);
 
-        final Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(KEY_VIDEO_ID)) {
-            mVideoId = extras.getString(KEY_VIDEO_ID);
-        } else {
-            finish();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this);
+        songCarViewAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(songCarViewAdapter);
+    }
+
+    private Song getSong() {
+        Bundle extras = getIntent().getExtras();
+        Song song = new Song();
+        if (extras!=null && extras.containsKey("title")) {
+            song = songDao.findContentsByTitle(extras.getString("title"));
         }
+        return song;
     }
 
     @Override
@@ -113,9 +164,29 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     }
 
     @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult)
+    public void onConfigurationChanged(Configuration newConfig)
     {
-        Toast.makeText(this, "Unable to load video", Toast.LENGTH_LONG).show();
+        super.onConfigurationChanged(newConfig);
+        Log.i(this.getClass().getSimpleName(), "New Orientation " + newConfig.orientation);
+        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+            Log.i(this.getClass().getSimpleName(), "Landscape " + getResources().getConfiguration().orientation);
+            mPlayer.setFullscreen(true);
+            recyclerView.setVisibility(View.GONE);
+            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            relativeLayout.setBackgroundColor(getResources().getColor(R.color.white));
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason)
+    {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            Toast.makeText(this, "There was an error initializing the YouTubePlayer", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -160,6 +231,19 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         if (finish) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+        }
+    }
+
+    private YouTubePlayer.Provider getYouTubePlayerProvider() {
+        return (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
     }
 
 }
