@@ -7,7 +7,7 @@
                 android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/image_linear_Layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/light_navy_blue"
@@ -64,7 +64,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/image_linear_Layout"
         android:paddingTop="@dimen/abc_control_corner_material"/>
 
 
