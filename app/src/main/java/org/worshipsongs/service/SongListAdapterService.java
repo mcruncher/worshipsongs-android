@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -49,27 +50,50 @@ public class SongListAdapterService
             {
                 LayoutInflater inflater = (LayoutInflater) WorshipSongApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
-                final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
-                textView.setText(songs.get(position).getTitle());
-                final ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
-
-                imageView.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        showPopupmenu(view, String.valueOf(textView.getText()), fragmentManager, true);
-                    }
-                });
-
-                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
-                {
-                    public void onClick(View arg0)
-                    {
-                        displaySelectedSong(songs, position);
-                    }
-                });
+                String title = songs.get(position).getTitle();
+                setTextView(rowView, songs, position);
+                setImageLayoutView(rowView, title, fragmentManager);
+                setImageView(rowView, title, fragmentManager);
                 return rowView;
+            }
+        };
+    }
+
+    private void setTextView(View rowView, final List<Song> songs, final int position)
+    {
+        String title = songs.get(position).getTitle();
+        TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
+        textView.setText(title);
+        textView.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View arg0)
+            {
+                displaySelectedSong(songs, position);
+            }
+        });
+    }
+
+    private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
+    {
+        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.linear_layout);
+        Log.i(this.getClass().getName(), linearLayout.toString());
+        linearLayout.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
+    }
+
+    private void setImageView(View rowView, final String songTitle, final FragmentManager fragmentManager)
+    {
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
+        imageView.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
+    }
+
+    private View.OnClickListener onClickPopupListener(final String title, final FragmentManager fragmentManager)
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                showPopupmenu(view, title, fragmentManager, true);
             }
         };
     }
@@ -87,7 +111,7 @@ public class SongListAdapterService
         final Song song = songDao.findContentsByTitle(songName);
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
-        menuItem.setVisible(urlKey != null && urlKey.length() > 0 &&preferenceSettingService.getPlayVideoStatus() && hidePlay);
+        menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)

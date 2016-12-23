@@ -65,6 +65,13 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         initSetUp();
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setClickable(false);
+    }
+
     private void initSetUp()
     {
         songDao.open();
@@ -173,6 +180,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         if (isVisibleToUser) {
             CommonUtils.hideKeyboard(getActivity());
             setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
+
         }
     }
 

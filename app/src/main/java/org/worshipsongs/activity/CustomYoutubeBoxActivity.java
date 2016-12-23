@@ -68,23 +68,38 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     private String mVideoId;
     private SongDao songDao;
     private RecyclerView recyclerView;
+    private  RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
         songDao = new SongDao(this);
-//        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
-//            requestWindowFeature(Window.FEATURE_NO_TITLE);
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.custom_youtube_box_activity);
-        Log.i(this.getClass().getSimpleName(), "Orientation " + getResources().getConfiguration().orientation);
-        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
+        initSetUp(bundle);
+        setRelativeLayout();
+        setYouTubePlayerView();
+        setRecyclerView(getSong());
+    }
+
+    private void initSetUp(Bundle bundle)
+    {
+        if (bundle != null) {
+            millis = bundle.getInt(KEY_VIDEO_TIME);
+            Log.i(this.getClass().getSimpleName(), "Video time " + millis);
+        }
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(KEY_VIDEO_ID)) {
+            mVideoId = extras.getString(KEY_VIDEO_ID);
+        } else {
+            finish();
+        }
+    }
+
+    private void setRelativeLayout()
+    {
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
         relativeLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -93,37 +108,17 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
                 onBackPressed();
             }
         });
+    }
 
+    private void setYouTubePlayerView()
+    {
         final YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
         playerView.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
-
-        if (bundle != null) {
-            millis = bundle.getInt(KEY_VIDEO_TIME);
-            Log.i(this.getClass().getSimpleName(), "Video time " + millis);
-        }
-
-        final Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(KEY_VIDEO_ID)) {
-            mVideoId = extras.getString(KEY_VIDEO_ID);
-        } else {
-            finish();
-        }
-        Song song = new Song();
-        if (extras!=null && extras.containsKey("title")) {
-            song = songDao.findContentsByTitle(extras.getString("title"));
-        }
-        setRecyclerView(song);
-
-        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
-           // mPlayer.setFullscreen(true);
-            recyclerView.setVisibility(View.GONE);
-            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
-        }
     }
 
     private void setRecyclerView(Song song)
     {
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.content_recycle_view);
+        recyclerView = (RecyclerView)findViewById(R.id.content_recycle_view);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -133,6 +128,15 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this);
         songCarViewAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(songCarViewAdapter);
+    }
+
+    private Song getSong() {
+        Bundle extras = getIntent().getExtras();
+        Song song = new Song();
+        if (extras!=null && extras.containsKey("title")) {
+            song = songDao.findContentsByTitle(extras.getString("title"));
+        }
+        return song;
     }
 
     @Override
@@ -156,6 +160,22 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
 
         if (wasRestored) {
             youTubePlayer.seekToMillis(millis);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        Log.i(this.getClass().getSimpleName(), "New Orientation " + newConfig.orientation);
+        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+            Log.i(this.getClass().getSimpleName(), "Landscape " + getResources().getConfiguration().orientation);
+            mPlayer.setFullscreen(true);
+            recyclerView.setVisibility(View.GONE);
+            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            relativeLayout.setBackgroundColor(getResources().getColor(R.color.white));
         }
     }
 
