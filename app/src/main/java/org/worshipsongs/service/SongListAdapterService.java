@@ -50,20 +50,27 @@ public class SongListAdapterService
             {
                 LayoutInflater inflater = (LayoutInflater) WorshipSongApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
-                final TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
-                textView.setText(songs.get(position).getTitle());
-                setImageLayoutView(rowView, textView.getText().toString(), fragmentManager);
-                setImageView(rowView, textView.getText().toString(), fragmentManager);
-                (rowView.findViewById(R.id.songsTextView)).setOnClickListener(new View.OnClickListener()
-                {
-                    public void onClick(View arg0)
-                    {
-                        displaySelectedSong(songs, position);
-                    }
-                });
+                String title = songs.get(position).getTitle();
+                setTextView(rowView, songs, position);
+                setImageLayoutView(rowView, title, fragmentManager);
+                setImageView(rowView, title, fragmentManager);
                 return rowView;
             }
         };
+    }
+
+    private void setTextView(View rowView, final List<Song> songs, final int position)
+    {
+        String title = songs.get(position).getTitle();
+        TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
+        textView.setText(title);
+        textView.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View arg0)
+            {
+                displaySelectedSong(songs, position);
+            }
+        });
     }
 
     private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
