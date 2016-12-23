@@ -130,7 +130,8 @@ public class SongDao extends AbstractDao
         song.setSearchTitle(cursor.getString(3));
         song.setSearchLyrics(cursor.getString(4));
         song.setComments(cursor.getString(5));
-
+        song.setUrlKey(parseMediaUrlKey(song.getComments()));
+        song.setChord(parseChord(song.getComments()));
         return song;
     }
 

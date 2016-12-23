@@ -8,24 +8,52 @@
         android:id="@+id/songsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/linear_layout"
-        android:layout_toStartOf="@+id/linear_layout"
         android:clickable="false"
         android:longClickable="false"
         android:maxLines="1"
         android:padding="7dp"
         android:text="Title"
         android:textColor="@android:color/black"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/play_linear_layout"
+        android:layout_toStartOf="@+id/play_linear_layout"/>
 
     <LinearLayout
-        android:id="@+id/linear_layout"
+        android:id="@+id/play_linear_layout"
+        android:orientation="horizontal"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp">
+        <ImageView
+            android:id="@+id/play_imageview"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:paddingTop="10dp"
+            android:paddingStart="13dp"
+            android:paddingLeft="13dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:contentDescription="optionMenuIcon"
+            android:src="@drawable/ic_play_black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/image_options_linear_layout"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
         android:orientation="horizontal"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <ImageView
             android:id="@+id/optionMenuIcon"
@@ -39,5 +67,6 @@
             android:layout_gravity="center"
             android:contentDescription="optionMenuIcon"
             android:src="@drawable/ic_action_overflow"/>
+
     </LinearLayout>
 </RelativeLayout>

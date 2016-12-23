@@ -52,6 +52,7 @@ public class SongListAdapterService
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 String title = songs.get(position).getTitle();
                 setTextView(rowView, songs, position);
+                setPlayImageView(rowView, songs.get(position));
                 setImageLayoutView(rowView, title, fragmentManager);
                 setImageView(rowView, title, fragmentManager);
                 return rowView;
@@ -73,9 +74,17 @@ public class SongListAdapterService
         });
     }
 
+    private void setPlayImageView(final View rowView, final Song song) {
+        ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
+        final String urlKey = song.getUrlKey();
+        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
+            imageView.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
     {
-        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.linear_layout);
+        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.image_options_linear_layout);
         Log.i(this.getClass().getName(), linearLayout.toString());
         linearLayout.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
     }
