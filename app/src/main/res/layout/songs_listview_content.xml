@@ -23,7 +23,7 @@
         android:id="@+id/play_linear_layout"
         android:orientation="horizontal"
         android:layout_width="30dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -41,14 +41,16 @@
             android:layout_gravity="center"
             android:visibility="invisible"
             android:contentDescription="optionMenuIcon"
-            android:src="@drawable/ic_play_black"/>
+            android:tint="@color/gray"
+            android:src="@android:drawable/presence_video_online"/>
+        <!--@android:drawable/ic_media_play-->
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/image_options_linear_layout"
         android:layout_width="40dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
