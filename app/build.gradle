@@ -9,14 +9,15 @@ android {
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
         versionName getCurrentVersionName()
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         releaseConfig {
             storeFile file('../worshipsongs-key.jks')
-            storePassword System.getenv('WORSHIPSONGS_KEYSTOREPWD')
-            keyAlias System.getenv('WORSHIPSONGS_KEYALIAS')
-            keyPassword System.getenv('WORSHIPSONGS_KEYPASSWORD')
+            storePassword 'crunchers@123'
+            keyAlias 'worship-songs'
+            keyPassword 'Password123'
         }
     }
 
@@ -98,5 +99,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.getbase:floatingactionbutton:1.10.0'
-    provided 'junit:junit:4.10'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }
