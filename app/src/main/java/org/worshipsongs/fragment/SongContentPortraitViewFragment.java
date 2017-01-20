@@ -148,11 +148,7 @@ public class SongContentPortraitViewFragment extends Fragment
                 StringBuilder builder = new StringBuilder();
                 builder.append(title).append("\n").append("\n");
                 for (String content : contents) {
-                    for (String formattedContent : customTagColorService.getFormattedLines(content)) {
-                        builder.append(formattedContent);
-                        builder.append("\n");
-                    }
-                    builder.append("\n");
+                    builder.append(customTagColorService.getFormattedLines(content));
                 }
                 builder.append(getActivity().getString(R.string.share_info));
                 songListAdapterService = new SongListAdapterService();
