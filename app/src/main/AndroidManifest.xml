@@ -56,7 +56,6 @@
         </activity>
         <activity
             android:name="org.worshipsongs.activity.CustomYoutubeBoxActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Translucent"/>
         <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity">-->
         <!--</activity>-->

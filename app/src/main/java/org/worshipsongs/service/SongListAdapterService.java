@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -80,6 +82,7 @@ public class SongListAdapterService
         if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
             imageView.setVisibility(View.VISIBLE);
         }
+
     }
 
     private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
@@ -133,14 +136,22 @@ public class SongListAdapterService
                     case R.id.share_whatsapp:
                         StringBuilder builder = new StringBuilder();
                         builder.append(songName).append("\n").append("\n");
+
                         for (String content : song.getContents()) {
-                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
-                                builder.append(formattedContent);
-                                builder.append("\n");
-                            }
+                           // Log.i(SongListAdapterService.this.getClass().getSimpleName(), "Before formatting: "+content);
+//                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
+//                                builder.append(formattedContent);
+//                                builder.append("\n");
+//                                textView.append(formattedContent);
+//                                textView.append("\n");
+//                            }
+//
+//                            builder.append("\n");
+                            builder.append(customTagColorService.getFormattedLines(content));
                             builder.append("\n");
                         }
                         builder.append(WorshipSongApplication.getContext().getString(R.string.share_info));
+                        Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
                         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
                         textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
                         textShareIntent.setType("text/plain");

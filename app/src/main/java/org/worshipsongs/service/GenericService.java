@@ -1,28 +1,29 @@
-package org.worshipsongs.dao;
+package org.worshipsongs.service;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.helper.DatabaseHelper;
 
 import java.io.IOException;
 
 /**
- * @Author : Madasamy
- * @Version : 1.0
+ * Author : Madasamy
+ * Version : 2.x
  */
 
-@Deprecated
-public class AbstractDao
+public class GenericService<T>
 {
     private SQLiteDatabase database;
     private DatabaseHelper databaseHelper;
-    private Context context;
 
-    public AbstractDao()
-    {}
+    public GenericService()
+    {
+        databaseHelper = new DatabaseHelper(WorshipSongApplication.getContext());
+    }
 
-    public AbstractDao(Context context)
+    public GenericService(Context context)
     {
         databaseHelper = new DatabaseHelper(context);
     }
@@ -54,4 +55,5 @@ public class AbstractDao
         }
         return database;
     }
+
 }
