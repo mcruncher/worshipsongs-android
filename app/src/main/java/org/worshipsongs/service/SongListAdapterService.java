@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -52,6 +54,7 @@ public class SongListAdapterService
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 String title = songs.get(position).getTitle();
                 setTextView(rowView, songs, position);
+                setPlayImageView(rowView, songs.get(position));
                 setImageLayoutView(rowView, title, fragmentManager);
                 setImageView(rowView, title, fragmentManager);
                 return rowView;
@@ -73,9 +76,18 @@ public class SongListAdapterService
         });
     }
 
+    private void setPlayImageView(final View rowView, final Song song) {
+        ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
+        final String urlKey = song.getUrlKey();
+        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
+            imageView.setVisibility(View.VISIBLE);
+        }
+
+    }
+
     private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
     {
-        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.linear_layout);
+        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.image_options_linear_layout);
         Log.i(this.getClass().getName(), linearLayout.toString());
         linearLayout.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
     }
@@ -124,14 +136,22 @@ public class SongListAdapterService
                     case R.id.share_whatsapp:
                         StringBuilder builder = new StringBuilder();
                         builder.append(songName).append("\n").append("\n");
+
                         for (String content : song.getContents()) {
-                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
-                                builder.append(formattedContent);
-                                builder.append("\n");
-                            }
+                           // Log.i(SongListAdapterService.this.getClass().getSimpleName(), "Before formatting: "+content);
+//                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
+//                                builder.append(formattedContent);
+//                                builder.append("\n");
+//                                textView.append(formattedContent);
+//                                textView.append("\n");
+//                            }
+//
+//                            builder.append("\n");
+                            builder.append(customTagColorService.getFormattedLines(content));
                             builder.append("\n");
                         }
                         builder.append(WorshipSongApplication.getContext().getString(R.string.share_info));
+                        Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
                         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
                         textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
                         textShareIntent.setType("text/plain");

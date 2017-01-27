@@ -1,26 +1,30 @@
 package org.worshipsongs.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.SongCardViewAdapter;
+import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
+import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 /***********************************************************************************
@@ -53,22 +57,18 @@ import org.worshipsongs.worship.R;
  * custom behaviour, such as closing when the user clicks anywhere outside the player
  * We manage to avoid rebuffering the video by setting some configchange flags on this activities declaration in the manifest.
  */
-public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener
+public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener
 {
-
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
-    private YouTubePlayer mPlayer;
+    private YouTubePlayer youTubePlayer;
     private boolean isFullscreen;
-
     private int millis;
     private String mVideoId;
     private SongDao songDao;
-    private RecyclerView recyclerView;
-    private  RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -78,8 +78,9 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         setContentView(R.layout.custom_youtube_box_activity);
         initSetUp(bundle);
         setRelativeLayout();
-        setYouTubePlayerView();
-        setRecyclerView(getSong());
+        setYouTubePlayerFragment();
+        setRecyclerView();
+        setContentTabs();
     }
 
     private void initSetUp(Bundle bundle)
@@ -99,7 +100,7 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
 
     private void setRelativeLayout()
     {
-        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout_youtube_activity);
         relativeLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -110,72 +111,109 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         });
     }
 
-    private void setYouTubePlayerView()
+    private void setYouTubePlayerFragment()
     {
-        final YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
-        playerView.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+        youTubePlayerFragment.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (isLandScape()) {
+            transaction.remove(youTubePlayerFragment).commit();
+        } else {
+            transaction.add(R.id.youtube_fragment, youTubePlayerFragment).commit();
+        }
     }
 
-    private void setRecyclerView(Song song)
+    private void setRecyclerView()
     {
-        recyclerView = (RecyclerView)findViewById(R.id.content_recycle_view);
-        recyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_recycle_view);
+        recyclerView.setLayoutManager(getLinearLayoutManager());
+        recyclerView.setAdapter(getSongCardViewAdapter());
+    }
 
+    private LinearLayoutManager getLinearLayoutManager()
+    {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(song.getContents(), this);
-        songCarViewAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(songCarViewAdapter);
+        return linearLayoutManager;
     }
 
-    private Song getSong() {
+    private SongCardViewAdapter getSongCardViewAdapter()
+    {
+        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(getSong().getContents(), WorshipSongApplication.getContext());
+        songCarViewAdapter.notifyDataSetChanged();
+        return songCarViewAdapter;
+    }
+
+    private void setContentTabs()
+    {
+        String title = getIntent().getExtras().getString("title");
+        SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
+                new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), title);
+        setSlidingTab(songContentLandScapeViewerPageAdapter);
+    }
+
+    private void setSlidingTab(SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter)
+    {
+        SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.sliding_tab);
+        tabs.setDistributeEvenly(false);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
+        {
+            @Override
+            public int getIndicatorColor(int position)
+            {
+                return getResources().getColor(android.R.color.background_dark);
+            }
+        });
+        tabs.setVisibility(View.GONE);
+        tabs.setViewPager(getViewPager(songContentLandScapeViewerPageAdapter));
+    }
+
+    @NonNull
+    private ViewPager getViewPager(SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter)
+    {
+        ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
+        pager.setAdapter(songContentLandScapeViewerPageAdapter);
+        pager.setVisibility(isLandScape() ? View.VISIBLE : View.GONE);
+        return pager;
+    }
+
+    private Song getSong()
+    {
         Bundle extras = getIntent().getExtras();
         Song song = new Song();
-        if (extras!=null && extras.containsKey("title")) {
+        if (extras != null && extras.containsKey("title")) {
             song = songDao.findContentsByTitle(extras.getString("title"));
         }
         return song;
     }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
+    private boolean isLandScape()
     {
-        mPlayer = youTubePlayer;
-        youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
-        youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
-        youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
-        {
-            @Override
-            public void onFullscreen(boolean b)
-            {
-                isFullscreen = b;
-            }
-        });
-
-        if (mVideoId != null && !wasRestored) {
-            youTubePlayer.loadVideo(mVideoId);
-        }
-
-        if (wasRestored) {
-            youTubePlayer.seekToMillis(millis);
-        }
+        return Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation;
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored)
     {
-        super.onConfigurationChanged(newConfig);
-        Log.i(this.getClass().getSimpleName(), "New Orientation " + newConfig.orientation);
-        if (Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
-            Log.i(this.getClass().getSimpleName(), "Landscape " + getResources().getConfiguration().orientation);
-            mPlayer.setFullscreen(true);
-            recyclerView.setVisibility(View.GONE);
-            relativeLayout.setBackgroundColor(getResources().getColor(R.color.black));
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            relativeLayout.setBackgroundColor(getResources().getColor(R.color.white));
+        if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
+            this.youTubePlayer = youTubePlayer;
+            youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+            youTubePlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+            youTubePlayer.setShowFullscreenButton(false);
+            youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
+            {
+                @Override
+                public void onFullscreen(boolean b)
+                {
+                    isFullscreen = b;
+                }
+            });
+            if (mVideoId != null && !wasRestored) {
+                youTubePlayer.loadVideo(mVideoId);
+            }
+            if (wasRestored) {
+                youTubePlayer.seekToMillis(millis);
+            }
         }
     }
 
@@ -193,10 +231,9 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-
-        if (mPlayer != null) {
-            outState.putInt(KEY_VIDEO_TIME, mPlayer.getCurrentTimeMillis());
-            Log.i(this.getClass().getSimpleName(), "Video duration: " + mPlayer.getCurrentTimeMillis());
+        if (youTubePlayer != null) {
+            outState.putInt(KEY_VIDEO_TIME, youTubePlayer.getCurrentTimeMillis());
+            Log.i(this.getClass().getSimpleName(), "Video duration: " + youTubePlayer.getCurrentTimeMillis());
         }
     }
 
@@ -206,10 +243,10 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         //If the Player is fullscreen then the transition crashes on L when navigating back to the MainActivity
         boolean finish = true;
         try {
-            if (mPlayer != null) {
+            if (youTubePlayer != null) {
                 if (isFullscreen) {
                     finish = false;
-                    mPlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
+                    youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
                     {
                         @Override
                         public void onFullscreen(boolean b)
@@ -220,9 +257,9 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
                             }
                         }
                     });
-                    mPlayer.setFullscreen(false);
+                    youTubePlayer.setFullscreen(false);
                 }
-                mPlayer.pause();
+                youTubePlayer.pause();
             }
         } catch (final IllegalStateException e) {
             //Crashlytics.logException(e);
@@ -242,8 +279,9 @@ public class CustomYoutubeBoxActivity extends YouTubeBaseActivity implements You
         }
     }
 
-    private YouTubePlayer.Provider getYouTubePlayerProvider() {
-        return (YouTubePlayerView) findViewById(R.id.youTubePlayerView);
+    private YouTubePlayer.Provider getYouTubePlayerProvider()
+    {
+        return YouTubePlayerFragment.newInstance();
     }
 
 }
