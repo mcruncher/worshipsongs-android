@@ -139,7 +139,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
 
     private SongCardViewAdapter getSongCardViewAdapter()
     {
-        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(getSong().getContents(), WorshipSongApplication.getContext());
+        SongCardViewAdapter songCarViewAdapter = new SongCardViewAdapter(getSong(), this);
         songCarViewAdapter.notifyDataSetChanged();
         return songCarViewAdapter;
     }

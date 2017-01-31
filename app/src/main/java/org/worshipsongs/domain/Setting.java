@@ -1,5 +1,7 @@
 package org.worshipsongs.domain;
 
+import android.view.Display;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -15,6 +17,7 @@ public class Setting
     private static Setting setting;
 
     private int position;
+    private Display display;
 
     private Setting()
     {
@@ -37,6 +40,16 @@ public class Setting
     public void setPosition(int position)
     {
         this.position = position;
+    }
+
+    public Display getDisplay()
+    {
+        return display;
+    }
+
+    public void setDisplay(Display display)
+    {
+        this.display = display;
     }
 
     @Override
