@@ -86,4 +86,8 @@ public class UserPreferenceSettingService
     {
         return sharedPreferences.getBoolean("prefVideoPlay", true);
     }
+
+    public boolean isPresentSongInRemoteDisplay() {
+        return sharedPreferences.getBoolean("prefPresentSong", false);
+    }
 }

@@ -3,22 +3,29 @@ package org.worshipsongs.adapter;
 import android.annotation.TargetApi;
 import android.app.Presentation;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.AuthorSongDao;
+import org.worshipsongs.dialog.DefaultRemotePresentation;
+import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
@@ -33,23 +40,33 @@ import org.worshipsongs.worship.R;
 public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapter.SongContentViewHolder>
 {
 
-    private AuthorSongDao authorSongDao = new AuthorSongDao(WorshipSongApplication.getContext());
-    private final SparseArray<RemotePresentation> activePresentations = new SparseArray<RemotePresentation>();
+
+    private final SparseArray<Presentation> activePresentations = new SparseArray<Presentation>();
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
-
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
+    private DisplayManager displayManager;
     private Song song;
-    private AuthorSong authorSong;
+    // private AuthorSong authorSong;
     private Context context;
+
+
 
     public SongCardViewAdapter(Song song, Context context)
     {
         this.context = context;
         this.song = song;
-        authorSong = authorSongDao.findByTitle(song.getTitle());
+
+        setDisplayManager();
+
     }
 
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void setDisplayManager()
+    {
+        displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        displayManager.registerDisplayListener(new DisplayListener(), null);
+    }
 
     @Override
     public int getItemCount()
@@ -65,12 +82,11 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         String verse = song.getContents().get(position);
         songContentViewHolder.cardView.setOnClickListener(new CardViewListener(position));
         songContentViewHolder.textView.setText(verse);
-        loadTextStyle(songContentViewHolder.textView);
+        loadTextStyle(songContentViewHolder.textView, position);
     }
 
-    private void loadTextStyle(TextView textView)
+    private void loadTextStyle(TextView textView, int position)
     {
-
         String text = textView.getText().toString();
         textView.setText("");
         customTagColorService.setCustomTagTextView(context, text, textView);
@@ -78,6 +94,8 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         textView.setTextSize(preferenceSettingService.getPortraitFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
+        textView.setSelected(selectedItems.get(position, false));
+        // textView.setOnClickListener(new TextViewListener(textView, position));
     }
 
     private boolean isJellyBean()
@@ -118,106 +136,121 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         @Override
         public void onClick(View view)
         {
+
             if (Setting.getInstance().getDisplay() != null) {
-                //hidePresentation(display);
+                // hidePresentation(display);
                 showPresentation(position);
             }
         }
-
-        private void hidePresentation(Display display)
-        {
-            if (isJellyBean()) {
-                final int displayId = display.getDisplayId();
-                RemotePresentation presentation = activePresentations.get(displayId);
-                if (presentation == null) {
-                    return;
-                }
-                presentation.dismiss();
-                activePresentations.delete(displayId);
-            }
-        }
     }
 
-    public void showPresentation(int position)
+    private class TextViewListener implements View.OnClickListener
     {
-        if (isJellyBean()) {
-            String verse = song.getContents().get(position);
-            RemotePresentation presentation = new RemotePresentation(Setting.getInstance().getDisplay(), verse, position);
-            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), presentation);
-            presentation.show();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private final class RemotePresentation extends Presentation
-    {
-        private String verse;
+        private TextView textView;
         private int position;
 
-        RemotePresentation(Display display, String verse, int position)
+        TextViewListener(TextView textView, int position)
         {
-            super(context, display);
-            this.verse = verse;
+            this.textView = textView;
             this.position = position;
         }
 
         @Override
-        protected void onCreate(Bundle savedInstanceState)
+        public void onClick(View view)
         {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.song_content_landscape_view_fragment);
-            setContent(verse);
-            setSongTitle(song.getTitle(), song.getChord());
-            setAuthorName(authorSong.getAuthor().getDisplayName());
-            setSongSlide(position, song.getContents().size());
-        }
-
-        private void setContent(String content)
-        {
-            TextView textView = (TextView)findViewById(R.id.text);
-            textView.setText(content);
-            String text = textView.getText().toString();
-            textView.setText("");
-            customTagColorService.setCustomTagTextView(context, text, textView);
-            textView.setTypeface(preferenceSettingService.getFontStyle());
-            textView.setTextSize(preferenceSettingService.getLandScapeFontSize());
-            textView.setTextColor(preferenceSettingService.getColor());
-            textView.setVerticalScrollBarEnabled(true);
-        }
-
-        private void setSongTitle(String title, String chord)
-        {
-            TextView songTitleTextView = (TextView) findViewById(R.id.song_title);
-            songTitleTextView.setText(" " + title + getChord(chord));
-        }
-
-        private String getChord(String chord)
-        {
-
-            if (chord != null && chord.length() > 0) {
-                return " [" + chord + "]";
+            if (selectedItems.get(position, false)) {
+                selectedItems.delete(position);
+                textView.setSelected(false);
+            } else {
+                selectedItems.put(position, true);
+                textView.setSelected(true);
             }
-            return "";
-        }
-
-        private void setAuthorName(String authorName)
-        {
-            TextView authorNameTextView = (TextView) findViewById(R.id.author_name);
-
-            authorNameTextView.setText(" " + authorName);
-        }
-
-        private void setSongSlide(int position, int size)
-        {
-            TextView songSlideTextView = (TextView)findViewById(R.id.song_slide);
-            songSlideTextView.setText(getSongSlideValue(position, size));
-        }
-
-        private String getSongSlideValue(int currentPosition, int size)
-        {
-            int slidePosition = currentPosition + 1;
-            return " "+slidePosition + " of " + size;
         }
     }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private class DisplayListener implements DisplayManager.DisplayListener
+    {
+
+        @Override
+        public void onDisplayAdded(int displayId)
+        {
+//           Display display = getDisplay();
+//           if (display != null) {
+//               Setting.getInstance().setDisplay(display);
+//           }
+        }
+
+        @Override
+        public void onDisplayRemoved(int displayId)
+        {
+            Presentation presentation = activePresentations.get(displayId);
+            if (presentation == null) {
+                return;
+            }
+            // presentation.dismiss();
+            activePresentations.delete(displayId);
+        }
+
+        @Override
+        public void onDisplayChanged(int displayId)
+        {
+
+        }
+    }
+
+    private Display getDisplay()
+    {
+        Log.i(SongCardViewAdapter.class.getSimpleName(), "Is jelly bean " + isJellyBean());
+        if (isJellyBean()) {
+            Display[] displays = displayManager.getDisplays();
+            Log.i(SongCardViewAdapter.class.getSimpleName(), "No of displays" + displays.length);
+            for (Display display : displays) {
+                Log.i(SongCardViewAdapter.class.getSimpleName(), "Display name " + display.getName());
+                if (!display.getName().contains("Built-in Screen")) {
+                    return display;
+                }
+            }
+        }
+        return null;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void showPresentation(int position)
+    {
+        setDisplay();
+        if (isJellyBean()) {
+
+            RemoteSongPresentation presentation = new RemoteSongPresentation(context, song, position);
+            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), presentation);
+            presentation.show();
+        }
+        notifyDataSetChanged();
+    }
+
+    private void setDisplay()
+    {
+        Display display = getDisplay();
+        if (display != null && Setting.getInstance().getDisplay() == null) {
+            Setting.getInstance().setDisplay(display);
+            // Toast.makeText(WorshipSongApplication.getContext(), "Tap song content to present a song in " + display.getName() + " display", Toast.LENGTH_SHORT).show();
+        } else {
+            //Toast.makeText(WorshipSongApplication.getContext(), "Remote display not connected to this device", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void hidePresentation(Display display)
+    {
+        if (isJellyBean() && display != null) {
+            DefaultRemotePresentation defaultRemotePresentation = new DefaultRemotePresentation(context, Setting.getInstance().getDisplay());
+            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), defaultRemotePresentation);
+            defaultRemotePresentation.show();
+        }
+
+        notifyDataSetChanged();
+    }
+
+
 
 }

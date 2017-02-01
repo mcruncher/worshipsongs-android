@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <TextView
             android:id="@+id/verse_text_view"
@@ -23,6 +24,7 @@
             android:paddingLeft="10dp"
             android:text="foo"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+        <!--android:background="@drawable/card_view_selector"-->
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

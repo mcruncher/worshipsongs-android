@@ -44,6 +44,15 @@
         </SwitchPreference>
     </PreferenceCategory>
 
+    <!--<PreferenceCategory android:title="@string/remote_display_settings">-->
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="prefPresentSong"-->
+            <!--android:summary="@string/remote_display_summary"-->
+            <!--android:title="@string/remote_display_title">-->
+        <!--</SwitchPreference>-->
+    <!--</PreferenceCategory>-->
+
     <PreferenceCategory android:title="@string/pref_restore_default_settings">
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="Reset all values to their defaults"
