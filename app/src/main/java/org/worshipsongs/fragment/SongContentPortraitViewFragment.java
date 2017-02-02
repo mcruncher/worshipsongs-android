@@ -2,12 +2,11 @@ package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.hardware.display.DisplayManager;
+import android.media.MediaRouter;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,43 +28,48 @@ import com.google.android.youtube.player.YouTubePlayer;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
+import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.dialog.DefaultRemotePresentation;
+import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Author: Madasamy
  * version: 1.0.0
  */
+
 public class SongContentPortraitViewFragment extends Fragment
 {
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
     private ArrayList<String> tilteList;
     private int millis;
-    // private boolean playVideoStatus;
     private YouTubePlayer youTubePlayer;
     private SongCardViewAdapter songCarViewAdapter;
     private UserPreferenceSettingService preferenceSettingService;
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
-
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
-    // private FloatingActionButton presentSongFloatingButton;
-//    private FloatingActionButton hideSongFloatingButton;
-   // private FloatingActionButton presentSongFloatingMenuButton;
-   // private FloatingActionButton hideSongFloatingMenuButton;
-    private SharedPreferences preferences;
 
+    private DefaultRemotePresentation defaultRemotePresentation;
+    private SongMediaRouterCallBack songMediaRouterCallBack = new SongMediaRouterCallBack();
+
+    //private SharedPreferences preferences;
+
+    private MediaRouter mediaRouter;
+    private Song song;
+    private FloatingActionButton nextFloatingButton;
+    private FloatingActionButton previousFloatingButton;
+    private Display selectedDisplay;
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
     {
@@ -75,9 +79,7 @@ public class SongContentPortraitViewFragment extends Fragment
         bundle.putString(CommonConstants.TITLE_KEY, title);
         songContentPortraitViewFragment.setArguments(bundle);
         return songContentPortraitViewFragment;
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -85,15 +87,16 @@ public class SongContentPortraitViewFragment extends Fragment
         final View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
         showStatusBar();
         initSetUp();
-        Song song = songDao.findContentsByTitle(title);
+        song = songDao.findContentsByTitle(title);
         //setYouTubeView(view);
         setBackImageView(view);
         setTitleTextView(view);
-        setOptionsImageView(view, song.getContents());
+        setOptionsImageView(view);
         setRecyclerView(view, song);
         //setPlaySongFloatingMenuButton(view, song.getUrlKey());
         setFloatingActionMenu(view, song);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
+        mediaRouter = (MediaRouter) getActivity().getSystemService(Context.MEDIA_ROUTER_SERVICE);
         return view;
     }
 
@@ -106,7 +109,7 @@ public class SongContentPortraitViewFragment extends Fragment
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
-        preferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+        //  preferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     }
 
 
@@ -143,10 +146,10 @@ public class SongContentPortraitViewFragment extends Fragment
         });
     }
 
-    private void setOptionsImageView(View view, final List<String> contents)
+    private void setOptionsImageView(View view)
     {
         ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
-        optionMenu.setOnClickListener(new OptionsImageClickListener(contents));
+        optionMenu.setOnClickListener(new OptionsImageClickListener());
     }
 
 
@@ -173,7 +176,10 @@ public class SongContentPortraitViewFragment extends Fragment
             floatingActionMenu.setVisibility(View.GONE);
             setPresentSongFloatingButton(view);
         }
+
+
     }
+
 
     private void setPlaySongFloatingMenuButton(View view, final String urrlKey)
     {
@@ -196,9 +202,8 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private void setPresentSongFloatingMenuButton(View view)
     {
-        final FloatingActionButton  presentSongFloatingMenuButton = (FloatingActionButton) view.findViewById(R.id.present_song_floating_menu_button);
+        final FloatingActionButton presentSongFloatingMenuButton = (FloatingActionButton) view.findViewById(R.id.present_song_floating_menu_button);
         presentSongFloatingMenuButton.setVisibility(View.VISIBLE);
-        final boolean presentSong = preferences.getBoolean("presentSong", true);
         presentSongFloatingMenuButton.setOnClickListener(new View.OnClickListener()
         {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -208,13 +213,7 @@ public class SongContentPortraitViewFragment extends Fragment
                 if (floatingActionMenu.isExpanded()) {
                     floatingActionMenu.collapse();
                 }
-                if (presentSong) {
-                    songCarViewAdapter.showPresentation(0);
-                    preferences.edit().putBoolean("presentSong", false).apply();
-                } else {
-                    songCarViewAdapter.hidePresentation(Setting.getInstance().getDisplay());
-                    preferences.edit().putBoolean("presentSong", true).apply();
-                }
+                startPresentActivity();
             }
         });
     }
@@ -228,20 +227,24 @@ public class SongContentPortraitViewFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Log.i("SongContentPortraitView", "Present song");
-                boolean presentSong = preferences.getBoolean("presentSong", true);
-                Log.i(this.getClass().getSimpleName(), "Present song ?"+presentSong);
-                if (presentSong) {
-                    songCarViewAdapter.showPresentation(0);
-                    preferences.edit().putBoolean("presentSong", false).apply();
-                } else {
-                    songCarViewAdapter.hidePresentation(Setting.getInstance().getDisplay());
-                    preferences.edit().putBoolean("presentSong", true).apply();
-                }
+                startPresentActivity();
             }
         });
     }
-    
+
+    private void startPresentActivity()
+    {
+        //if (selectedDisplay != null) {
+            Intent intent = new Intent(getActivity(), PresentSongActivity.class);
+            String title = tilteList.get(Setting.getInstance().getPosition());
+            intent.putExtra(CommonConstants.TITLE_KEY, title);
+            getActivity().startActivity(intent);
+//        } else {
+//            Toast.makeText(getActivity(), "Your device is not connected to remote display", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+
     private boolean isPlayVideo(String urrlKey)
     {
         boolean playVideoStatus = preferenceSettingService.getPlayVideoStatus();
@@ -256,6 +259,7 @@ public class SongContentPortraitViewFragment extends Fragment
         youTubeIntent.putExtra("title", title);
         getActivity().startActivity(youTubeIntent);
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState)
@@ -272,7 +276,6 @@ public class SongContentPortraitViewFragment extends Fragment
         @Override
         public boolean onTouch(View v, MotionEvent event)
         {
-            Log.i(this.getClass().getSimpleName(), "Position " + tilteList.indexOf(title));
             int position = tilteList.indexOf(title);
             Setting.getInstance().setPosition(position);
             return true;
@@ -281,12 +284,6 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private class OptionsImageClickListener implements View.OnClickListener
     {
-        private List<String> contents;
-
-        OptionsImageClickListener(List<String> contents)
-        {
-            this.contents = contents;
-        }
 
         @Override
         public void onClick(View view)
@@ -295,5 +292,119 @@ public class SongContentPortraitViewFragment extends Fragment
             songListAdapterService.showPopupmenu(view, title, getFragmentManager(), false);
         }
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (isJellyBean()) {
+            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack);
+            updatePresentation();
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if (isJellyBean()) {
+            mediaRouter.removeCallback(songMediaRouterCallBack);
+        }
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        // BEGIN_INCLUDE(onStop)
+        // Dismiss the presentation when the activity is not visible.
+        if (defaultRemotePresentation != null) {
+            defaultRemotePresentation.dismiss();
+            defaultRemotePresentation = null;
+        }
+
+        // BEGIN_INCLUDE(onStop)
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    class SongMediaRouterCallBack extends MediaRouter.SimpleCallback
+    {
+
+        @Override
+        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info)
+        {
+            updatePresentation();
+
+        }
+
+        @Override
+        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info)
+        {
+            updatePresentation();
+
+        }
+
+        @Override
+        public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo info)
+        {
+            updatePresentation();
+        }
+
+    }
+
+    private final DialogInterface.OnDismissListener remoteDisplayDismissListener =
+            new DialogInterface.OnDismissListener()
+            {
+                @Override
+                public void onDismiss(DialogInterface dialog)
+                {
+                    if (dialog == defaultRemotePresentation) {
+                        defaultRemotePresentation = null;
+                    }
+
+                }
+            };
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updatePresentation()
+    {
+        selectedDisplay = getSelectedDisplay();
+        if (defaultRemotePresentation != null && defaultRemotePresentation.getDisplay() != selectedDisplay) {
+            defaultRemotePresentation.dismiss();
+            defaultRemotePresentation = null;
+        }
+
+        if (defaultRemotePresentation == null && selectedDisplay != null) {
+            // Initialise a new Presentation for the Display
+            defaultRemotePresentation = new DefaultRemotePresentation(getActivity(), selectedDisplay);
+            defaultRemotePresentation.setOnDismissListener(remoteDisplayDismissListener);
+            try {
+                defaultRemotePresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                // Couldn't show presentation - display was already removed
+                defaultRemotePresentation = null;
+            }
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private Display getSelectedDisplay()
+    {
+        MediaRouter.RouteInfo selectedRoute = mediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display selectedDisplay = null;
+        if (selectedRoute != null) {
+            selectedDisplay = selectedRoute.getPresentationDisplay();
+        }
+        return selectedDisplay;
+    }
+
+
+    private boolean isJellyBean()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
+
 
 }

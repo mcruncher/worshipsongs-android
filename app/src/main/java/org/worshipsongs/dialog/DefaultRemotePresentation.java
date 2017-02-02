@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 
+import org.worshipsongs.fragment.AddPlayListsDialogFragment;
 import org.worshipsongs.worship.R;
 
 /**
@@ -18,10 +19,13 @@ import org.worshipsongs.worship.R;
 public class DefaultRemotePresentation extends Presentation
 {
 
+//    public static DefaultRemotePresentation newInstance(Context context, Display display) {
+//        return new DefaultRemotePresentation(context, display);
+//    }
+
     public DefaultRemotePresentation(Context context, Display display)
     {
         super(context, display);
-
     }
 
     @Override
@@ -29,6 +33,5 @@ public class DefaultRemotePresentation extends Presentation
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
     }
 }

@@ -39,33 +39,16 @@ import org.worshipsongs.worship.R;
  */
 public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapter.SongContentViewHolder>
 {
-
-
     private final SparseArray<Presentation> activePresentations = new SparseArray<Presentation>();
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
-    private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private DisplayManager displayManager;
     private Song song;
-    // private AuthorSong authorSong;
     private Context context;
-
-
 
     public SongCardViewAdapter(Song song, Context context)
     {
         this.context = context;
         this.song = song;
-
-        setDisplayManager();
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void setDisplayManager()
-    {
-        displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-        displayManager.registerDisplayListener(new DisplayListener(), null);
     }
 
     @Override
@@ -80,7 +63,7 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         customTagColorService = new CustomTagColorService();
         preferenceSettingService = new UserPreferenceSettingService();
         String verse = song.getContents().get(position);
-        songContentViewHolder.cardView.setOnClickListener(new CardViewListener(position));
+       // songContentViewHolder.cardView.setOnClickListener(new CardViewListener(position));
         songContentViewHolder.textView.setText(verse);
         loadTextStyle(songContentViewHolder.textView, position);
     }
@@ -94,14 +77,14 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         textView.setTextSize(preferenceSettingService.getPortraitFontSize());
         textView.setTextColor(preferenceSettingService.getColor());
         textView.setVerticalScrollBarEnabled(true);
-        textView.setSelected(selectedItems.get(position, false));
+        //textView.setSelected(selectedItems.get(position, false));
         // textView.setOnClickListener(new TextViewListener(textView, position));
     }
 
-    private boolean isJellyBean()
-    {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
+//    private boolean isJellyBean()
+//    {
+//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+//    }
 
     @Override
     public SongContentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
@@ -124,133 +107,126 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
     }
 
 
-    private class CardViewListener implements View.OnClickListener
-    {
-        private int position;
+//    private class CardViewListener implements View.OnClickListener
+//    {
+//        private int position;
+//
+//        CardViewListener(int position)
+//        {
+//            this.position = position;
+//        }
+//
+//        @Override
+//        public void onClick(View view)
+//        {
+//            if (Setting.getInstance().getDisplay() != null) {
+//                // hidePresentation(display);
+//                showPresentation(position);
+//            }
+//        }
+//    }
 
-        CardViewListener(int position)
-        {
-            this.position = position;
-        }
+//    private class TextViewListener implements View.OnClickListener
+//    {
+//        private TextView textView;
+//        private int position;
+//
+//        TextViewListener(TextView textView, int position)
+//        {
+//            this.textView = textView;
+//            this.position = position;
+//        }
+//
+//        @Override
+//        public void onClick(View view)
+//        {
+//            if (selectedItems.get(position, false)) {
+//                selectedItems.delete(position);
+//                textView.setSelected(false);
+//            } else {
+//                selectedItems.put(position, true);
+//                textView.setSelected(true);
+//            }
+//        }
+//    }
 
-        @Override
-        public void onClick(View view)
-        {
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//    private class DisplayListener implements DisplayManager.DisplayListener
+//    {
+//
+//        @Override
+//        public void onDisplayAdded(int displayId)
+//        {
+//
+//        }
+//
+//        @Override
+//        public void onDisplayRemoved(int displayId)
+//        {
+//            Presentation presentation = activePresentations.get(displayId);
+//            if (presentation == null) {
+//                return;
+//            }
+//            presentation.cancel();
+//            activePresentations.delete(displayId);
+//            Setting.getInstance().setDisplay(null);
+//        }
+//
+//        @Override
+//        public void onDisplayChanged(int displayId)
+//        {
+//            Log.i(SongCardViewAdapter.class.getSimpleName(), "Display changed ....");
+//        }
+//    }
 
-            if (Setting.getInstance().getDisplay() != null) {
-                // hidePresentation(display);
-                showPresentation(position);
-            }
-        }
-    }
+//    private Display getDisplay()
+//    {
+//        Log.i(SongCardViewAdapter.class.getSimpleName(), "Is jelly bean " + isJellyBean());
+//        if (isJellyBean()) {
+//            Display[] displays = displayManager.getDisplays();
+//            Log.i(SongCardViewAdapter.class.getSimpleName(), "No of displays" + displays.length);
+//            for (Display display : displays) {
+//                Log.i(SongCardViewAdapter.class.getSimpleName(), "Display name " + display.getName());
+//                if (!display.getName().contains("Built-in Screen")) {
+//                    return display;
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
-    private class TextViewListener implements View.OnClickListener
-    {
-        private TextView textView;
-        private int position;
-
-        TextViewListener(TextView textView, int position)
-        {
-            this.textView = textView;
-            this.position = position;
-        }
-
-        @Override
-        public void onClick(View view)
-        {
-            if (selectedItems.get(position, false)) {
-                selectedItems.delete(position);
-                textView.setSelected(false);
-            } else {
-                selectedItems.put(position, true);
-                textView.setSelected(true);
-            }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private class DisplayListener implements DisplayManager.DisplayListener
-    {
-
-        @Override
-        public void onDisplayAdded(int displayId)
-        {
-//           Display display = getDisplay();
-//           if (display != null) {
-//               Setting.getInstance().setDisplay(display);
-//           }
-        }
-
-        @Override
-        public void onDisplayRemoved(int displayId)
-        {
-            Presentation presentation = activePresentations.get(displayId);
-            if (presentation == null) {
-                return;
-            }
-            // presentation.dismiss();
-            activePresentations.delete(displayId);
-        }
-
-        @Override
-        public void onDisplayChanged(int displayId)
-        {
-
-        }
-    }
-
-    private Display getDisplay()
-    {
-        Log.i(SongCardViewAdapter.class.getSimpleName(), "Is jelly bean " + isJellyBean());
-        if (isJellyBean()) {
-            Display[] displays = displayManager.getDisplays();
-            Log.i(SongCardViewAdapter.class.getSimpleName(), "No of displays" + displays.length);
-            for (Display display : displays) {
-                Log.i(SongCardViewAdapter.class.getSimpleName(), "Display name " + display.getName());
-                if (!display.getName().contains("Built-in Screen")) {
-                    return display;
-                }
-            }
-        }
-        return null;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void showPresentation(int position)
-    {
-        setDisplay();
-        if (isJellyBean()) {
-
-            RemoteSongPresentation presentation = new RemoteSongPresentation(context, song, position);
-            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), presentation);
-            presentation.show();
-        }
-        notifyDataSetChanged();
-    }
-
-    private void setDisplay()
-    {
-        Display display = getDisplay();
-        if (display != null && Setting.getInstance().getDisplay() == null) {
-            Setting.getInstance().setDisplay(display);
-            // Toast.makeText(WorshipSongApplication.getContext(), "Tap song content to present a song in " + display.getName() + " display", Toast.LENGTH_SHORT).show();
-        } else {
-            //Toast.makeText(WorshipSongApplication.getContext(), "Remote display not connected to this device", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void hidePresentation(Display display)
-    {
-        if (isJellyBean() && display != null) {
-            DefaultRemotePresentation defaultRemotePresentation = new DefaultRemotePresentation(context, Setting.getInstance().getDisplay());
-            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), defaultRemotePresentation);
-            defaultRemotePresentation.show();
-        }
-
-        notifyDataSetChanged();
-    }
-
-
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//    public void showPresentation(int position)
+//    {
+//        setDisplay();
+//        if (isJellyBean()) {
+//            RemoteSongPresentation presentation = RemoteSongPresentation.newInstance(context, song, position);
+//            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), presentation);
+//            presentation.show();
+//        }
+//        notifyDataSetChanged();
+//    }
+//
+//    private void setDisplay()
+//    {
+//        Display display = getDisplay();
+//        if (display != null && Setting.getInstance().getDisplay() == null) {
+//            Setting.getInstance().setDisplay(display);
+//            // Toast.makeText(WorshipSongApplication.getContext(), "Tap song content to present a song in " + display.getName() + " display", Toast.LENGTH_SHORT).show();
+//        } else {
+//            // Toast.makeText(WorshipSongApplication.getContext(), "Remote display not connected to this device", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//    public void hidePresentation(Display display)
+//    {
+//        if (isJellyBean() && display != null) {
+//            DefaultRemotePresentation defaultRemotePresentation = DefaultRemotePresentation.newInstance(context, Setting.getInstance().getDisplay());
+//            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), defaultRemotePresentation);
+//            defaultRemotePresentation.show();
+//        }
+//        notifyDataSetChanged();
+//    }
 
 }

@@ -129,6 +129,14 @@ public class SongContentViewActivity extends AppCompatActivity
         //  setListAdapter(customListViewAdapter);
     }
 
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {

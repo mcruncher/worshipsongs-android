@@ -68,9 +68,6 @@
         android:layout_below="@+id/image_linear_Layout"
         android:paddingTop="@dimen/abc_control_corner_material"/>
 
-
-    <!--fab:fab_colorNormal="@color/dark_navy_blue"-->
-    <!--fab:fab_colorPressed="@color/light_navy_blue"-->
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/present_song_floating_button"
         android:layout_width="wrap_content"
@@ -84,20 +81,6 @@
         fab:fab_icon="@android:drawable/ic_menu_slideshow"
         fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_title="Present song"/>
-
-    <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-        <!--android:id="@+id/hide_song_floating_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:visibility="gone"-->
-        <!--fab:fab_colorNormal="@color/red"-->
-        <!--fab:fab_colorPressed="@color/red_mild"-->
-        <!--fab:fab_icon="@android:drawable/ic_menu_slideshow"-->
-        <!--fab:fab_labelStyle="@style/menu_labels_style"-->
-        <!--fab:fab_title="Hide song"/>-->
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/floating_action_menu"
@@ -132,19 +115,9 @@
             fab:fab_icon="@android:drawable/ic_menu_slideshow"
             fab:fab_size="mini"
             fab:fab_title="Present song"/>
-
-        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-            <!--android:id="@+id/hide_song_floating_menu_button"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:visibility="gone"-->
-            <!--fab:fab_colorNormal="@color/red"-->
-            <!--fab:fab_colorPressed="@color/red_mild"-->
-            <!--fab:fab_icon="@android:drawable/ic_menu_slideshow"-->
-            <!--fab:fab_size="mini"-->
-            <!--fab:fab_title="Hide song"/>-->
-
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
 
 
 </RelativeLayout>

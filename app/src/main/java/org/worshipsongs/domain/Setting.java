@@ -15,9 +15,8 @@ import java.util.Set;
 public class Setting
 {
     private static Setting setting;
-
     private int position;
-    private Display display;
+   // private boolean presentSong;
 
     private Setting()
     {
@@ -42,15 +41,15 @@ public class Setting
         this.position = position;
     }
 
-    public Display getDisplay()
-    {
-        return display;
-    }
-
-    public void setDisplay(Display display)
-    {
-        this.display = display;
-    }
+//    public boolean isPresentSong()
+//    {
+//        return presentSong;
+//    }
+//
+//    public void setPresentSong(boolean presentSong)
+//    {
+//        this.presentSong = presentSong;
+//    }
 
     @Override
     public String toString()
