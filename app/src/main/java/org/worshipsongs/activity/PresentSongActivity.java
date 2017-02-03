@@ -49,8 +49,6 @@ public class PresentSongActivity extends AppCompatActivity
     private FloatingActionButton previousButton;
     private ListView listView;
     private PresentSongCardViewAdapter presentSongCardViewAdapter;
-//    private LinearLayoutManagerWithSmoothScroller linearLayoutManager;
-//    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -106,7 +104,7 @@ public class PresentSongActivity extends AppCompatActivity
                 }
                 if (song.getContents().size() > currentPosition) {
                     showNextVerse(currentPosition);
-                    listView.smoothScrollToPosition(currentPosition);
+                    listView.smoothScrollToPositionFromTop(currentPosition, 2);
                     previousButton.setVisibility(View.VISIBLE);
                     presentSongCardViewAdapter.setItemSelected(currentPosition);
                     presentSongCardViewAdapter.notifyDataSetChanged();
@@ -124,19 +122,18 @@ public class PresentSongActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
                 currentPosition = currentPosition - 1;
-                Log.i(PresentSongActivity.class.getSimpleName(), "Current position before dec: " + currentPosition);
-                Log.i(PresentSongActivity.class.getSimpleName(), "Verse size: " + song.getContents().size());
+                if (currentPosition == song.getContents().size()) {
+                    currentPosition = currentPosition - 1;
+                }
                 if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
                     Log.i(PresentSongActivity.class.getSimpleName(), "Current position after dec: " + currentPosition);
                     showNextVerse(currentPosition);
-                    listView.smoothScrollToPosition(currentPosition);
+                    listView.smoothScrollToPosition(currentPosition, 2);
                     nextButton.setVisibility(View.VISIBLE);
                     presentSongCardViewAdapter.setItemSelected(currentPosition);
                     presentSongCardViewAdapter.notifyDataSetChanged();
                 }
-
                 if (currentPosition == 0) {
                     previousButton.setVisibility(View.GONE);
                 }
