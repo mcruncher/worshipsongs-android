@@ -69,7 +69,7 @@ public class PresentSongActivity extends AppCompatActivity
         mediaRouter = (MediaRouter) getSystemService(Context.MEDIA_ROUTER_SERVICE);
     }
 
-    private void setListView(Song song)
+    private void setListView(final Song song)
     {
         listView = (ListView) findViewById(R.id.content_list);
         presentSongCardViewAdapter = new PresentSongCardViewAdapter(PresentSongActivity.this, song.getContents());
@@ -84,6 +84,16 @@ public class PresentSongActivity extends AppCompatActivity
                 showNextVerse(position);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);
                 presentSongCardViewAdapter.notifyDataSetChanged();
+                if (position == 0) {
+                    previousButton.setVisibility(View.GONE);
+                    nextButton.setVisibility(View.VISIBLE);
+                } else if(song.getContents().size() == (position + 1)) {
+                    nextButton.setVisibility(View.GONE);
+                    previousButton.setVisibility(View.VISIBLE);
+                } else {
+                    nextButton.setVisibility(View.VISIBLE);
+                    previousButton.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -98,7 +108,6 @@ public class PresentSongActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 currentPosition = currentPosition + 1;
-
                 if (song.getContents().size() == currentPosition) {
                     nextButton.setVisibility(View.GONE);
                 }
@@ -282,50 +291,6 @@ public class PresentSongActivity extends AppCompatActivity
         }
     }
 
-    public class LinearLayoutManagerWithSmoothScroller extends LinearLayoutManager
-    {
-
-        public LinearLayoutManagerWithSmoothScroller(Context context)
-        {
-            super(context, VERTICAL, false);
-        }
-
-        public LinearLayoutManagerWithSmoothScroller(Context context, int orientation, boolean reverseLayout)
-        {
-            super(context, orientation, reverseLayout);
-        }
-
-        @Override
-        public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state,
-                                           int position)
-        {
-            RecyclerView.SmoothScroller smoothScroller = new TopSnappedSmoothScroller(recyclerView.getContext());
-            smoothScroller.setTargetPosition(position);
-            startSmoothScroll(smoothScroller);
-        }
-
-        private class TopSnappedSmoothScroller extends LinearSmoothScroller
-        {
-            public TopSnappedSmoothScroller(Context context)
-            {
-                super(context);
-
-            }
-
-            @Override
-            public PointF computeScrollVectorForPosition(int targetPosition)
-            {
-                return LinearLayoutManagerWithSmoothScroller.this
-                        .computeScrollVectorForPosition(targetPosition);
-            }
-
-            @Override
-            protected int getVerticalSnapPreference()
-            {
-                return SNAP_TO_START;
-            }
-        }
-    }
 
 
 }
