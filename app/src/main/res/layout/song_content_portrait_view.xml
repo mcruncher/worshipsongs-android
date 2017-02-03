@@ -78,7 +78,7 @@
         android:visibility="gone"
         fab:fab_colorNormal="@color/dark_navy_blue"
         fab:fab_colorPressed="@color/light_navy_blue"
-        fab:fab_icon="@android:drawable/ic_menu_slideshow"
+        fab:fab_icon="@drawable/ic_presentation"
         fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_title="Present song"/>
 
@@ -100,8 +100,8 @@
             android:id="@+id/play_song_floating_menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/red"
-            fab:fab_colorPressed="@color/red_mild"
+            fab:fab_colorNormal="@color/dark_navy_blue"
+            fab:fab_colorPressed="@color/light_navy_blue"
             fab:fab_icon="@drawable/ic_play_arrow_white"
             fab:fab_size="mini"
             fab:fab_title="Play video"/>
@@ -110,9 +110,9 @@
             android:id="@+id/present_song_floating_menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/red"
-            fab:fab_colorPressed="@color/red_mild"
-            fab:fab_icon="@android:drawable/ic_menu_slideshow"
+            fab:fab_colorNormal="@color/dark_navy_blue"
+            fab:fab_colorPressed="@color/light_navy_blue"
+            fab:fab_icon="@drawable/ic_presentation"
             fab:fab_size="mini"
             fab:fab_title="Present song"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

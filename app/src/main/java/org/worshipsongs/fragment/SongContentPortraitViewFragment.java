@@ -70,6 +70,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private FloatingActionButton nextFloatingButton;
     private FloatingActionButton previousFloatingButton;
     private Display selectedDisplay;
+    private RecyclerView recyclerView;
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
     {
@@ -115,7 +116,7 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private void setRecyclerView(View view, Song song)
     {
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.content_recycle_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.content_recycle_view);
         recyclerView.setHasFixedSize(true);
         preferenceSettingService = new UserPreferenceSettingService();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
@@ -165,17 +166,33 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
-    private void setFloatingActionMenu(View view, Song song)
+    private void setFloatingActionMenu(final View view, Song song)
     {
         floatingActionMenu = (FloatingActionsMenu) view.findViewById(R.id.floating_action_menu);
         if (isPlayVideo(song.getUrlKey())) {
             floatingActionMenu.setVisibility(View.VISIBLE);
+            floatingActionMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener()
+            {
+                @Override
+                public void onMenuExpanded()
+                {
+                }
+
+                @Override
+                public void onMenuCollapsed()
+                {
+
+                }
+            });
+
+
             setPlaySongFloatingMenuButton(view, song.getUrlKey());
             setPresentSongFloatingMenuButton(view);
         } else {
             floatingActionMenu.setVisibility(View.GONE);
             setPresentSongFloatingButton(view);
         }
+
 
 
     }
