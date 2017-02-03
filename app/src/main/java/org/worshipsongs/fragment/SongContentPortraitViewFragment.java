@@ -4,10 +4,12 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaRouter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,11 +61,8 @@ public class SongContentPortraitViewFragment extends Fragment
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
-
     private DefaultRemotePresentation defaultRemotePresentation;
     private SongMediaRouterCallBack songMediaRouterCallBack = new SongMediaRouterCallBack();
-
-    //private SharedPreferences preferences;
 
     private MediaRouter mediaRouter;
     private Song song;
@@ -125,6 +124,19 @@ public class SongContentPortraitViewFragment extends Fragment
 
         songCarViewAdapter = new SongCardViewAdapter(song, this.getActivity());
         songCarViewAdapter.notifyDataSetChanged();
+        recyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(floatingActionMenu.isExpanded()) {
+                    floatingActionMenu.collapse();
+                    int color = 0x00000000;
+                    setRecycleViewForegroundColor(color);
+                }
+                return false;
+            }
+        });
         recyclerView.setAdapter(songCarViewAdapter);
     }
 
@@ -176,16 +188,17 @@ public class SongContentPortraitViewFragment extends Fragment
                 @Override
                 public void onMenuExpanded()
                 {
+                    int color = R.color.gray_transparent;
+                    setRecycleViewForegroundColor(ContextCompat.getColor(getActivity(), color));
                 }
 
                 @Override
                 public void onMenuCollapsed()
                 {
-
+                    int color = 0x00000000;
+                    setRecycleViewForegroundColor(color);
                 }
             });
-
-
             setPlaySongFloatingMenuButton(view, song.getUrlKey());
             setPresentSongFloatingMenuButton(view);
         } else {
@@ -193,8 +206,14 @@ public class SongContentPortraitViewFragment extends Fragment
             setPresentSongFloatingButton(view);
         }
 
+    }
 
+    private void setRecycleViewForegroundColor(int color)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
+            recyclerView.setForeground(new ColorDrawable(color));
+        }
     }
 
 
@@ -227,10 +246,11 @@ public class SongContentPortraitViewFragment extends Fragment
             @Override
             public void onClick(View view)
             {
+                startPresentActivity();
                 if (floatingActionMenu.isExpanded()) {
                     floatingActionMenu.collapse();
                 }
-                startPresentActivity();
+
             }
         });
     }

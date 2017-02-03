@@ -41,6 +41,10 @@
     <color name="app_primary_accent">#F9B0B4</color>
 
     <color name="black_semi_transparent">#B2000000</color>
+    <color name="white_transparent">#E6FFFFFF</color>
+    <color name="gray_transparent">#E6e0e0e0</color>
+    <color name="white_semi_transparent">#D9FFFFFF</color>
+
     <color name="red">#dd3044</color>
     <color name="red_mild">	#ee6d6e</color>
 </resources>
