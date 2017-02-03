@@ -18,16 +18,17 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.dialog.DefaultRemotePresentation;
 import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.worship.R;
 
 /**
@@ -46,8 +47,10 @@ public class PresentSongActivity extends AppCompatActivity
     private FloatingActionButton nextButton;
     private int currentPosition;
     private FloatingActionButton previousButton;
-    private LinearLayoutManagerWithSmoothScroller linearLayoutManager;
-    private RecyclerView recyclerView;
+    private ListView listView;
+    private PresentSongCardViewAdapter presentSongCardViewAdapter;
+//    private LinearLayoutManagerWithSmoothScroller linearLayoutManager;
+//    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -58,7 +61,8 @@ public class PresentSongActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         String title = bundle.getString(CommonConstants.TITLE_KEY);
         song = songDao.findContentsByTitle(title);
-        setRecyclerView(song);
+        setListView(song);
+        // setRecyclerView(song);
         setNextButton(song);
         setPreviousButton(song);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,19 +71,23 @@ public class PresentSongActivity extends AppCompatActivity
         mediaRouter = (MediaRouter) getSystemService(Context.MEDIA_ROUTER_SERVICE);
     }
 
-    private void setRecyclerView(Song song)
+    private void setListView(Song song)
     {
-        recyclerView = (RecyclerView) findViewById(R.id.content_recycle_view);
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManagerWithSmoothScroller(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-
-
-        songCarViewAdapter = new PresentSongCardViewAdapter(song, this);
-        songCarViewAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(songCarViewAdapter);
+        listView = (ListView) findViewById(R.id.content_list);
+        presentSongCardViewAdapter = new PresentSongCardViewAdapter(PresentSongActivity.this, song.getContents());
+        presentSongCardViewAdapter.setItemSelected(0);
+        listView.setAdapter(presentSongCardViewAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                currentPosition = position;
+                showNextVerse(position);
+                presentSongCardViewAdapter.setItemSelected(currentPosition);
+                presentSongCardViewAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void setNextButton(final Song song)
@@ -97,9 +105,11 @@ public class PresentSongActivity extends AppCompatActivity
                     nextButton.setVisibility(View.GONE);
                 }
                 if (song.getContents().size() > currentPosition) {
-                    showNextVerse();
-                    recyclerView.smoothScrollToPosition(currentPosition);
+                    showNextVerse(currentPosition);
+                    listView.smoothScrollToPosition(currentPosition);
                     previousButton.setVisibility(View.VISIBLE);
+                    presentSongCardViewAdapter.setItemSelected(currentPosition);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -114,13 +124,17 @@ public class PresentSongActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Log.i(PresentSongActivity.class.getSimpleName(), "Current position size: "+currentPosition);
-                Log.i(PresentSongActivity.class.getSimpleName(), "Verse size: "+song.getContents().size());
+
                 currentPosition = currentPosition - 1;
+                Log.i(PresentSongActivity.class.getSimpleName(), "Current position before dec: " + currentPosition);
+                Log.i(PresentSongActivity.class.getSimpleName(), "Verse size: " + song.getContents().size());
                 if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
-                    showNextVerse();
-                    recyclerView.smoothScrollToPosition(currentPosition);
+                    Log.i(PresentSongActivity.class.getSimpleName(), "Current position after dec: " + currentPosition);
+                    showNextVerse(currentPosition);
+                    listView.smoothScrollToPosition(currentPosition);
                     nextButton.setVisibility(View.VISIBLE);
+                    presentSongCardViewAdapter.setItemSelected(currentPosition);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
                 }
 
                 if (currentPosition == 0) {
@@ -262,28 +276,32 @@ public class PresentSongActivity extends AppCompatActivity
 
     }
 
-    private void showNextVerse()
+    private void showNextVerse(int position)
     {
         if (defaultRemotePresentation != null) {
             // a second screen is active and initialized, show the next color
-            defaultRemotePresentation.setContent(currentPosition);
-            defaultRemotePresentation.setSlidePosition(currentPosition);
+            defaultRemotePresentation.setContent(position);
+            defaultRemotePresentation.setSlidePosition(position);
         }
     }
 
-    public class LinearLayoutManagerWithSmoothScroller extends LinearLayoutManager {
+    public class LinearLayoutManagerWithSmoothScroller extends LinearLayoutManager
+    {
 
-        public LinearLayoutManagerWithSmoothScroller(Context context) {
+        public LinearLayoutManagerWithSmoothScroller(Context context)
+        {
             super(context, VERTICAL, false);
         }
 
-        public LinearLayoutManagerWithSmoothScroller(Context context, int orientation, boolean reverseLayout) {
+        public LinearLayoutManagerWithSmoothScroller(Context context, int orientation, boolean reverseLayout)
+        {
             super(context, orientation, reverseLayout);
         }
 
         @Override
         public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state,
-                                           int position) {
+                                           int position)
+        {
             RecyclerView.SmoothScroller smoothScroller = new TopSnappedSmoothScroller(recyclerView.getContext());
             smoothScroller.setTargetPosition(position);
             startSmoothScroll(smoothScroller);
@@ -291,19 +309,22 @@ public class PresentSongActivity extends AppCompatActivity
 
         private class TopSnappedSmoothScroller extends LinearSmoothScroller
         {
-            public TopSnappedSmoothScroller(Context context) {
+            public TopSnappedSmoothScroller(Context context)
+            {
                 super(context);
 
             }
 
             @Override
-            public PointF computeScrollVectorForPosition(int targetPosition) {
+            public PointF computeScrollVectorForPosition(int targetPosition)
+            {
                 return LinearLayoutManagerWithSmoothScroller.this
                         .computeScrollVectorForPosition(targetPosition);
             }
 
             @Override
-            protected int getVerticalSnapPreference() {
+            protected int getVerticalSnapPreference()
+            {
                 return SNAP_TO_START;
             }
         }

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import org.worshipsongs.WorshipSongApplication;
@@ -63,13 +64,15 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         setHasOptionsMenu(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
+
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setClickable(false);
+        getListView().setClickable(true);
+
     }
 
     private void initSetUp()
@@ -181,8 +184,13 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
             CommonUtils.hideKeyboard(getActivity());
             setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
 
+//            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//            getListView().setSelector(android.R.color.darker_gray);
+
         }
     }
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState)

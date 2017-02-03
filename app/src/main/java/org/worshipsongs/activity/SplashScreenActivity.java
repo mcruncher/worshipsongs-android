@@ -24,14 +24,14 @@ public class SplashScreenActivity extends AppCompatActivity
 {
 
     private SongDao songDao;
-    private ProgressBar progressBar;
+   // private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+       // progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         songDao = new SongDao(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         loadDatabase();
@@ -65,14 +65,14 @@ public class SplashScreenActivity extends AppCompatActivity
             if (StringUtils.isNotBlank(existingVersion) && existingVersion.equalsIgnoreCase(projectVersion)) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database already copied.");
             } else {
-                progressBar.setVisibility(View.VISIBLE);
+               // progressBar.setVisibility(View.VISIBLE);
 
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
                 songDao.copyDatabase("", true);
                 songDao.open();
                 PropertyUtils.setProperty(CommonConstants.VERSION_KEY, projectVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
-                progressBar.setVisibility(View.INVISIBLE);
+                //progressBar.setVisibility(View.INVISIBLE);
             }
             moveToMainActivity();
         } catch (Exception ex) {
