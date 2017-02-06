@@ -20,7 +20,6 @@ import java.util.List;
 
 public class PresentSongCardViewAdapter extends ArrayAdapter<String>
 {
-
     private int selectedItem = -1;
     private final Context context;
     private UserPreferenceSettingService preferenceSettingService;

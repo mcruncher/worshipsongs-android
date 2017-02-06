@@ -18,6 +18,7 @@ import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.Setting;
+import org.worshipsongs.service.DefaultPresentationScreenService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 public class SongContentViewActivity extends AppCompatActivity
 {
     private UserPreferenceSettingService userPreferenceSettingService;
+    private DefaultPresentationScreenService defaultPresentationScreenService;
     private boolean isSectionView = true;
     private boolean isTabView = true;
 
@@ -39,6 +41,7 @@ public class SongContentViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_content_view);
         userPreferenceSettingService = new UserPreferenceSettingService();
+        defaultPresentationScreenService = new DefaultPresentationScreenService(this);
         if (userPreferenceSettingService.getKeepAwakeStatus()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -127,14 +130,22 @@ public class SongContentViewActivity extends AppCompatActivity
     {
         super.onResume();
         //  setListAdapter(customListViewAdapter);
+        defaultPresentationScreenService.onResume();
     }
 
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        defaultPresentationScreenService.onPause();
+    }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-
+        defaultPresentationScreenService.onPause();
     }
 
     @Override

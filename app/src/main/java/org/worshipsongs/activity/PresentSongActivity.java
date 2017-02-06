@@ -34,7 +34,7 @@ import org.worshipsongs.worship.R;
 public class PresentSongActivity extends AppCompatActivity
 {
     private SongDao songDao;
-    private PresentSongCardViewAdapter songCarViewAdapter;
+
     private RemoteSongPresentation defaultRemotePresentation;
     private PresentSongActivity.SongMediaRouterCallBack songMediaRouterCallBack = new PresentSongActivity.SongMediaRouterCallBack();
     private MediaRouter mediaRouter;
@@ -80,27 +80,6 @@ public class PresentSongActivity extends AppCompatActivity
         presentSongCardViewAdapter.setItemSelected(0);
         listView.setAdapter(presentSongCardViewAdapter);
         listView.setOnItemClickListener(new ListViewOnItemClickListener());
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//        {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-//            {
-//                currentPosition = position;
-//                showNextVerse(position);
-//                presentSongCardViewAdapter.setItemSelected(currentPosition);
-//                presentSongCardViewAdapter.notifyDataSetChanged();
-//                if (position == 0) {
-//                    previousButton.setVisibility(View.GONE);
-//                    nextButton.setVisibility(View.VISIBLE);
-//                } else if (song.getContents().size() == (position + 1)) {
-//                    nextButton.setVisibility(View.GONE);
-//                    previousButton.setVisibility(View.VISIBLE);
-//                } else {
-//                    nextButton.setVisibility(View.VISIBLE);
-//                    previousButton.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
     }
 
     private void setNextButton(final Song song)
@@ -108,54 +87,12 @@ public class PresentSongActivity extends AppCompatActivity
         nextButton = (FloatingActionButton) findViewById(R.id.next_verse_floating_button);
         nextButton.setVisibility(View.VISIBLE);
         nextButton.setOnClickListener(new NextButtonOnClickListener(song));
-//        nextButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                currentPosition = currentPosition + 1;
-//                if (song.getContents().size() == currentPosition) {
-//                    nextButton.setVisibility(View.GONE);
-//                }
-//                if (song.getContents().size() > currentPosition) {
-//                    showNextVerse(currentPosition);
-//                    listView.smoothScrollToPositionFromTop(currentPosition, 2);
-//                    previousButton.setVisibility(View.VISIBLE);
-//                    presentSongCardViewAdapter.setItemSelected(currentPosition);
-//                    presentSongCardViewAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-
     }
 
     private void setPreviousButton(final Song song)
     {
         previousButton = (FloatingActionButton) findViewById(R.id.previous_verse_floating_button);
         previousButton.setOnClickListener(new PreviousButtonOnClickListener(song));
-//        previousButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                currentPosition = currentPosition - 1;
-//                if (currentPosition == song.getContents().size()) {
-//                    currentPosition = currentPosition - 1;
-//                }
-//                if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
-//                    Log.i(PresentSongActivity.class.getSimpleName(), "Current position after dec: " + currentPosition);
-//                    showNextVerse(currentPosition);
-//                    listView.smoothScrollToPosition(currentPosition, 2);
-//                    nextButton.setVisibility(View.VISIBLE);
-//                    presentSongCardViewAdapter.setItemSelected(currentPosition);
-//                    presentSongCardViewAdapter.notifyDataSetChanged();
-//                }
-//                if (currentPosition == 0) {
-//                    previousButton.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-
     }
 
     @Override
@@ -181,13 +118,10 @@ public class PresentSongActivity extends AppCompatActivity
     public void onStop()
     {
         super.onStop();
-        // BEGIN_INCLUDE(onStop)
-        // Dismiss the presentation when the activity is not visible.
         if (defaultRemotePresentation != null) {
             defaultRemotePresentation.dismiss();
             defaultRemotePresentation = null;
         }
-        // BEGIN_INCLUDE(onStop)
     }
 
     @Override
@@ -195,7 +129,6 @@ public class PresentSongActivity extends AppCompatActivity
     {
         super.onBackPressed();
         finish();
-        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override
@@ -204,7 +137,6 @@ public class PresentSongActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                NavUtils.navigateUpFromSameTask(this);
                 break;
         }
         return true;

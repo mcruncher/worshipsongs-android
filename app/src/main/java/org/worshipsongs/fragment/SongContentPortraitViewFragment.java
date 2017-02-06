@@ -61,14 +61,11 @@ public class SongContentPortraitViewFragment extends Fragment
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
-    private DefaultRemotePresentation defaultRemotePresentation;
-    private SongMediaRouterCallBack songMediaRouterCallBack = new SongMediaRouterCallBack();
 
-    private MediaRouter mediaRouter;
     private Song song;
     private FloatingActionButton nextFloatingButton;
     private FloatingActionButton previousFloatingButton;
-    private Display selectedDisplay;
+
     private RecyclerView recyclerView;
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
@@ -96,7 +93,6 @@ public class SongContentPortraitViewFragment extends Fragment
         //setPlaySongFloatingMenuButton(view, song.getUrlKey());
         setFloatingActionMenu(view, song);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
-        mediaRouter = (MediaRouter) getActivity().getSystemService(Context.MEDIA_ROUTER_SERVICE);
         return view;
     }
 
@@ -329,119 +325,5 @@ public class SongContentPortraitViewFragment extends Fragment
             songListAdapterService.showPopupmenu(view, title, getFragmentManager(), false);
         }
     }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (isJellyBean()) {
-            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack);
-            updatePresentation();
-        }
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        if (isJellyBean()) {
-            mediaRouter.removeCallback(songMediaRouterCallBack);
-        }
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        // BEGIN_INCLUDE(onStop)
-        // Dismiss the presentation when the activity is not visible.
-        if (defaultRemotePresentation != null) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
-        }
-
-        // BEGIN_INCLUDE(onStop)
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    class SongMediaRouterCallBack extends MediaRouter.SimpleCallback
-    {
-
-        @Override
-        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-
-        }
-
-        @Override
-        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-
-        }
-
-        @Override
-        public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-        }
-
-    }
-
-    private final DialogInterface.OnDismissListener remoteDisplayDismissListener =
-            new DialogInterface.OnDismissListener()
-            {
-                @Override
-                public void onDismiss(DialogInterface dialog)
-                {
-                    if (dialog == defaultRemotePresentation) {
-                        defaultRemotePresentation = null;
-                    }
-
-                }
-            };
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void updatePresentation()
-    {
-        selectedDisplay = getSelectedDisplay();
-        if (defaultRemotePresentation != null && defaultRemotePresentation.getDisplay() != selectedDisplay) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
-        }
-
-        if (defaultRemotePresentation == null && selectedDisplay != null) {
-            // Initialise a new Presentation for the Display
-            defaultRemotePresentation = new DefaultRemotePresentation(getActivity(), selectedDisplay);
-            defaultRemotePresentation.setOnDismissListener(remoteDisplayDismissListener);
-            try {
-                defaultRemotePresentation.show();
-            } catch (WindowManager.InvalidDisplayException ex) {
-                // Couldn't show presentation - display was already removed
-                defaultRemotePresentation = null;
-            }
-        }
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private Display getSelectedDisplay()
-    {
-        MediaRouter.RouteInfo selectedRoute = mediaRouter.getSelectedRoute(
-                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
-        Display selectedDisplay = null;
-        if (selectedRoute != null) {
-            selectedDisplay = selectedRoute.getPresentationDisplay();
-        }
-        return selectedDisplay;
-    }
-
-
-    private boolean isJellyBean()
-    {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
-
 
 }
