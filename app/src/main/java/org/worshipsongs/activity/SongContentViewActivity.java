@@ -138,7 +138,7 @@ public class SongContentViewActivity extends AppCompatActivity
     protected void onStop()
     {
         super.onStop();
-        defaultPresentationScreenService.onPause();
+        defaultPresentationScreenService.onStop();
     }
 
     @Override

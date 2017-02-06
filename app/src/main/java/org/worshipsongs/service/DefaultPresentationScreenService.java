@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaRouter;
 import android.os.Build;
+import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 
-import org.worshipsongs.activity.NavigationDrawerActivity;
-import org.worshipsongs.dialog.DefaultRemotePresentation;
+import org.worshipsongs.dialog.RemoteSongPresentation;
+import org.worshipsongs.domain.Song;
 
 /**
  * Author : Madasamy
@@ -19,9 +21,11 @@ import org.worshipsongs.dialog.DefaultRemotePresentation;
 public class DefaultPresentationScreenService
 {
     private Context context;
-    private DefaultRemotePresentation defaultRemotePresentation;
+    private RemoteSongPresentation remoteSongPresentation;
     private DefaultPresentationScreenService.DefaultMediaRouterCallBack songMediaRouterCallBack = new DefaultPresentationScreenService.DefaultMediaRouterCallBack();
     private MediaRouter mediaRouter;
+    private Song song;
+
 
     public DefaultPresentationScreenService(Context context)
     {
@@ -29,37 +33,29 @@ public class DefaultPresentationScreenService
         mediaRouter = (MediaRouter) context.getSystemService(Context.MEDIA_ROUTER_SERVICE);
     }
 
-
-    //@Override
     public void onResume()
     {
-        //super.onResume();
         if (isJellyBean()) {
             mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack);
             updatePresentation();
         }
     }
 
-    //@Override
+
     public void onPause()
     {
-
         if (isJellyBean()) {
             mediaRouter.removeCallback(songMediaRouterCallBack);
         }
     }
 
-    //@Override
     public void onStop()
     {
-        // BEGIN_INCLUDE(onStop)
-        // Dismiss the presentation when the activity is not visible.
-        if (defaultRemotePresentation != null) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
+        if (remoteSongPresentation != null) {
+            remoteSongPresentation.dismiss();
+            remoteSongPresentation = null;
         }
 
-        // BEGIN_INCLUDE(onStop)
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -94,8 +90,8 @@ public class DefaultPresentationScreenService
                 @Override
                 public void onDismiss(DialogInterface dialog)
                 {
-                    if (dialog == defaultRemotePresentation) {
-                        defaultRemotePresentation = null;
+                    if (dialog == remoteSongPresentation) {
+                        remoteSongPresentation = null;
                     }
 
                 }
@@ -105,20 +101,24 @@ public class DefaultPresentationScreenService
     private void updatePresentation()
     {
         Display selectedDisplay = getSelectedDisplay();
-        if (defaultRemotePresentation != null && defaultRemotePresentation.getDisplay() != selectedDisplay) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
+        if (remoteSongPresentation != null && remoteSongPresentation.getDisplay() != selectedDisplay) {
+            remoteSongPresentation.dismiss();
+            remoteSongPresentation = null;
         }
 
-        if (defaultRemotePresentation == null && selectedDisplay != null) {
+        if (remoteSongPresentation == null && selectedDisplay != null) {
             // Initialise a new Presentation for the Display
-            defaultRemotePresentation = new DefaultRemotePresentation(context, selectedDisplay);
-            defaultRemotePresentation.setOnDismissListener(remoteDisplayDismissListener);
+            Log.i(this.getClass().getSimpleName(), "Initialize song presentation");
+            remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay, "");
+            remoteSongPresentation.setOnDismissListener(remoteDisplayDismissListener);
             try {
-                defaultRemotePresentation.show();
+                remoteSongPresentation.show();
+                if(song != null) {
+                    showNextVerse(song, 0);
+                }
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
-                defaultRemotePresentation = null;
+                remoteSongPresentation = null;
             }
         }
     }
@@ -139,5 +139,26 @@ public class DefaultPresentationScreenService
     private boolean isJellyBean()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
+
+    public void showNextVerse(Song song, int position)
+    {
+        if (remoteSongPresentation != null) {
+            remoteSongPresentation.setVerseVisibility(View.VISIBLE);
+            remoteSongPresentation.setImageViewVisibility(View.GONE);
+            remoteSongPresentation.setVerse(song.getContents().get(position));
+            remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
+            remoteSongPresentation.setSlidePosition(position, song.getContents().size());
+        }
+    }
+
+    public Song getSong()
+    {
+        return song;
+    }
+
+    public void setSong(Song song)
+    {
+        this.song = song;
     }
 }

@@ -61,11 +61,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
-
     private Song song;
-    private FloatingActionButton nextFloatingButton;
-    private FloatingActionButton previousFloatingButton;
-
     private RecyclerView recyclerView;
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
@@ -105,7 +101,6 @@ public class SongContentPortraitViewFragment extends Fragment
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
-        //  preferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     }
 
 
@@ -267,14 +262,10 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private void startPresentActivity()
     {
-        //if (selectedDisplay != null) {
             Intent intent = new Intent(getActivity(), PresentSongActivity.class);
             String title = tilteList.get(Setting.getInstance().getPosition());
             intent.putExtra(CommonConstants.TITLE_KEY, title);
             getActivity().startActivity(intent);
-//        } else {
-//            Toast.makeText(getActivity(), "Your device is not connected to remote display", Toast.LENGTH_SHORT).show();
-//        }
     }
 
 

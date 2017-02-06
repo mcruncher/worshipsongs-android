@@ -1,19 +1,11 @@
 package org.worshipsongs.activity;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.media.MediaRouter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -22,8 +14,8 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.DefaultPresentationScreenService;
 import org.worshipsongs.worship.R;
 
 /**
@@ -34,16 +26,13 @@ import org.worshipsongs.worship.R;
 public class PresentSongActivity extends AppCompatActivity
 {
     private SongDao songDao;
-
-    private RemoteSongPresentation defaultRemotePresentation;
-    private PresentSongActivity.SongMediaRouterCallBack songMediaRouterCallBack = new PresentSongActivity.SongMediaRouterCallBack();
-    private MediaRouter mediaRouter;
     private Song song;
     private FloatingActionButton nextButton;
     private int currentPosition;
     private FloatingActionButton previousButton;
     private ListView listView;
     private PresentSongCardViewAdapter presentSongCardViewAdapter;
+    private DefaultPresentationScreenService defaultPresentationScreenService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -51,10 +40,12 @@ public class PresentSongActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.present_song_layout);
         initSetUp();
+        defaultPresentationScreenService = new DefaultPresentationScreenService(PresentSongActivity.this);
+        defaultPresentationScreenService.setSong(song);
         setListView(song);
         setNextButton(song);
         setPreviousButton(song);
-        mediaRouter = (MediaRouter) getSystemService(Context.MEDIA_ROUTER_SERVICE);
+        defaultPresentationScreenService.showNextVerse(song, 0);
     }
 
     private void initSetUp()
@@ -99,29 +90,22 @@ public class PresentSongActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        if (isJellyBean()) {
-            mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack);
-            updatePresentation();
-        }
+        defaultPresentationScreenService.onResume();
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        if (isJellyBean()) {
-            mediaRouter.removeCallback(songMediaRouterCallBack);
-        }
+        defaultPresentationScreenService.onPause();
+
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        if (defaultRemotePresentation != null) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
-        }
+        defaultPresentationScreenService.onStop();
     }
 
     @Override
@@ -142,93 +126,6 @@ public class PresentSongActivity extends AppCompatActivity
         return true;
     }
 
-    private final DialogInterface.OnDismissListener remoteDisplayDismissListener =
-            new DialogInterface.OnDismissListener()
-            {
-                @Override
-                public void onDismiss(DialogInterface dialog)
-                {
-                    if (dialog == defaultRemotePresentation) {
-                        defaultRemotePresentation = null;
-                    }
-
-                }
-            };
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void updatePresentation()
-    {
-        Display selectedDisplay = getSelectedDisplay();
-        if (defaultRemotePresentation != null && defaultRemotePresentation.getDisplay() != selectedDisplay) {
-            defaultRemotePresentation.dismiss();
-            defaultRemotePresentation = null;
-        }
-
-        if (defaultRemotePresentation == null && selectedDisplay != null) {
-            // Initialise a new Presentation for the Display
-            defaultRemotePresentation = new RemoteSongPresentation(PresentSongActivity.this, selectedDisplay, song, 0);
-            defaultRemotePresentation.setOnDismissListener(remoteDisplayDismissListener);
-            try {
-                defaultRemotePresentation.show();
-            } catch (WindowManager.InvalidDisplayException ex) {
-                // Couldn't show presentation - display was already removed
-                defaultRemotePresentation = null;
-            }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private Display getSelectedDisplay()
-    {
-        MediaRouter.RouteInfo selectedRoute = mediaRouter.getSelectedRoute(
-                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
-        Display selectedDisplay = null;
-        if (selectedRoute != null) {
-            selectedDisplay = selectedRoute.getPresentationDisplay();
-        }
-        return selectedDisplay;
-    }
-
-    private boolean isJellyBean()
-    {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    class SongMediaRouterCallBack extends MediaRouter.SimpleCallback
-    {
-
-        @Override
-        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-
-        }
-
-        @Override
-        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-
-        }
-
-        @Override
-        public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo info)
-        {
-            updatePresentation();
-        }
-
-    }
-
-    private void showNextVerse(int position)
-    {
-        if (defaultRemotePresentation != null) {
-            // a second screen is active and initialized, show the next color
-            defaultRemotePresentation.setContent(position);
-            defaultRemotePresentation.setSlidePosition(position);
-        }
-    }
-
     private class ListViewOnItemClickListener implements AdapterView.OnItemClickListener
     {
 
@@ -236,7 +133,7 @@ public class PresentSongActivity extends AppCompatActivity
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             currentPosition = position;
-            showNextVerse(position);
+            defaultPresentationScreenService.showNextVerse(song, position);
             presentSongCardViewAdapter.setItemSelected(currentPosition);
             presentSongCardViewAdapter.notifyDataSetChanged();
             if (position == 0) {
@@ -270,7 +167,7 @@ public class PresentSongActivity extends AppCompatActivity
                 nextButton.setVisibility(View.GONE);
             }
             if (song.getContents().size() > currentPosition) {
-                showNextVerse(currentPosition);
+                defaultPresentationScreenService.showNextVerse(song, currentPosition);
                 listView.smoothScrollToPositionFromTop(currentPosition, 2);
                 previousButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);
@@ -297,7 +194,8 @@ public class PresentSongActivity extends AppCompatActivity
             }
             if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
                 Log.i(PresentSongActivity.class.getSimpleName(), "Current position after dec: " + currentPosition);
-                showNextVerse(currentPosition);
+               // showNextVerse(currentPosition);
+                defaultPresentationScreenService.showNextVerse(song, currentPosition);
                 listView.smoothScrollToPosition(currentPosition, 2);
                 nextButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);

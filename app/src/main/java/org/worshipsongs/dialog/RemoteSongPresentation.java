@@ -3,22 +3,23 @@ package org.worshipsongs.dialog;
 import android.annotation.TargetApi;
 import android.app.Presentation;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.AuthorSongDao;
+import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.AuthorSong;
-import org.worshipsongs.domain.Setting;
-import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
-
-import java.util.List;
 
 /**
  * Author : Madasamy
@@ -32,27 +33,26 @@ public class RemoteSongPresentation extends Presentation
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
-    private Song song;
     private Context context;
-    private String verse;
-    private List<String>  contents;
-    private int position;
     private AuthorSong authorSong;
     private TextView songSlideTextView;
+    private ImageView imageView;
+    private ScrollView scrollView;
+    private TextView verseTextView;
+    private TextView songTitleTextView;
 
-//    public static RemoteSongPresentation newInstance(Context context, Song song, int position) {
-//        return new RemoteSongPresentation(context, song, position);
-//    }
-
-    public RemoteSongPresentation(Context context, Display display, Song song, int position)
+    public RemoteSongPresentation(Context context, Display display, String title)
     {
         super(context, display);
         this.context = context;
-        this.song = song;
-        this.contents = song.getContents();
-        this.verse = song.getContents().get(position);
-        this.position = position;
-        authorSong = authorSongDao.findByTitle(song.getTitle());
+        if (title.length() != 0) {
+            authorSong = authorSongDao.findByTitle(title);
+        } else {
+            authorSong = new AuthorSong();
+            Author author = new Author();
+            author.setDisplayName("");
+            authorSong.setAuthor(author);
+        }
     }
 
     @Override
@@ -60,28 +60,60 @@ public class RemoteSongPresentation extends Presentation
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_content_landscape_view_fragment);
-        setContent(position);
-        setSongTitle(song.getTitle(), song.getChord());
+        setImageView();
+        setScrollView();
+        setVerseView();
+        setSongTitleView();
         setAuthorName(authorSong.getAuthor().getDisplayName());
-        setSongSlide(position);
+        setSongSlide();
     }
 
-    public void setContent(int position)
+    private void setImageView()
     {
-        TextView textView = (TextView) findViewById(R.id.text);
-        textView.setText(contents.get(position));
-        String text = textView.getText().toString();
-        textView.setText("");
-        customTagColorService.setCustomTagTextView(context, text, textView);
-        textView.setTypeface(preferenceSettingService.getFontStyle());
-        textView.setTextSize(preferenceSettingService.getLandScapeFontSize());
-        textView.setTextColor(preferenceSettingService.getColor());
-        textView.setVerticalScrollBarEnabled(true);
+        imageView = (ImageView) findViewById(R.id.logo_image_view);
+        setImageViewVisibility(View.VISIBLE);
     }
 
-    private void setSongTitle(String title, String chord)
+    public void setImageViewVisibility(int visible)
     {
-        TextView songTitleTextView = (TextView) findViewById(R.id.song_title);
+        imageView.setVisibility(visible);
+    }
+
+    private void setScrollView()
+    {
+        scrollView = (ScrollView) findViewById(R.id.verse_land_scape_scrollview);
+        setVerseVisibility(View.GONE);
+    }
+
+    public void setVerseVisibility(int visible)
+    {
+        scrollView.setVisibility(visible);
+    }
+
+    public void setVerseView()
+    {
+        verseTextView = (TextView) findViewById(R.id.text);
+        verseTextView.setText("");
+    }
+
+    public void setVerse(String verse)
+    {
+        verseTextView.setText("");
+        customTagColorService.setCustomTagTextView(context, verse, verseTextView);
+        verseTextView.setTypeface(preferenceSettingService.getFontStyle());
+        verseTextView.setTextSize(preferenceSettingService.getLandScapeFontSize());
+        verseTextView.setTextColor(preferenceSettingService.getColor());
+        verseTextView.setVerticalScrollBarEnabled(true);
+    }
+
+    private void setSongTitleView()
+    {
+        songTitleTextView = (TextView) findViewById(R.id.song_title);
+    }
+
+    public void setSongTitleAndChord(String title, String chord)
+    {
+        songTitleTextView.setText("");
         songTitleTextView.setText(" " + title + getChord(chord));
     }
 
@@ -97,19 +129,18 @@ public class RemoteSongPresentation extends Presentation
     private void setAuthorName(String authorName)
     {
         TextView authorNameTextView = (TextView) findViewById(R.id.author_name);
-
         authorNameTextView.setText(" " + authorName);
     }
 
-    private void setSongSlide(int position)
+    private void setSongSlide()
     {
         songSlideTextView = (TextView) findViewById(R.id.song_slide);
-        setSlidePosition(position);
     }
 
-    public void setSlidePosition(int position)
+    public void setSlidePosition(int position, int size)
     {
-        songSlideTextView.setText(getSongSlideValue(position, song.getContents().size()));
+        songSlideTextView.setText("");
+        songSlideTextView.setText(getSongSlideValue(position, size));
     }
 
     private String getSongSlideValue(int currentPosition, int size)

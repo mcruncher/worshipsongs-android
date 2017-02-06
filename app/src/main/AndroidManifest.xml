@@ -63,6 +63,7 @@
         <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity">-->
         <!--</activity>-->
         <activity android:name="org.worshipsongs.activity.PresentSongActivity"
+                  android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <!--<meta-data-->
                 <!--android:name="android.support.PARENT_ACTIVITY"-->

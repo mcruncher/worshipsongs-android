@@ -64,7 +64,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void onPause()
     {
         super.onPause();
-       defaultPresentationScreenService.onPause();
+        defaultPresentationScreenService.onPause();
     }
 
     @Override
@@ -73,6 +73,4 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         super.onStop();
         defaultPresentationScreenService.onResume();
     }
-
-
 }
