@@ -2,13 +2,11 @@
 
     <PreferenceCategory
         android:title="@string/pref_text_setting"
-
         android:textColor="@color/background_floating_material_dark">
         <org.worshipsongs.preference.FontDialogPreference
             android:key="customFontSize"
             android:summary="@string/font_size_summary"
             android:title="Font" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">

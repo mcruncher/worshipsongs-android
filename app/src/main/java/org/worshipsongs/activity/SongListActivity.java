@@ -54,7 +54,7 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
             song.setTitle(songTitle);
             songs.add(song);
         }
-        adapter = adapterService.getNewSongListAdapter(songs, fragmentManager);
+        adapter = adapterService.getSongListAdapter(songs, fragmentManager);
         initializeServiceNames();
         songListView.setAdapter(adapter);
     }

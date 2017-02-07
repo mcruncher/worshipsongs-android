@@ -38,6 +38,7 @@ public class Song implements Parcelable
     private String urlKey;
     private List<String> contents;
     private String chord;
+    private String authorName;
 
     public Song()
     {
@@ -257,6 +258,16 @@ public class Song implements Parcelable
     public void setContents(List<String> contents)
     {
         this.contents = contents;
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName)
+    {
+        this.authorName = authorName;
     }
 
     @Override
