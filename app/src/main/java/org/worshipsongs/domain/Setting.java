@@ -16,8 +16,7 @@ public class Setting
 {
     private static Setting setting;
     private int position;
-   // private boolean presentSong;
-
+   
     private Setting()
     {
 
@@ -41,15 +40,6 @@ public class Setting
         this.position = position;
     }
 
-//    public boolean isPresentSong()
-//    {
-//        return presentSong;
-//    }
-//
-//    public void setPresentSong(boolean presentSong)
-//    {
-//        this.presentSong = presentSong;
-//    }
 
     @Override
     public String toString()
