@@ -53,7 +53,6 @@ public class SongContentPortraitViewFragment extends Fragment
     private ArrayList<String> tilteList;
     private int millis;
     private YouTubePlayer youTubePlayer;
-    private SongCardViewAdapter songCarViewAdapter;
     private UserPreferenceSettingService preferenceSettingService;
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private AuthorSongDao authorSongDao;
