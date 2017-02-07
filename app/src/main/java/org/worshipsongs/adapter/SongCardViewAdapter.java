@@ -1,33 +1,13 @@
 package org.worshipsongs.adapter;
 
-import android.annotation.TargetApi;
-import android.app.Presentation;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.hardware.display.DisplayManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.AuthorSongDao;
-import org.worshipsongs.dialog.DefaultRemotePresentation;
-import org.worshipsongs.dialog.RemoteSongPresentation;
-import org.worshipsongs.domain.AuthorSong;
-import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;

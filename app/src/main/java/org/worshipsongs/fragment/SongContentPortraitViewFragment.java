@@ -26,15 +26,13 @@ import com.google.android.youtube.player.YouTubePlayer;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
-import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
-import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.DefaultPresentationScreenService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
@@ -65,7 +63,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private FloatingActionButton previousButton;
     private int currentPosition;
     private FloatingActionButton presentSongFloatingButton;
-    private DefaultPresentationScreenService defaultPresentationScreenService;
+    private PresentationScreenService presentationScreenService;
 
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
@@ -225,9 +223,9 @@ public class SongContentPortraitViewFragment extends Fragment
                 if (floatingActionMenu.isExpanded()) {
                     floatingActionMenu.collapse();
                 }
-                if (defaultPresentationScreenService.getPresentation() != null) {
+                if (presentationScreenService.getPresentation() != null) {
                     currentPosition = 0;
-                    getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                    getPresentationScreenService().showNextVerse(song, currentPosition);
                     presentSongCardViewAdapter.setItemSelected(0);
                     presentSongCardViewAdapter.notifyDataSetChanged();
                     floatingActionMenu.setVisibility(View.GONE);
@@ -248,9 +246,9 @@ public class SongContentPortraitViewFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (defaultPresentationScreenService.getPresentation() != null) {
+                if (presentationScreenService.getPresentation() != null) {
                     currentPosition = 0;
-                    getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                    getPresentationScreenService().showNextVerse(song, currentPosition);
                     presentSongFloatingButton.setVisibility(View.GONE);
                     presentSongCardViewAdapter.setItemSelected(0);
                     presentSongCardViewAdapter.notifyDataSetChanged();
@@ -290,7 +288,7 @@ public class SongContentPortraitViewFragment extends Fragment
                 nextButton.setVisibility(View.GONE);
             }
             if (song.getContents().size() > currentPosition) {
-                getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                getPresentationScreenService().showNextVerse(song, currentPosition);
                 listView.smoothScrollToPositionFromTop(currentPosition, 2);
                 previousButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);
@@ -310,7 +308,7 @@ public class SongContentPortraitViewFragment extends Fragment
                 currentPosition = currentPosition - 1;
             }
             if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
-                getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                getPresentationScreenService().showNextVerse(song, currentPosition);
                 listView.smoothScrollToPosition(currentPosition, 2);
                 nextButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);
@@ -348,8 +346,8 @@ public class SongContentPortraitViewFragment extends Fragment
         private void setOnItemClickListener(int position)
         {
             currentPosition = position;
-            // defaultPresentationScreenService.showNextVerse(song, position);
-            getDefaultPresentationScreenService().showNextVerse(song, position);
+            // presentationScreenService.showNextVerse(song, position);
+            getPresentationScreenService().showNextVerse(song, position);
             presentSongCardViewAdapter.setItemSelected(currentPosition);
             presentSongCardViewAdapter.notifyDataSetChanged();
             if (presentSongFloatingButton != null) {
@@ -439,14 +437,14 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
-    public DefaultPresentationScreenService getDefaultPresentationScreenService()
+    public PresentationScreenService getPresentationScreenService()
     {
-        return defaultPresentationScreenService;
+        return presentationScreenService;
     }
 
-    public void setDefaultPresentationScreenService(DefaultPresentationScreenService defaultPresentationScreenService)
+    public void setPresentationScreenService(PresentationScreenService presentationScreenService)
     {
-        this.defaultPresentationScreenService = defaultPresentationScreenService;
+        this.presentationScreenService = presentationScreenService;
     }
 
 }

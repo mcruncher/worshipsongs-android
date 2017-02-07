@@ -1,19 +1,14 @@
 package org.worshipsongs.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
-import org.worshipsongs.CommonConstants;
-import org.worshipsongs.domain.Setting;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
-import org.worshipsongs.service.DefaultPresentationScreenService;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.service.PresentationScreenService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * author : Madasamy
@@ -21,15 +16,15 @@ import java.util.List;
  */
 public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdapter
 {
-    private  DefaultPresentationScreenService defaultPresentationScreenService;
+    private PresentationScreenService presentationScreenService;
     private ArrayList<String> titles;
     private FragmentManager fragmentManager;
 
-    public SongContentPortraitViewerPageAdapter(FragmentManager fragmentManager, ArrayList<String> titles, DefaultPresentationScreenService defaultPresentationScreenService)
+    public SongContentPortraitViewerPageAdapter(FragmentManager fragmentManager, ArrayList<String> titles, PresentationScreenService presentationScreenService)
     {
         super(fragmentManager);
         this.fragmentManager = fragmentManager;
-        this.defaultPresentationScreenService = defaultPresentationScreenService;
+        this.presentationScreenService = presentationScreenService;
         this.titles = titles;
     }
 
@@ -39,7 +34,7 @@ public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdap
         Log.i(this.getClass().getSimpleName(), "No of songs" + titles.size());
         String title = titles.get(position);
         SongContentPortraitViewFragment songContentPortraitViewFragment =  SongContentPortraitViewFragment.newInstance(title, titles);
-        songContentPortraitViewFragment.setDefaultPresentationScreenService(defaultPresentationScreenService);
+        songContentPortraitViewFragment.setPresentationScreenService(presentationScreenService);
         return songContentPortraitViewFragment;
     }
 

@@ -3,7 +3,6 @@ package org.worshipsongs.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +14,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.DefaultPresentationScreenService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
 
 /**
@@ -32,7 +31,7 @@ public class PresentSongActivity extends AppCompatActivity
     private FloatingActionButton previousButton;
     private ListView listView;
     private PresentSongCardViewAdapter presentSongCardViewAdapter;
-    private DefaultPresentationScreenService defaultPresentationScreenService;
+    private PresentationScreenService presentationScreenService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -40,12 +39,12 @@ public class PresentSongActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.present_song_layout);
         initSetUp();
-        defaultPresentationScreenService = new DefaultPresentationScreenService(PresentSongActivity.this);
-        defaultPresentationScreenService.setSong(song);
+        presentationScreenService = new PresentationScreenService(PresentSongActivity.this);
+        presentationScreenService.setSong(song);
         setListView(song);
         setNextButton(song);
         setPreviousButton(song);
-        defaultPresentationScreenService.showNextVerse(song, 0);
+        presentationScreenService.showNextVerse(song, 0);
     }
 
     private void initSetUp()
@@ -90,14 +89,14 @@ public class PresentSongActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        defaultPresentationScreenService.onResume();
+        presentationScreenService.onResume();
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        defaultPresentationScreenService.onPause();
+        presentationScreenService.onPause();
 
     }
 
@@ -105,7 +104,7 @@ public class PresentSongActivity extends AppCompatActivity
     public void onStop()
     {
         super.onStop();
-        defaultPresentationScreenService.onStop();
+        presentationScreenService.onStop();
     }
 
     @Override
@@ -133,7 +132,7 @@ public class PresentSongActivity extends AppCompatActivity
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             currentPosition = position;
-            defaultPresentationScreenService.showNextVerse(song, position);
+            presentationScreenService.showNextVerse(song, position);
             presentSongCardViewAdapter.setItemSelected(currentPosition);
             presentSongCardViewAdapter.notifyDataSetChanged();
             if (position == 0) {
@@ -166,7 +165,7 @@ public class PresentSongActivity extends AppCompatActivity
                 nextButton.setVisibility(View.GONE);
             }
             if (song.getContents().size() > currentPosition) {
-                defaultPresentationScreenService.showNextVerse(song, currentPosition);
+                presentationScreenService.showNextVerse(song, currentPosition);
                 listView.smoothScrollToPositionFromTop(currentPosition, 2);
                 previousButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);
@@ -192,7 +191,7 @@ public class PresentSongActivity extends AppCompatActivity
                 currentPosition = currentPosition - 1;
             }
             if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
-                defaultPresentationScreenService.showNextVerse(song, currentPosition);
+                presentationScreenService.showNextVerse(song, currentPosition);
                 listView.smoothScrollToPosition(currentPosition, 2);
                 nextButton.setVisibility(View.VISIBLE);
                 presentSongCardViewAdapter.setItemSelected(currentPosition);

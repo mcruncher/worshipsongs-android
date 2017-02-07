@@ -19,7 +19,7 @@ import android.widget.ListView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.ServiceSongAdapter;
-import org.worshipsongs.service.DefaultPresentationScreenService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -36,7 +36,7 @@ public class ServiceSongListActivity extends AppCompatActivity
     private ArrayAdapter<String> adapter;
     private String serviceName;
     private ListView songListView;
-    private DefaultPresentationScreenService defaultPresentationScreenService;
+    private PresentationScreenService presentationScreenService;
 
 
     @Override
@@ -44,7 +44,7 @@ public class ServiceSongListActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
-        defaultPresentationScreenService = new DefaultPresentationScreenService(ServiceSongListActivity.this);
+        presentationScreenService = new PresentationScreenService(ServiceSongListActivity.this);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
         setActionBar();
@@ -126,20 +126,20 @@ public class ServiceSongListActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        defaultPresentationScreenService.onResume();
+        presentationScreenService.onResume();
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-        defaultPresentationScreenService.onStop();
+        presentationScreenService.onStop();
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-        defaultPresentationScreenService.onPause();
+        presentationScreenService.onPause();
     }
 }

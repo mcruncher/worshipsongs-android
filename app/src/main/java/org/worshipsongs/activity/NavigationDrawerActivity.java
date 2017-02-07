@@ -1,21 +1,12 @@
 package org.worshipsongs.activity;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaRouter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.view.Display;
-import android.view.WindowManager;
 
-import org.worshipsongs.dialog.DefaultRemotePresentation;
 import org.worshipsongs.fragment.HomeTabFragment;
-import org.worshipsongs.fragment.SongContentPortraitViewFragment;
-import org.worshipsongs.service.DefaultPresentationScreenService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -27,12 +18,12 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
 
-    DefaultPresentationScreenService defaultPresentationScreenService;
+    PresentationScreenService presentationScreenService;
 
     @Override
     public void init(Bundle bundle)
     {
-        defaultPresentationScreenService = new DefaultPresentationScreenService(this);
+        presentationScreenService = new PresentationScreenService(this);
         this.addSubheader("");
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
@@ -57,20 +48,20 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void onResume()
     {
         super.onResume();
-        defaultPresentationScreenService.onResume();
+        presentationScreenService.onResume();
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        defaultPresentationScreenService.onPause();
+        presentationScreenService.onPause();
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        defaultPresentationScreenService.onResume();
+        presentationScreenService.onResume();
     }
 }
