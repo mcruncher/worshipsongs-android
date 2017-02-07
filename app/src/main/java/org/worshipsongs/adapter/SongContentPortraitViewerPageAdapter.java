@@ -9,6 +9,7 @@ import android.util.Log;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
+import org.worshipsongs.service.DefaultPresentationScreenService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -20,13 +21,15 @@ import java.util.List;
  */
 public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdapter
 {
+    private  DefaultPresentationScreenService defaultPresentationScreenService;
     private ArrayList<String> titles;
     private FragmentManager fragmentManager;
 
-    public SongContentPortraitViewerPageAdapter(FragmentManager fragmentManager, ArrayList<String> titles)
+    public SongContentPortraitViewerPageAdapter(FragmentManager fragmentManager, ArrayList<String> titles, DefaultPresentationScreenService defaultPresentationScreenService)
     {
         super(fragmentManager);
         this.fragmentManager = fragmentManager;
+        this.defaultPresentationScreenService = defaultPresentationScreenService;
         this.titles = titles;
     }
 
@@ -36,6 +39,7 @@ public class SongContentPortraitViewerPageAdapter extends FragmentStatePagerAdap
         Log.i(this.getClass().getSimpleName(), "No of songs" + titles.size());
         String title = titles.get(position);
         SongContentPortraitViewFragment songContentPortraitViewFragment =  SongContentPortraitViewFragment.newInstance(title, titles);
+        songContentPortraitViewFragment.setDefaultPresentationScreenService(defaultPresentationScreenService);
         return songContentPortraitViewFragment;
     }
 

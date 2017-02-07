@@ -1,25 +1,21 @@
 package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaRouter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,18 +27,19 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
+import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.adapter.SongCardViewAdapter;
+import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.dialog.DefaultRemotePresentation;
-import org.worshipsongs.dialog.RemoteSongPresentation;
+import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.DefaultPresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Author: Madasamy
@@ -59,10 +56,18 @@ public class SongContentPortraitViewFragment extends Fragment
     private SongCardViewAdapter songCarViewAdapter;
     private UserPreferenceSettingService preferenceSettingService;
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private AuthorSongDao authorSongDao;
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
-    private RecyclerView recyclerView;
+    private ListView listView;
+    private PresentSongCardViewAdapter presentSongCardViewAdapter;
+    private FloatingActionButton nextButton;
+    private FloatingActionButton previousButton;
+    private int currentPosition;
+    private FloatingActionButton presentSongFloatingButton;
+    private DefaultPresentationScreenService defaultPresentationScreenService;
+
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
     {
@@ -78,22 +83,21 @@ public class SongContentPortraitViewFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
-        showStatusBar();
         initSetUp();
-        song = songDao.findContentsByTitle(title);
-        //setYouTubeView(view);
         setBackImageView(view);
         setTitleTextView(view);
         setOptionsImageView(view);
-        setRecyclerView(view, song);
-        //setPlaySongFloatingMenuButton(view, song.getUrlKey());
+        setListView(view, song);
         setFloatingActionMenu(view, song);
+        setNextButton(view);
+        setPreviousButton(view);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
         return view;
     }
 
     private void initSetUp()
     {
+        showStatusBar();
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
@@ -101,40 +105,21 @@ public class SongContentPortraitViewFragment extends Fragment
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
-    }
-
-
-    private void setRecyclerView(View view, Song song)
-    {
-        recyclerView = (RecyclerView) view.findViewById(R.id.content_recycle_view);
-        recyclerView.setHasFixedSize(true);
+        song = songDao.findContentsByTitle(title);
+        authorSongDao = new AuthorSongDao(getContext());
+        AuthorSong authorSong = authorSongDao.findByTitle(song.getTitle());
+        song.setAuthorName(authorSong.getAuthor().getDisplayName());
         preferenceSettingService = new UserPreferenceSettingService();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        songCarViewAdapter = new SongCardViewAdapter(song, this.getActivity());
-        songCarViewAdapter.notifyDataSetChanged();
-        recyclerView.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if(floatingActionMenu.isExpanded()) {
-                    floatingActionMenu.collapse();
-                    int color = 0x00000000;
-                    setRecycleViewForegroundColor(color);
-                }
-                return false;
-            }
-        });
-        recyclerView.setAdapter(songCarViewAdapter);
     }
 
-    private void setTitleTextView(View view)
+    private void showStatusBar()
     {
-        TextView textView = (TextView) view.findViewById(R.id.song_title);
-        textView.setText(title);
+        if (Build.VERSION.SDK_INT < 16) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            View decorView = getActivity().getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
     }
 
     private void setBackImageView(View view)
@@ -150,6 +135,12 @@ public class SongContentPortraitViewFragment extends Fragment
         });
     }
 
+    private void setTitleTextView(View view)
+    {
+        TextView textView = (TextView) view.findViewById(R.id.song_title);
+        textView.setText(title);
+    }
+
     private void setOptionsImageView(View view)
     {
         ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
@@ -157,16 +148,12 @@ public class SongContentPortraitViewFragment extends Fragment
     }
 
 
-    private void showStatusBar()
+    private void setListView(View view, Song song)
     {
-        if (Build.VERSION.SDK_INT < 16) {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            View decorView = getActivity().getWindow().getDecorView();
-            // Hide the status bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
+        listView = (ListView) view.findViewById(R.id.content_list);
+        presentSongCardViewAdapter = new PresentSongCardViewAdapter(getActivity(), song.getContents());
+        listView.setAdapter(presentSongCardViewAdapter);
+        listView.setOnItemClickListener(new ListViewOnItemClickListener());
     }
 
     private void setFloatingActionMenu(final View view, Song song)
@@ -180,14 +167,14 @@ public class SongContentPortraitViewFragment extends Fragment
                 public void onMenuExpanded()
                 {
                     int color = R.color.gray_transparent;
-                    setRecycleViewForegroundColor(ContextCompat.getColor(getActivity(), color));
+                    setListViewForegroundColor(ContextCompat.getColor(getActivity(), color));
                 }
 
                 @Override
                 public void onMenuCollapsed()
                 {
                     int color = 0x00000000;
-                    setRecycleViewForegroundColor(color);
+                    setListViewForegroundColor(color);
                 }
             });
             setPlaySongFloatingMenuButton(view, song.getUrlKey());
@@ -196,17 +183,7 @@ public class SongContentPortraitViewFragment extends Fragment
             floatingActionMenu.setVisibility(View.GONE);
             setPresentSongFloatingButton(view);
         }
-
     }
-
-    private void setRecycleViewForegroundColor(int color)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            recyclerView.setForeground(new ColorDrawable(color));
-        }
-    }
-
 
     private void setPlaySongFloatingMenuButton(View view, final String urrlKey)
     {
@@ -227,6 +204,15 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
+    private void showYouTube(String urlKey)
+    {
+        Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
+        Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
+        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
+        youTubeIntent.putExtra("title", title);
+        getActivity().startActivity(youTubeIntent);
+    }
+
     private void setPresentSongFloatingMenuButton(View view)
     {
         final FloatingActionButton presentSongFloatingMenuButton = (FloatingActionButton) view.findViewById(R.id.present_song_floating_menu_button);
@@ -237,53 +223,165 @@ public class SongContentPortraitViewFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                startPresentActivity();
                 if (floatingActionMenu.isExpanded()) {
                     floatingActionMenu.collapse();
                 }
-
+                if (defaultPresentationScreenService.getPresentation() != null) {
+                    currentPosition = 0;
+                    getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                    presentSongCardViewAdapter.setItemSelected(0);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
+                    floatingActionMenu.setVisibility(View.GONE);
+                    nextButton.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getActivity(), "Your device is not connected to any remote display", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void setPresentSongFloatingButton(View view)
     {
-        final FloatingActionButton presentSongFloatingButton = (FloatingActionButton) view.findViewById(R.id.present_song_floating_button);
+        presentSongFloatingButton = (FloatingActionButton) view.findViewById(R.id.present_song_floating_button);
         presentSongFloatingButton.setVisibility(View.VISIBLE);
         presentSongFloatingButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                startPresentActivity();
+                if (defaultPresentationScreenService.getPresentation() != null) {
+                    currentPosition = 0;
+                    getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                    presentSongFloatingButton.setVisibility(View.GONE);
+                    presentSongCardViewAdapter.setItemSelected(0);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
+                    nextButton.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getActivity(), "Your device is not connected to any remote display", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private void startPresentActivity()
+    private void setNextButton(View view)
     {
-            Intent intent = new Intent(getActivity(), PresentSongActivity.class);
-            String title = tilteList.get(Setting.getInstance().getPosition());
-            intent.putExtra(CommonConstants.TITLE_KEY, title);
-            getActivity().startActivity(intent);
+        nextButton = (FloatingActionButton) view.findViewById(R.id.next_verse_floating_button);
+        nextButton.setVisibility(View.GONE);
+        nextButton.setOnClickListener(new NextButtonOnClickListener());
     }
 
+    private void setPreviousButton(View view)
+    {
+        previousButton = (FloatingActionButton) view.findViewById(R.id.previous_verse_floating_button);
+        previousButton.setVisibility(View.GONE);
+        previousButton.setOnClickListener(new PreviousButtonOnClickListener());
+    }
+
+    private class NextButtonOnClickListener implements View.OnClickListener
+    {
+
+        @Override
+        public void onClick(View v)
+        {
+            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Current position before " + currentPosition);
+            currentPosition = currentPosition + 1;
+            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Current position after " + currentPosition);
+            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Song content size " + song.getContents().size());
+            if ((song.getContents().size() - 1) == currentPosition) {
+                nextButton.setVisibility(View.GONE);
+            }
+            if (song.getContents().size() > currentPosition) {
+                getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                listView.smoothScrollToPositionFromTop(currentPosition, 2);
+                previousButton.setVisibility(View.VISIBLE);
+                presentSongCardViewAdapter.setItemSelected(currentPosition);
+                presentSongCardViewAdapter.notifyDataSetChanged();
+
+            }
+        }
+    }
+
+    private class PreviousButtonOnClickListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            currentPosition = currentPosition - 1;
+            if (currentPosition == song.getContents().size()) {
+                currentPosition = currentPosition - 1;
+            }
+            if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
+                getDefaultPresentationScreenService().showNextVerse(song, currentPosition);
+                listView.smoothScrollToPosition(currentPosition, 2);
+                nextButton.setVisibility(View.VISIBLE);
+                presentSongCardViewAdapter.setItemSelected(currentPosition);
+                presentSongCardViewAdapter.notifyDataSetChanged();
+            }
+            if (currentPosition == 0) {
+                previousButton.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private class ListViewOnItemClickListener implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (isPlayVideo(song.getUrlKey())) {
+                if (floatingActionMenu != null && floatingActionMenu.getVisibility() == View.GONE) {
+                    setOnItemClickListener(position);
+                }
+            } else {
+                if (presentSongFloatingButton != null && presentSongFloatingButton.getVisibility() == View.GONE) {
+                    setOnItemClickListener(position);
+                }
+            }
+            if (floatingActionMenu != null && floatingActionMenu.isExpanded()) {
+
+                floatingActionMenu.collapse();
+                int color = 0x00000000;
+                setListViewForegroundColor(color);
+
+            }
+        }
+
+        private void setOnItemClickListener(int position)
+        {
+            currentPosition = position;
+            // defaultPresentationScreenService.showNextVerse(song, position);
+            getDefaultPresentationScreenService().showNextVerse(song, position);
+            presentSongCardViewAdapter.setItemSelected(currentPosition);
+            presentSongCardViewAdapter.notifyDataSetChanged();
+            if (presentSongFloatingButton != null) {
+                presentSongFloatingButton.setVisibility(View.GONE);
+            }
+
+            if (position == 0) {
+                previousButton.setVisibility(View.GONE);
+                nextButton.setVisibility(View.VISIBLE);
+            } else if (song.getContents().size() == (position + 1)) {
+                nextButton.setVisibility(View.GONE);
+                previousButton.setVisibility(View.VISIBLE);
+            } else {
+                nextButton.setVisibility(View.VISIBLE);
+                previousButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void setListViewForegroundColor(int color)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            listView.setForeground(new ColorDrawable(color));
+        }
+    }
 
     private boolean isPlayVideo(String urrlKey)
     {
         boolean playVideoStatus = preferenceSettingService.getPlayVideoStatus();
         return urrlKey != null && urrlKey.length() > 0 && playVideoStatus;
     }
-
-    private void showYouTube(String urlKey)
-    {
-        Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
-        Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
-        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
-        youTubeIntent.putExtra("title", title);
-        getActivity().startActivity(youTubeIntent);
-    }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState)
@@ -308,13 +406,48 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private class OptionsImageClickListener implements View.OnClickListener
     {
-
         @Override
         public void onClick(View view)
         {
             songListAdapterService = new SongListAdapterService();
             songListAdapterService.showPopupmenu(view, title, getFragmentManager(), false);
         }
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (nextButton != null) {
+            nextButton.setVisibility(View.GONE);
+        }
+        if (previousButton != null) {
+            previousButton.setVisibility(View.GONE);
+        }
+        if (song != null && isPlayVideo(song.getUrlKey()) && floatingActionMenu != null) {
+            floatingActionMenu.setVisibility(View.VISIBLE);
+        } else if (presentSongFloatingButton != null) {
+            presentSongFloatingButton.setVisibility(View.VISIBLE);
+        }
+        if (presentSongCardViewAdapter != null) {
+            presentSongCardViewAdapter.setItemSelected(-1);
+            presentSongCardViewAdapter.notifyDataSetChanged();
+        }
+        if (listView != null) {
+            listView.smoothScrollToPosition(0);
+        }
+    }
+
+    public DefaultPresentationScreenService getDefaultPresentationScreenService()
+    {
+        return defaultPresentationScreenService;
+    }
+
+    public void setDefaultPresentationScreenService(DefaultPresentationScreenService defaultPresentationScreenService)
+    {
+        this.defaultPresentationScreenService = defaultPresentationScreenService;
     }
 
 }

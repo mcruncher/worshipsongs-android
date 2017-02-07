@@ -1,6 +1,7 @@
 package org.worshipsongs.service;
 
 import android.annotation.TargetApi;
+import android.app.Presentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaRouter;
@@ -15,7 +16,7 @@ import org.worshipsongs.domain.Song;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 2.x
  */
 
 public class DefaultPresentationScreenService
@@ -148,6 +149,7 @@ public class DefaultPresentationScreenService
             remoteSongPresentation.setImageViewVisibility(View.GONE);
             remoteSongPresentation.setVerse(song.getContents().get(position));
             remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
+            remoteSongPresentation.setAuthorName(song.getAuthorName());
             remoteSongPresentation.setSlidePosition(position, song.getContents().size());
         }
     }
@@ -155,6 +157,10 @@ public class DefaultPresentationScreenService
     public Song getSong()
     {
         return song;
+    }
+
+    public RemoteSongPresentation getPresentation(){
+        return remoteSongPresentation;
     }
 
     public void setSong(Song song)

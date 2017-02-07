@@ -133,6 +133,8 @@ public class SongListAdapterService
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
+        MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
+        presentSongMenuItem.setVisible(hidePlay);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)

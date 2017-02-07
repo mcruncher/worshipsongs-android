@@ -40,6 +40,7 @@ public class RemoteSongPresentation extends Presentation
     private ScrollView scrollView;
     private TextView verseTextView;
     private TextView songTitleTextView;
+    private TextView authorNameTextView;
 
     public RemoteSongPresentation(Context context, Display display, String title)
     {
@@ -64,7 +65,7 @@ public class RemoteSongPresentation extends Presentation
         setScrollView();
         setVerseView();
         setSongTitleView();
-        setAuthorName(authorSong.getAuthor().getDisplayName());
+        setAuthorNameView(authorSong.getAuthor().getDisplayName());
         setSongSlide();
     }
 
@@ -126,9 +127,15 @@ public class RemoteSongPresentation extends Presentation
         return "";
     }
 
-    private void setAuthorName(String authorName)
+    private void setAuthorNameView(String authorName)
     {
-        TextView authorNameTextView = (TextView) findViewById(R.id.author_name);
+        authorNameTextView = (TextView) findViewById(R.id.author_name);
+        setAuthorName("");
+    }
+
+    public void setAuthorName(String authorName)
+    {
+        authorNameTextView.setText("");
         authorNameTextView.setText(" " + authorName);
     }
 
