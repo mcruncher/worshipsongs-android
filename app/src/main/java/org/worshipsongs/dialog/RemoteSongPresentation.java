@@ -23,7 +23,7 @@ import org.worshipsongs.worship.R;
 
 /**
  * Author : Madasamy
- * Version : 2.
+ * Version : 3.x
  */
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
