@@ -20,7 +20,7 @@ import org.worshipsongs.worship.R;
 
 /**
  * Author : Madasamy
- * Version : 2.x
+ * Version : 3.x
  */
 
 public class PresentSongActivity extends AppCompatActivity
@@ -151,7 +151,6 @@ public class PresentSongActivity extends AppCompatActivity
 
     private class NextButtonOnClickListener implements View.OnClickListener
     {
-
         private Song song;
 
         NextButtonOnClickListener(Song song)
@@ -193,8 +192,6 @@ public class PresentSongActivity extends AppCompatActivity
                 currentPosition = currentPosition - 1;
             }
             if (currentPosition <= song.getContents().size() && currentPosition >= 0) {
-                Log.i(PresentSongActivity.class.getSimpleName(), "Current position after dec: " + currentPosition);
-               // showNextVerse(currentPosition);
                 defaultPresentationScreenService.showNextVerse(song, currentPosition);
                 listView.smoothScrollToPosition(currentPosition, 2);
                 nextButton.setVisibility(View.VISIBLE);
