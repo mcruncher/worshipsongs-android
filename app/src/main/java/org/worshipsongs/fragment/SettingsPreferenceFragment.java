@@ -41,86 +41,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.settings);
         colorPickerSettings("primaryColor");
         colorPickerSettings("secondaryColor");
-       // setRemoteDisplayPreference();
         resetPreferenceSettings("resetDialog");
     }
-
-//    private void setRemoteDisplayPreference()
-//    {
-//        final Preference presentSongPreference = (Preference) findPreference("prefPresentSong");
-//        presentSongPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-//        {
-//            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-//            public boolean onPreferenceClick(Preference preference)
-//            {
-//                //open browser or intent here
-//                SwitchPreference switchPreference = (SwitchPreference) preference;
-//                if (switchPreference.isChecked()) {
-//                    Display display = getDisplay();
-//                    if (display != null) {
-//                        Setting.getInstance().setDisplay(display);
-//                        showPresentation();
-//                        Toast.makeText(WorshipSongApplication.getContext(), "Tap song content to present a song in " + display.getName() + " display", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Setting.getInstance().setDisplay(null);
-//                        preference.getEditor().putBoolean("prefPresentSong", false);
-//                        preference.getEditor().apply();
-//                        switchPreference.setChecked(false);
-//                        Toast.makeText(WorshipSongApplication.getContext(), "Remote display not connected to this device", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    if (Setting.getInstance().getDisplay() != null) {
-//                        hidePresentation(Setting.getInstance().getDisplay());
-//                    }
-//                }
-//                return true;
-//            }
-//        });
-//    }
-//
-//    private Display getDisplay()
-//    {
-//        Log.i(SongCardViewAdapter.class.getSimpleName(), "Is jelly bean " + isJellyBean());
-//        if (isJellyBean()) {
-//            DisplayManager displayManager = (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
-//            Display[] displays = displayManager.getDisplays();
-//            Log.i(SongCardViewAdapter.class.getSimpleName(), "No of displays" + displays.length);
-//            for (Display display : displays) {
-//                Log.i(SongCardViewAdapter.class.getSimpleName(), "Display name " + display.getName());
-//                if (!display.getName().contains("Built-in Screen")) {
-//                    return display;
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
-    private boolean isJellyBean()
-    {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
-
-//    public void showPresentation()
-//    {
-//        if (isJellyBean()) {
-//            RemotePresentation presentation = new RemotePresentation(Setting.getInstance().getDisplay());
-//            activePresentations.put(Setting.getInstance().getDisplay().getDisplayId(), presentation);
-//            presentation.show();
-//        }
-//    }
-//
-//    public void hidePresentation(Display display)
-//    {
-//        if (isJellyBean()) {
-//            final int displayId = display.getDisplayId();
-//            RemotePresentation presentation = activePresentations.get(displayId);
-//            if (presentation == null) {
-//                return;
-//            }
-//            presentation.dismiss();
-//            activePresentations.delete(displayId);
-//        }
-//    }
 
     public void colorPickerSettings(String colorPickerKey)
     {
