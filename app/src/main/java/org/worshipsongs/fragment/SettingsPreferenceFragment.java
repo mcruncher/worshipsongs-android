@@ -32,7 +32,6 @@ import org.worshipsongs.worship.R;
 public class SettingsPreferenceFragment extends PreferenceFragment
 {
     private UserSettingActivity userSettingActivity = new UserSettingActivity();
-    private final SparseArray<SettingsPreferenceFragment.RemotePresentation> activePresentations = new SparseArray<SettingsPreferenceFragment.RemotePresentation>();
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
@@ -88,23 +87,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private final class RemotePresentation extends Presentation
-    {
 
-        RemotePresentation(Display display)
-        {
-            super(getActivity(), display);
-
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState)
-        {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.splash_screen);
-
-        }
-    }
 
 }

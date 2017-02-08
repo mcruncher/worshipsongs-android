@@ -49,6 +49,7 @@ import java.util.List;
  */
 
 //TODO: Remove duplicate code
+@Deprecated
 public class ServiceSongAdapter extends ArrayAdapter<String>
 {
 
