@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.WindowManager;
 
 import org.worshipsongs.dialog.RemoteSongPresentation;
+import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+
+import java.util.Set;
 
 /**
  * Author : Madasamy
@@ -24,7 +27,6 @@ public class PresentationScreenService
     private RemoteSongPresentation remoteSongPresentation;
     private PresentationScreenService.DefaultMediaRouterCallBack songMediaRouterCallBack = new PresentationScreenService.DefaultMediaRouterCallBack();
     private MediaRouter mediaRouter;
-    private Song song;
 
 
     public PresentationScreenService(Context context)
@@ -107,18 +109,19 @@ public class PresentationScreenService
         }
 
         if (remoteSongPresentation == null && selectedDisplay != null) {
-            // Initialise a new Presentation for the Display
-            Log.i(this.getClass().getSimpleName(), "Initialize song presentation");
-            remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay, "");
+            remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay);
             remoteSongPresentation.setOnDismissListener(remoteDisplayDismissListener);
             try {
                 remoteSongPresentation.show();
-                if(song != null) {
-                    showNextVerse(song, 0);
-                }
+
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
                 remoteSongPresentation = null;
+            }
+        }
+        if(remoteSongPresentation!= null && selectedDisplay != null){
+            if(Setting.getInstance().getSong() != null) {
+                showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
             }
         }
     }
@@ -150,20 +153,13 @@ public class PresentationScreenService
             remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
             remoteSongPresentation.setAuthorName(song.getAuthorName());
             remoteSongPresentation.setSlidePosition(position, song.getContents().size());
+            Setting.getInstance().setSong(song);
+            Setting.getInstance().setSlidePosition(position);
         }
-    }
-
-    public Song getSong()
-    {
-        return song;
     }
 
     public RemoteSongPresentation getPresentation(){
         return remoteSongPresentation;
     }
 
-    public void setSong(Song song)
-    {
-        this.song = song;
-    }
 }
