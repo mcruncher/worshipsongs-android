@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CommonService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
 
@@ -30,14 +31,15 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     private List<String> songNames = new ArrayList<String>();
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-    private FragmentManager fragmentManager;
     private CommonService commonService = new CommonService();
+    private PresentationScreenService presentationScreenService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
+        presentationScreenService = new PresentationScreenService(this);
         Intent intent = getIntent();
         songNames = intent.getStringArrayListExtra("songNames");
         songListView = (ListView) findViewById(R.id.song_list_view);
@@ -47,15 +49,14 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
-        fragmentManager = getSupportFragmentManager();
+
         List<Song> songs = new ArrayList<>();
         for (String songTitle : songNames) {
             Song song = new Song();
             song.setTitle(songTitle);
             songs.add(song);
         }
-        adapter = adapterService.getSongListAdapter(songs, fragmentManager);
-        initializeServiceNames();
+        adapter = adapterService.getSongListAdapter(songs, getSupportFragmentManager());
         songListView.setAdapter(adapter);
     }
 
@@ -118,13 +119,29 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public void onRefresh()
     {
-        initializeServiceNames();
+
     }
 
-    private void initializeServiceNames()
+    @Override
+    protected void onPause()
     {
-        List<String> serviceNames = new ArrayList<String>();
-        serviceNames.addAll(commonService.readServiceName());
-        // adapterService.setServiceNames(serviceNames);
+        super.onPause();
+        presentationScreenService.onPause();
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        presentationScreenService.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        presentationScreenService.onStop();
+    }
+
+
 }
