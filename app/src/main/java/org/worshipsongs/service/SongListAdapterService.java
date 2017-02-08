@@ -37,6 +37,7 @@ import java.util.List;
  * author: Madasamy,Seenivasan
  * version: 1.0.0
  */
+@Deprecated
 public class SongListAdapterService
 {
 
@@ -134,7 +135,7 @@ public class SongListAdapterService
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
         MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
-        presentSongMenuItem.setVisible(hidePlay);
+        presentSongMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)

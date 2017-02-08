@@ -2,6 +2,7 @@ package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -79,7 +80,7 @@ public class SongContentPortraitViewFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        final View view = (View) inflater.inflate(R.layout.song_content_portrait_view, container, false);
+        final View view = inflater.inflate(R.layout.song_content_portrait_view, container, false);
         initSetUp();
         setBackImageView(view);
         setTitleTextView(view);
@@ -156,7 +157,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private void setFloatingActionMenu(final View view, Song song)
     {
         floatingActionMenu = (FloatingActionsMenu) view.findViewById(R.id.floating_action_menu);
-        if (isPlayVideo(song.getUrlKey())) {
+        if (isPlayVideo(song.getUrlKey()) && isPresentSong()) {
             floatingActionMenu.setVisibility(View.VISIBLE);
             floatingActionMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener()
             {
@@ -178,7 +179,12 @@ public class SongContentPortraitViewFragment extends Fragment
             setPresentSongFloatingMenuButton(view);
         } else {
             floatingActionMenu.setVisibility(View.GONE);
-            setPresentSongFloatingButton(view);
+            if (isPresentSong()) {
+                setPresentSongFloatingButton(view);
+            }
+            if (isPlayVideo(song.getUrlKey())) {
+                setPlaySongFloatingButton(view, song.getUrlKey());
+            }
         }
     }
 
@@ -201,14 +207,6 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
-    private void showYouTube(String urlKey)
-    {
-        Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
-        Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
-        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
-        youTubeIntent.putExtra("title", title);
-        getActivity().startActivity(youTubeIntent);
-    }
 
     private void setPresentSongFloatingMenuButton(View view)
     {
@@ -230,6 +228,7 @@ public class SongContentPortraitViewFragment extends Fragment
                     presentSongCardViewAdapter.notifyDataSetChanged();
                     floatingActionMenu.setVisibility(View.GONE);
                     nextButton.setVisibility(View.VISIBLE);
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else {
                     Toast.makeText(getActivity(), "Your device is not connected to any remote display", Toast.LENGTH_SHORT).show();
                 }
@@ -253,12 +252,37 @@ public class SongContentPortraitViewFragment extends Fragment
                     presentSongCardViewAdapter.setItemSelected(0);
                     presentSongCardViewAdapter.notifyDataSetChanged();
                     nextButton.setVisibility(View.VISIBLE);
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else {
                     Toast.makeText(getActivity(), "Your device is not connected to any remote display", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private void setPlaySongFloatingButton(View view, final String urlKey)
+    {
+        FloatingActionButton playSongFloatingButton = (FloatingActionButton)view.findViewById(R.id.play_song_floating_button);
+        playSongFloatingButton.setVisibility(View.VISIBLE);
+        playSongFloatingButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                showYouTube(urlKey);
+            }
+        });
+    }
+
+    private void showYouTube(String urlKey)
+    {
+        Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
+        Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
+        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
+        youTubeIntent.putExtra("title", title);
+        getActivity().startActivity(youTubeIntent);
+    }
+
 
     private void setNextButton(View view)
     {
@@ -280,10 +304,7 @@ public class SongContentPortraitViewFragment extends Fragment
         @Override
         public void onClick(View v)
         {
-            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Current position before " + currentPosition);
             currentPosition = currentPosition + 1;
-            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Current position after " + currentPosition);
-            Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Song content size " + song.getContents().size());
             if ((song.getContents().size() - 1) == currentPosition) {
                 nextButton.setVisibility(View.GONE);
             }
@@ -335,18 +356,16 @@ public class SongContentPortraitViewFragment extends Fragment
                 }
             }
             if (floatingActionMenu != null && floatingActionMenu.isExpanded()) {
-
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                 floatingActionMenu.collapse();
                 int color = 0x00000000;
                 setListViewForegroundColor(color);
-
             }
         }
 
         private void setOnItemClickListener(int position)
         {
             currentPosition = position;
-            // presentationScreenService.showNextVerse(song, position);
             getPresentationScreenService().showNextVerse(song, position);
             presentSongCardViewAdapter.setItemSelected(currentPosition);
             presentSongCardViewAdapter.notifyDataSetChanged();
@@ -378,6 +397,11 @@ public class SongContentPortraitViewFragment extends Fragment
     {
         boolean playVideoStatus = preferenceSettingService.getPlayVideoStatus();
         return urrlKey != null && urrlKey.length() > 0 && playVideoStatus;
+    }
+
+    private boolean isPresentSong()
+    {
+        return presentationScreenService != null && presentationScreenService.getPresentation() != null;
     }
 
     @Override
@@ -423,7 +447,7 @@ public class SongContentPortraitViewFragment extends Fragment
         if (previousButton != null) {
             previousButton.setVisibility(View.GONE);
         }
-        if (song != null && isPlayVideo(song.getUrlKey()) && floatingActionMenu != null) {
+        if (song != null && isPlayVideo(song.getUrlKey()) && isPresentSong() && floatingActionMenu != null) {
             floatingActionMenu.setVisibility(View.VISIBLE);
         } else if (presentSongFloatingButton != null) {
             presentSongFloatingButton.setVisibility(View.VISIBLE);

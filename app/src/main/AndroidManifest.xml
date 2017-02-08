@@ -35,6 +35,7 @@
         </activity>
         <activity
             android:name="org.worshipsongs.activity.SongContentViewActivity"
+            android:configChanges="orientation"
             android:launchMode="singleTask">
         </activity>
         <activity
