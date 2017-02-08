@@ -18,7 +18,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
 
-    PresentationScreenService presentationScreenService;
+   private PresentationScreenService presentationScreenService;
 
     @Override
     public void init(Bundle bundle)

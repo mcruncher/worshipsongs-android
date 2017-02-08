@@ -29,12 +29,12 @@ import org.worshipsongs.worship.R;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class RemoteSongPresentation extends Presentation
 {
-    private AuthorSongDao authorSongDao = new AuthorSongDao(WorshipSongApplication.getContext());
+
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
     private Context context;
-    private AuthorSong authorSong;
+
     private TextView songSlideTextView;
     private ImageView imageView;
     private ScrollView scrollView;
@@ -42,18 +42,10 @@ public class RemoteSongPresentation extends Presentation
     private TextView songTitleTextView;
     private TextView authorNameTextView;
 
-    public RemoteSongPresentation(Context context, Display display, String title)
+    public RemoteSongPresentation(Context context, Display display)
     {
         super(context, display);
         this.context = context;
-        if (title.length() != 0) {
-            authorSong = authorSongDao.findByTitle(title);
-        } else {
-            authorSong = new AuthorSong();
-            Author author = new Author();
-            author.setDisplayName("");
-            authorSong.setAuthor(author);
-        }
     }
 
     @Override
@@ -65,7 +57,7 @@ public class RemoteSongPresentation extends Presentation
         setScrollView();
         setVerseView();
         setSongTitleView();
-        setAuthorNameView(authorSong.getAuthor().getDisplayName());
+        setAuthorNameView();
         setSongSlide();
     }
 
@@ -91,7 +83,7 @@ public class RemoteSongPresentation extends Presentation
         scrollView.setVisibility(visible);
     }
 
-    public void setVerseView()
+    private void setVerseView()
     {
         verseTextView = (TextView) findViewById(R.id.text);
         verseTextView.setText("");
@@ -127,7 +119,7 @@ public class RemoteSongPresentation extends Presentation
         return "";
     }
 
-    private void setAuthorNameView(String authorName)
+    private void setAuthorNameView()
     {
         authorNameTextView = (TextView) findViewById(R.id.author_name);
         setAuthorName("");

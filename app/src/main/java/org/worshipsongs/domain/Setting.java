@@ -16,6 +16,9 @@ public class Setting
 {
     private static Setting setting;
     private int position;
+    private int slidePosition;
+    private Song song;
+
    
     private Setting()
     {
@@ -40,6 +43,25 @@ public class Setting
         this.position = position;
     }
 
+    public int getSlidePosition()
+    {
+        return slidePosition;
+    }
+
+    public void setSlidePosition(int slidePosition)
+    {
+        this.slidePosition = slidePosition;
+    }
+
+    public Song getSong()
+    {
+        return song;
+    }
+
+    public void setSong(Song song)
+    {
+        this.song = song;
+    }
 
     @Override
     public String toString()

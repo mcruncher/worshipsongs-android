@@ -40,11 +40,10 @@ public class PresentSongActivity extends AppCompatActivity
         setContentView(R.layout.present_song_layout);
         initSetUp();
         presentationScreenService = new PresentationScreenService(PresentSongActivity.this);
-        presentationScreenService.setSong(song);
+        presentationScreenService.showNextVerse(song, 0);
         setListView(song);
         setNextButton(song);
         setPreviousButton(song);
-        presentationScreenService.showNextVerse(song, 0);
     }
 
     private void initSetUp()
