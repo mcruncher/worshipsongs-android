@@ -32,6 +32,7 @@ public class UserSettingActivity extends AppCompatActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle("Settings");
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
+        presentationScreenService = new PresentationScreenService(this);
     }
 
     public void activityFinish() {
