@@ -104,7 +104,9 @@ public class PresentationScreenService
     {
         Display selectedDisplay = getSelectedDisplay();
         if (remoteSongPresentation != null && remoteSongPresentation.getDisplay() != selectedDisplay) {
-            remoteSongPresentation.dismiss();
+            if (remoteSongPresentation.isShowing()) {
+                remoteSongPresentation.dismiss();
+            }
             remoteSongPresentation = null;
         }
 
@@ -119,8 +121,8 @@ public class PresentationScreenService
                 remoteSongPresentation = null;
             }
         }
-        if(remoteSongPresentation!= null && selectedDisplay != null){
-            if(Setting.getInstance().getSong() != null) {
+        if (remoteSongPresentation != null && selectedDisplay != null) {
+            if (Setting.getInstance().getSong() != null) {
                 showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
             }
         }
@@ -158,7 +160,8 @@ public class PresentationScreenService
         }
     }
 
-    public RemoteSongPresentation getPresentation(){
+    public RemoteSongPresentation getPresentation()
+    {
         return remoteSongPresentation;
     }
 
