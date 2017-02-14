@@ -262,7 +262,7 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private void setPlaySongFloatingButton(View view, final String urlKey)
     {
-        FloatingActionButton playSongFloatingButton = (FloatingActionButton)view.findViewById(R.id.play_song_floating_button);
+        FloatingActionButton playSongFloatingButton = (FloatingActionButton) view.findViewById(R.id.play_song_floating_button);
         playSongFloatingButton.setVisibility(View.VISIBLE);
         playSongFloatingButton.setOnClickListener(new View.OnClickListener()
         {
@@ -347,7 +347,7 @@ public class SongContentPortraitViewFragment extends Fragment
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             if (isPlayVideo(song.getUrlKey())) {
-                if (floatingActionMenu != null && floatingActionMenu.getVisibility() == View.GONE) {
+                if (floatingActionMenu != null && floatingActionMenu.getVisibility() == View.GONE && isPresentSong()) {
                     setOnItemClickListener(position);
                 }
             } else {

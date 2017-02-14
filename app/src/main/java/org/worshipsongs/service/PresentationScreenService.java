@@ -8,13 +8,10 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 
 import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-
-import java.util.Set;
 
 /**
  * Author : Madasamy
@@ -27,7 +24,6 @@ public class PresentationScreenService
     private RemoteSongPresentation remoteSongPresentation;
     private PresentationScreenService.DefaultMediaRouterCallBack songMediaRouterCallBack = new PresentationScreenService.DefaultMediaRouterCallBack();
     private MediaRouter mediaRouter;
-
 
     public PresentationScreenService(Context context)
     {
@@ -53,15 +49,18 @@ public class PresentationScreenService
 
     public void onStop()
     {
-        if (remoteSongPresentation != null) {
-            remoteSongPresentation.dismiss();
-            remoteSongPresentation = null;
+        try {
+            if (remoteSongPresentation != null) {
+                remoteSongPresentation.dismiss();
+                remoteSongPresentation = null;
+            }
+        } catch (Exception ex) {
+            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while dismiss remote display");
         }
-
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    class DefaultMediaRouterCallBack extends MediaRouter.SimpleCallback
+    private class DefaultMediaRouterCallBack extends MediaRouter.SimpleCallback
     {
 
         @Override
@@ -102,27 +101,33 @@ public class PresentationScreenService
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void updatePresentation()
     {
-        Display selectedDisplay = getSelectedDisplay();
-        if (remoteSongPresentation != null && remoteSongPresentation.getDisplay() != selectedDisplay) {
-            remoteSongPresentation.dismiss();
-            remoteSongPresentation = null;
-        }
-
-        if (remoteSongPresentation == null && selectedDisplay != null) {
-            remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay);
-            remoteSongPresentation.setOnDismissListener(remoteDisplayDismissListener);
-            try {
-                remoteSongPresentation.show();
-
-            } catch (WindowManager.InvalidDisplayException ex) {
-                // Couldn't show presentation - display was already removed
+        try {
+            Display selectedDisplay = getSelectedDisplay();
+            if (remoteSongPresentation != null && remoteSongPresentation.getDisplay() != selectedDisplay) {
+                if (remoteSongPresentation.isShowing()) {
+                    remoteSongPresentation.dismiss();
+                }
                 remoteSongPresentation = null;
             }
-        }
-        if(remoteSongPresentation!= null && selectedDisplay != null){
-            if(Setting.getInstance().getSong() != null) {
-                showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
+
+            if (remoteSongPresentation == null && selectedDisplay != null) {
+                remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay);
+                remoteSongPresentation.setOnDismissListener(remoteDisplayDismissListener);
+
+                remoteSongPresentation.show();
+
+
+                // Couldn't show presentation - display was already removed
+                remoteSongPresentation = null;
+
             }
+            if (remoteSongPresentation != null && selectedDisplay != null) {
+                if (Setting.getInstance().getSong() != null) {
+                    showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
+                }
+            }
+        } catch (Exception ex) {
+            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting remote display");
         }
     }
 
@@ -138,7 +143,6 @@ public class PresentationScreenService
         return selectedDisplay;
     }
 
-
     private boolean isJellyBean()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
@@ -146,19 +150,24 @@ public class PresentationScreenService
 
     public void showNextVerse(Song song, int position)
     {
-        if (remoteSongPresentation != null) {
-            remoteSongPresentation.setVerseVisibility(View.VISIBLE);
-            remoteSongPresentation.setImageViewVisibility(View.GONE);
-            remoteSongPresentation.setVerse(song.getContents().get(position));
-            remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
-            remoteSongPresentation.setAuthorName(song.getAuthorName());
-            remoteSongPresentation.setSlidePosition(position, song.getContents().size());
-            Setting.getInstance().setSong(song);
-            Setting.getInstance().setSlidePosition(position);
+        try {
+            if (remoteSongPresentation != null) {
+                remoteSongPresentation.setVerseVisibility(View.VISIBLE);
+                remoteSongPresentation.setImageViewVisibility(View.GONE);
+                remoteSongPresentation.setVerse(song.getContents().get(position));
+                remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
+                remoteSongPresentation.setAuthorName(song.getAuthorName());
+                remoteSongPresentation.setSlidePosition(position, song.getContents().size());
+                Setting.getInstance().setSong(song);
+                Setting.getInstance().setSlidePosition(position);
+            }
+        } catch (Exception e) {
+            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting song content");
         }
     }
 
-    public RemoteSongPresentation getPresentation(){
+    public RemoteSongPresentation getPresentation()
+    {
         return remoteSongPresentation;
     }
 
