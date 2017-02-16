@@ -121,6 +121,7 @@ public class PresentationScreenService
                 }
             }
         } catch (Exception ex) {
+            remoteSongPresentation = null;
             Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting remote display");
         }
     }
