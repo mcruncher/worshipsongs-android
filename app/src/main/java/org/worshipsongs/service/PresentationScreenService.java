@@ -113,13 +113,7 @@ public class PresentationScreenService
             if (remoteSongPresentation == null && selectedDisplay != null) {
                 remoteSongPresentation = new RemoteSongPresentation(context, selectedDisplay);
                 remoteSongPresentation.setOnDismissListener(remoteDisplayDismissListener);
-
                 remoteSongPresentation.show();
-
-
-                // Couldn't show presentation - display was already removed
-                remoteSongPresentation = null;
-
             }
             if (remoteSongPresentation != null && selectedDisplay != null) {
                 if (Setting.getInstance().getSong() != null) {
