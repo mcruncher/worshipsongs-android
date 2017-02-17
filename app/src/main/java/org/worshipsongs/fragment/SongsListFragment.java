@@ -11,23 +11,17 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.domain.Verse;
-import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.SongListAdapterService;
-import org.worshipsongs.service.UtilitiesService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
@@ -63,6 +57,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         setHasOptionsMenu(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
+
     }
 
     @Override
@@ -81,11 +76,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private void loadSongs()
     {
         songs = songDao.findAll();
-        List<String> serviceNames = new ArrayList<String>();
-        // serviceNames.addAll(commonService.readServiceName());
-        //setServiceNames(serviceNames);
-        //adapter = adapterService.getNewSongListAdapter(songs, getFragmentManager());
-        // setListAdapter(adapter);
     }
 
     @Override
@@ -93,7 +83,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         // Inflate menu to add items to action bar if it is present.
         inflater.inflate(R.menu.action_bar_menu, menu);
-
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
@@ -107,16 +96,16 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                adapter = adapterService.getNewSongListAdapter(getFilteredSong(query, songs), getFragmentManager());
-                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(query, songs), getFragmentManager()));
+                adapter = adapterService.getSongListAdapter(getFilteredSong(query, songs), getFragmentManager());
+                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(query, songs), getFragmentManager()));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                adapter = adapterService.getNewSongListAdapter(getFilteredSong(newText, songs), getFragmentManager());
-                setListAdapter(adapterService.getNewSongListAdapter(getFilteredSong(newText, songs), getFragmentManager()));
+                adapter = adapterService.getSongListAdapter(getFilteredSong(newText, songs), getFragmentManager());
+                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(newText, songs), getFragmentManager()));
                 return true;
             }
         });
@@ -169,7 +158,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void onRefresh()
     {
         Log.d("On refresh in Song list", "");
-        setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
+        setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
     }
 
     @Override
@@ -179,8 +168,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
         if (isVisibleToUser) {
             CommonUtils.hideKeyboard(getActivity());
-            setListAdapter(adapterService.getNewSongListAdapter(songs, getFragmentManager()));
-
+            setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
         }
     }
 

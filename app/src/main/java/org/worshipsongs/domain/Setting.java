@@ -1,5 +1,7 @@
 package org.worshipsongs.domain;
 
+import android.view.Display;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,9 +15,11 @@ import java.util.Set;
 public class Setting
 {
     private static Setting setting;
-
     private int position;
+    private int slidePosition;
+    private Song song;
 
+   
     private Setting()
     {
 
@@ -37,6 +41,26 @@ public class Setting
     public void setPosition(int position)
     {
         this.position = position;
+    }
+
+    public int getSlidePosition()
+    {
+        return slidePosition;
+    }
+
+    public void setSlidePosition(int slidePosition)
+    {
+        this.slidePosition = slidePosition;
+    }
+
+    public Song getSong()
+    {
+        return song;
+    }
+
+    public void setSong(Song song)
+    {
+        this.song = song;
     }
 
     @Override

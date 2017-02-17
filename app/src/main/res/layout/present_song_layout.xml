@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/content_recycle_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_below="@+id/image_linear_Layout"-->
+        <!--android:paddingTop="@dimen/abc_control_corner_material"/>-->
+    <ListView
+        android:id="@+id/content_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/darker_gray"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/next_verse_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:visibility="visible"
+        fab:fab_colorNormal="@android:color/darker_gray"
+        fab:fab_colorPressed="@color/gray"
+        fab:fab_size="mini"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        app:fab_icon="@drawable/ic_navigate_next_white"
+        fab:fab_title="Present song"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/previous_verse_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        fab:fab_colorNormal="@android:color/darker_gray"
+        fab:fab_colorPressed="@color/gray"
+        fab:fab_size="mini"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        app:fab_icon="@drawable/ic_navigate_before_white"
+        fab:fab_title="Present song"/>
+
+</RelativeLayout>

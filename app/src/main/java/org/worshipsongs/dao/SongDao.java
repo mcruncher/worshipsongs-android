@@ -166,6 +166,7 @@ public class SongDao extends AbstractDao
             contents.addAll(contentsByDefaultOrder);
         }
         Song parsedSong = new Song();
+        parsedSong.setTitle(title);
         parsedSong.setContents(contents);
         parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
         Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());

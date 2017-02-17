@@ -5,9 +5,25 @@
               android:orientation="vertical"
               android:weightSum="6">
 
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:resizeMode="horizontal|vertical"
+        android:scaleType="center"
+        android:src="@drawable/worship3"/>
+
     <ScrollView
+        android:id="@+id/verse_land_scape_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/background_light"
         android:fillViewport="true">
 
         <LinearLayout

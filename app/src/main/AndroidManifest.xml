@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
@@ -26,15 +27,17 @@
 
         <activity
             android:name="org.worshipsongs.activity.NavigationDrawerActivity"
-            android:theme="@style/MaterialAppTheme">
 
-            <!-- android:launchMode="singleTask"> -->
+            android:theme="@style/MaterialAppTheme">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity"/>-->
-        <activity android:name="org.worshipsongs.activity.SongContentViewActivity"/>
+        <activity
+            android:name="org.worshipsongs.activity.SongContentViewActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTask">
+        </activity>
         <activity
             android:name="org.worshipsongs.activity.ServiceSongListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -57,8 +60,11 @@
         <activity
             android:name="org.worshipsongs.activity.CustomYoutubeBoxActivity"
             android:theme="@style/AppTheme.Translucent"/>
-        <!--<activity android:name="org.worshipsongs.activity.HomeTabActivity">-->
-        <!--</activity>-->
+        <activity
+            android:name="org.worshipsongs.activity.PresentSongActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

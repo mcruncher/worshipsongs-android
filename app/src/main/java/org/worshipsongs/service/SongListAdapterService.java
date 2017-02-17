@@ -22,6 +22,7 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
+import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
@@ -36,6 +37,7 @@ import java.util.List;
  * author: Madasamy,Seenivasan
  * version: 1.0.0
  */
+@Deprecated
 public class SongListAdapterService
 {
 
@@ -43,7 +45,7 @@ public class SongListAdapterService
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
 
-    public ArrayAdapter<Song> getNewSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
+    public ArrayAdapter<Song> getSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
     {
         return new ArrayAdapter<Song>(WorshipSongApplication.getContext(), R.layout.songs_listview_content, songs)
         {
@@ -54,8 +56,7 @@ public class SongListAdapterService
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 String title = songs.get(position).getTitle();
                 setTextView(rowView, songs, position);
-                setPlayImageView(rowView, songs.get(position));
-                setImageLayoutView(rowView, title, fragmentManager);
+                setPlayImageView(rowView, songs.get(position), fragmentManager);
                 setImageView(rowView, title, fragmentManager);
                 return rowView;
             }
@@ -76,20 +77,29 @@ public class SongListAdapterService
         });
     }
 
-    private void setPlayImageView(final View rowView, final Song song) {
+    private void displaySelectedSong(List<Song> songs, int position)
+    {
+        Intent intent = new Intent(WorshipSongApplication.getContext(), SongContentViewActivity.class);
+        ArrayList<String> songList = new ArrayList<String>();
+        for (Song song : songs) {
+            songList.add(song.getTitle());
+        }
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
+        Setting.getInstance().setPosition(position);
+        //bundle.putInt(CommonConstants.POSITION_KEY, position);
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        WorshipSongApplication.getContext().startActivity(intent);
+    }
+
+    private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager) {
         ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
         final String urlKey = song.getUrlKey();
         if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
             imageView.setVisibility(View.VISIBLE);
         }
-
-    }
-
-    private void setImageLayoutView(final View rowView, final String songTitle, final FragmentManager fragmentManager)
-    {
-        LinearLayout linearLayout = (LinearLayout) rowView.findViewById(R.id.image_options_linear_layout);
-        Log.i(this.getClass().getName(), linearLayout.toString());
-        linearLayout.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
+        imageView.setOnClickListener(onClickPopupListener(song.getTitle(), fragmentManager));
     }
 
     private void setImageView(View rowView, final String songTitle, final FragmentManager fragmentManager)
@@ -124,6 +134,8 @@ public class SongListAdapterService
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
+        MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
+        presentSongMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)
@@ -134,33 +146,13 @@ public class SongListAdapterService
                         listDialogFragment.show(fragmentManager, "ListDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
-                        StringBuilder builder = new StringBuilder();
-                        builder.append(songName).append("\n").append("\n");
-
-                        for (String content : song.getContents()) {
-                           // Log.i(SongListAdapterService.this.getClass().getSimpleName(), "Before formatting: "+content);
-//                            for (String formattedContent : customTagColorService.getFormattedLines(content)) {
-//                                builder.append(formattedContent);
-//                                builder.append("\n");
-//                                textView.append(formattedContent);
-//                                textView.append("\n");
-//                            }
-//
-//                            builder.append("\n");
-                            builder.append(customTagColorService.getFormattedLines(content));
-                            builder.append("\n");
-                        }
-                        builder.append(WorshipSongApplication.getContext().getString(R.string.share_info));
-                        Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
-                        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-                        textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
-                        textShareIntent.setType("text/plain");
-                        Intent intent = Intent.createChooser(textShareIntent, "Share " + songName + " with...");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        WorshipSongApplication.getContext().startActivity(intent);
+                        shareSongInSocialMedia(songName, song);
                         return true;
                     case R.id.play_song:
                         showYouTube(urlKey, songName);
+                        return true;
+                    case R.id.present_song:
+                        startPresentActivity(songName);
                         return true;
                     default:
                         return false;
@@ -168,6 +160,24 @@ public class SongListAdapterService
             }
         });
         popupMenu.show();
+    }
+
+    private void shareSongInSocialMedia(String songName, Song song)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(songName).append("\n").append("\n");
+        for (String content : song.getContents()) {
+            builder.append(customTagColorService.getFormattedLines(content));
+            builder.append("\n");
+        }
+        builder.append(WorshipSongApplication.getContext().getString(R.string.share_info));
+        Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
+        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+        textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
+        textShareIntent.setType("text/plain");
+        Intent intent = Intent.createChooser(textShareIntent, "Share " + songName + " with...");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        WorshipSongApplication.getContext().startActivity(intent);
     }
 
     private void showYouTube(String urlKey, String songName)
@@ -180,18 +190,10 @@ public class SongListAdapterService
         WorshipSongApplication.getContext().startActivity(youTubeIntent);
     }
 
-    private void displaySelectedSong(List<Song> songs, int position)
+    private void startPresentActivity(String title)
     {
-        Intent intent = new Intent(WorshipSongApplication.getContext(), SongContentViewActivity.class);
-        ArrayList<String> songList = new ArrayList<String>();
-        for (Song song : songs) {
-            songList.add(song.getTitle());
-        }
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
-        Setting.getInstance().setPosition(position);
-        //bundle.putInt(CommonConstants.POSITION_KEY, position);
-        intent.putExtras(bundle);
+        Intent intent = new Intent(WorshipSongApplication.getContext(), PresentSongActivity.class);
+        intent.putExtra(CommonConstants.TITLE_KEY, title);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         WorshipSongApplication.getContext().startActivity(intent);
     }

@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
 
 /**
@@ -21,6 +22,8 @@ import org.worshipsongs.worship.R;
 public class UserSettingActivity extends AppCompatActivity
 {
     private ActionBar actionBar;
+    private PresentationScreenService presentationScreenService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,7 @@ public class UserSettingActivity extends AppCompatActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle("Settings");
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
+        presentationScreenService = new PresentationScreenService(this);
     }
 
     public void activityFinish() {
@@ -63,5 +67,25 @@ public class UserSettingActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        presentationScreenService.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        presentationScreenService.onPause();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        presentationScreenService.onStop();
+    }
 }
 

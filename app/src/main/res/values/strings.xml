@@ -106,4 +106,8 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="Play">Play</string>
+    <string name="remote_display_settings">Remote Display settings</string>
+    <string name="remote_display_summary">Show/Hide song in remote display</string>
+    <string name="remote_display_title">Present song</string>
+    <string name="present">Present song</string>
 </resources>
