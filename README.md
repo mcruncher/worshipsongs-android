@@ -46,8 +46,8 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
     <li>
         Keep the screen awake while viewing a song.
     </li>
-    <li>
-        Support to "Present" song to Miracast devices or via HDMI cable connecrion (MHL Slimport or Micro-HDMI port).
+    <li>
+        Support to "Present" song to Miracast devices or via HDMI cable connection (MHL, Slimport or Micro-HDMI port).
     </li>
     <li>
         Professional design with no ads.
