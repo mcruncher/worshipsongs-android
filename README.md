@@ -71,7 +71,7 @@ You can create a new issue at our <a href="https://github.com/crunchersaspire/wo
 Q. I want to request a new feature. How do I go about that?
 </h4>
 <p>
-The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs. You can request for a new feature by creating an issue there.
+The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs-android. You can request for a new feature by creating an issue there.
 </p>
 
 <h4>
