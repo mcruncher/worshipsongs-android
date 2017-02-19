@@ -4,12 +4,14 @@ import android.annotation.TargetApi;
 import android.app.Presentation;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,8 +35,7 @@ public class RemoteSongPresentation extends Presentation
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
-    private Context context;
-
+   // private Context context;
     private TextView songSlideTextView;
     private ImageView imageView;
     private ScrollView scrollView;
@@ -45,7 +46,7 @@ public class RemoteSongPresentation extends Presentation
     public RemoteSongPresentation(Context context, Display display)
     {
         super(context, display);
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -64,6 +65,7 @@ public class RemoteSongPresentation extends Presentation
     private void setImageView()
     {
         imageView = (ImageView) findViewById(R.id.logo_image_view);
+        imageView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
         setImageViewVisibility(View.VISIBLE);
     }
 
@@ -75,6 +77,7 @@ public class RemoteSongPresentation extends Presentation
     private void setScrollView()
     {
         scrollView = (ScrollView) findViewById(R.id.verse_land_scape_scrollview);
+        scrollView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
         setVerseVisibility(View.GONE);
     }
 
@@ -92,7 +95,9 @@ public class RemoteSongPresentation extends Presentation
     public void setVerse(String verse)
     {
         verseTextView.setText("");
-        customTagColorService.setCustomTagTextView(context, verse, verseTextView);
+        //customTagColorService.setCustomTagTextView(context, verse, verseTextView);
+        customTagColorService.setCustomTagTextView(verseTextView, verse, preferenceSettingService.getPresentationPrimaryColor(),
+                preferenceSettingService.getPresentationSecondaryColor());
         verseTextView.setTypeface(preferenceSettingService.getFontStyle());
         verseTextView.setTextSize(preferenceSettingService.getLandScapeFontSize());
         verseTextView.setTextColor(preferenceSettingService.getColor());

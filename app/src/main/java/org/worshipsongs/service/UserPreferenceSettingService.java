@@ -77,6 +77,19 @@ public class UserPreferenceSettingService
         return color;
     }
 
+    public Integer getPresentationBackgroundColor()
+    {
+        return sharedPreferences.getInt("presentationBackgroundColor", 0xff000000);
+    }
+
+    public Integer getPresentationPrimaryColor() {
+        return sharedPreferences.getInt("presentationPrimaryColor", 0xff000000);
+    }
+
+    public Integer getPresentationSecondaryColor() {
+        return sharedPreferences.getInt("presentationSecondaryColor", 0xff000000);
+    }
+
     public boolean getKeepAwakeStatus()
     {
         return sharedPreferences.getBoolean("prefKeepAwakeOn", false);
@@ -87,7 +100,8 @@ public class UserPreferenceSettingService
         return sharedPreferences.getBoolean("prefVideoPlay", true);
     }
 
-    public boolean isPresentSongInRemoteDisplay() {
+    public boolean isPresentSongInRemoteDisplay()
+    {
         return sharedPreferences.getBoolean("prefPresentSong", false);
     }
 }

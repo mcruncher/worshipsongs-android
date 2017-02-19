@@ -45,6 +45,25 @@ public class CustomTagColorService
 
     }
 
+    public void setCustomTagTextView(TextView textView, String text, int primaryColor, int secondaryColor)
+    {
+        preferenceSettingService = new UserPreferenceSettingService();
+        List<String> strings = getStringsByTag(text);
+        String tagKey = null;
+
+        for (int i = 0; i < strings.size(); i++) {
+            Matcher matcher = pattern.matcher(strings.get(i));
+            if (matcher.find()) {
+                String value = matcher.group(0).replace("{", "");
+                tagKey = value.replace("}", "");
+                PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+            } else {
+                PropertyUtils.appendColoredText(textView, strings.get(i), primaryColor);
+            }
+        }
+
+    }
+
     public String getFormattedLines(String content)
     {
         TextView textView = new TextView(WorshipSongApplication.getContext());

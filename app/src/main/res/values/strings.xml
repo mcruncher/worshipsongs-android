@@ -110,4 +110,12 @@
     <string name="remote_display_summary">Show/Hide song in remote display</string>
     <string name="remote_display_title">Present song</string>
     <string name="present">Present song</string>
+    <string name="presentation_color_settings_title">Presentation color settings</string>
+    <string name="background_color_title">Background color</string>
+    <string name="presentation_background_color_title">Presentation background color</string>
+    <string name="presentation_primary_color_summary">English/Romanised color for presentation
+    </string>
+    <string name="presentation_primary_color_title">English/Romanised color</string>
+    <string name="presentation_secondary_color_summary">Presentation tamil color</string>
+    <string name="presentation_secondary_color_title">Presentation tamil color sett</string>
 </resources>

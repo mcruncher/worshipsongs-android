@@ -40,6 +40,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.settings);
         colorPickerSettings("primaryColor");
         colorPickerSettings("secondaryColor");
+        colorPickerSettings("presentationBackgroundColor");
+        colorPickerSettings("presentationPrimaryColor");
+        colorPickerSettings("presentationSecondaryColor");
         resetPreferenceSettings("resetDialog");
     }
 
