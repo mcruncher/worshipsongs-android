@@ -6,4 +6,6 @@
     <integer name="COLOR_LT_GRAY">0xffcccccc</integer>
     <integer name="COLOR_BLUE">0xff0000ff</integer>
     <integer name="COLOR_RED">0xffff0000</integer>
+    <integer name="white">0xffffffff</integer>
+    <integer name="yellow">0xffffff00</integer>
 </resources>

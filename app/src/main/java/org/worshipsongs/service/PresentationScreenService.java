@@ -20,6 +20,7 @@ import org.worshipsongs.domain.Song;
 
 public class PresentationScreenService
 {
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private Context context;
     private RemoteSongPresentation remoteSongPresentation;
     private PresentationScreenService.DefaultMediaRouterCallBack songMediaRouterCallBack = new PresentationScreenService.DefaultMediaRouterCallBack();
@@ -122,7 +123,7 @@ public class PresentationScreenService
             }
         } catch (Exception ex) {
             remoteSongPresentation = null;
-            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting remote display");
+            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting remote display" + ex);
         }
     }
 
@@ -150,14 +151,14 @@ public class PresentationScreenService
                 remoteSongPresentation.setVerseVisibility(View.VISIBLE);
                 remoteSongPresentation.setImageViewVisibility(View.GONE);
                 remoteSongPresentation.setVerse(song.getContents().get(position));
-                remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord());
-                remoteSongPresentation.setAuthorName(song.getAuthorName());
-                remoteSongPresentation.setSlidePosition(position, song.getContents().size());
+                remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord(), preferenceSettingService.getPresentationPrimaryColor());
+                remoteSongPresentation.setAuthorName(song.getAuthorName(), preferenceSettingService.getPresentationPrimaryColor());
+                remoteSongPresentation.setSlidePosition(position, song.getContents().size(), preferenceSettingService.getPresentationPrimaryColor());
                 Setting.getInstance().setSong(song);
                 Setting.getInstance().setSlidePosition(position);
             }
         } catch (Exception e) {
-            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting song content");
+            Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting song content" + e);
         }
     }
 

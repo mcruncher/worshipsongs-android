@@ -395,7 +395,7 @@ public class SongContentPortraitViewFragment extends Fragment
 
     private boolean isPlayVideo(String urrlKey)
     {
-        boolean playVideoStatus = preferenceSettingService.getPlayVideoStatus();
+        boolean playVideoStatus = preferenceSettingService.isPlayVideo();
         return urrlKey != null && urrlKey.length() > 0 && playVideoStatus;
     }
 

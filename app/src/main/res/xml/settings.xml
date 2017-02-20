@@ -23,6 +23,25 @@
             android:title="@string/primary_color" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/presentation_color_settings_title">
+        <org.worshipsongs.picker.ColorPickerPreference
+            android:defaultValue="@integer/COLOR_BLACK"
+            android:key="presentationBackgroundColor"
+            android:summary="@string/presentation_background_color_summary"
+            android:title="@string/background_color_title" />
+
+        <org.worshipsongs.picker.ColorPickerPreference
+            android:defaultValue="@integer/yellow"
+            android:key="presentationSecondaryColor"
+            android:summary="@string/presentation_secondary_color_summary"
+            android:title="@string/presentation_secondary_color_title" />
+        <org.worshipsongs.picker.ColorPickerPreference
+            android:defaultValue="@integer/white"
+            android:key="presentationPrimaryColor"
+            android:summary="@string/presentation_primary_color_summary"
+            android:title="@string/presentation_primary_color_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_screen_settings">
         <SwitchPreference
             android:defaultValue="true"

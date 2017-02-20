@@ -13,7 +13,6 @@ import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,7 +27,6 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
-import org.worshipsongs.activity.ServiceSongListActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
@@ -189,7 +187,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
     private void setPlayImageView(final View rowView, Song song, FragmentManager fragmentManager) {
         ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
         final String urlKey = song.getUrlKey();
-        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
+        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
             imageView.setVisibility(View.VISIBLE);
         } else {
             imageView.setVisibility(View.GONE);
@@ -228,7 +226,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         final Song song = songDao.findContentsByTitle(songName);
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
-        menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
+        menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
         MenuItem favouriteMenuItem = popupMenu.getMenu().findItem(R.id.addToList);
         favouriteMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
