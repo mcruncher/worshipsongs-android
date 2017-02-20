@@ -27,7 +27,7 @@
         <org.worshipsongs.picker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_BLACK"
             android:key="presentationBackgroundColor"
-            android:summary="@string/presentation_background_color_title"
+            android:summary="@string/presentation_background_color_summary"
             android:title="@string/background_color_title" />
 
         <org.worshipsongs.picker.ColorPickerPreference

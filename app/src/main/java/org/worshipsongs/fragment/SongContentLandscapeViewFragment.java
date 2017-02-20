@@ -1,29 +1,22 @@
 package org.worshipsongs.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.component.SwipeTouchListener;
-import org.worshipsongs.dao.AuthorSongDao;
-import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
-
-import java.util.List;
 
 /**
  * author:madasamy
@@ -49,6 +42,7 @@ public class SongContentLandscapeViewFragment extends Fragment
         String position = bundle.getString("position");
         String size = bundle.getString("size");
         String chord = bundle.getString("chord");
+        setScrollView(view);
         setContent(content, view);
         setSongTitle(view, title, chord);
         setAuthorName(view, authorName);
@@ -68,23 +62,31 @@ public class SongContentLandscapeViewFragment extends Fragment
         }
     }
 
+    private void setScrollView(View view)
+    {
+        ScrollView scrollView = (ScrollView) view.findViewById(R.id.verse_land_scape_scrollview);
+        scrollView.setBackgroundColor(preferenceSettingService.getPresentationBackgroundColor());
+    }
+
     private void setContent(String content, View view)
     {
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(content);
         String text = textView.getText().toString();
         textView.setText("");
-        customTagColorService.setCustomTagTextView(this.getActivity(), text, textView);
-        textView.setTypeface(preferenceSettingService.getFontStyle());
+        customTagColorService.setCustomTagTextView(textView, text, preferenceSettingService.getPresentationPrimaryColor(),
+                preferenceSettingService.getPresentationSecondaryColor());
         textView.setTextSize(preferenceSettingService.getLandScapeFontSize());
-        textView.setTextColor(preferenceSettingService.getColor());
+        textView.setTextColor(preferenceSettingService.getPrimaryColor());
         textView.setVerticalScrollBarEnabled(true);
     }
 
     private void setSongTitle(View view, String title, String chord)
     {
         TextView songTitleTextView = (TextView) view.findViewById(R.id.song_title);
-        songTitleTextView.setText(" " + title + getChord(chord));
+        String formattedTitle = getResources().getString(R.string.title) + " " + title + " " + getChord(chord);
+        songTitleTextView.setText(formattedTitle);
+        songTitleTextView.setTextColor(preferenceSettingService.getPresentationPrimaryColor());
     }
 
     private String getChord(String chord)
@@ -99,13 +101,17 @@ public class SongContentLandscapeViewFragment extends Fragment
     private void setAuthorName(View view, String authorName)
     {
         TextView authorNameTextView = (TextView) view.findViewById(R.id.author_name);
-        authorNameTextView.setText(" " + authorName);
+        String formattedAuthor = getResources().getString(R.string.author) + " " + authorName;
+        authorNameTextView.setText(formattedAuthor);
+        authorNameTextView.setTextColor(preferenceSettingService.getPresentationPrimaryColor());
     }
 
     private void setSongSlide(View view, String position, String size)
     {
         TextView songSlideTextView = (TextView) view.findViewById(R.id.song_slide);
-        songSlideTextView.setText(" " + getSongSlideValue(position, size));
+        String slidePosition = getResources().getString(R.string.slide) + " " + getSongSlideValue(position, size);
+        songSlideTextView.setText(slidePosition);
+        songSlideTextView.setTextColor(preferenceSettingService.getPresentationPrimaryColor());
     }
 
     private String getSongSlideValue(String currentPosition, String size)

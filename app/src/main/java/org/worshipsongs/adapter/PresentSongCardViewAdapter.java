@@ -60,10 +60,10 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
         TextView textView = (TextView) v.findViewById(R.id.verse_text_view);
         if (textView != null) {
             textView.setText("");
-            customTagColorService.setCustomTagTextView(context, verse, textView);
-            textView.setTypeface(preferenceSettingService.getFontStyle());
+            customTagColorService.setCustomTagTextView(textView, verse, preferenceSettingService.getPrimaryColor(),
+                    preferenceSettingService.getSecondaryColor());
             textView.setTextSize(preferenceSettingService.getPortraitFontSize());
-            textView.setTextColor(preferenceSettingService.getColor());
+            textView.setTextColor(preferenceSettingService.getPrimaryColor());
             textView.setVerticalScrollBarEnabled(true);
         }
         if (selectedItem == position) {

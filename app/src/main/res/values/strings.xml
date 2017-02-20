@@ -53,13 +53,20 @@
     <string name="videoPlaySummary">Enable/Disable video playing</string>
     <string name="pref_restore_default_settings">Restore settings</string>
     <string name="pref_color_settings">Color Settings</string>
-    <string name="update_interval_setting">Update interval</string>
-    <string name="update_interval">Update interval</string>
+    <string name="Play">Play</string>
+    <string name="remote_display_settings">Remote Display settings</string>
+    <string name="remote_display_summary">Show/Hide song in remote display</string>
+    <string name="remote_display_title">Present song</string>
+    <string name="present">Present song</string>
+    <string name="presentation_color_settings_title">Presentation color settings</string>
+    <string name="background_color_title">Background color</string>
+    <string name="presentation_background_color_summary">Chose background color for presentation</string>
+    <string name="presentation_primary_color_summary">Chose English/Romanised color for presentation
+    </string>
+    <string name="presentation_primary_color_title">English/Romanised color</string>
+    <string name="presentation_secondary_color_summary">Chose tamil color for Presentation</string>
+    <string name="presentation_secondary_color_title">Presentation tamil color </string>
 
-
-    <string name="pref_update_interval_setting">Database update interval</string>
-    <string name="pre_update_interval_setting_summary">To download database update</string>
-    <string name="pref_update_interval_setting_title">To download database update</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -67,10 +74,6 @@
         <item>Settings</item>
         <item>About</item>
     </string-array>
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -105,17 +108,5 @@
     <string name="share.info">Content shared from:
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
-    <string name="Play">Play</string>
-    <string name="remote_display_settings">Remote Display settings</string>
-    <string name="remote_display_summary">Show/Hide song in remote display</string>
-    <string name="remote_display_title">Present song</string>
-    <string name="present">Present song</string>
-    <string name="presentation_color_settings_title">Presentation color settings</string>
-    <string name="background_color_title">Background color</string>
-    <string name="presentation_background_color_title">Presentation background color</string>
-    <string name="presentation_primary_color_summary">English/Romanised color for presentation
-    </string>
-    <string name="presentation_primary_color_title">English/Romanised color</string>
-    <string name="presentation_secondary_color_summary">Presentation tamil color</string>
-    <string name="presentation_secondary_color_title">Presentation tamil color sett</string>
+
 </resources>

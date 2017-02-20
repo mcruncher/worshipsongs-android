@@ -19,13 +19,10 @@ public class UserPreferenceSettingService
 
     private Context context = WorshipSongApplication.getContext();
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    private Typeface fontFaceStyle;
-    private float fontSize;
-    private Typeface fontStyle;
-    private String color;
 
     public UserPreferenceSettingService()
     {
+
     }
 
     public float getPortraitFontSize()
@@ -38,22 +35,7 @@ public class UserPreferenceSettingService
         return sharedPreferences.getInt(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, 25);
     }
 
-    public Typeface getFontStyle()
-    {
-        String sharedTypeFace = sharedPreferences.getString("fontStyle", "DEFAULT");
-        Typeface fontStyle = Typeface.DEFAULT;
-        if (sharedTypeFace.equals("DEFAULT_BOLD"))
-            fontStyle = Typeface.DEFAULT_BOLD;
-        if (sharedTypeFace.equals("MONOSPACE"))
-            fontStyle = Typeface.MONOSPACE;
-        if (sharedTypeFace.equals("SANS_SERIF"))
-            fontStyle = Typeface.SANS_SERIF;
-        if (sharedTypeFace.equals("SERIF"))
-            fontStyle = Typeface.SERIF;
-        return fontStyle;
-    }
-
-    public int getColor()
+    public int getPrimaryColor()
     {
         Map<String, ?> all = sharedPreferences.getAll();
         int color;
@@ -65,7 +47,7 @@ public class UserPreferenceSettingService
         return color;
     }
 
-    public Integer getTagColor()
+    public int getSecondaryColor()
     {
         Map<String, ?> all = sharedPreferences.getAll();
         int color;
@@ -77,31 +59,27 @@ public class UserPreferenceSettingService
         return color;
     }
 
-    public Integer getPresentationBackgroundColor()
+    public int getPresentationBackgroundColor()
     {
         return sharedPreferences.getInt("presentationBackgroundColor", 0xff000000);
     }
 
-    public Integer getPresentationPrimaryColor() {
-        return sharedPreferences.getInt("presentationPrimaryColor", 0xff000000);
+    public int getPresentationPrimaryColor() {
+        return sharedPreferences.getInt("presentationPrimaryColor", 0xffffffff);
     }
 
-    public Integer getPresentationSecondaryColor() {
-        return sharedPreferences.getInt("presentationSecondaryColor", 0xff000000);
+    public int getPresentationSecondaryColor() {
+        return sharedPreferences.getInt("presentationSecondaryColor", 0xffffff00);
     }
 
-    public boolean getKeepAwakeStatus()
+    public boolean isKeepAwake()
     {
         return sharedPreferences.getBoolean("prefKeepAwakeOn", false);
     }
 
-    public boolean getPlayVideoStatus()
+    public boolean isPlayVideo()
     {
         return sharedPreferences.getBoolean("prefVideoPlay", true);
     }
 
-    public boolean isPresentSongInRemoteDisplay()
-    {
-        return sharedPreferences.getBoolean("prefPresentSong", false);
-    }
 }

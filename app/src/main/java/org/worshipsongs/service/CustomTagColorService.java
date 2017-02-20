@@ -2,8 +2,6 @@ package org.worshipsongs.service;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.widget.TextView;
 
 import org.worshipsongs.WorshipSongApplication;
@@ -20,34 +18,10 @@ import java.util.regex.Pattern;
 public class CustomTagColorService
 {
     private static Pattern pattern = Pattern.compile("\\{\\w\\}");
-    private UserPreferenceSettingService preferenceSettingService;
 
-    public void setCustomTagTextView(Context context, String text, TextView textView)
-    {
-        preferenceSettingService = new UserPreferenceSettingService();
-        List<String> strings = getStringsByTag(text);
-        String tagKey = null;
-
-        for (int i = 0; i < strings.size(); i++) {
-            Matcher matcher = pattern.matcher(strings.get(i));
-            if (matcher.find()) {
-                String value = matcher.group(0).replace("{", "");
-                tagKey = value.replace("}", "");
-                if (preferenceSettingService.getTagColor() == null) {
-                    PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), Color.BLACK);
-                } else {
-                    PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), preferenceSettingService.getTagColor());
-                }
-            } else {
-                PropertyUtils.appendColoredText(textView, strings.get(i), preferenceSettingService.getColor());
-            }
-        }
-
-    }
 
     public void setCustomTagTextView(TextView textView, String text, int primaryColor, int secondaryColor)
     {
-        preferenceSettingService = new UserPreferenceSettingService();
         List<String> strings = getStringsByTag(text);
         String tagKey = null;
 
@@ -61,8 +35,8 @@ public class CustomTagColorService
                 PropertyUtils.appendColoredText(textView, strings.get(i), primaryColor);
             }
         }
-
     }
+
 
     public String getFormattedLines(String content)
     {
