@@ -2,10 +2,14 @@ package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -16,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +28,8 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.youtube.player.YouTubePlayer;
+
+import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -53,6 +60,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private int millis;
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService;
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private AuthorSongDao authorSongDao;
     private SongListAdapterService songListAdapterService;
@@ -65,6 +73,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private int currentPosition;
     private FloatingActionButton presentSongFloatingButton;
     private PresentationScreenService presentationScreenService;
+
 
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
@@ -119,6 +128,11 @@ public class SongContentPortraitViewFragment extends Fragment
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
     }
+
+//    private void setActionBarLayout(View view)
+//    {
+//        actionBarlinearLayout = (LinearLayout) view.findViewById(R.id.action_bar_linear_Layout);
+//    }
 
     private void setBackImageView(View view)
     {
@@ -403,6 +417,62 @@ public class SongContentPortraitViewFragment extends Fragment
     {
         return presentationScreenService != null && presentationScreenService.getPresentation() != null;
     }
+
+//    private void setColorSettingsLayout(View view)
+//    {
+//        colorSettingsLayout = (LinearLayout) view.findViewById(R.id.color_settings);
+//        colorSettingsLayout.setVisibility(View.GONE);
+//    }
+
+//    private void setPresentationBackgroundColor(View view)
+//    {
+//        final ImageView presentationBackgroundColor = (ImageView) view.findViewById(R.id.background_color);
+//        presentationBackgroundColor.setColorFilter(preferenceSettingService.getPresentationBackgroundColor());
+//        presentationBackgroundColor.setOnClickListener(new ColorSettingsOnClickListener(presentationBackgroundColor, "presentationBackgroundColor"));
+//    }
+//
+//    private void setPresentationPrimaryColor(View view)
+//    {
+//        final ImageView presentationPrimaryColor = (ImageView) view.findViewById(R.id.primary_text_color);
+//        presentationPrimaryColor.setColorFilter(preferenceSettingService.getPresentationPrimaryColor());
+//        presentationPrimaryColor.setOnClickListener(new ColorSettingsOnClickListener(presentationPrimaryColor, "presentationPrimaryColor"));
+//    }
+//
+//    private void setPresentationSecondaryColor(View view)
+//    {
+//        final ImageView presentationSecondaryColor = (ImageView) view.findViewById(R.id.secondary_text_color);
+//        presentationSecondaryColor.setColorFilter(preferenceSettingService.getPresentationSecondaryColor());
+//        presentationSecondaryColor.setOnClickListener(new ColorSettingsOnClickListener(presentationSecondaryColor, "presentationSecondaryColor"));
+//    }
+//
+//    private class ColorSettingsOnClickListener implements View.OnClickListener
+//    {
+//
+//        private final ImageView imageView;
+//        private final String key;
+//
+//        private ColorSettingsOnClickListener(ImageView imageView, String key)
+//        {
+//            this.imageView = imageView;
+//            this.key = key;
+//        }
+//
+//        @Override
+//        public void onClick(View view)
+//        {
+//            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), preferenceSettingService.getPresentationSecondaryColor());
+//            dialog.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener()
+//            {
+//                @Override
+//                public void onColorChanged(int color)
+//                {
+//                    sharedPreferences.edit().putInt(key, color).apply();
+//                    imageView.setColorFilter(color);
+//                }
+//            });
+//            dialog.show();
+//        }
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState)

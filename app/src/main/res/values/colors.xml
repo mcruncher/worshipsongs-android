@@ -47,4 +47,5 @@
 
     <color name="red">#dd3044</color>
     <color name="red_mild">	#ee6d6e</color>
+    <color name="empty">#00ffffff</color>
 </resources>

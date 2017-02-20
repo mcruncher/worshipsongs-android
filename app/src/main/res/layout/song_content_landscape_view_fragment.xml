@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:textColor="@color/wallet_dim_foreground_holo_dark"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
 
                 <TextView
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:textColor="@color/wallet_dim_foreground_holo_dark"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
 
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:textColor="@color/wallet_dim_foreground_holo_dark"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
 
             </LinearLayout>

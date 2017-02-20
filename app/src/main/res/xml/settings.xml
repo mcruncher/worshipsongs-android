@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                                                        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:title="@string/pref_text_setting"
@@ -10,36 +11,47 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
-        <org.worshipsongs.picker.ColorPickerPreference
+        <!--<org.worshipsongs.picker.ColorPickerPreference-->
+            <!--android:defaultValue="@integer/COLOR_RED"-->
+            <!--android:key="secondaryColor"-->
+            <!--android:summary="@string/secondary_summary"-->
+            <!--android:title="@string/secondary_color" />-->
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"
             android:summary="@string/secondary_summary"
-            android:title="@string/secondary_color" />
+            android:title="@string/secondary_color"
+            alphaSlider="true"/>
 
-        <org.worshipsongs.picker.ColorPickerPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_DARK_GRAY"
             android:key="primaryColor"
             android:summary="@string/primary_summary"
-            android:title="@string/primary_color" />
+            android:title="@string/primary_color"
+            alphaSlider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/presentation_color_settings_title">
-        <org.worshipsongs.picker.ColorPickerPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_BLACK"
             android:key="presentationBackgroundColor"
             android:summary="@string/presentation_background_color_summary"
-            android:title="@string/background_color_title" />
+            android:title="@string/background_color_title"
+            alphaSlider="true"/>
 
-        <org.worshipsongs.picker.ColorPickerPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/yellow"
             android:key="presentationSecondaryColor"
             android:summary="@string/presentation_secondary_color_summary"
-            android:title="@string/presentation_secondary_color_title" />
-        <org.worshipsongs.picker.ColorPickerPreference
+            android:title="@string/presentation_secondary_color_title"
+            alphaSlider="true"/>
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/white"
             android:key="presentationPrimaryColor"
             android:summary="@string/presentation_primary_color_summary"
-            android:title="@string/presentation_primary_color_title" />
+            android:title="@string/presentation_primary_color_title"
+            alphaSlider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_screen_settings">

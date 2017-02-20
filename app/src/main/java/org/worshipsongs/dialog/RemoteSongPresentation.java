@@ -59,25 +59,25 @@ public class RemoteSongPresentation extends Presentation
     private void setImageView()
     {
         imageView = (ImageView) findViewById(R.id.logo_image_view);
-        imageView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
         setImageViewVisibility(View.VISIBLE);
     }
 
     public void setImageViewVisibility(int visible)
     {
         imageView.setVisibility(visible);
+        imageView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
     }
 
     private void setScrollView()
     {
         scrollView = (ScrollView) findViewById(R.id.verse_land_scape_scrollview);
-        scrollView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
         setVerseVisibility(View.GONE);
     }
 
     public void setVerseVisibility(int visible)
     {
         scrollView.setVisibility(visible);
+        scrollView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
     }
 
     private void setVerseView()
