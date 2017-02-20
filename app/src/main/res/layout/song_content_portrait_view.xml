@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:fab="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
@@ -13,6 +12,7 @@
         android:layout_height="56dp"
         android:background="@color/light_navy_blue"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:weightSum="6">
 
         <LinearLayout
@@ -49,6 +49,8 @@
             android:src="@drawable/option_menu"/>
     </LinearLayout>
 
+
+
     <!--TODO: Support to display video in this view-->
     <!--<FrameLayout-->
     <!--android:id="@+id/youtube_layout"-->
@@ -63,11 +65,11 @@
         android:id="@+id/content_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:listSelector="@android:color/darker_gray"
-        android:layout_below="@+id/image_linear_Layout"/>
+        android:layout_below="@+id/image_linear_Layout"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/darker_gray"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/present_song_floating_button"
@@ -104,7 +106,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
+        android:visibility="visible"
         fab:fab_addButtonColorNormal="@color/red"
         fab:fab_addButtonColorPressed="@color/red_mild"
         fab:fab_addButtonPlusIconColor="@color/white"
@@ -142,26 +144,34 @@
         android:visibility="gone"
         fab:fab_colorNormal="@android:color/darker_gray"
         fab:fab_colorPressed="@color/gray"
-        fab:fab_size="mini"
-        fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_icon="@drawable/ic_navigate_next_white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_size="mini"
         fab:fab_title="Present song"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/previous_verse_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:visibility="gone"
         fab:fab_colorNormal="@android:color/darker_gray"
         fab:fab_colorPressed="@color/gray"
-        fab:fab_size="mini"
-        fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_icon="@drawable/ic_navigate_before_white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_size="mini"
         fab:fab_title="Present song"/>
 
-
+    <!--<ImageView-->
+        <!--android:id="@+id/background"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:visibility="visible"-->
+        <!--android:src="@drawable/ic_format_color_fill_white"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:contentDescription="Background color" />-->
 
 
 </RelativeLayout>
