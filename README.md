@@ -38,7 +38,13 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
     </li>
     <li>
-        Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+        Manage your favourite list of songs through "Favourites". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+    </li>
+    <li>
+        YouTube video support for selected songs.
+    </li>
+    <li>
+        Music Key support for selected songs.
     </li>
     <li>
         Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
@@ -46,10 +52,10 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
     <li>
         Keep the screen awake while viewing a song.
     </li>
-    <li>
-        Support to "Present" song to Miracast devices or via HDMI cable connection (MHL, Slimport or Micro-HDMI port).
-    </li>
-    <li>
+    <li>
+        "Present song" on your TV or projector wireless (Miracast/WiDi) or via HDMI cable connection (MHL, SlimPort or Micro-HDMI port).
+    </li>
+    <li>
         Professional design with no ads.
     </li>
  </ul>
