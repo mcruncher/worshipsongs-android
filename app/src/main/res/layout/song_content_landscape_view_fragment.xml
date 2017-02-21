@@ -19,7 +19,7 @@
         android:background="@color/white"
         android:resizeMode="horizontal|vertical"
         android:scaleType="center"
-        android:src="@drawable/worship3"/>
+        android:src="@drawable/ic_launcher"/>
 
     <ScrollView
         android:id="@+id/verse_land_scape_scrollview"
