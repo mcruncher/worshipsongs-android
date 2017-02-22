@@ -56,14 +56,14 @@
     <string name="remote_display_summary">Show/Hide song in remote display</string>
     <string name="remote_display_title">Present song</string>
     <string name="present">Present song</string>
+
     <string name="presentation_color_settings_title">Presentation color settings</string>
-    <string name="background_color_title">Background color</string>
-    <string name="presentation_background_color_summary">Changee background color for presentation</string>
-    <string name="presentation_primary_color_summary">Change English/Romanised color for presentation
-    </string>
-    <string name="presentation_primary_color_title">Presentation English/Romanised color</string>
-    <string name="presentation_secondary_color_summary">Change tamil color for Presentation</string>
-    <string name="presentation_secondary_color_title">Presentation tamil color </string>
+    <string name="background_color_title">Background</string>
+    <string name="presentation_background_color_summary">Change background color</string>
+    <string name="presentation_primary_color_summary">Change the color for English/Romanised</string>
+    <string name="presentation_primary_color_title">English/Romanised</string>
+    <string name="presentation_secondary_color_summary">Change the color for tamil</string>
+    <string name="presentation_secondary_color_title">Tamil</string>
 
 
     <!-- Nav Drawer Menu Items -->
@@ -107,5 +107,7 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="background_color">Background color</string>
+    <string name="portrait">Portrait</string>
+    <string name="presentation">Presentation</string>
 
 </resources>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="Portrait font size:"
+        android:text="@string/portrait"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:textColor="@color/background_material_dark"
         android:textSize="18sp"/>
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="Landscape font size:"
+        android:text="@string/presentation"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:textColor="@color/background_material_dark"
         android:textSize="18sp"/>
