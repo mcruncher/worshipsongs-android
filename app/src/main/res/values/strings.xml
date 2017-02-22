@@ -59,7 +59,7 @@
 
     <string name="presentation_color_settings_title">Presentation color settings</string>
     <string name="background_color_title">Background</string>
-    <string name="presentation_background_color_summary">Change background color</string>
+    <string name="presentation_background_color_summary">Change the color for background</string>
     <string name="presentation_primary_color_summary">Change the color for English/Romanised</string>
     <string name="presentation_primary_color_title">English/Romanised</string>
     <string name="presentation_secondary_color_summary">Change the color for tamil</string>
