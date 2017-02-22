@@ -107,7 +107,7 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="background_color">Background color</string>
-    <string name="portrait">Portrait</string>
-    <string name="presentation">Presentation</string>
+    <string name="portrait">General font size:</string>
+    <string name="presentation">Presentation font size:</string>
 
 </resources>
