@@ -34,11 +34,14 @@
         <item name="android:listPreferredItemHeightSmall">35dp</item>
     </style>
 
+    <!--<item name="android:windowContentOverlay">@null</item>-->
+    <!--<item name="android:background">@color/white</item>-->
+    <!--<item name="background">@color/white</item>-->
+
+    <!--<item name="android:windowBackground">@color/white</item>-->
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
-        <item name="background">@color/white</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:windowContentOverlay">@null</item>
+
+
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
@@ -54,6 +57,8 @@
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomMedium">@android:color/transparent</item>
         <item name="android:centerMedium">@android:color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
 
     <style name="CustomSubheaderTheme">

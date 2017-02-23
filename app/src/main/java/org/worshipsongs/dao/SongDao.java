@@ -202,4 +202,13 @@ public class SongDao extends AbstractDao
         }
         return chord;
     }
+
+  public   boolean isValidDataBase() {
+        try{
+           findAll();
+           return true;
+        }catch (Exception ex){
+          return false;
+        }
+    }
 }

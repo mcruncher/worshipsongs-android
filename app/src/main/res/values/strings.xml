@@ -107,5 +107,11 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="background_color">Background color</string>
+    <string name="warning">Warning</string>
+    <string name="message_database_invalid">You are choosing invalid database file. Choose valid database</string>
+    <string name="type">Type</string>
+    <string name="message.database.confirmation">Are you sure want to revert to default database ?</string>
+    <string name="message.database.successfull">Database copied successfully</string>
+    <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data]]></string>
 
 </resources>

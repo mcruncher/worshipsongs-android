@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import org.worshipsongs.fragment.DatabaseFragment;
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
@@ -27,6 +28,8 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSubheader("");
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
+        this.addSection(newSection("Database", android.R.drawable.ic_menu_upload, DatabaseFragment.newInstance()));
+
     }
 
     @NonNull

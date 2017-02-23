@@ -44,4 +44,9 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string-array name="dataBaseTypes">
+        <item name="1">Remote Url</item>
+        <item name="2">External storage</item>
+    </string-array>
 </resources>
