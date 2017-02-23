@@ -50,14 +50,15 @@
     <string name="playVideoTitle">Play video</string>
     <string name="videoPlaySummary">Enable/Disable video playing</string>
     <string name="pref_restore_default_settings">Restore settings</string>
-    <string name="pref_color_settings">Color Settings</string>
+
+    <string name="pref_color_settings">Primary display Settings</string>
     <string name="Play">Play</string>
     <string name="remote_display_settings">Remote Display settings</string>
     <string name="remote_display_summary">Show/Hide song in remote display</string>
     <string name="remote_display_title">Present song</string>
     <string name="present">Present song</string>
 
-    <string name="presentation_color_settings_title">Presentation color settings</string>
+    <string name="presentation_color_settings_title">Presentation display settings</string>
     <string name="background_color_title">Background</string>
     <string name="presentation_background_color_summary">Change the color for background</string>
     <string name="presentation_primary_color_summary">Change the color for English/Romanised</string>
@@ -82,7 +83,7 @@
     <string name="noInternetConnectionWarningMessage">Atleast you need mobile data or wifi to check database updates</string>
     <string name="spinner_prompt">spinner</string>
     <string name="fontStyle">Style</string>
-    <string name="fontSize">Size</string>
+    <string name="fontSize">Font size</string>
     <string name="addToPlayList">Add to favourite</string>
     <string name="newList">New list</string>
     <string name="title">Title: </string>

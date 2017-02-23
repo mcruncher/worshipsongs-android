@@ -38,6 +38,6 @@ public final class CommonConstants
     }
 
     //Font size
-    public static final String PORTRAIT_FONT_SIZE_KEY = "portraitFontSize";
-    public static final String LANDSCAPE_FONT_SIZE_KEY = "landscapeFontSize";
+    public static final String PRIMARY_FONT_SIZE_KEY = "portraitFontSize";
+    public static final String PRESENTATION_FONT_SIZE_KEY = "landscapeFontSize";
 }
