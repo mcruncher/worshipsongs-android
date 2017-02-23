@@ -2,7 +2,6 @@ package org.worshipsongs.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 
 import org.worshipsongs.CommonConstants;
@@ -27,12 +26,12 @@ public class UserPreferenceSettingService
 
     public float getPortraitFontSize()
     {
-        return sharedPreferences.getInt(CommonConstants.PORTRAIT_FONT_SIZE_KEY, 18);
+        return sharedPreferences.getInt(CommonConstants.PRIMARY_FONT_SIZE_KEY, 18);
     }
 
     public float getLandScapeFontSize()
     {
-        return sharedPreferences.getInt(CommonConstants.LANDSCAPE_FONT_SIZE_KEY, 25);
+        return sharedPreferences.getInt(CommonConstants.PRESENTATION_FONT_SIZE_KEY, 25);
     }
 
     public int getPrimaryColor()

@@ -6,28 +6,29 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/fontSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="@string/portrait"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:textColor="@color/background_material_dark"
-        android:textSize="18sp"/>
+        android:text="Font size"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+        android:textColor="@color/black"
+        />
 
     <SeekBar
         android:id="@+id/portrait_font_size"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:max="30"
         android:progress="20"
         android:progressDrawable="@drawable/progressbar"
         android:secondaryProgress="0"/>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -39,65 +40,58 @@
             android:text="0"/>
 
         <TextView
-            android:id="@+id/tvLabel2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="15"/>
-
-        <TextView
-            android:id="@+id/tvLabel3"
+            android:id="@+id/maxsize_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="20dp"
-            android:text="30"/>
+            android:text="100"/>
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/presentation"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:textColor="@color/background_material_dark"
-        android:textSize="18sp"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/presentation"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+        <!--android:textColor="@color/background_material_dark"-->
+        <!--android:textSize="18sp"/>-->
 
-    <SeekBar
-        android:id="@+id/landscape_font_size"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:max="50"
-        android:progress="28"
-        android:progressDrawable="@drawable/progressbar"
-        android:secondaryProgress="0"/>
+    <!--<SeekBar-->
+        <!--android:id="@+id/landscape_font_size"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:max="50"-->
+        <!--android:progress="28"-->
+        <!--android:progressDrawable="@drawable/progressbar"-->
+        <!--android:secondaryProgress="0"/>-->
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:orientation="horizontal">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:text="0"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:text="0"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="25"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:text="25"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingRight="20dp"
-            android:text="50"/>
-    </RelativeLayout>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:paddingRight="20dp"-->
+            <!--android:text="50"/>-->
+    <!--</RelativeLayout>-->
 
 </LinearLayout>
