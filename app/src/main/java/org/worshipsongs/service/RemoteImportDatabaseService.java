@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.nsd.NsdManager;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,8 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SplashScreenActivity;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.dialog.CustomDialogBuilder;
+import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.worship.R;
 
 import java.io.BufferedInputStream;
@@ -47,7 +51,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         this.context = context;
         songDao = new SongDao(context);
         if (isWifiOrMobileDataConnectionExists()) {
-            new AsyncDownloadTask().execute();
+            showRemoteUrlConfigurationDialog();
         } else {
             showNetWorkWarningDialog();
         }
@@ -85,16 +89,25 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         return false;
     }
 
-    private void showNetWorkWarningDialog()
+    private void showRemoteUrlConfigurationDialog()
     {
-        LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-        TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-        deleteMsg.setText(R.string.message_network_warning);
-        AlertDialog.Builder builder = new AlertDialog.Builder((new ContextThemeWrapper(context, R.style.MyDialogTheme)));
-        builder.setView(promptsView);
-        builder.setTitle(R.string.warning);
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.url), "");
+        dialogConfiguration.setEditTextVisibility(true);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        final EditText editText = customDialogBuilder.getEditText();
+        editText.setText(R.string.remoteUrl);
+        AlertDialog.Builder builder = customDialogBuilder.getBuilder();
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                String url = editText.getText().toString();
+                new AsyncDownloadTask().execute(url);
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -103,6 +116,23 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             }
         });
         builder.show();
+
+    }
+
+    private void showNetWorkWarningDialog()
+    {
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
+                context.getString(R.string.message_network_warning));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.cancel();
+            }
+        });
+        customDialogBuilder.getBuilder().show();
     }
 
     private class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
@@ -121,7 +151,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             try {
                 int count;
                 destinationFile = new File(context.getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
-                String remoteUrl = "https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite";
+                String remoteUrl = strings[0];
                 URL url = new URL(remoteUrl);
                 URLConnection conection = url.openConnection();
                 conection.setReadTimeout(60000);
@@ -177,14 +207,10 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showWarningDialog()
     {
-        LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-        TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-        deleteMsg.setText(R.string.message_database_invalid);
-        AlertDialog.Builder builder = new AlertDialog.Builder((new ContextThemeWrapper(context, R.style.MyDialogTheme)));
-        builder.setView(promptsView);
-        builder.setTitle(R.string.warning);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
+                context.getString(R.string.message_database_invalid));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -199,7 +225,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 }
             }
         });
-        builder.show();
+        customDialogBuilder.getBuilder().show();
     }
 
 }

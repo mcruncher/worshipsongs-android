@@ -1,4 +1,4 @@
-package org.worshipsongs.fragment;
+package org.worshipsongs.dialog;
 
 
 import android.app.Dialog;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.worshipsongs.fragment.SongsListFragment;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.worship.R;
 

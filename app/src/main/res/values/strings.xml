@@ -109,11 +109,13 @@
     <string name="background_color">Background color</string>
     <string name="warning">Warning</string>
     <string name="message_database_invalid">You have choose an invalid database. Choose a valid database</string>
-    <string name="type">Type</string>
+    <string name="type">Import database from</string>
     <string name="message.database.confirmation">Are you sure want to revert to default database ?</string>
     <string name="message.database.successfull">Database copied successfully</string>
     <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data]]></string>
     <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s! ?</string>
     <string name="confirmation">Confirmation</string>
+    <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
+    <string name="url">URL</string>
 
 </resources>
