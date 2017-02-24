@@ -117,5 +117,6 @@
     <string name="confirmation">Confirmation</string>
     <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
     <string name="url">URL</string>
+    <string name="import_database">Import database</string>
 
 </resources>

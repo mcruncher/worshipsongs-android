@@ -13,7 +13,7 @@
         android:layout_marginRight="5dp"
         android:id="@+id/upload_database_button"
         android:elevation="8dp"
-        android:text="Import database"
+        android:text="@string/import_database"
         android:background="?attr/actionModeSplitBackground"
         android:textColor="@color/common_signin_btn_dark_text_pressed"
         />
