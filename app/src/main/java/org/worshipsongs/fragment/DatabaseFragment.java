@@ -11,14 +11,19 @@ import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,15 +34,19 @@ import org.apache.commons.io.FilenameUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.dialog.CustomDialogBuilder;
+import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
 import org.worshipsongs.worship.R;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -88,9 +97,10 @@ public class DatabaseFragment extends Fragment
 
     private void showDatabaseTypeDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AddressConstants.Themes.THEME_LIGHT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.type));
-        builder.setSingleChoiceItems(R.array.dataBaseTypes, 0, new DialogInterface.OnClickListener()
+        builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -99,8 +109,6 @@ public class DatabaseFragment extends Fragment
                 dialog.cancel();
             }
         });
-
-        builder.create();
         builder.show();
     }
 
@@ -126,7 +134,7 @@ public class DatabaseFragment extends Fragment
             View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
             TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
             deleteMsg.setText(R.string.message_database_confirmation);
-            AlertDialog.Builder builder = new AlertDialog.Builder((new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme)));
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
             builder.setView(promptsView);
             builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {

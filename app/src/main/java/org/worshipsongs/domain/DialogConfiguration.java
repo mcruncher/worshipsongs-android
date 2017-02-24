@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class DialogConfiguration
 {
     private String title;
-    private String message;
+    private String message = "";
 
     private boolean editTextVisibility;
 

@@ -6,6 +6,8 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.worshipsongs.domain.DialogConfiguration;
@@ -21,7 +23,7 @@ public class CustomDialogBuilder
 
     private final Context context;
     private final DialogConfiguration dialogConfiguration;
-    private  EditText editText;
+    private EditText editText;
     private AlertDialog.Builder builder;
 
     public CustomDialogBuilder(Context context, DialogConfiguration dialogConfiguration)
@@ -43,29 +45,29 @@ public class CustomDialogBuilder
         return builder;
     }
 
-    private  View getCustomView(Context context, DialogConfiguration dialogConfiguration)
+    private View getCustomView(Context context, DialogConfiguration dialogConfiguration)
     {
         LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.custom_dialog, null);
-        setMessage(promptsView, dialogConfiguration);
-        setEditText(promptsView, dialogConfiguration);
-        return promptsView;
+        View view = li.inflate(R.layout.custom_dialog, null);
+        setMessage(view, dialogConfiguration);
+        setEditText(view, dialogConfiguration);
+        return view;
     }
 
-    private  void setMessage(View promptsView, DialogConfiguration dialogConfiguration)
+    private void setMessage(View promptsView, DialogConfiguration dialogConfiguration)
     {
         TextView messageTextView = (TextView) promptsView.findViewById(R.id.message);
         messageTextView.setText(dialogConfiguration.getMessage());
         messageTextView.setVisibility(dialogConfiguration.getMessage().isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-    private  void setEditText(View promptsView, DialogConfiguration dialogConfiguration)
+    private void setEditText(View promptsView, DialogConfiguration dialogConfiguration)
     {
         editText = (EditText) promptsView.findViewById(R.id.name_edit_text);
         editText.setVisibility(dialogConfiguration.isEditTextVisibility() ? View.VISIBLE : View.GONE);
     }
 
-    public  EditText getEditText()
+    public EditText getEditText()
     {
         return editText;
     }
