@@ -162,6 +162,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private void validateDatabase(String absolutePath)
     {
         try {
+            songDao.close();
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
@@ -189,6 +190,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             public void onClick(DialogInterface dialog, int which)
             {
                 try {
+                    songDao.close();
                     songDao.copyDatabase("", true);
                     songDao.open();
                     dialog.cancel();
