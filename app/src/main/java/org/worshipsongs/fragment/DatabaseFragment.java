@@ -49,6 +49,7 @@ public class DatabaseFragment extends Fragment
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private ProgressBar progressBar;
+    private Button defaultDatabaseButton;
 
     public static DatabaseFragment newInstance()
     {
@@ -93,6 +94,7 @@ public class DatabaseFragment extends Fragment
             public void onClick(DialogInterface dialog, int which)
             {
                 importDatabaseLocator.load(getActivity(), DatabaseFragment.this, which, progressBar);
+                defaultDatabaseButton.setVisibility(View.VISIBLE);
                 dialog.cancel();
             }
         });
@@ -109,7 +111,7 @@ public class DatabaseFragment extends Fragment
 
     private void setDefaultDatabaseButton(View dataBaseFragmentView)
     {
-        Button defaultDatabaseButton = (Button) dataBaseFragmentView.findViewById(R.id.default_database_button);
+        defaultDatabaseButton = (Button) dataBaseFragmentView.findViewById(R.id.default_database_button);
         defaultDatabaseButton.setOnClickListener(new DefaultDbOnClickListener());
     }
 
@@ -133,6 +135,7 @@ public class DatabaseFragment extends Fragment
                     try {
                         songDao.copyDatabase("", true);
                         songDao.open();
+                        defaultDatabaseButton.setVisibility(View.GONE);
                         dialog.cancel();
                     } catch (IOException e) {
                         e.printStackTrace();

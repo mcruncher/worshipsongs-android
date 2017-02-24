@@ -32,6 +32,7 @@
         android:layout_marginRight="5dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:visibility="gone"
         android:textColor="@color/common_signin_btn_dark_text_pressed"/>
 
     <ProgressBar
