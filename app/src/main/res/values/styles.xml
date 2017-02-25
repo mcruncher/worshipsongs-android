@@ -105,4 +105,10 @@
         <item name="android:textColor">@color/cardview_light_background</item>
     </style>
 
+    <style name="CustomEditTextTheme" parent="TextAppearance.AppCompat">
+        <item name="android:width">5sp</item>
+        <item name="colorAccent">@android:color/holo_blue_dark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

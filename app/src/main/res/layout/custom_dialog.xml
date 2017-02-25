@@ -30,9 +30,10 @@
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         android:maxLines="5"
+        android:theme="@style/CustomEditTextTheme"
         android:layout_marginTop="10dp">
         <requestFocus/>
     </EditText>
-    
+
 
 </RelativeLayout>
