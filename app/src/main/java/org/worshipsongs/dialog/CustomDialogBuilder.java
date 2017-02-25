@@ -2,12 +2,9 @@ package org.worshipsongs.dialog;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.worshipsongs.domain.DialogConfiguration;
@@ -64,7 +61,24 @@ public class CustomDialogBuilder
     private void setEditText(View promptsView, DialogConfiguration dialogConfiguration)
     {
         editText = (EditText) promptsView.findViewById(R.id.name_edit_text);
+       // editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
         editText.setVisibility(dialogConfiguration.isEditTextVisibility() ? View.VISIBLE : View.GONE);
+
+//        final InputMethodManager mImm = (InputMethodManager)
+//                context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        mImm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+//        editText.setFocusable(true);
+//        editText.setOnFocusChangeListener(new View.OnFocusChangeListener()
+//        {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus)
+//            {
+//                if (hasFocus)
+//                    mImm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+//                else
+//                    mImm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+//            }
+//        });
     }
 
     public EditText getEditText()

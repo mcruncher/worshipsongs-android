@@ -28,11 +28,11 @@
         android:textCursorDrawable="@null"
         android:layout_below="@+id/message"
         android:layout_centerHorizontal="true"
-        android:textIsSelectable="true"
         android:visibility="gone"
         android:maxLines="5"
         android:layout_marginTop="10dp">
         <requestFocus/>
     </EditText>
+    
 
 </RelativeLayout>
