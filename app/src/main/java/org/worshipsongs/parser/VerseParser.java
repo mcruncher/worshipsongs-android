@@ -42,6 +42,7 @@ public class VerseParser
             xmlFile = File.createTempFile(XML_FILE_NAME, EXTENSION, externalCacheDir);
             Log.d(this.getClass().getName(), xmlFile.getAbsolutePath() + "created successfully");
             FileUtils.write(xmlFile, content);
+
             Log.d(this.getClass().getName(), "XML Content" + FileUtils.readFileToString(xmlFile));
             SAXParserFactory factory = SAXParserFactory.newInstance();
             //factory.setValidating(true);

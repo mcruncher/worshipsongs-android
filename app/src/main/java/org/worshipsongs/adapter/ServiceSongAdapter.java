@@ -31,7 +31,7 @@ import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.fragment.ListDialogFragment;
+import org.worshipsongs.dialog.ListDialogFragment;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.PropertyUtils;

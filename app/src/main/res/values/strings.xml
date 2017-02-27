@@ -39,7 +39,6 @@
     <string name="remote_display_title">Present song</string>
     <string name="present">Present song</string>
 
-
     <string name="fontSize">Font size</string>
     <string name="addToPlayList">Add to favourite</string>
     <string name="title">Title: </string>
@@ -47,7 +46,7 @@
     <string name="slide">Slide: </string>
     <string name="playlist_name_hint">Favourite name</string>
 
-    <string name="message_delete_playlist">Do you want to delete this playlist?  </string>
+    <string name="message_delete_playlist">Do you want to delete this playlist?</string>
     <string name="message_delete_song">Do you want to delete the song?</string>
     <string name="home">Song Book</string>
     <string name="settings">Settings</string>
@@ -62,4 +61,17 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
 
+    <string name="background_color">Background color</string>
+    <string name="warning">Warning</string>
+    <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database</string>
+    <string name="type">Import database from</string>
+    <string name="message.database.confirmation">Are you sure that you want to revert to the default database?</string>
+    <string name="message.database.successfull">Database copied successfully</string>
+    <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data]]></string>
+    <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s! ?</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
+    <string name="url">URL</string>
+    <string name="import_database">Import database</string>
+    <string name="revert_to_default_database">Revert to default database</string>
 </resources>

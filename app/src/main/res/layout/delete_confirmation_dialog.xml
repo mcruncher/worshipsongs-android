@@ -4,11 +4,17 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp">
     <TextView
         android:id="@+id/deleteMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17dp" />
+
     <!--android:text=""-->
+
 </RelativeLayout>
