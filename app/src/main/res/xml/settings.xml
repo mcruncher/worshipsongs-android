@@ -9,10 +9,7 @@
             android:defaultValue="20"
             maxSize="30"
             android:title="Font" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_color_settings">
+        
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"

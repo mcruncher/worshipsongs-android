@@ -17,7 +17,7 @@
         android:background="?attr/actionModeSplitBackground"
         android:textColor="@color/common_signin_btn_dark_text_pressed"
         />
-    
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
