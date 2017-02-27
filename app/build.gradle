@@ -110,6 +110,7 @@ dependencies {
 //    testCompile "org.robolectric:shadows-support-v4:3.0"
 }
 
+
 apply plugin: 'jacoco'
 
 jacoco {
@@ -131,7 +132,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
     )
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/testUnitTestDebug.exec')
+    executionData = files('../app/build/jacoco/testDebugUnitTest.exec')
 
     reports {
         xml.enabled = true
