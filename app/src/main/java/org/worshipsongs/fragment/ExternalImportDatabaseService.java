@@ -57,7 +57,7 @@ public class ExternalImportDatabaseService implements ImportDatabaseService
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
             fragment.startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"), 1);
+                    Intent.createChooser(intent, "Select a File to Import"), 1);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
 //            Toast.makeText(this, "Please install a File Manager.",

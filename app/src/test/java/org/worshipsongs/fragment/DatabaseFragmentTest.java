@@ -18,6 +18,7 @@ import org.worshipsongs.worship.R;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.robolectric.util.FragmentTestUtil.startFragment;
 
 /**
  * Author : Madasamy
@@ -29,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 public class DatabaseFragmentTest
 {
     private DatabaseFragment databaseFragment;
-
 
     @Before
     public void setUp()
@@ -64,9 +64,10 @@ public class DatabaseFragmentTest
         System.out.println("--onClickImportDatabaseButton--");
         Button importDataBaseButton = (Button) databaseFragment.getView().findViewById(R.id.upload_database_button);
         assertTrue(importDataBaseButton.performClick());
-        //AlertDialog latestAlertDialog = ShadowAlertDialog.getLatestAlertDialog();
-        //ShadowAlertDialog shadowAlertDialog = shadowOf(latestAlertDialog);
+//        AlertDialog latestAlertDialog = ShadowAlertDialog.getLatestAlertDialog();
+//        ShadowAlertDialog shadowAlertDialog = shadowOf(latestAlertDialog);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
@@ -75,7 +76,7 @@ public class DatabaseFragmentTest
         System.out.println("--revertToDefaultDatabaseButton--");
         Button defaultDatabaseButton = (Button) databaseFragment.getView().findViewById(R.id.default_database_button);
         assertEquals(30.0, defaultDatabaseButton.getElevation(), 0);
-        assertEquals(0, defaultDatabaseButton.getVisibility());
+        assertEquals(8, defaultDatabaseButton.getVisibility());
     }
 
     @Test
@@ -89,8 +90,22 @@ public class DatabaseFragmentTest
     @Test
     public void testProperties()
     {
-        assertEquals("Are you sure want to revert to default database ?", databaseFragment.getString(R.string.message_database_confirmation));
+        assertEquals("Are you sure that you want to revert to the default database?",
+                databaseFragment.getString(R.string.message_database_confirmation));
+        assertEquals("Warning", databaseFragment.getString(R.string.warning));
+        assertEquals("You have chosen an invalid database! Please choose a valid database",
+                databaseFragment.getString(R.string.message_database_invalid));
+        assertEquals("Import database from", databaseFragment.getString(R.string.type));
+        assertEquals("Database copied successfully", databaseFragment.getString(R.string.message_database_successfull));
+        assertEquals("Make sure your device is connected to the internet. You can configure either Settings ->" +
+                " Wi-Fi or Settings -> Mobile Data", databaseFragment.getString(R.string.message_network_warning));
     }
 
+    @Test
+    public void testGetDestinationFile()
+    {
+        System.out.println("--destinationFile--");
+        assertEquals("songs.sqlite", databaseFragment.getDestinationFile().getName());
+    }
 
 }

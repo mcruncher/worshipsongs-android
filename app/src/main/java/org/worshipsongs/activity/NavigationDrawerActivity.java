@@ -27,9 +27,8 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         presentationScreenService = new PresentationScreenService(this);
         this.addSubheader("");
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
-        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
         this.addSection(newSection("Database", android.R.drawable.ic_menu_upload, DatabaseFragment.newInstance()));
-
+        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
     }
 
     @NonNull

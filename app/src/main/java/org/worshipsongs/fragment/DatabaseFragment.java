@@ -2,11 +2,9 @@ package org.worshipsongs.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,11 +12,12 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
@@ -26,6 +25,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.dialog.CustomDialogBuilder;
+import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
 import org.worshipsongs.worship.R;
@@ -45,11 +46,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class DatabaseFragment extends Fragment
 {
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private ProgressBar progressBar;
     private Button defaultDatabaseButton;
+
+    public DatabaseFragment()
+    {
+
+    }
 
     public static DatabaseFragment newInstance()
     {
@@ -60,12 +65,11 @@ public class DatabaseFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        setUserVisibleHint(false);
         View dataBaseFragmentView = inflater.inflate(R.layout.database_layout, container, false);
         setImportDatabaseButton(dataBaseFragmentView);
         setProgressBar(dataBaseFragmentView);
         setDefaultDatabaseButton(dataBaseFragmentView);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        getActivity().invalidateOptionsMenu();
         return dataBaseFragmentView;
     }
 
@@ -117,32 +121,29 @@ public class DatabaseFragment extends Fragment
 
     private class DefaultDbOnClickListener implements View.OnClickListener
     {
-
         @Override
         public void onClick(View v)
         {
-            LayoutInflater li = LayoutInflater.from(getActivity());
-            View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-            TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-            deleteMsg.setText(R.string.message_database_confirmation);
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
-            builder.setView(promptsView);
-            builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
+            DialogConfiguration dialogConfiguration = new DialogConfiguration("",
+                    getActivity().getString(R.string.message_database_confirmation));
+            CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+            customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
                     try {
+                        songDao.close();
                         songDao.copyDatabase("", true);
                         songDao.open();
                         defaultDatabaseButton.setVisibility(View.GONE);
                         dialog.cancel();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException ex) {
+                        Log.e(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping database "+ex);
                     }
                 }
             });
-            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+            customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
@@ -150,8 +151,17 @@ public class DatabaseFragment extends Fragment
                     dialog.cancel();
                 }
             });
-            builder.show();
+            customDialogBuilder.getBuilder().show();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setVisibility(View.GONE);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -187,15 +197,11 @@ public class DatabaseFragment extends Fragment
 
     private void showConfirmationDialog(final Uri uri, String fileName)
     {
-        LayoutInflater li = LayoutInflater.from(getActivity());
-        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-        TextView confirmationMessage = (TextView) promptsView.findViewById(R.id.deleteMsg);
         String formattedMessage = String.format(getResources().getString(R.string.message_chooseDatabase_confirmation), fileName);
-        confirmationMessage.setText(formattedMessage);
-        AlertDialog.Builder builder = new AlertDialog.Builder((new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme)));
-        builder.setView(promptsView);
-        builder.setTitle(getString(R.string.confirmation));
-        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(getActivity().getString(R.string.confirmation),
+                formattedMessage);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -204,7 +210,7 @@ public class DatabaseFragment extends Fragment
                 dialog.cancel();
             }
         });
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+        customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -212,7 +218,7 @@ public class DatabaseFragment extends Fragment
                 dialog.cancel();
             }
         });
-        builder.show();
+        customDialogBuilder.getBuilder().show();
     }
 
     private void copyFile(Uri uri)
@@ -232,7 +238,7 @@ public class DatabaseFragment extends Fragment
         }
     }
 
-    private File getDestinationFile()
+    File getDestinationFile()
     {
         return new File(getActivity().getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
     }
@@ -264,7 +270,7 @@ public class DatabaseFragment extends Fragment
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
-                Toast.makeText(getContext(), R.string.message_database_successfull, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.message_database_successfull, Toast.LENGTH_SHORT).show();
             } else {
                 showWarningDialog();
             }
@@ -275,15 +281,11 @@ public class DatabaseFragment extends Fragment
 
     private void showWarningDialog()
     {
-        LayoutInflater li = LayoutInflater.from(getActivity());
-        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
-        TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-        deleteMsg.setText(R.string.message_database_invalid);
-        AlertDialog.Builder builder = new AlertDialog.Builder((new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme)));
-        builder.setView(promptsView);
-        builder.setTitle(getString(R.string.warning));
-        builder.setCancelable(false);
-        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.warning),
+                getString(R.string.message_database_invalid));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+        customDialogBuilder.getBuilder().setCancelable(false);
+        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -298,6 +300,6 @@ public class DatabaseFragment extends Fragment
                 }
             }
         });
-        builder.show();
+        customDialogBuilder.getBuilder().show();
     }
 }
