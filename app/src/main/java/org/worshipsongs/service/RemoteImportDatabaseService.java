@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -36,26 +38,21 @@ import java.net.URLConnection;
 
 public class RemoteImportDatabaseService implements ImportDatabaseService
 {
+    private Map<String, Object> objects;
     private SongDao songDao;
-    private ProgressBar progressBar;
     private Context context;
 
     @Override
-    public void loadDb(Context context, Fragment fragment)
+    public void loadDb(Context context, Map<String, Object> objects)
     {
         this.context = context;
         songDao = new SongDao(context);
+        this.objects = objects;
         if (isWifiOrMobileDataConnectionExists()) {
             showRemoteUrlConfigurationDialog();
         } else {
             showNetWorkWarningDialog();
         }
-    }
-
-    @Override
-    public void setProgressBar(ProgressBar progressBar)
-    {
-        this.progressBar = progressBar;
     }
 
     @Override
@@ -133,6 +130,8 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     {
         File destinationFile = null;
+        private ProgressBar progressBar = (ProgressBar) objects.get(CommonConstants.PROGRESS_BAR_KEY);
+        private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
 
         @Override
         protected void onPreExecute()
@@ -176,22 +175,24 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         @Override
         protected void onPostExecute(Boolean successfull)
         {
+            resultTextView.setText("");
             if (successfull) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Remote database copied successfully.");
-                validateDatabase(destinationFile.getAbsolutePath());
+                validateDatabase(destinationFile.getAbsolutePath(), resultTextView);
             }
             progressBar.setVisibility(View.GONE);
+
         }
     }
 
-    private void validateDatabase(String absolutePath)
+    private void validateDatabase(String absolutePath, TextView resultTextView)
     {
         try {
             songDao.close();
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
-                Toast.makeText(context, R.string.message_database_successfull, Toast.LENGTH_SHORT).show();
+                resultTextView.setText(getCountQueryResult());
             } else {
                 showWarningDialog();
             }
@@ -221,6 +222,12 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             }
         });
         customDialogBuilder.getBuilder().show();
+    }
+
+    public String getCountQueryResult()
+    {
+        long count = songDao.count();
+        return "select count(*) from songs \nresult: "+count;
     }
 
 }

@@ -25,7 +25,7 @@
         android:layout_marginTop="42dp"
         android:id="@+id/default_database_button"
         android:elevation="30dp"
-        android:text="Revert to default database"
+        android:text="@string/revert_to_default_database"
         android:background="?attr/actionModeSplitBackground"
         android:layout_below="@+id/upload_database_button"
         android:layout_marginLeft="5dp"
@@ -47,5 +47,19 @@
         android:layout_marginTop="21dp"
         android:layout_below="@+id/default_database_button"
         android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upload_database_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="182dp"
+        android:maxLines="10"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textSize="17sp"
+        android:textColor="@color/darkGray"
+        android:id="@+id/result_textview"/>
 
 </RelativeLayout>

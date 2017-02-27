@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -36,6 +36,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,6 +52,7 @@ public class DatabaseFragment extends Fragment
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private ProgressBar progressBar;
     private Button defaultDatabaseButton;
+    private TextView resultTextView;
 
     public DatabaseFragment()
     {
@@ -69,6 +72,7 @@ public class DatabaseFragment extends Fragment
         setImportDatabaseButton(dataBaseFragmentView);
         setProgressBar(dataBaseFragmentView);
         setDefaultDatabaseButton(dataBaseFragmentView);
+        setResultTextView(dataBaseFragmentView);
         getActivity().invalidateOptionsMenu();
         return dataBaseFragmentView;
     }
@@ -97,7 +101,12 @@ public class DatabaseFragment extends Fragment
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                importDatabaseLocator.load(getActivity(), DatabaseFragment.this, which, progressBar);
+                Map<String, Object> objectMap = new HashMap<String, Object>();
+                objectMap.put(CommonConstants.INDEX_KEY, which);
+                objectMap.put(CommonConstants.PROGRESS_BAR_KEY, progressBar);
+                objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseFragment.this);
+                objectMap.put(CommonConstants.TEXTVIEW_KEY, resultTextView);
+                importDatabaseLocator.load(getActivity(), objectMap);
                 defaultDatabaseButton.setVisibility(View.VISIBLE);
                 dialog.cancel();
             }
@@ -137,6 +146,7 @@ public class DatabaseFragment extends Fragment
                         songDao.copyDatabase("", true);
                         songDao.open();
                         defaultDatabaseButton.setVisibility(View.GONE);
+                        updateResultTextview();
                         dialog.cancel();
                     } catch (IOException ex) {
                         Log.e(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping database "+ex);
@@ -153,6 +163,12 @@ public class DatabaseFragment extends Fragment
             });
             customDialogBuilder.getBuilder().show();
         }
+    }
+
+    private void setResultTextView(View dataBaseFragmentView)
+    {
+        resultTextView = (TextView)dataBaseFragmentView.findViewById(R.id.result_textview);
+        resultTextView.setText("");
     }
 
     @Override
@@ -188,7 +204,6 @@ public class DatabaseFragment extends Fragment
                 showConfirmationDialog(uri, fileName);
             } else {
                 copyFile(uri);
-                validateDatabase(getDestinationFile().getAbsolutePath());
             }
         } finally {
             getDestinationFile().deleteOnExit();
@@ -233,6 +248,7 @@ public class DatabaseFragment extends Fragment
             inputStream.close();
             outputstream.close();
             Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Size of file " + FileUtils.sizeOf(destinationFile));
+            validateDatabase(getDestinationFile().getAbsolutePath());
         } catch (IOException ex) {
             Log.i(DatabaseFragment.class.getSimpleName(), "Error occurred while coping file" + ex);
         }
@@ -266,17 +282,25 @@ public class DatabaseFragment extends Fragment
     private void validateDatabase(String absolutePath)
     {
         try {
+            resultTextView.setText("");
             songDao.close();
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
-                Toast.makeText(getActivity(), R.string.message_database_successfull, Toast.LENGTH_SHORT).show();
+                updateResultTextview();
             } else {
                 showWarningDialog();
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping external db"+e);
         }
+    }
+
+    private void updateResultTextview()
+    {
+        resultTextView.setText("");
+        resultTextView.setText(getCountQueryResult());
     }
 
     private void showWarningDialog()
@@ -301,5 +325,11 @@ public class DatabaseFragment extends Fragment
             }
         });
         customDialogBuilder.getBuilder().show();
+    }
+
+    public String getCountQueryResult()
+    {
+        long count = songDao.count();
+        return "select count(*) from songs \nResult: "+count;
     }
 }

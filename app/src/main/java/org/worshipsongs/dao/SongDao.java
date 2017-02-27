@@ -203,12 +203,22 @@ public class SongDao extends AbstractDao
         return chord;
     }
 
-  public   boolean isValidDataBase() {
-        try{
-           findAll();
-           return true;
-        }catch (Exception ex){
-          return false;
+    public long count(){
+
+        Cursor c = getDatabase().query(TABLE_NAME, null, null, null, null, null, null);
+        int result = c.getCount();
+        c.close();
+        return result;
+    }
+
+
+    public boolean isValidDataBase()
+    {
+        try {
+            findAll();
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 }

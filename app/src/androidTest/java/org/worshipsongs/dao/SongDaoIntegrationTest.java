@@ -23,19 +23,22 @@ import static org.junit.Assert.assertFalse;
 public class SongDaoIntegrationTest
 {
     private SongDao songDao;
-    
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         songDao = new SongDao(getTargetContext());
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() throws Exception
+    {
         songDao.close();
     }
 
     @Test
-    public void testFinAll() {
+    public void testFinAll()
+    {
         System.out.println("--findAll--");
         List<Song> songs = songDao.findAll();
         assertFalse(songs.isEmpty());
@@ -46,8 +49,15 @@ public class SongDaoIntegrationTest
     {
         System.out.println("--findByTitle--");
         Song song = songDao.findContentsByTitle("Allelooyaa Karththaraiyae");
-        System.out.print("Song"+song.getContents());
+        System.out.print("Song" + song.getContents());
         assertEquals("Allelooyaa Karththaraiyae", song.getTitle());
+    }
+
+    @Test
+    public void testCount()
+    {
+        System.out.println("--count--");
+        assertEquals(733, songDao.count());
     }
 
 }

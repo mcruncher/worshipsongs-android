@@ -42,5 +42,10 @@ public final class CommonConstants
     public static final String LANDSCAPE_FONT_SIZE_KEY = "landscapeFontSize";
 
     public static final String DATABASE_NAME = "songs.sqlite";
+    public static final String INDEX_KEY = "index";
+    public static final String PROGRESS_BAR_KEY = "progressbar";
+    public static final String FRAGMENT_KEY = "fragment";
+    public static final String TEXTVIEW_KEY = "textview";
+
 
 }

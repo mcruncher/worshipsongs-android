@@ -7,7 +7,12 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.widget.ProgressBar;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.service.ImportDatabaseService;
+
+import java.util.Map;
+
+import static android.R.attr.fragment;
 
 /**
  * Author : Madasamy
@@ -16,22 +21,16 @@ import org.worshipsongs.service.ImportDatabaseService;
 
 public class ExternalImportDatabaseService implements ImportDatabaseService
 {
-    private ProgressBar progressBar;
+    private Map<String, Object> objects;
     private Context context;
-    private Fragment fragment;
+
 
     @Override
-    public void loadDb(Context context, Fragment fragment)
+    public void loadDb(Context context, Map<String, Object> objects)
     {
         this.context = context;
-        this.fragment = fragment;
+        this.objects = objects;
         showFileChooser();
-    }
-
-    @Override
-    public void setProgressBar(ProgressBar progressBar)
-    {
-        this.progressBar = progressBar;
     }
 
     @Override
@@ -56,6 +55,7 @@ public class ExternalImportDatabaseService implements ImportDatabaseService
 //        intent.setType("*/*");
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
+            Fragment fragment = (Fragment) objects.get(CommonConstants.FRAGMENT_KEY);
             fragment.startActivityForResult(
                     Intent.createChooser(intent, "Select a File to Import"), 1);
         } catch (android.content.ActivityNotFoundException ex) {
