@@ -2,10 +2,13 @@ package org.worshipsongs.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +53,7 @@ public class DatabaseFragment extends Fragment
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private ProgressBar progressBar;
     private Button defaultDatabaseButton;
     private TextView resultTextView;
@@ -101,19 +105,25 @@ public class DatabaseFragment extends Fragment
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                Map<String, Object> objectMap = new HashMap<String, Object>();
-                objectMap.put(CommonConstants.INDEX_KEY, which);
-                objectMap.put(CommonConstants.PROGRESS_BAR_KEY, progressBar);
-                objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseFragment.this);
-                objectMap.put(CommonConstants.TEXTVIEW_KEY, resultTextView);
-                importDatabaseLocator.load(getActivity(), objectMap);
-                defaultDatabaseButton.setVisibility(View.VISIBLE);
+                importDatabaseLocator.load(getActivity(), getStringObjectMap(which));
                 dialog.cancel();
             }
         });
         AlertDialog dialog = builder.create();
         dialog.getListView().setSelector(android.R.color.darker_gray);
         dialog.show();
+    }
+
+    @NonNull
+    private Map<String, Object> getStringObjectMap(int which)
+    {
+        Map<String, Object> objectMap = new HashMap<String, Object>();
+        objectMap.put(CommonConstants.INDEX_KEY, which);
+        objectMap.put(CommonConstants.PROGRESS_BAR_KEY, progressBar);
+        objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseFragment.this);
+        objectMap.put(CommonConstants.TEXTVIEW_KEY, resultTextView);
+        objectMap.put(CommonConstants.REVERT_DATABASE_BUTTON_KEY, defaultDatabaseButton);
+        return objectMap;
     }
 
     private void setProgressBar(View dataBaseFragmentView)
@@ -125,6 +135,7 @@ public class DatabaseFragment extends Fragment
     private void setDefaultDatabaseButton(View dataBaseFragmentView)
     {
         defaultDatabaseButton = (Button) dataBaseFragmentView.findViewById(R.id.default_database_button);
+        defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
         defaultDatabaseButton.setOnClickListener(new DefaultDbOnClickListener());
     }
 
@@ -145,11 +156,12 @@ public class DatabaseFragment extends Fragment
                         songDao.close();
                         songDao.copyDatabase("", true);
                         songDao.open();
+                        sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
                         defaultDatabaseButton.setVisibility(View.GONE);
                         updateResultTextview();
                         dialog.cancel();
                     } catch (IOException ex) {
-                        Log.e(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping database "+ex);
+                        Log.e(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
                     }
                 }
             });
@@ -167,7 +179,7 @@ public class DatabaseFragment extends Fragment
 
     private void setResultTextView(View dataBaseFragmentView)
     {
-        resultTextView = (TextView)dataBaseFragmentView.findViewById(R.id.result_textview);
+        resultTextView = (TextView) dataBaseFragmentView.findViewById(R.id.result_textview);
         resultTextView.setText("");
     }
 
@@ -288,12 +300,14 @@ public class DatabaseFragment extends Fragment
             songDao.open();
             if (songDao.isValidDataBase()) {
                 updateResultTextview();
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+                defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
             } else {
                 showWarningDialog();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping external db"+e);
+            Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping external db" + e);
         }
     }
 
@@ -330,6 +344,6 @@ public class DatabaseFragment extends Fragment
     public String getCountQueryResult()
     {
         long count = songDao.count();
-        return "select count(*) from songs \nResult: "+count;
+        return "select count(*) from songs \nResult: " + count;
     }
 }

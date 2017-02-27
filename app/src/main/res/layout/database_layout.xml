@@ -52,9 +52,10 @@
         android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/upload_database_button"
+
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="182dp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/progress_bar"
         android:maxLines="10"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

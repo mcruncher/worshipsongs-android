@@ -46,6 +46,8 @@ public final class CommonConstants
     public static final String PROGRESS_BAR_KEY = "progressbar";
     public static final String FRAGMENT_KEY = "fragment";
     public static final String TEXTVIEW_KEY = "textview";
+    public static final String REVERT_DATABASE_BUTTON_KEY = "revertDatabaseButton";
+    public static final String SHOW_REVERT_DATABASE_BUTTON_KEY = "showRevertDatabaseButton";
 
 
 }

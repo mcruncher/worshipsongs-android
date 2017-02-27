@@ -2,13 +2,16 @@ package org.worshipsongs.service;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private Map<String, Object> objects;
     private SongDao songDao;
     private Context context;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void loadDb(Context context, Map<String, Object> objects)
@@ -48,6 +52,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         this.context = context;
         songDao = new SongDao(context);
         this.objects = objects;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (isWifiOrMobileDataConnectionExists()) {
             showRemoteUrlConfigurationDialog();
         } else {
@@ -129,9 +134,10 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     {
-        File destinationFile = null;
+        private File destinationFile = null;
         private ProgressBar progressBar = (ProgressBar) objects.get(CommonConstants.PROGRESS_BAR_KEY);
         private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
+        private Button revertDatabaseButton = (Button)objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
 
         @Override
         protected void onPreExecute()
@@ -179,9 +185,10 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             if (successfull) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Remote database copied successfully.");
                 validateDatabase(destinationFile.getAbsolutePath(), resultTextView);
+                revertDatabaseButton.setVisibility(View.VISIBLE);
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
             }
             progressBar.setVisibility(View.GONE);
-
         }
     }
 
@@ -227,7 +234,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     public String getCountQueryResult()
     {
         long count = songDao.count();
-        return "select count(*) from songs \nresult: "+count;
+        return "select count(*) from songs \nresult: " + count;
     }
 
 }
