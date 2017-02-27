@@ -40,7 +40,6 @@ public final class CommonConstants
     //Font size
     public static final String PORTRAIT_FONT_SIZE_KEY = "portraitFontSize";
     public static final String LANDSCAPE_FONT_SIZE_KEY = "landscapeFontSize";
-
     public static final String DATABASE_NAME = "songs.sqlite";
     public static final String INDEX_KEY = "index";
     public static final String PROGRESS_BAR_KEY = "progressbar";
@@ -48,6 +47,6 @@ public final class CommonConstants
     public static final String TEXTVIEW_KEY = "textview";
     public static final String REVERT_DATABASE_BUTTON_KEY = "revertDatabaseButton";
     public static final String SHOW_REVERT_DATABASE_BUTTON_KEY = "showRevertDatabaseButton";
-
-
+    public static final String PRIMARY_FONT_SIZE_KEY = "portraitFontSize";
+    public static final String PRESENTATION_FONT_SIZE_KEY = "landscapeFontSize";
 }

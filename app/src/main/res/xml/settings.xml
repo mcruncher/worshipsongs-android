@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                                                         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:title="@string/pref_text_setting"
-        android:textColor="@color/background_floating_material_dark">
+
+    <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
-            android:key="customFontSize"
+            android:key="portraitFontSize"
             android:summary="@string/font_size_summary"
+            android:defaultValue="20"
+            maxSize="30"
             android:title="Font" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
@@ -27,6 +29,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/presentation_color_settings_title">
+        <org.worshipsongs.preference.FontDialogPreference
+            android:key="landscapeFontSize"
+            android:summary="@string/font_size_summary"
+            android:defaultValue="28"
+            maxSize="50"
+            android:title="Font" />
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_BLACK"
             android:key="presentationBackgroundColor"
