@@ -138,7 +138,6 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         private File destinationFile = null;
         private ProgressBar progressBar = (ProgressBar) objects.get(CommonConstants.PROGRESS_BAR_KEY);
         private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
-        private Button revertDatabaseButton = (Button)objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
 
         @Override
         protected void onPreExecute()
@@ -173,6 +172,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 return true;
             } catch (Exception ex) {
                 Log.e(this.getClass().getSimpleName(), "Error", ex);
+
                 return false;
             } finally {
                 destinationFile.deleteOnExit();
@@ -186,8 +186,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             if (successfull) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Remote database copied successfully.");
                 validateDatabase(destinationFile.getAbsolutePath(), resultTextView);
-                revertDatabaseButton.setVisibility(View.VISIBLE);
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+            } else {
+                showWarningDialog(resultTextView);
             }
             progressBar.setVisibility(View.GONE);
         }
@@ -200,19 +201,22 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
+                Button revertDatabaseButton = (Button) objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+                revertDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
                 resultTextView.setText(getCountQueryResult());
             } else {
-                showWarningDialog();
+                showWarningDialog(resultTextView);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void showWarningDialog()
+    private void showWarningDialog(final TextView resultTextView)
     {
         DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.warning),
-                appCompatActivity.getString(R.string.message_database_invalid));
+                appCompatActivity.getString(R.string.message_invalid_url));
         CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
@@ -223,6 +227,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                     songDao.close();
                     songDao.copyDatabase("", true);
                     songDao.open();
+                    resultTextView.setText(getCountQueryResult());
                     dialog.cancel();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -235,7 +240,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     public String getCountQueryResult()
     {
         String count = String.valueOf(songDao.count());
-        return String.format(appCompatActivity.getString(R.string.songs_count) , count);
+        return String.format(appCompatActivity.getString(R.string.songs_count), count);
     }
 
 }
