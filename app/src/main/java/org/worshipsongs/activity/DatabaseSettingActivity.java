@@ -33,6 +33,7 @@ import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -54,6 +55,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+    private PresentationScreenService presentationScreenService;
     private ProgressBar progressBar;
     private Button defaultDatabaseButton;
     private TextView resultTextView;
@@ -68,6 +70,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
         setProgressBar();
         setDefaultDatabaseButton();
         setResultTextView();
+        presentationScreenService = new PresentationScreenService(this);
     }
 
     private void setActionBar()
@@ -352,6 +355,27 @@ public class DatabaseSettingActivity extends AppCompatActivity
             count = "";
         }
         return String.format(getString(R.string.songs_count), count);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        presentationScreenService.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        presentationScreenService.onPause();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        presentationScreenService.onStop();
     }
 
 }
