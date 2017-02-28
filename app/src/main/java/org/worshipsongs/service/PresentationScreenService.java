@@ -12,6 +12,7 @@ import android.view.View;
 import org.worshipsongs.dialog.RemoteSongPresentation;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.utils.CommonUtils;
 
 /**
  * Author : Madasamy
@@ -32,18 +33,20 @@ public class PresentationScreenService
         mediaRouter = (MediaRouter) context.getSystemService(Context.MEDIA_ROUTER_SERVICE);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void onResume()
     {
-        if (isJellyBean()) {
+        if (isJellyBean() && CommonUtils.isProductionMode()) {
             mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack);
             updatePresentation();
         }
     }
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void onPause()
     {
-        if (isJellyBean()) {
+        if (isJellyBean() && CommonUtils.isProductionMode()) {
             mediaRouter.removeCallback(songMediaRouterCallBack);
         }
     }
