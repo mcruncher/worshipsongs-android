@@ -25,7 +25,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment
         resetPreferenceSettings("resetDialog");
     }
 
-
     public void resetPreferenceSettings(String preferenceKey)
     {
         Preference resetDialogPreference = findPreference(preferenceKey);

@@ -65,6 +65,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="org.worshipsongs.activity.DatabaseSettingActivity"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>

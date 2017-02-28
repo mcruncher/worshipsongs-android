@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                                                         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory android:title="@string/database">
+        <org.worshipsongs.preference.DatabaseSettingsPreference
+            android:summary="@string/database_summary"
+            android:title="@string/import_database_ttitle">
+        </org.worshipsongs.preference.DatabaseSettingsPreference>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
@@ -9,7 +15,7 @@
             android:defaultValue="20"
             maxSize="30"
             android:title="Font" />
-        
+
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"
@@ -53,7 +59,7 @@
             alphaSlider="true"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_screen_settings">
+    <PreferenceCategory android:title="@string/miscellaneous">
         <SwitchPreference
             android:defaultValue="true"
             android:enabled="true"
@@ -61,9 +67,7 @@
             android:summary="@string/awakeScreenSummary"
             android:title="@string/awakeScreenTitle" >
         </SwitchPreference>
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_video_settings">
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefVideoPlay"

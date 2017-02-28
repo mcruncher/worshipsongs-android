@@ -12,13 +12,13 @@
     <string name="text_settings">Text settings</string>
 
     <!--Settings-->
-    <string name="pref_color_settings">Primary Display Settings</string>
+    <string name="pref_color_settings">Primary Screen</string>
     <string name="font_size_summary">Change the font size for text</string>
     <string name="secondary_summary">Change the color for Tamil</string>
     <string name="secondary_color">Tamil</string>
     <string name="primary_summary">Change the color for English/Romanised</string>
     <string name="primary_color">English/Romanised</string>
-    <string name="presentation_color_settings_title">Presentation Display Settings</string>
+    <string name="presentation_color_settings_title">Presentation Screen</string>
     <string name="presentation_background_color_summary">Change the color for background</string>
     <string name="background_color_title">Background</string>
     <string name="presentation_secondary_color_summary">Change the color for tamil</string>
@@ -63,15 +63,22 @@
 
     <string name="background_color">Background color</string>
     <string name="warning">Warning</string>
-    <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database</string>
+    <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database.</string>
     <string name="type">Import database from</string>
     <string name="message.database.confirmation">Are you sure that you want to revert to the default database?</string>
     <string name="message.database.successfull">Database copied successfully</string>
-    <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data]]></string>
-    <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s! ?</string>
+    <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
+    <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s?</string>
     <string name="confirmation">Confirmation</string>
     <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
     <string name="url">URL</string>
     <string name="import_database">Import database</string>
-    <string name="revert_to_default_database">Revert to default database</string>
+    <string name="revert_to_default_database">Restore default database</string>
+    <string name="songs_count">"No. of songs: %1$s"</string>
+    <string name="database">Database</string>
+    <string name="database_summary">Import database from external storage and remote URL</string>
+    <string name="miscellaneous">Miscellaneous</string>
+    <string name="import_database_ttitle">External/Remote URL</string>
+    <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
+    <string name="import_database_successfull">Imported database successfully.</string>
 </resources>

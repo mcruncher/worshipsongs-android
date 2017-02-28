@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import org.worshipsongs.CommonConstants;
@@ -22,13 +23,13 @@ import static android.R.attr.fragment;
 public class ExternalImportDatabaseService implements ImportDatabaseService
 {
     private Map<String, Object> objects;
-    private Context context;
+    private AppCompatActivity appCompatActivity;
 
 
     @Override
-    public void loadDb(Context context, Map<String, Object> objects)
+    public void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
-        this.context = context;
+        this.appCompatActivity = appCompatActivity;
         this.objects = objects;
         showFileChooser();
     }
@@ -50,18 +51,10 @@ public class ExternalImportDatabaseService implements ImportDatabaseService
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
         intent.setDataAndType(uri, "*/*");
-        //startActivity(Intent.createChooser(intent, "Open folder"));
-//        Intent intent = new Intent(Intent.ACTION_CHOOSER);
-//        intent.setType("*/*");
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
-            Fragment fragment = (Fragment) objects.get(CommonConstants.FRAGMENT_KEY);
-            fragment.startActivityForResult(
+            appCompatActivity.startActivityForResult(
                     Intent.createChooser(intent, "Select a File to Import"), 1);
         } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-//            Toast.makeText(this, "Please install a File Manager.",
-//                    Toast.LENGTH_SHORT).show();
         }
     }
 }

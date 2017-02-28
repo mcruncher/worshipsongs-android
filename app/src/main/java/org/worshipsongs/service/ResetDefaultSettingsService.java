@@ -40,7 +40,7 @@ public class ResetDefaultSettingsService extends DialogPreference
             //Read the default values and set them as the current values.
             PreferenceManager.setDefaultValues(context, R.xml.settings, true);
             //Commit all changes.
-            preferencesEditor.commit();
+            preferencesEditor.apply();
 
             //Call this method to trigger the execution of the setOnPreferenceChangeListener() method at the PrefsActivity
             getOnPreferenceChangeListener().onPreferenceChange(this, true);

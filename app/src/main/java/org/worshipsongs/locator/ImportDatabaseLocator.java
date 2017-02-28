@@ -2,6 +2,7 @@ package org.worshipsongs.locator;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -27,14 +28,13 @@ public class ImportDatabaseLocator implements IImportDatabaseLocator
     private static final String PACKAGE_NAME = "org.worshipsongs";
 
     @Override
-    public void load(Context context,  Map<String, Object> objects)
+    public void load(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
-        for (ImportDatabaseService importDatabaseService : findAll(context, PACKAGE_NAME)) {
+        for (ImportDatabaseService importDatabaseService : findAll(appCompatActivity, PACKAGE_NAME)) {
             int index = (Integer) objects.get(CommonConstants.INDEX_KEY);
             ProgressBar progressBar = (ProgressBar)objects.get(CommonConstants.PROGRESS_BAR_KEY);
-            Fragment fragment = (Fragment)objects.get("fragment");
             if (importDatabaseService.getOrder() == index) {
-                importDatabaseService.loadDb(context, objects);
+                importDatabaseService.loadDb(appCompatActivity, objects);
             }
         }
     }

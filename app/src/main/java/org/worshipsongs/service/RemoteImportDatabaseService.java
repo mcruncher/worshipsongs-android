@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +18,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SplashScreenActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 import java.io.BufferedInputStream;
@@ -41,18 +44,21 @@ import java.util.Map;
 
 public class RemoteImportDatabaseService implements ImportDatabaseService
 {
+
     private Map<String, Object> objects;
     private SongDao songDao;
-    private Context context;
+    private AppCompatActivity appCompatActivity;
     private SharedPreferences sharedPreferences;
+    private String remoteUrl;
 
     @Override
-    public void loadDb(Context context, Map<String, Object> objects)
+    public void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
-        this.context = context;
-        songDao = new SongDao(context);
+        this.appCompatActivity = appCompatActivity;
+        songDao = new SongDao(appCompatActivity);
         this.objects = objects;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCompatActivity);
+        setDefaultRemoteUrl();
         if (isWifiOrMobileDataConnectionExists()) {
             showRemoteUrlConfigurationDialog();
         } else {
@@ -72,9 +78,16 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         return 0;
     }
 
+    private void setDefaultRemoteUrl()
+    {
+        if (!sharedPreferences.getAll().containsKey(CommonConstants.REMOTE_URL)) {
+            sharedPreferences.edit().putString(CommonConstants.REMOTE_URL, appCompatActivity.getString(R.string.remoteUrl)).apply();
+        }
+    }
+
     private boolean isWifiOrMobileDataConnectionExists()
     {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) appCompatActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null) {
             if (networkInfo.isConnected()) {
@@ -88,11 +101,11 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showRemoteUrlConfigurationDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.url), "");
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.url), "");
         dialogConfiguration.setEditTextVisibility(true);
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         final EditText editText = customDialogBuilder.getEditText();
-        editText.setText(R.string.remoteUrl);
+        editText.setText(sharedPreferences.getString(CommonConstants.REMOTE_URL, appCompatActivity.getString(R.string.remoteUrl)));
         AlertDialog.Builder builder = customDialogBuilder.getBuilder();
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
@@ -118,9 +131,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showNetWorkWarningDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
-                context.getString(R.string.message_network_warning));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.warning),
+                appCompatActivity.getString(R.string.message_network_warning));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
             @Override
@@ -137,7 +150,6 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         private File destinationFile = null;
         private ProgressBar progressBar = (ProgressBar) objects.get(CommonConstants.PROGRESS_BAR_KEY);
         private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
-        private Button revertDatabaseButton = (Button)objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
 
         @Override
         protected void onPreExecute()
@@ -150,8 +162,8 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         {
             try {
                 int count;
-                destinationFile = new File(context.getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
-                String remoteUrl = strings[0];
+                destinationFile = new File(appCompatActivity.getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
+                remoteUrl = strings[0];
                 URL url = new URL(remoteUrl);
                 URLConnection conection = url.openConnection();
                 conection.setReadTimeout(60000);
@@ -172,6 +184,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 return true;
             } catch (Exception ex) {
                 Log.e(this.getClass().getSimpleName(), "Error", ex);
+
                 return false;
             } finally {
                 destinationFile.deleteOnExit();
@@ -185,8 +198,8 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             if (successfull) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Remote database copied successfully.");
                 validateDatabase(destinationFile.getAbsolutePath(), resultTextView);
-                revertDatabaseButton.setVisibility(View.VISIBLE);
-                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+            } else {
+                showWarningDialog(resultTextView);
             }
             progressBar.setVisibility(View.GONE);
         }
@@ -199,20 +212,26 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             songDao.copyDatabase(absolutePath, true);
             songDao.open();
             if (songDao.isValidDataBase()) {
+                Button revertDatabaseButton = (Button) objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+                revertDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
                 resultTextView.setText(getCountQueryResult());
+                sharedPreferences.edit().putString(CommonConstants.REMOTE_URL, remoteUrl).apply();
+                FileUtils.deleteQuietly(PropertyUtils.getPropertyFile(appCompatActivity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME));
+                Toast.makeText(appCompatActivity, appCompatActivity.getString(R.string.import_database_successfull), Toast.LENGTH_SHORT).show();
             } else {
-                showWarningDialog();
+                showWarningDialog(resultTextView);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void showWarningDialog()
+    private void showWarningDialog(final TextView resultTextView)
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
-                context.getString(R.string.message_database_invalid));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.warning),
+                appCompatActivity.getString(R.string.message_invalid_url));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
             @Override
@@ -222,6 +241,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                     songDao.close();
                     songDao.copyDatabase("", true);
                     songDao.open();
+                    resultTextView.setText(getCountQueryResult());
                     dialog.cancel();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -233,8 +253,8 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     public String getCountQueryResult()
     {
-        long count = songDao.count();
-        return "select count(*) from songs \nresult: " + count;
+        String count = String.valueOf(songDao.count());
+        return String.format(appCompatActivity.getString(R.string.songs_count), count);
     }
 
 }
