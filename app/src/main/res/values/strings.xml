@@ -80,4 +80,5 @@
     <string name="miscellaneous">Miscellaneous</string>
     <string name="import_database_ttitle">External/Remote URL</string>
     <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
+    <string name="import_database_successfull">Imported database successfully.</string>
 </resources>

@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -32,6 +33,7 @@ import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 import java.io.File;
@@ -298,7 +300,10 @@ public class DatabaseSettingActivity extends AppCompatActivity
             if (songDao.isValidDataBase()) {
                 updateResultTextview();
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
-                defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
+                defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY,
+                        false) ? View.VISIBLE : View.GONE);
+                FileUtils.deleteQuietly(PropertyUtils.getPropertyFile(DatabaseSettingActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME));
+                Toast.makeText(this, R.string.import_database_successfull, Toast.LENGTH_SHORT).show();
             } else {
                 showWarningDialog();
             }

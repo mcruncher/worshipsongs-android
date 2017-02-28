@@ -49,4 +49,5 @@ public final class CommonConstants
     public static final String SHOW_REVERT_DATABASE_BUTTON_KEY = "showRevertDatabaseButton";
     public static final String PRIMARY_FONT_SIZE_KEY = "portraitFontSize";
     public static final String PRESENTATION_FONT_SIZE_KEY = "landscapeFontSize";
+    public static final String REMOTE_URL = "remoteUrl";
 }
