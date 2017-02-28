@@ -39,48 +39,4 @@ public class DatabaseSettingsPreference extends Preference
         getContext().startActivity(new Intent(getContext(), DatabaseSettingActivity.class));
     }
 
-
-    //    @Override
-//    protected View onCreateView(ViewGroup parent)
-//    {
-//        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = layoutInflater.inflate(R.layout.database_layout, parent, false);
-//        setImportDatabaseButton(view);
-//        return view;
-//    }
-//
-//    private void setImportDatabaseButton(View view)
-//    {
-//        Button importDatabaseButton = (Button) view.findViewById(R.id.upload_database_button);
-//        importDatabaseButton.setOnClickListener(new ImportDatabaseOnClickListener());
-//    }
-//
-//    private class ImportDatabaseOnClickListener implements View.OnClickListener
-//    {
-//        @Override
-//        public void onClick(View view)
-//        {
-//            //showDatabaseTypeDialog();
-//        }
-//    }
-//
-////    private void showDatabaseTypeDialog()
-////    {
-////        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
-////        builder.setTitle(getActivity().getString(R.string.type));
-////        builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
-////        {
-////            @Override
-////            public void onClick(DialogInterface dialog, int which)
-////            {
-////                importDatabaseLocator.load(getActivity(), getStringObjectMap(which));
-////                dialog.cancel();
-////            }
-////        });
-////        AlertDialog dialog = builder.create();
-////        dialog.getListView().setSelector(android.R.color.darker_gray);
-////        dialog.show();
-////    }
-
-
 }

@@ -18,8 +18,6 @@ public interface ImportDatabaseService
 {
     void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects);
 
-    //void setProgressBar(ProgressBar progressBar);
-
     String getName();
 
     int getOrder();
