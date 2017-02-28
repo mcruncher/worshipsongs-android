@@ -3,7 +3,9 @@ package org.worshipsongs.activity;
 import android.annotation.TargetApi;
 
 
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.widget.Button;
 
@@ -12,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowDialog;
@@ -36,7 +39,11 @@ public class DatabaseSettingActivityTest
     @Before
     public void setUp()
     {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+        sharedPreferences.edit().putBoolean("production", false).apply();
         databaseSettingActivity = Robolectric.setupActivity(DatabaseSettingActivity.class);
+
+
     }
 
     @Test
