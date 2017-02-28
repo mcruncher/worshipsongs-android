@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,16 +44,16 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 {
     private Map<String, Object> objects;
     private SongDao songDao;
-    private Context context;
+    private AppCompatActivity appCompatActivity;
     private SharedPreferences sharedPreferences;
 
     @Override
-    public void loadDb(Context context, Map<String, Object> objects)
+    public void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
-        this.context = context;
-        songDao = new SongDao(context);
+        this.appCompatActivity = appCompatActivity;
+        songDao = new SongDao(appCompatActivity);
         this.objects = objects;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCompatActivity);
         if (isWifiOrMobileDataConnectionExists()) {
             showRemoteUrlConfigurationDialog();
         } else {
@@ -74,7 +75,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private boolean isWifiOrMobileDataConnectionExists()
     {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) appCompatActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null) {
             if (networkInfo.isConnected()) {
@@ -88,9 +89,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showRemoteUrlConfigurationDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.url), "");
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.url), "");
         dialogConfiguration.setEditTextVisibility(true);
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         final EditText editText = customDialogBuilder.getEditText();
         editText.setText(R.string.remoteUrl);
         AlertDialog.Builder builder = customDialogBuilder.getBuilder();
@@ -118,9 +119,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showNetWorkWarningDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
-                context.getString(R.string.message_network_warning));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.warning),
+                appCompatActivity.getString(R.string.message_network_warning));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
             @Override
@@ -150,7 +151,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
         {
             try {
                 int count;
-                destinationFile = new File(context.getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
+                destinationFile = new File(appCompatActivity.getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
                 String remoteUrl = strings[0];
                 URL url = new URL(remoteUrl);
                 URLConnection conection = url.openConnection();
@@ -210,9 +211,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showWarningDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(context.getString(R.string.warning),
-                context.getString(R.string.message_database_invalid));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(context, dialogConfiguration);
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.warning),
+                appCompatActivity.getString(R.string.message_database_invalid));
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
         {
             @Override
@@ -233,8 +234,8 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     public String getCountQueryResult()
     {
-        long count = songDao.count();
-        return "select count(*) from songs \nresult: " + count;
+        String count = String.valueOf(songDao.count());
+        return String.format(appCompatActivity.getString(R.string.songs_count) , count);
     }
 
 }

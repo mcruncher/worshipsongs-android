@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                                                         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory android:title="Database Settings">
+        <org.worshipsongs.preference.DatabaseSettingsPreference
+            android:summary="@string/database_summary"
+            android:title="@string/database">
+        </org.worshipsongs.preference.DatabaseSettingsPreference>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
@@ -9,7 +15,7 @@
             android:defaultValue="20"
             maxSize="30"
             android:title="Font" />
-        
+
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"

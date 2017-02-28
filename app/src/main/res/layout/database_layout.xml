@@ -12,7 +12,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:id="@+id/upload_database_button"
-        android:elevation="8dp"
         android:text="@string/import_database"
         android:background="?attr/actionModeSplitBackground"
         android:textColor="@color/common_signin_btn_dark_text_pressed"
@@ -21,18 +20,16 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        android:id="@+id/default_database_button"
-        android:elevation="30dp"
-        android:text="@string/revert_to_default_database"
-        android:background="?attr/actionModeSplitBackground"
-        android:layout_below="@+id/upload_database_button"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:id="@+id/default_database_button"
+        android:text="@string/revert_to_default_database"
+        android:background="?attr/actionModeSplitBackground"
         android:visibility="gone"
-        android:textColor="@color/common_signin_btn_dark_text_pressed"/>
+        android:textColor="@color/common_signin_btn_dark_text_pressed"
+        android:layout_below="@+id/upload_database_button"
+        android:layout_centerHorizontal="true"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -49,7 +46,7 @@
 
     <TextView
         android:text=""
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
@@ -60,5 +57,5 @@
         android:textSize="17sp"
         android:textColor="@color/darkGray"
         android:id="@+id/result_textview"/>
-
+        />
 </RelativeLayout>

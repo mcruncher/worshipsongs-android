@@ -1,4 +1,4 @@
-package org.worshipsongs.fragment;
+package org.worshipsongs.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,17 +10,16 @@ import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.io.FileUtils;
@@ -42,14 +41,12 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 
-public class DatabaseFragment extends Fragment
+public class DatabaseSettingActivity extends AppCompatActivity
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
@@ -58,32 +55,28 @@ public class DatabaseFragment extends Fragment
     private Button defaultDatabaseButton;
     private TextView resultTextView;
 
-    public DatabaseFragment()
-    {
-
-    }
-
-    public static DatabaseFragment newInstance()
-    {
-        return new DatabaseFragment();
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
-        View dataBaseFragmentView = inflater.inflate(R.layout.database_layout, container, false);
-        setImportDatabaseButton(dataBaseFragmentView);
-        setProgressBar(dataBaseFragmentView);
-        setDefaultDatabaseButton(dataBaseFragmentView);
-        setResultTextView(dataBaseFragmentView);
-        getActivity().invalidateOptionsMenu();
-        return dataBaseFragmentView;
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.database_layout);
+        setActionBar();
+        setImportDatabaseButton();
+        setProgressBar();
+        setDefaultDatabaseButton();
+        setResultTextView();
     }
 
-    private void setImportDatabaseButton(View dataBaseFragmentView)
+    private void setActionBar()
     {
-        Button importDatabaseButton = (Button) dataBaseFragmentView.findViewById(R.id.upload_database_button);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(R.string.database);
+    }
+
+    private void setImportDatabaseButton()
+    {
+        Button importDatabaseButton = (Button) findViewById(R.id.upload_database_button);
         importDatabaseButton.setOnClickListener(new ImportDatabaseOnClickListener());
     }
 
@@ -98,14 +91,14 @@ public class DatabaseFragment extends Fragment
 
     private void showDatabaseTypeDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(DatabaseSettingActivity.this, R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.type));
         builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                importDatabaseLocator.load(getActivity(), getStringObjectMap(which));
+                importDatabaseLocator.load(DatabaseSettingActivity.this, getStringObjectMap(which));
                 dialog.cancel();
             }
         });
@@ -120,21 +113,15 @@ public class DatabaseFragment extends Fragment
         Map<String, Object> objectMap = new HashMap<String, Object>();
         objectMap.put(CommonConstants.INDEX_KEY, which);
         objectMap.put(CommonConstants.PROGRESS_BAR_KEY, progressBar);
-        objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseFragment.this);
+        //objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseSettingActivity.this);
         objectMap.put(CommonConstants.TEXTVIEW_KEY, resultTextView);
         objectMap.put(CommonConstants.REVERT_DATABASE_BUTTON_KEY, defaultDatabaseButton);
         return objectMap;
     }
 
-    private void setProgressBar(View dataBaseFragmentView)
+    private void setDefaultDatabaseButton()
     {
-        progressBar = (ProgressBar) dataBaseFragmentView.findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void setDefaultDatabaseButton(View dataBaseFragmentView)
-    {
-        defaultDatabaseButton = (Button) dataBaseFragmentView.findViewById(R.id.default_database_button);
+        defaultDatabaseButton = (Button) findViewById(R.id.default_database_button);
         defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
         defaultDatabaseButton.setOnClickListener(new DefaultDbOnClickListener());
     }
@@ -145,8 +132,8 @@ public class DatabaseFragment extends Fragment
         public void onClick(View v)
         {
             DialogConfiguration dialogConfiguration = new DialogConfiguration("",
-                    getActivity().getString(R.string.message_database_confirmation));
-            CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+                   getString(R.string.message_database_confirmation));
+            CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
             customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {
                 @Override
@@ -161,7 +148,7 @@ public class DatabaseFragment extends Fragment
                         updateResultTextview();
                         dialog.cancel();
                     } catch (IOException ex) {
-                        Log.e(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
+                        Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
                     }
                 }
             });
@@ -177,24 +164,33 @@ public class DatabaseFragment extends Fragment
         }
     }
 
-    private void setResultTextView(View dataBaseFragmentView)
+    private void setResultTextView()
     {
-        resultTextView = (TextView) dataBaseFragmentView.findViewById(R.id.result_textview);
-        resultTextView.setText("");
+        resultTextView = (TextView)findViewById(R.id.result_textview);
+        //resultTextView.setText(getCountQueryResult());
+    }
+
+    private void setProgressBar()
+    {
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-        inflater.inflate(R.menu.action_bar_menu, menu);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setVisibility(View.GONE);
-        super.onCreateOptionsMenu(menu, inflater);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
+
         progressBar.setVisibility(View.VISIBLE);
         switch (requestCode) {
             case 1:
@@ -225,9 +221,9 @@ public class DatabaseFragment extends Fragment
     private void showConfirmationDialog(final Uri uri, String fileName)
     {
         String formattedMessage = String.format(getResources().getString(R.string.message_chooseDatabase_confirmation), fileName);
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(getActivity().getString(R.string.confirmation),
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.confirmation),
                 formattedMessage);
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
         customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
         {
             @Override
@@ -252,23 +248,23 @@ public class DatabaseFragment extends Fragment
     {
         try {
             File destinationFile = getDestinationFile();
-            InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+            InputStream inputStream = getContentResolver().openInputStream(uri);
             OutputStream outputstream = new FileOutputStream(destinationFile);
             byte[] data = new byte[inputStream.available()];
             inputStream.read(data);
             outputstream.write(data);
             inputStream.close();
             outputstream.close();
-            Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Size of file " + FileUtils.sizeOf(destinationFile));
+            Log.i(DatabaseSettingActivity.this.getClass().getSimpleName(), "Size of file " + FileUtils.sizeOf(destinationFile));
             validateDatabase(getDestinationFile().getAbsolutePath());
         } catch (IOException ex) {
-            Log.i(DatabaseFragment.class.getSimpleName(), "Error occurred while coping file" + ex);
+            Log.i(DatabaseSettingActivity.class.getSimpleName(), "Error occurred while coping file" + ex);
         }
     }
 
     File getDestinationFile()
     {
-        return new File(getActivity().getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
+        return new File(getCacheDir().getAbsolutePath(), CommonConstants.DATABASE_NAME);
     }
 
     private String getFileName(Uri uri)
@@ -278,7 +274,7 @@ public class DatabaseFragment extends Fragment
         if (uri.toString().startsWith("content://")) {
             Cursor cursor = null;
             try {
-                cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+                cursor = getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
                     fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
@@ -307,7 +303,7 @@ public class DatabaseFragment extends Fragment
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Log.i(DatabaseFragment.this.getClass().getSimpleName(), "Error occurred while coping external db" + e);
+            Log.i(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping external db" + e);
         }
     }
 
@@ -321,7 +317,7 @@ public class DatabaseFragment extends Fragment
     {
         DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.warning),
                 getString(R.string.message_database_invalid));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(getActivity(), dialogConfiguration);
+        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
         customDialogBuilder.getBuilder().setCancelable(false);
         customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
         {
@@ -343,7 +339,7 @@ public class DatabaseFragment extends Fragment
 
     public String getCountQueryResult()
     {
-        long count = songDao.count();
-        return "select count(*) from songs \nResult: " + count;
+        String count = String.valueOf(songDao.count());
+        return String.format(getString(R.string.songs_count) , count);
     }
 }

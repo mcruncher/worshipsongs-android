@@ -74,4 +74,7 @@
     <string name="url">URL</string>
     <string name="import_database">Import database</string>
     <string name="revert_to_default_database">Revert to default database</string>
+    <string name="songs_count">"No. of songs: %1$s!"</string>
+    <string name="database">Database</string>
+    <string name="database_summary">Import database from external storage and remote URL</string>
 </resources>

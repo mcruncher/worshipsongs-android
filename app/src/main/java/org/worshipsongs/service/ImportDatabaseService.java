@@ -4,6 +4,7 @@ package org.worshipsongs.service;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 public interface ImportDatabaseService
 {
-    void loadDb(Context context, Map<String, Object> objects);
+    void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects);
 
     //void setProgressBar(ProgressBar progressBar);
 

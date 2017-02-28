@@ -51,8 +51,8 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
     {
         String text = textView.getText().toString();
         textView.setText("");
-        customTagColorService.setCustomTagTextView(textView, text, preferenceSettingService.getPresentationPrimaryColor(),
-                preferenceSettingService.getPresentationSecondaryColor());
+        customTagColorService.setCustomTagTextView(textView, text, preferenceSettingService.getPrimaryColor(),
+                preferenceSettingService.getSecondaryColor());
         textView.setTextSize(preferenceSettingService.getPortraitFontSize());
         textView.setTextColor(preferenceSettingService.getPrimaryColor());
         textView.setVerticalScrollBarEnabled(true);
