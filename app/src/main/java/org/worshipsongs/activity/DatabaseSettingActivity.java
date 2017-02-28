@@ -1,5 +1,6 @@
 package org.worshipsongs.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -132,7 +133,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
         public void onClick(View v)
         {
             DialogConfiguration dialogConfiguration = new DialogConfiguration("",
-                   getString(R.string.message_database_confirmation));
+                    getString(R.string.message_database_confirmation));
             CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
             customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
             {
@@ -166,13 +167,13 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     private void setResultTextView()
     {
-        resultTextView = (TextView)findViewById(R.id.result_textview);
-        //resultTextView.setText(getCountQueryResult());
+        resultTextView = (TextView) findViewById(R.id.result_textview);
+        resultTextView.setText(getCountQueryResult());
     }
 
     private void setProgressBar()
     {
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -339,7 +340,13 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     public String getCountQueryResult()
     {
-        String count = String.valueOf(songDao.count());
-        return String.format(getString(R.string.songs_count) , count);
+        String count = null;
+        try {
+            count = String.valueOf(songDao.count());
+        } catch (Exception e) {
+            count = "";
+        }
+        return String.format(getString(R.string.songs_count), count);
     }
+
 }

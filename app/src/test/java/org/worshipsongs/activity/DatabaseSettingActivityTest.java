@@ -1,11 +1,10 @@
 package org.worshipsongs.activity;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
+
+
 import android.os.Build;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.widget.Button;
 
 import org.junit.Before;
@@ -15,7 +14,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.worshipsongs.activity.DatabaseSettingActivity;
+import org.robolectric.shadows.ShadowDialog;
 import org.worshipsongs.worship.BuildConfig;
 import org.worshipsongs.worship.R;
 
@@ -38,17 +37,6 @@ public class DatabaseSettingActivityTest
     public void setUp()
     {
         databaseSettingActivity = Robolectric.setupActivity(DatabaseSettingActivity.class);
-//        FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class)
-//                .create()
-//                .start()
-//                .resume()
-//                .get();
-//
-//        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-//        fragmentManager.executePendingTransactions();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(databaseSettingActivity, null);
-//        fragmentTransaction.commit();
     }
 
     @Test
@@ -60,17 +48,15 @@ public class DatabaseSettingActivityTest
         assertEquals(-1, importDataBaseButton.getTextColors().getDefaultColor());
     }
 
-
     @Test
     public void testOnClickImportDatabaseButton()
     {
         System.out.println("--onClickImportDatabaseButton--");
         Button importDataBaseButton = (Button) databaseSettingActivity.findViewById(R.id.upload_database_button);
         assertTrue(importDataBaseButton.performClick());
-       // AlertDialog latestAlertDialog = ShadowAlertDialog.getLatestAlertDialog();
-        // ShadowAlertDialog shadowAlertDialog = shadowOf(latestAlertDialog);
+        AlertDialog dialog = (AlertDialog) ShadowDialog.getLatestDialog();
+        assertEquals(2, dialog.getListView().getAdapter().getCount());
     }
-
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
@@ -78,7 +64,6 @@ public class DatabaseSettingActivityTest
     {
         System.out.println("--revertToDefaultDatabaseButton--");
         Button defaultDatabaseButton = (Button) databaseSettingActivity.findViewById(R.id.default_database_button);
-        assertEquals(30.0, defaultDatabaseButton.getElevation(), 0);
         assertEquals(8, defaultDatabaseButton.getVisibility());
     }
 
@@ -96,12 +81,12 @@ public class DatabaseSettingActivityTest
         assertEquals("Are you sure that you want to revert to the default database?",
                 databaseSettingActivity.getString(R.string.message_database_confirmation));
         assertEquals("Warning", databaseSettingActivity.getString(R.string.warning));
-        assertEquals("You have chosen an invalid database! Please choose a valid database",
+        assertEquals("You have chosen an invalid database! Please choose a valid database.",
                 databaseSettingActivity.getString(R.string.message_database_invalid));
         assertEquals("Import database from", databaseSettingActivity.getString(R.string.type));
         assertEquals("Database copied successfully", databaseSettingActivity.getString(R.string.message_database_successfull));
         assertEquals("Make sure your device is connected to the internet. You can configure either Settings ->" +
-                " Wi-Fi or Settings -> Mobile Data", databaseSettingActivity.getString(R.string.message_network_warning));
+                " Wi-Fi or Settings -> Mobile Data.", databaseSettingActivity.getString(R.string.message_network_warning));
     }
 
     @Test
