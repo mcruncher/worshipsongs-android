@@ -1,9 +1,8 @@
 package org.worshipsongs.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.PresentationScreenService;
@@ -18,7 +17,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
 
-   private PresentationScreenService presentationScreenService;
+    private PresentationScreenService presentationScreenService;
 
     @Override
     public void init(Bundle bundle)
@@ -26,22 +25,28 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         presentationScreenService = new PresentationScreenService(this);
         this.addSubheader("");
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
-        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettingFragment()));
+        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
+        this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getPlayStore()));
     }
 
-    @NonNull
-    private Fragment getSettingFragment()
+   private Intent getSettings()
     {
-        return new Fragment()
-        {
-            @Override
-            public void onStart()
-            {
-                super.onStart();
-                Intent intent = new Intent(NavigationDrawerActivity.this, UserSettingActivity.class);
-                startActivity(intent);
-            }
-        };
+        return new Intent(NavigationDrawerActivity.this, UserSettingActivity.class);
+    }
+
+   private Intent getPlayStore()
+    {
+        Uri uri = Uri.parse("market://details?id=" + this.getApplicationContext().getPackageName());
+        Intent playStore = new Intent(Intent.ACTION_VIEW, uri);
+        playStore.addFlags(getFlags());
+        return playStore;
+    }
+
+    int getFlags()
+    {
+        return (Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
     }
 
     @Override

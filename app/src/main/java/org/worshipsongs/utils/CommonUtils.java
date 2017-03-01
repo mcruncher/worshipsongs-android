@@ -2,6 +2,7 @@ package org.worshipsongs.utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -31,5 +32,15 @@ public final class CommonUtils
     {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
         return defaultSharedPreferences.getBoolean("production", true);
+    }
+
+    public static boolean isJellyBeanMrOrGreater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
+
+    public static boolean isLollipopOrGreater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 }
