@@ -26,7 +26,7 @@ android {
         release {
             minifyEnabled false
             signingConfig signingConfigs.releaseConfig
-            testCoverageEnabled true
+            testCoverageEnabled false
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
@@ -107,7 +107,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     testCompile "org.robolectric:robolectric:3.2.2"
-//    testCompile "org.robolectric:shadows-support-v4:3.0"
 }
 
 
@@ -128,7 +127,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
                        '**/BuildConfig.*',
-                       '**/Manifest*.*']
+                       '**/Manifest*.*','**/**Test*']
     )
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
