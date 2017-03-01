@@ -1,19 +1,13 @@
 package org.worshipsongs.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ProgressBar;
 
-import org.worshipsongs.CommonConstants;
 import org.worshipsongs.service.ImportDatabaseService;
 
 import java.util.Map;
-
-import static android.R.attr.fragment;
 
 /**
  * Author : Madasamy
