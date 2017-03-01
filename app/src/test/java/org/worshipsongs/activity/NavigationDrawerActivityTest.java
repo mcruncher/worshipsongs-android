@@ -46,6 +46,7 @@ public class NavigationDrawerActivityTest
         assertEquals("Song Book", RuntimeEnvironment.application.getApplicationContext().getString(R.string.home));
         assertEquals("Rate this app", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
         assertEquals("Feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
+        assertEquals("Version:",  RuntimeEnvironment.application.getApplicationContext().getString(R.string.version));
     }
 
 }

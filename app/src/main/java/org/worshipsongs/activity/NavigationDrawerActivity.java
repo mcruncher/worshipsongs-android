@@ -1,14 +1,19 @@
 package org.worshipsongs.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.PresentationScreenService;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 /**
  * author:Madasamy
@@ -30,6 +35,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getPlayStore()));
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
         this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
+        this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionClickListener()));
     }
 
     private Intent getSettings()
@@ -69,6 +75,18 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback));
         return Intent.createChooser(mailIntent, "");
+    }
+
+    private MaterialSectionListener getVersionClickListener()
+    {
+        return new MaterialSectionListener()
+        {
+            @Override
+            public void onClick(MaterialSection section)
+            {
+
+            }
+        };
     }
 
     @Override

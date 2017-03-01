@@ -2,9 +2,11 @@ package org.worshipsongs.utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -42,5 +44,17 @@ public final class CommonUtils
     public static boolean isLollipopOrGreater()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static String getProjectVersion()
+    {
+        String version = "";
+        try {
+            version = WorshipSongApplication.getContext().getPackageManager().getPackageInfo(
+                    WorshipSongApplication.getContext().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("CommonUtils", "Error occurred while finding version");
+        }
+        return version;
     }
 }

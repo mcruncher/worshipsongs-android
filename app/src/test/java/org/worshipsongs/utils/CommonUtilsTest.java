@@ -55,4 +55,12 @@ public class CommonUtilsTest
         System.out.println("--IsNotLollipop--");
         assertFalse(CommonUtils.isLollipopOrGreater());
     }
+
+    //Note: Update this test every major release
+    @Test
+    public void testGetProjectVersion()
+    {
+        String version = CommonUtils.getProjectVersion();
+        assertTrue(version.contains("3."));
+    }
 }
