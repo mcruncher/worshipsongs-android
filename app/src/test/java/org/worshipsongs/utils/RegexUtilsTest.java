@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  * @author: Madasamy
  * @version: 2.4.0
  */
-public class StringUtilsTest
+public class RegexUtilsTest
 {
     @Test
     public void testGetMatchString_1()

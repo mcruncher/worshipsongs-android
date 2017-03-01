@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp">
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="foooooo"
+        android:visibility="gone"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_rounded_corner"
+        android:hint="@string/playlist_name_hint"
+        android:textColor="@color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@null"
+        android:layout_below="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:maxLines="5"
+        android:theme="@style/CustomEditTextTheme"
+        android:layout_marginTop="10dp">
+        <requestFocus/>
+    </EditText>
+
+
+</RelativeLayout>

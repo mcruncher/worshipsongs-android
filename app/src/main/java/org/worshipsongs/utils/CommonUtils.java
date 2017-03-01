@@ -1,8 +1,13 @@
 package org.worshipsongs.utils;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import org.worshipsongs.WorshipSongApplication;
 
 /**
  * Author : madasamy
@@ -20,5 +25,11 @@ public final class CommonUtils
             view = new View(activity);
         }
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static boolean isProductionMode()
+    {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+        return defaultSharedPreferences.getBoolean("production", true);
     }
 }

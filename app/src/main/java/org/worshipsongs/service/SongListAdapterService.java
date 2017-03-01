@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -27,7 +24,7 @@ import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.fragment.ListDialogFragment;
+import org.worshipsongs.dialog.ListDialogFragment;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -96,7 +93,7 @@ public class SongListAdapterService
     private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager) {
         ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
         final String urlKey = song.getUrlKey();
-        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus()) {
+        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
             imageView.setVisibility(View.VISIBLE);
         }
         imageView.setOnClickListener(onClickPopupListener(song.getTitle(), fragmentManager));
@@ -133,7 +130,7 @@ public class SongListAdapterService
         final Song song = songDao.findContentsByTitle(songName);
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
-        menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.getPlayVideoStatus() && hidePlay);
+        menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
         MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
         presentSongMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()

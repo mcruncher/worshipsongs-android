@@ -42,7 +42,7 @@ public class SongContentViewActivity extends AppCompatActivity
         setContentView(R.layout.song_content_view);
         userPreferenceSettingService = new UserPreferenceSettingService();
         presentationScreenService = new PresentationScreenService(this);
-        if (userPreferenceSettingService.getKeepAwakeStatus()) {
+        if (userPreferenceSettingService.isKeepAwake()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         if (savedInstanceState != null) {

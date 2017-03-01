@@ -1,29 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<?xml version="1.0" encoding="utf-8"?><PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                                                        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:title="@string/pref_text_setting"
-        android:textColor="@color/background_floating_material_dark">
-        <org.worshipsongs.preference.FontDialogPreference
-            android:key="customFontSize"
-            android:summary="@string/font_size_summary"
-            android:title="Font" />
+    <PreferenceCategory android:title="@string/database">
+        <org.worshipsongs.preference.DatabaseSettingsPreference
+            android:summary="@string/database_summary"
+            android:title="@string/import_database_ttitle">
+        </org.worshipsongs.preference.DatabaseSettingsPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
-        <org.worshipsongs.picker.ColorPickerPreference
+        <org.worshipsongs.preference.FontDialogPreference
+            android:key="portraitFontSize"
+            android:summary="@string/font_size_summary"
+            android:defaultValue="20"
+            maxSize="30"
+            android:title="Font" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"
             android:summary="@string/secondary_summary"
-            android:title="@string/secondary_color" />
+            android:title="@string/secondary_color"
+            alphaSlider="true"/>
 
-        <org.worshipsongs.picker.ColorPickerPreference
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/COLOR_DARK_GRAY"
             android:key="primaryColor"
             android:summary="@string/primary_summary"
-            android:title="@string/primary_color" />
+            android:title="@string/primary_color"
+            alphaSlider="true"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_screen_settings">
+    <PreferenceCategory android:title="@string/presentation_color_settings_title">
+        <org.worshipsongs.preference.FontDialogPreference
+            android:key="landscapeFontSize"
+            android:summary="@string/font_size_summary"
+            android:defaultValue="28"
+            maxSize="50"
+            android:title="Font" />
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:defaultValue="@integer/COLOR_BLACK"
+            android:key="presentationBackgroundColor"
+            android:summary="@string/presentation_background_color_summary"
+            android:title="@string/background_color_title"
+            alphaSlider="true"/>
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:defaultValue="@integer/yellow"
+            android:key="presentationSecondaryColor"
+            android:summary="@string/presentation_secondary_color_summary"
+            android:title="@string/presentation_secondary_color_title"
+            alphaSlider="true"/>
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:defaultValue="@integer/white"
+            android:key="presentationPrimaryColor"
+            android:summary="@string/presentation_primary_color_summary"
+            android:title="@string/presentation_primary_color_title"
+            alphaSlider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/miscellaneous">
         <SwitchPreference
             android:defaultValue="true"
             android:enabled="true"
@@ -31,9 +67,7 @@
             android:summary="@string/awakeScreenSummary"
             android:title="@string/awakeScreenTitle" >
         </SwitchPreference>
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_video_settings">
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefVideoPlay"

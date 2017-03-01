@@ -4,7 +4,7 @@
     <color name="white">#ffffff</color>
     <color name="gray">#e0e0e0</color>
     <color name="clear">#00000000</color>
-    <color name="blue">#0066CC</color>
+    <color name="blue">#0066cc</color>
     <color name="darkGray">#787878</color>
     <color name="liteGray">#83373138</color>
     <color name="red_light">#ffff4444</color>
@@ -27,6 +27,7 @@
     <color name="light_green">#8bc34a</color>
     <color name="dark_green">#558b2f</color>
     <color name="tabsScrollColor">#ff99cc00</color>
+    <color name="teal">#26A69A</color>
 
     <color name="dark_brown">#880000</color>
     <color name="light_brown">#a20000</color>
@@ -47,4 +48,6 @@
 
     <color name="red">#dd3044</color>
     <color name="red_mild">	#ee6d6e</color>
+    <color name="empty">#00ffffff</color>
+
 </resources>

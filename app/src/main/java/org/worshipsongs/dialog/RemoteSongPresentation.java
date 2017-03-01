@@ -3,7 +3,7 @@ package org.worshipsongs.dialog;
 import android.annotation.TargetApi;
 import android.app.Presentation;
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +13,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.AuthorSongDao;
-import org.worshipsongs.domain.Author;
-import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
@@ -33,8 +29,7 @@ public class RemoteSongPresentation extends Presentation
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
-    private Context context;
-
+    // private Context context;
     private TextView songSlideTextView;
     private ImageView imageView;
     private ScrollView scrollView;
@@ -45,7 +40,7 @@ public class RemoteSongPresentation extends Presentation
     public RemoteSongPresentation(Context context, Display display)
     {
         super(context, display);
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -70,6 +65,7 @@ public class RemoteSongPresentation extends Presentation
     public void setImageViewVisibility(int visible)
     {
         imageView.setVisibility(visible);
+        imageView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
     }
 
     private void setScrollView()
@@ -81,6 +77,7 @@ public class RemoteSongPresentation extends Presentation
     public void setVerseVisibility(int visible)
     {
         scrollView.setVisibility(visible);
+        scrollView.setBackground(new ColorDrawable(preferenceSettingService.getPresentationBackgroundColor()));
     }
 
     private void setVerseView()
@@ -92,10 +89,10 @@ public class RemoteSongPresentation extends Presentation
     public void setVerse(String verse)
     {
         verseTextView.setText("");
-        customTagColorService.setCustomTagTextView(context, verse, verseTextView);
-        verseTextView.setTypeface(preferenceSettingService.getFontStyle());
+        customTagColorService.setCustomTagTextView(verseTextView, verse, preferenceSettingService.getPresentationPrimaryColor(),
+                preferenceSettingService.getPresentationSecondaryColor());
         verseTextView.setTextSize(preferenceSettingService.getLandScapeFontSize());
-        verseTextView.setTextColor(preferenceSettingService.getColor());
+        // verseTextView.setTextColor(preferenceSettingService.getPrimaryColor());
         verseTextView.setVerticalScrollBarEnabled(true);
     }
 
@@ -104,10 +101,12 @@ public class RemoteSongPresentation extends Presentation
         songTitleTextView = (TextView) findViewById(R.id.song_title);
     }
 
-    public void setSongTitleAndChord(String title, String chord)
+    public void setSongTitleAndChord(String title, String chord, int color)
     {
         songTitleTextView.setText("");
-        songTitleTextView.setText(" " + title + getChord(chord));
+        String formattedTitle = getResources().getString(R.string.title) +" " + title + " " + getChord(chord);
+        songTitleTextView.setText(formattedTitle);
+        songTitleTextView.setTextColor(color);
     }
 
     private String getChord(String chord)
@@ -122,13 +121,14 @@ public class RemoteSongPresentation extends Presentation
     private void setAuthorNameView()
     {
         authorNameTextView = (TextView) findViewById(R.id.author_name);
-        setAuthorName("");
     }
 
-    public void setAuthorName(String authorName)
+    public void setAuthorName(String authorName, int color)
     {
         authorNameTextView.setText("");
-        authorNameTextView.setText(" " + authorName);
+        String formattedAuthor = getResources().getString(R.string.author) + " " + authorName;
+        authorNameTextView.setText(formattedAuthor);
+        authorNameTextView.setTextColor(color);
     }
 
     private void setSongSlide()
@@ -136,16 +136,18 @@ public class RemoteSongPresentation extends Presentation
         songSlideTextView = (TextView) findViewById(R.id.song_slide);
     }
 
-    public void setSlidePosition(int position, int size)
+    public void setSlidePosition(int position, int size, int color)
     {
         songSlideTextView.setText("");
-        songSlideTextView.setText(getSongSlideValue(position, size));
+        String slidePosition = getResources().getString(R.string.slide) + " " + getSongSlideValue(position, size);
+        songSlideTextView.setText(slidePosition);
+        songSlideTextView.setTextColor(color);
     }
 
     private String getSongSlideValue(int currentPosition, int size)
     {
         int slidePosition = currentPosition + 1;
-        return " " + slidePosition + " of " + size;
+        return slidePosition + " of " + size;
     }
 
     @Override

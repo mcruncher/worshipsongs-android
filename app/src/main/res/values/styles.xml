@@ -34,11 +34,12 @@
         <item name="android:listPreferredItemHeightSmall">35dp</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.MinWidth">
-        <item name="background">@color/white</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <!--<item name="android:windowContentOverlay">@null</item>-->
+    <!--<item name="android:background">@color/white</item>-->
+    <!--<item name="background">@color/white</item>-->
+
+    <!--<item name="android:windowBackground">@color/white</item>-->
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
@@ -54,7 +55,13 @@
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomMedium">@android:color/transparent</item>
         <item name="android:centerMedium">@android:color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorAccent">@color/teal</item>
+        <item name="android:background">@color/white</item>
+
     </style>
+
 
     <style name="CustomSubheaderTheme">
         <item name="subheaderTitleColor">#FFF</item>
@@ -97,6 +104,17 @@
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/cardview_light_background</item>
+    </style>
+
+    <style name="CustomEditTextTheme" parent="TextAppearance.AppCompat">
+        <item name="android:width">5sp</item>
+        <item name="colorAccent">@android:color/holo_blue_dark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="CustomButtonTheme" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@android:color/holo_blue_light</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

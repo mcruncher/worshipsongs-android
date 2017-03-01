@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+              android:id="@+id/present_view"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
@@ -17,7 +19,7 @@
         android:background="@color/white"
         android:resizeMode="horizontal|vertical"
         android:scaleType="center"
-        android:src="@drawable/worship3"/>
+        android:src="@drawable/ic_launcher"/>
 
     <ScrollView
         android:id="@+id/verse_land_scape_scrollview"
@@ -58,58 +60,34 @@
                 android:weightSum="6">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/title"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
-                    android:textSize="@dimen/ten_sp"/>
-
-                <TextView
                     android:id="@+id/song_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
-                    android:textSize="@dimen/ten_sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/author"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
 
                 <TextView
                     android:id="@+id/author_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/slide"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
-                    android:textSize="@dimen/ten_sp"/>
 
                 <TextView
                     android:id="@+id/song_slide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:textColor="@color/dim_foreground_disabled_material_light"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/ten_sp"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

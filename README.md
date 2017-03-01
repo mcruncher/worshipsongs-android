@@ -38,13 +38,22 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
     </li>
     <li>
-        Manage song lists through "Playlists". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+        Manage your favourite list of songs through "Favourites". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
+    </li>
+    <li>
+        YouTube video support for selected songs.
+    </li>
+    <li>
+        Music Key support for selected songs.
     </li>
     <li>
         Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
     </li>
     <li>
         Keep the screen awake while viewing a song.
+    </li>
+    <li>
+        "Present song" on your TV or projector wireless (Miracast/WiDi) or via HDMI cable connection (MHL, SlimPort or Micro-HDMI port).
     </li>
     <li>
         Professional design with no ads.
@@ -71,7 +80,7 @@ You can create a new issue at our <a href="https://github.com/crunchersaspire/wo
 Q. I want to request a new feature. How do I go about that?
 </h4>
 <p>
-The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs. You can request for a new feature by creating an issue there.
+The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs-android. You can request for a new feature by creating an issue there.
 </p>
 
 <h4>
