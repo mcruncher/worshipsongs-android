@@ -3,12 +3,9 @@ package org.worshipsongs.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -20,6 +17,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
 
+    private static final String SENDER_MAIL = "crunchersaspire@gmail.com";
     private PresentationScreenService presentationScreenService;
 
     @Override
@@ -31,7 +29,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getPlayStore()));
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
-
+        this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
     }
 
     private Intent getSettings()
@@ -56,13 +54,21 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
 
     private Intent getShare()
     {
-        Intent shareIntent = new Intent(Intent.CATEGORY_APP_EMAIL);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_info));
         shareIntent.setType("text/plain");
         Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
+    }
 
+    private Intent getEmail()
+    {
+        Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
+        mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback));
+        return Intent.createChooser(mailIntent, "");
     }
 
     @Override

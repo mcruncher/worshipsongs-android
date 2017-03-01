@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -46,7 +45,7 @@ public class NavigationDrawerActivityTest
         assertEquals("Settings", RuntimeEnvironment.application.getApplicationContext().getString(R.string.settings));
         assertEquals("Song Book", RuntimeEnvironment.application.getApplicationContext().getString(R.string.home));
         assertEquals("Rate this app", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
+        assertEquals("Feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
     }
-
 
 }
