@@ -1,5 +1,6 @@
 package org.worshipsongs.service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -148,13 +150,18 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     {
         private File destinationFile = null;
-        private ProgressBar progressBar = (ProgressBar) objects.get(CommonConstants.PROGRESS_BAR_KEY);
+        private ProgressDialog progressDialog = new ProgressDialog(new ContextThemeWrapper(appCompatActivity, R.style.MyDialogTheme));
         private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
 
         @Override
         protected void onPreExecute()
         {
-            progressBar.setVisibility(View.VISIBLE);
+            progressDialog.setTitle(appCompatActivity.getString(R.string.downloading_title));
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.show();
         }
 
         @Override
@@ -174,9 +181,12 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 // Output stream to write file in SD card
                 OutputStream output = new FileOutputStream(destinationFile);
                 byte data[] = new byte[1024];
+                long total = 0;
+                progressDialog.setProgress(0);
                 while ((count = input.read(data)) != -1) {
-                    // Write data to file
+                    total += count;
                     output.write(data, 0, count);
+                    progressDialog.setProgress((int) ((total * 100) / lenghtOfFile));
                 }
                 output.flush();
                 output.close();
@@ -201,7 +211,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             } else {
                 showWarningDialog(resultTextView);
             }
-            progressBar.setVisibility(View.GONE);
+            progressDialog.cancel();
         }
     }
 
