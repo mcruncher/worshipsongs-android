@@ -10,7 +10,6 @@ android {
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
         versionName getCurrentVersionName()
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
