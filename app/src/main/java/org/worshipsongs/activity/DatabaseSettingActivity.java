@@ -56,7 +56,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private PresentationScreenService presentationScreenService;
-    private ProgressBar progressBar;
     private Button defaultDatabaseButton;
     private TextView resultTextView;
 
@@ -67,7 +66,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
         setContentView(R.layout.database_layout);
         setActionBar();
         setImportDatabaseButton();
-        setProgressBar();
         setDefaultDatabaseButton();
         setResultTextView();
         presentationScreenService = new PresentationScreenService(this);
@@ -118,8 +116,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
     {
         Map<String, Object> objectMap = new HashMap<String, Object>();
         objectMap.put(CommonConstants.INDEX_KEY, which);
-        objectMap.put(CommonConstants.PROGRESS_BAR_KEY, progressBar);
-        //objectMap.put(CommonConstants.FRAGMENT_KEY, DatabaseSettingActivity.this);
         objectMap.put(CommonConstants.TEXTVIEW_KEY, resultTextView);
         objectMap.put(CommonConstants.REVERT_DATABASE_BUTTON_KEY, defaultDatabaseButton);
         return objectMap;
@@ -176,12 +172,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
         resultTextView.setText(getCountQueryResult());
     }
 
-    private void setProgressBar()
-    {
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.GONE);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -196,8 +186,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-
-        progressBar.setVisibility(View.VISIBLE);
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
@@ -206,7 +194,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
                 }
                 break;
         }
-        progressBar.setVisibility(View.GONE);
         super.onActivityResult(requestCode, resultCode, intent);
     }
 

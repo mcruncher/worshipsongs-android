@@ -42,8 +42,6 @@ public class DatabaseSettingActivityTest
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
         sharedPreferences.edit().putBoolean("production", false).apply();
         databaseSettingActivity = Robolectric.setupActivity(DatabaseSettingActivity.class);
-
-
     }
 
     @Test
