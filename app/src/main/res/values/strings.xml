@@ -82,4 +82,9 @@
     <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
     <string name="import_database_successfull">Imported database successfully.</string>
     <string name="downloading_title">Downloading database...</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="feedback">Feedback</string>
+    <string name="version">Version:</string>
+    <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
+
 </resources>
