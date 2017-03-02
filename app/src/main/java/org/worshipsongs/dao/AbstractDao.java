@@ -49,9 +49,9 @@ public class AbstractDao
 
     protected SQLiteDatabase getDatabase()
     {
-//        if (database == null) {
-//            database = databaseHelper.openDataBase();
-//        }
-        return database = databaseHelper.openDataBase();
+        if (database == null) {
+            database = databaseHelper.openDataBase();
+        }
+        return database;
     }
 }

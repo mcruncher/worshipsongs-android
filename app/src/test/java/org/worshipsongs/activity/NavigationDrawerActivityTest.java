@@ -47,6 +47,9 @@ public class NavigationDrawerActivityTest
         assertEquals("Rate this app", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
         assertEquals("Feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
         assertEquals("Version:",  RuntimeEnvironment.application.getApplicationContext().getString(R.string.version));
+        assertEquals("Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by " +
+                "Tamil churches all over the world. Now, you can worship anytime, anywhere with" +
+                " all the lyrics you need.\n", RuntimeEnvironment.application.getApplicationContext().getString(R.string.app_description));
     }
 
 }

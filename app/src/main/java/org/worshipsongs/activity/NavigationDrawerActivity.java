@@ -1,10 +1,9 @@
 package org.worshipsongs.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.PresentationScreenService;
@@ -32,10 +31,10 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSubheader("");
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
-        this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getPlayStore()));
+        this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
         this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
-        this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionClickListener()));
+        this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 
     private Intent getSettings()
@@ -43,12 +42,24 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         return new Intent(NavigationDrawerActivity.this, UserSettingActivity.class);
     }
 
-    private Intent getPlayStore()
+    private MaterialSectionListener getRateThisAppOnClickListener()
     {
-        Uri uri = Uri.parse("market://details?id=" + this.getApplicationContext().getPackageName());
-        Intent playStore = new Intent(Intent.ACTION_VIEW, uri);
-        playStore.addFlags(getFlags());
-        return playStore;
+        return new MaterialSectionListener()
+        {
+            @Override
+            public void onClick(MaterialSection section)
+            {
+                Uri uri = Uri.parse("market://details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                goToMarket.addFlags(getFlags());
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName())));
+                }
+            }
+        };
     }
 
     int getFlags()
@@ -61,7 +72,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     private Intent getShare()
     {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_info));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.share_info));
         shareIntent.setType("text/plain");
         Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,7 +88,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         return Intent.createChooser(mailIntent, "");
     }
 
-    private MaterialSectionListener getVersionClickListener()
+    private MaterialSectionListener getVersionOnClickListener()
     {
         return new MaterialSectionListener()
         {
