@@ -21,7 +21,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
 
-    private static final String SENDER_MAIL = "crunchersaspire@gmail.com";
+    private static final String SENDER_MAIL = "technical@mcruncher.com";
     private PresentationScreenService presentationScreenService;
 
     @Override
