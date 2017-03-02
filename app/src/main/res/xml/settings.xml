@@ -80,7 +80,7 @@
     <PreferenceCategory android:title="@string/advanced">
         <org.worshipsongs.preference.DatabaseSettingsPreference
             android:summary="@string/database_summary"
-            android:title="@string/import_database_ttitle">
+            android:title="@string/import_database_title">
         </org.worshipsongs.preference.DatabaseSettingsPreference>
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="Reset all values to their defaults"
@@ -88,8 +88,8 @@
             android:negativeButtonText="No"
             android:persistent="false"
             android:positiveButtonText="Yes"
-            android:summary="Reset all settings to factory default"
-            android:title="Reset to default">
+            android:summary="@string/reset_default_summary"
+            android:title="@string/reset_default_title">
         </org.worshipsongs.service.ResetDefaultSettingsService>
     </PreferenceCategory>
 
