@@ -44,8 +44,8 @@ public class NavigationDrawerActivityTest
     {
         assertEquals("Settings", RuntimeEnvironment.application.getApplicationContext().getString(R.string.settings));
         assertEquals("Song Book", RuntimeEnvironment.application.getApplicationContext().getString(R.string.home));
-        assertEquals("Rate this app", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
-        assertEquals("Feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
+        assertEquals("Rate us", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
+        assertEquals("Send feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
         assertEquals("Version:",  RuntimeEnvironment.application.getApplicationContext().getString(R.string.version));
         assertEquals("Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by " +
                 "Tamil churches all over the world. Now, you can worship anytime, anywhere with" +
