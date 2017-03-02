@@ -91,7 +91,7 @@ def getCurrentVersionName() {
             versionProps["MINOR_VERSION"] = minorVersion
             versionProps.store(gradlePropertyFile.newWriter(), null)
         } else {
-            currentVersionName = majorVersion+"."+versionProps["MINOR_VERSION"]
+            currentVersionName = majorVersion+"."+minorVersion
         }
 
     }
