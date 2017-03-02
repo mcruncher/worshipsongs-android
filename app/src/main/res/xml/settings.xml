@@ -2,13 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<PreferenceCategory android:title="@string/database">-->
-    <!--<org.worshipsongs.preference.DatabaseSettingsPreference-->
-    <!--android:summary="@string/database_summary"-->
-    <!--android:title="@string/import_database_ttitle">-->
-    <!--</org.worshipsongs.preference.DatabaseSettingsPreference>-->
-    <!--</PreferenceCategory>-->
-
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
             maxSize="30"
