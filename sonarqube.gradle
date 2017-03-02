@@ -8,9 +8,9 @@ sonarqube {
     properties {
         def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar," +
                 "build/intermediates/exploded-aar/**/classes.jar"
-        property "sonar.host.url", "http://172.19.10.207:9000/sonar"
-        property "sonar.projectName", "worshipsongs"
-        property "sonar.projectKey", "worshipsongs"
+        property "sonar.host.url", "http://sonarqube.mcruncher.com"
+        property "sonar.projectName", "Worshipsongs::ANDROID"
+        property "sonar.projectKey", "songsandroid"
         property "sonar.projectVersion", AppVersion
 
         property "sonar.sourceEncoding","UTF-8"
