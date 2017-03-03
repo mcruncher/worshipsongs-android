@@ -10,7 +10,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:id="@+id/upload_database_button"
-        android:text="@string/import_database"
+        android:text="@string/import_database_title"
+        android:textAllCaps="false"
         android:theme="@style/CustomButtonTheme"/>
 
     <Button
@@ -22,6 +23,7 @@
         android:visibility="gone"
         android:layout_below="@+id/upload_database_button"
         android:layout_centerHorizontal="true"
+        android:textAllCaps="false"
         android:theme="@style/CustomButtonTheme"/>
 
     <TextView
@@ -37,13 +39,6 @@
         android:textSize="17sp"
         android:textColor="@color/darkGray"
         android:id="@+id/result_textview"/>
-
-    <WebView
-        android:id="@+id/note_webview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        />
+    
 
 </RelativeLayout>

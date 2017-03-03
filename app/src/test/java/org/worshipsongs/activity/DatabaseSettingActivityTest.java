@@ -78,13 +78,6 @@ public class DatabaseSettingActivityTest
         assertTrue(defaultDatabaseButton.performClick());
     }
 
-    @Test
-    public void testNoteWebtView()
-    {
-        WebView noteWebView = (WebView)databaseSettingActivity.findViewById(R.id.note_webview);
-        assertEquals(-1, noteWebView.getLayoutParams().width);
-        assertEquals(-2, noteWebView.getLayoutParams().height);
-    }
 
     @Test
     public void testProperties()
@@ -98,10 +91,6 @@ public class DatabaseSettingActivityTest
         assertEquals("Database copied successfully", databaseSettingActivity.getString(R.string.message_database_successfull));
         assertEquals("Make sure your device is connected to the internet. You can configure either Settings ->" +
                 " Wi-Fi or Settings -> Mobile Data.", databaseSettingActivity.getString(R.string.message_network_warning));
-        assertEquals("<html><p style=\"color:gray;\">Note:" +
-                " Import database should be OpenLp database." +
-                " For more information refer <a href=\"https://www.openlp.org\">OpenLp</a></p></html>",
-                databaseSettingActivity.getString(R.string.note_import_database));
     }
 
     @Test
