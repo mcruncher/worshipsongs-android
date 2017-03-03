@@ -31,7 +31,8 @@
     <string name="pref_video_settings">Video Settings</string>
     <string name="playVideoTitle">Play video</string>
     <string name="videoPlaySummary">Enable/Disable video playing</string>
-    <string name="pref_restore_default_settings">Restore Settings</string>
+    <!--<string name="pref_restore_default_settings">Restore Settings</string>-->
+    <string name="advanced">Advanced</string>
 
     <string name="Play">Play</string>
     <string name="remote_display_settings">Remote Display settings</string>
@@ -68,7 +69,7 @@
     <string name="message.database.confirmation">Are you sure that you want to revert to the default database?</string>
     <string name="message.database.successfull">Database copied successfully</string>
     <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
-    <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s?</string>
+    <string name="message.chooseDatabase.confirmation">Are you sure you want to import %1$s?</string>
     <string name="confirmation">Confirmation</string>
     <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
     <string name="url">URL</string>
@@ -76,10 +77,19 @@
     <string name="revert_to_default_database">Restore default database</string>
     <string name="songs_count">"No. of songs: %1$s"</string>
     <string name="database">Database</string>
-    <string name="database_summary">Import database from external storage and remote URL</string>
+    <string name="database_summary">Import database from external storage/remote URL or revert to default database</string>
     <string name="miscellaneous">Miscellaneous</string>
-    <string name="import_database_ttitle">External/Remote URL</string>
+    <string name="import_database_title">Import database</string>
     <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
     <string name="import_database_successfull">Imported database successfully.</string>
-    <string name="downloading_title">Downloading database...</string>
+    <string name="downloading_title"><![CDATA[Downloading database...]]></string>
+    <string name="rate_this_app">Rate us</string>
+    <string name="feedback">Send feedback</string>
+    <string name="version">Version:</string>
+    <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
+    <string name="reset_default_title">Reset to default</string>
+    <string name="reset_default_summary">Reset other settings to default</string>
+    <string name="note_import_database"><![CDATA[<html><p style=\"color:gray;\">Note: Import database should be OpenLp database. For more information refer <a href=\"https://www.openlp.org\">OpenLp</a></p></html>]]></string>
+
+
 </resources>

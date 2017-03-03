@@ -51,11 +51,12 @@ public class PresentationScreenService
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void onStop()
     {
         try {
             if (remoteSongPresentation != null) {
-                remoteSongPresentation.dismiss();
+                remoteSongPresentation.cancel();
                 remoteSongPresentation = null;
             }
         } catch (Exception ex) {

@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -77,6 +79,14 @@ public class DatabaseSettingActivityTest
     }
 
     @Test
+    public void testNoteWebtView()
+    {
+        WebView noteWebView = (WebView)databaseSettingActivity.findViewById(R.id.note_webview);
+        assertEquals(-1, noteWebView.getLayoutParams().width);
+        assertEquals(-2, noteWebView.getLayoutParams().height);
+    }
+
+    @Test
     public void testProperties()
     {
         assertEquals("Are you sure that you want to revert to the default database?",
@@ -88,6 +98,10 @@ public class DatabaseSettingActivityTest
         assertEquals("Database copied successfully", databaseSettingActivity.getString(R.string.message_database_successfull));
         assertEquals("Make sure your device is connected to the internet. You can configure either Settings ->" +
                 " Wi-Fi or Settings -> Mobile Data.", databaseSettingActivity.getString(R.string.message_network_warning));
+        assertEquals("<html><p style=\"color:gray;\">Note:" +
+                " Import database should be OpenLp database." +
+                " For more information refer <a href=\"https://www.openlp.org\">OpenLp</a></p></html>",
+                databaseSettingActivity.getString(R.string.note_import_database));
     }
 
     @Test
