@@ -1,7 +1,9 @@
 package org.worshipsongs.activity;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -84,8 +86,18 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
         mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
         mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback));
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getEmailSubject(getApplicationContext()));
         return Intent.createChooser(mailIntent, "");
+    }
+
+    String getEmailSubject(Context context) {
+        try {
+            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            return String.format(context.getString(R.string.feedback_subject) , versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return getString(R.string.feedback);
+        }
     }
 
     private MaterialSectionListener getVersionOnClickListener()
