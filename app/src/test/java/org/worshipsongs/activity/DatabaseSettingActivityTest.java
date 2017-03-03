@@ -47,7 +47,7 @@ public class DatabaseSettingActivityTest
     {
         System.out.println("--importDatabaseButton--");
         Button importDataBaseButton = (Button) databaseSettingActivity.findViewById(R.id.upload_database_button);
-        assertEquals("Import database", importDataBaseButton.getText());
+        assertEquals("Import OpenLP database", importDataBaseButton.getText());
         assertEquals(-1, importDataBaseButton.getTextColors().getDefaultColor());
     }
 
@@ -87,7 +87,7 @@ public class DatabaseSettingActivityTest
         assertEquals("Warning", databaseSettingActivity.getString(R.string.warning));
         assertEquals("You have chosen an invalid database! Please choose a valid database.",
                 databaseSettingActivity.getString(R.string.message_database_invalid));
-        assertEquals("Import database from", databaseSettingActivity.getString(R.string.type));
+        assertEquals("Import OpenLP database from", databaseSettingActivity.getString(R.string.type));
         assertEquals("Database copied successfully", databaseSettingActivity.getString(R.string.message_database_successfull));
         assertEquals("Make sure your device is connected to the internet. You can configure either Settings ->" +
                 " Wi-Fi or Settings -> Mobile Data.", databaseSettingActivity.getString(R.string.message_network_warning));

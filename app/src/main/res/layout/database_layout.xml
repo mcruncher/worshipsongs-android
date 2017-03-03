@@ -39,6 +39,5 @@
         android:textSize="17sp"
         android:textColor="@color/darkGray"
         android:id="@+id/result_textview"/>
-    
 
 </RelativeLayout>
