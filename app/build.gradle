@@ -1,5 +1,12 @@
+plugins {
+    id "org.sonarqube" version "1.2"
+}
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+apply from: '../sonarqube.gradle'
 
+def APP_VERSION = getCurrentVersionName()
+ext.set('AppVersion', APP_VERSION)
 
 android {
     compileSdkVersion 23
@@ -9,7 +16,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
-        versionName getCurrentVersionName()
+        versionName APP_VERSION
     }
 
     signingConfigs {
@@ -56,8 +63,13 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
+
     lintOptions {
         abortOnError false
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 
 }
@@ -79,7 +91,7 @@ def getCurrentVersionName() {
             versionProps["MINOR_VERSION"] = minorVersion
             versionProps.store(gradlePropertyFile.newWriter(), null)
         } else {
-            currentVersionName = majorVersion+"."+versionProps["MINOR_VERSION"]
+            currentVersionName = majorVersion+"."+minorVersion
         }
 
     }
@@ -108,12 +120,10 @@ dependencies {
     testCompile 'org.robolectric:robolectric:3.2.2'
 }
 
-
-apply plugin: 'jacoco'
-
+//Jacoco configuration
 jacoco {
     // https://github.com/jacoco/jacoco/issues/288
-    toolVersion = "0.7.1.201405082137"
+    toolVersion = "0.7.5.201505241946"
 }
 
 def coverageSourceDirs = ['../app/src']
@@ -137,5 +147,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
         html.enabled = true
     }
 }
+
+
+
 
 
