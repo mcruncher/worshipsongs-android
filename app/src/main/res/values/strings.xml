@@ -69,7 +69,7 @@
     <string name="message.database.confirmation">Are you sure that you want to revert to the default database?</string>
     <string name="message.database.successfull">Database copied successfully</string>
     <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
-    <string name="message.chooseDatabase.confirmation">Are you sure want to choose %1$s?</string>
+    <string name="message.chooseDatabase.confirmation">Are you sure you want to import %1$s?</string>
     <string name="confirmation">Confirmation</string>
     <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
     <string name="url">URL</string>
@@ -89,5 +89,7 @@
     <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
     <string name="reset_default_title">Reset to default</string>
     <string name="reset_default_summary">Reset other settings to default</string>
+    <string name="note_import_database"><![CDATA[<html><p style=\"color:gray;\">Note: Import database should be OpenLp database. For more information refer <a href=\"https://www.openlp.org\">OpenLp</a></p></html>]]></string>
+
 
 </resources>

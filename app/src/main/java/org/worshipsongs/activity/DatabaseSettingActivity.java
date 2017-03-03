@@ -12,16 +12,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.w3c.dom.Text;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
@@ -40,6 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Author : Madasamy
@@ -64,8 +70,10 @@ public class DatabaseSettingActivity extends AppCompatActivity
         setImportDatabaseButton();
         setDefaultDatabaseButton();
         setResultTextView();
+        setNoteTextView();
         presentationScreenService = new PresentationScreenService(this);
     }
+
 
     private void setActionBar()
     {
@@ -166,6 +174,13 @@ public class DatabaseSettingActivity extends AppCompatActivity
     {
         resultTextView = (TextView) findViewById(R.id.result_textview);
         resultTextView.setText(getCountQueryResult());
+    }
+
+    private void setNoteTextView()
+    {
+        WebView noteWebView = (WebView) findViewById(R.id.note_webview);
+        noteWebView.getSettings().setJavaScriptEnabled(true);
+        noteWebView.loadData(getString(R.string.note_import_database), "text/html", "UTF-8");
     }
 
     @Override
