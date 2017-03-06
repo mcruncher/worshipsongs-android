@@ -27,7 +27,6 @@
 
         <activity
             android:name="org.worshipsongs.activity.NavigationDrawerActivity"
-            android:launchMode="singleTask"
             android:theme="@style/MaterialAppTheme">
             <meta-data
                 android:name="android.app.searchable"
