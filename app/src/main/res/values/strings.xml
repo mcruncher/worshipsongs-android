@@ -61,6 +61,8 @@
     <string name="share.info">Content shared from:
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
+     <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs
+    </string>
 
     <string name="background_color">Background color</string>
     <string name="warning">Warning</string>
