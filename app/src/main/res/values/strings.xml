@@ -77,7 +77,7 @@
     <string name="revert_to_default_database">Restore default database</string>
     <string name="songs_count">"No. of songs: %1$s"</string>
     <string name="database">Database</string>
-    <string name="database_summary">Import OpenLP database from external storage/remote URL or revert to default database</string>
+    <string name="database_summary">Import OpenLP database from local storage/remote URL or revert to default database</string>
     <string name="miscellaneous">Miscellaneous</string>
     <string name="import_database_title">Import OpenLP database</string>
     <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
