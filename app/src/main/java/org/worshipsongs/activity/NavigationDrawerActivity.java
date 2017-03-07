@@ -74,7 +74,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     private Intent getShare()
     {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.share_info));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.app_download_info));
         shareIntent.setType("text/plain");
         Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -90,10 +90,11 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         return Intent.createChooser(mailIntent, "");
     }
 
-    String getEmailSubject(Context context) {
+    String getEmailSubject(Context context)
+    {
         try {
             String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            return String.format(context.getString(R.string.feedback_subject) , versionName);
+            return String.format(context.getString(R.string.feedback_subject), versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return getString(R.string.feedback);
