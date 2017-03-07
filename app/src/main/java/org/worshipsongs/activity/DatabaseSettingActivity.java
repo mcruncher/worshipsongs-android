@@ -70,7 +70,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
         setImportDatabaseButton();
         setDefaultDatabaseButton();
         setResultTextView();
-        setNoteTextView();
         presentationScreenService = new PresentationScreenService(this);
     }
 
@@ -176,12 +175,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
         resultTextView.setText(getCountQueryResult());
     }
 
-    private void setNoteTextView()
-    {
-        WebView noteWebView = (WebView) findViewById(R.id.note_webview);
-        noteWebView.getSettings().setJavaScriptEnabled(true);
-        noteWebView.loadData(getString(R.string.note_import_database), "text/html", "UTF-8");
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)

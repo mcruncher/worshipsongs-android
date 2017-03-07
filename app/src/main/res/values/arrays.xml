@@ -1,52 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="setFont">
-        <item name="1">SMALL</item>
-        <item name="2">MEDIUM</item>
-        <item name="3">NORMAL</item>
-        <item name="4">HIGH</item>
-    </string-array>
-    <string-array name="setFontValues">
-        <item name="1">SMALL</item>
-        <item name="2">MEDIUM</item>
-        <item name="3">NORMAL</item>
-        <item name="4">HIGH</item>
-    </string-array>
-    <string-array name="setFontStyle">
-        <item name="1">BOLD</item>
-        <item name="2">BOLD_ITALIC</item>
-        <item name="3">ITALIC</item>
-        <item name="4">NORMAL</item>
-    </string-array>
-    <string-array name="setFontStyleValues">
-        <item name="1">BOLD</item>
-        <item name="2">BOLD_ITALIC</item>
-        <item name="3">ITALIC</item>
-        <item name="4">NORMAL</item>
-    </string-array>
-    <string-array name="fontFaces">
-        <item name="1">DEFAULT</item>
-        <item name="2">DEFAULT_BOLD</item>
-        <item name="3">MONOSPACE</item>
-        <item name="4">SANS_SERIF</item>
-        <item name="5">SERIF</item>
-    </string-array>
-
-
-
-    <string-array name="customTagArray">
-        <item></item>
-    </string-array>
-
-    <string-array name="customTagValues">
-        <item></item>
-    </string-array>
-
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-
     <string-array name="dataBaseTypes">
         <item name="1">Remote URL</item>
-        <item name="2">External storage</item>
+        <item name="2">Local storage</item>
     </string-array>
 </resources>

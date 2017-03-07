@@ -1,7 +1,9 @@
 package org.worshipsongs.activity;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -72,7 +74,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     private Intent getShare()
     {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.share_info));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.app_download_info));
         shareIntent.setType("text/plain");
         Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -84,8 +86,19 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
         mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
         mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback));
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getEmailSubject(getApplicationContext()));
         return Intent.createChooser(mailIntent, "");
+    }
+
+    String getEmailSubject(Context context)
+    {
+        try {
+            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            return String.format(context.getString(R.string.feedback_subject), versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return getString(R.string.feedback);
+        }
     }
 
     private MaterialSectionListener getVersionOnClickListener()
