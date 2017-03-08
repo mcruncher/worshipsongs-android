@@ -155,14 +155,7 @@ public class SongContentViewActivity extends AppCompatActivity
     {
         super.onSaveInstanceState(outState);
     }
-
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-
-    }
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -172,7 +165,6 @@ public class SongContentViewActivity extends AppCompatActivity
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu)
