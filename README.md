@@ -62,6 +62,9 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Import OpenLP database from remote URL and local storage
     </li>
     <li>
+        Option to share this app in social media, send us feedback and rate this app.
+    </li>
+    <li>
         Copy part of song
     </li>
     <li>
