@@ -56,6 +56,18 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         "Present song" on your TV or projector wireless (Miracast/WiDi) or via HDMI cable connection (MHL, SlimPort or Micro-HDMI port).
     </li>
     <li>
+        Choose font color and background color for primary and secondary screen
+    </li>
+    <li>
+        Import OpenLP database from remote URL and local storage
+    </li>
+    <li>
+        Option to share this app in social media, send us feedback and rate this app.
+    </li>
+    <li>
+        Copy part of song
+    </li>
+    <li>
         Professional design with no ads.
     </li>
  </ul>
