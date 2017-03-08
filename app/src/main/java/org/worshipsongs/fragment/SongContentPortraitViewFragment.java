@@ -4,9 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +25,6 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.youtube.player.YouTubePlayer;
-
-import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -40,6 +35,7 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -54,13 +50,12 @@ import java.util.ArrayList;
 
 public class SongContentPortraitViewFragment extends Fragment
 {
-    private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
+    public static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
     private ArrayList<String> tilteList;
     private int millis;
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService;
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private AuthorSongDao authorSongDao;
     private SongListAdapterService songListAdapterService;
@@ -73,7 +68,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private int currentPosition;
     private FloatingActionButton presentSongFloatingButton;
     private PresentationScreenService presentationScreenService;
-
+    private CustomTagColorService customTagColorService = new CustomTagColorService();
 
 
     public static SongContentPortraitViewFragment newInstance(String title, ArrayList<String> titles)
@@ -160,12 +155,13 @@ public class SongContentPortraitViewFragment extends Fragment
     }
 
 
-    private void setListView(View view, Song song)
+    private void setListView(View view, final Song song)
     {
         listView = (ListView) view.findViewById(R.id.content_list);
         presentSongCardViewAdapter = new PresentSongCardViewAdapter(getActivity(), song.getContents());
         listView.setAdapter(presentSongCardViewAdapter);
         listView.setOnItemClickListener(new ListViewOnItemClickListener());
+        listView.setOnItemLongClickListener(new ListViewOnItemLongClickListener());
     }
 
     private void setFloatingActionMenu(final View view, Song song)
@@ -397,6 +393,40 @@ public class SongContentPortraitViewFragment extends Fragment
                 nextButton.setVisibility(View.VISIBLE);
                 previousButton.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private class ListViewOnItemLongClickListener implements AdapterView.OnItemLongClickListener
+    {
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (isCopySelectedVerse()) {
+                String selectedVerse = song.getContents().get(position);
+                shareSongInSocialMedia(selectedVerse);
+                presentSongCardViewAdapter.setItemSelected(position);
+                presentSongCardViewAdapter.notifyDataSetChanged();
+            }
+            return false;
+        }
+
+        void shareSongInSocialMedia(String selectedText)
+        {
+            String formattedContent = song.getTitle() + "\n\n" +
+                    customTagColorService.getFormattedLines(selectedText) + "\n" + getContext().getString(R.string.share_info);
+            Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+            textShareIntent.putExtra(Intent.EXTRA_TEXT, formattedContent);
+            textShareIntent.setType("text/plain");
+            Intent intent = Intent.createChooser(textShareIntent, "Share verse with...");
+            getContext().startActivity(intent);
+        }
+
+        boolean isCopySelectedVerse()
+        {
+            return !isPresentSong() ||((isPlayVideo(song.getUrlKey()) && floatingActionMenu != null && floatingActionMenu.getVisibility() == View.VISIBLE) ||
+                    (presentSongFloatingButton != null && presentSongFloatingButton.getVisibility() == View.VISIBLE));
+
         }
     }
 
