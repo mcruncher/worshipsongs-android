@@ -2,12 +2,11 @@ package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -16,6 +15,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -62,7 +64,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
     private ListView listView;
-    private static PresentSongCardViewAdapter presentSongCardViewAdapter;
+    private  PresentSongCardViewAdapter presentSongCardViewAdapter;
     private FloatingActionButton nextButton;
     private FloatingActionButton previousButton;
     private int currentPosition;
@@ -84,6 +86,7 @@ public class SongContentPortraitViewFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+
         final View view = inflater.inflate(R.layout.song_content_portrait_view, container, false);
         initSetUp();
         setBackImageView(view);
@@ -94,6 +97,7 @@ public class SongContentPortraitViewFragment extends Fragment
         setNextButton(view);
         setPreviousButton(view);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
+       // ((SongContentViewActivity)getActivity()).setBackListener(new BackListener(presentSongCardViewAdapter, getActivity()));
         return view;
     }
 
@@ -404,11 +408,37 @@ public class SongContentPortraitViewFragment extends Fragment
         {
             if (isCopySelectedVerse()) {
                 String selectedVerse = song.getContents().get(position);
+
                 shareSongInSocialMedia(selectedVerse);
-                presentSongCardViewAdapter.setItemSelected(position);
-                presentSongCardViewAdapter.notifyDataSetChanged();
+                view.startAnimation(getAnimation(position));
             }
             return false;
+        }
+
+        @NonNull
+        private Animation getAnimation(final int position)
+        {
+            Animation fadeIn =  AnimationUtils.loadAnimation(getActivity(), R.anim.splash_fade_in);
+            fadeIn.setInterpolator(new AccelerateInterpolator());
+            fadeIn.setDuration(600);
+            fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    presentSongCardViewAdapter.setItemSelected(position);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    presentSongCardViewAdapter.setItemSelected(-1);
+                    presentSongCardViewAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            return fadeIn;
         }
 
         void shareSongInSocialMedia(String selectedText)
@@ -562,8 +592,6 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
-
-
     public PresentationScreenService getPresentationScreenService()
     {
         return presentationScreenService;
@@ -572,14 +600,6 @@ public class SongContentPortraitViewFragment extends Fragment
     public void setPresentationScreenService(PresentationScreenService presentationScreenService)
     {
         this.presentationScreenService = presentationScreenService;
-    }
-
-    public static void onBackPressed()
-    {
-        if (presentSongCardViewAdapter != null) {
-            presentSongCardViewAdapter.setItemSelected(-1);
-            presentSongCardViewAdapter.notifyDataSetChanged();
-        }
     }
 
 }

@@ -155,17 +155,7 @@ public class SongContentViewActivity extends AppCompatActivity
     {
         super.onSaveInstanceState(outState);
     }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch (requestCode) {
-            case 1:
-                SongContentPortraitViewFragment.onBackPressed();
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
