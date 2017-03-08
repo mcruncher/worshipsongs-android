@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Worship songs</string>
+    <string name="app_name">Tamil Christian Worship Songs </string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="ok">Ok</string>
@@ -61,6 +61,7 @@
     <string name="share.info">Content shared from:
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
+    <string name="verse_share_info">Content shared from</string>
      <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
 

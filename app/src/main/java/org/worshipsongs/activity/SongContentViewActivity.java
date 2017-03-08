@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.Setting;
+import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
@@ -152,6 +154,25 @@ public class SongContentViewActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode) {
+            case 1:
+                SongContentPortraitViewFragment.onBackPressed();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu)

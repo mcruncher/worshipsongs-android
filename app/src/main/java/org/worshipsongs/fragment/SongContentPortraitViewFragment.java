@@ -62,7 +62,7 @@ public class SongContentPortraitViewFragment extends Fragment
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
     private ListView listView;
-    private PresentSongCardViewAdapter presentSongCardViewAdapter;
+    private static PresentSongCardViewAdapter presentSongCardViewAdapter;
     private FloatingActionButton nextButton;
     private FloatingActionButton previousButton;
     private int currentPosition;
@@ -414,17 +414,18 @@ public class SongContentPortraitViewFragment extends Fragment
         void shareSongInSocialMedia(String selectedText)
         {
             String formattedContent = song.getTitle() + "\n\n" +
-                    customTagColorService.getFormattedLines(selectedText) + "\n" + getContext().getString(R.string.share_info);
+                    customTagColorService.getFormattedLines(selectedText) + "\n" + getContext().getString(R.string.verse_share_info) +" "+
+                    getContext().getString(R.string.app_name);
             Intent textShareIntent = new Intent(Intent.ACTION_SEND);
             textShareIntent.putExtra(Intent.EXTRA_TEXT, formattedContent);
             textShareIntent.setType("text/plain");
             Intent intent = Intent.createChooser(textShareIntent, "Share verse with...");
-            getContext().startActivity(intent);
+            getActivity().startActivityForResult(intent, 1);
         }
 
         boolean isCopySelectedVerse()
         {
-            return !isPresentSong() ||((isPlayVideo(song.getUrlKey()) && floatingActionMenu != null && floatingActionMenu.getVisibility() == View.VISIBLE) ||
+            return !isPresentSong() || ((isPlayVideo(song.getUrlKey()) && floatingActionMenu != null && floatingActionMenu.getVisibility() == View.VISIBLE) ||
                     (presentSongFloatingButton != null && presentSongFloatingButton.getVisibility() == View.VISIBLE));
 
         }
@@ -561,6 +562,8 @@ public class SongContentPortraitViewFragment extends Fragment
         }
     }
 
+
+
     public PresentationScreenService getPresentationScreenService()
     {
         return presentationScreenService;
@@ -569,6 +572,14 @@ public class SongContentPortraitViewFragment extends Fragment
     public void setPresentationScreenService(PresentationScreenService presentationScreenService)
     {
         this.presentationScreenService = presentationScreenService;
+    }
+
+    public static void onBackPressed()
+    {
+        if (presentSongCardViewAdapter != null) {
+            presentSongCardViewAdapter.setItemSelected(-1);
+            presentSongCardViewAdapter.notifyDataSetChanged();
+        }
     }
 
 }
