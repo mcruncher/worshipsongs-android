@@ -97,7 +97,6 @@ public class SongContentPortraitViewFragment extends Fragment
         setNextButton(view);
         setPreviousButton(view);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
-       // ((SongContentViewActivity)getActivity()).setBackListener(new BackListener(presentSongCardViewAdapter, getActivity()));
         return view;
     }
 
