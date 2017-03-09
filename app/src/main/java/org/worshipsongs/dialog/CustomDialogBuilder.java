@@ -2,6 +2,7 @@ package org.worshipsongs.dialog;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -54,7 +55,8 @@ public class CustomDialogBuilder
     private void setMessage(View promptsView, DialogConfiguration dialogConfiguration)
     {
         TextView messageTextView = (TextView) promptsView.findViewById(R.id.message);
-        messageTextView.setText(dialogConfiguration.getMessage());
+
+        messageTextView.setText(Html.fromHtml(dialogConfiguration.getMessage()),TextView.BufferType.SPANNABLE);
         messageTextView.setVisibility(dialogConfiguration.getMessage().isEmpty() ? View.GONE : View.VISIBLE);
     }
 

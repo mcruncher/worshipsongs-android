@@ -9,31 +9,33 @@
                 android:paddingRight="20dp"
                 android:paddingStart="20dp"
                 android:paddingTop="20dp">
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="foooooo"
-        android:visibility="gone"
-        android:textSize="17sp" />
 
     <EditText
         android:id="@+id/name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_rounded_corner"
-        android:hint="@string/playlist_name_hint"
+        android:hint="Enter OpenLP database URL"
         android:textColor="@color/black"
         android:textColorHint="@android:color/darker_gray"
         android:textCursorDrawable="@null"
-        android:layout_below="@+id/message"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         android:maxLines="5"
+        android:layout_marginBottom="5dp"
         android:theme="@style/CustomEditTextTheme"
-        android:layout_marginTop="10dp">
+        >
         <requestFocus/>
     </EditText>
 
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="foooooo"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/name_edit_text"
+        android:visibility="gone"
+        android:textSize="17sp" />
 
 </RelativeLayout>

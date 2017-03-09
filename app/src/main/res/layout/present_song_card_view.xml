@@ -9,10 +9,9 @@
     <TextView
         android:id="@+id/verse_text_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity=""
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="foo"

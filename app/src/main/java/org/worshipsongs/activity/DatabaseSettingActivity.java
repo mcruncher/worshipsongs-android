@@ -151,6 +151,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
                         sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
                         defaultDatabaseButton.setVisibility(View.GONE);
                         updateResultTextview();
+                        FileUtils.deleteQuietly(PropertyUtils.getPropertyFile(DatabaseSettingActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME));
                         dialog.cancel();
                     } catch (IOException ex) {
                         Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
@@ -174,8 +175,6 @@ public class DatabaseSettingActivity extends AppCompatActivity
         resultTextView = (TextView) findViewById(R.id.result_textview);
         resultTextView.setText(getCountQueryResult());
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -218,7 +217,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     private void showConfirmationDialog(final Uri uri, String fileName)
     {
-        String formattedMessage = String.format(getResources().getString(R.string.message_chooseDatabase_confirmation), fileName);
+        String formattedMessage = String.format(getString(R.string.message_choose_local_db_confirmation), fileName);
         DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.confirmation),
                 formattedMessage);
         CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
