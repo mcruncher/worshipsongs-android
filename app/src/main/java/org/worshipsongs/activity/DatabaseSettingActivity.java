@@ -151,6 +151,7 @@ public class DatabaseSettingActivity extends AppCompatActivity
                         sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
                         defaultDatabaseButton.setVisibility(View.GONE);
                         updateResultTextview();
+                        FileUtils.deleteQuietly(PropertyUtils.getPropertyFile(DatabaseSettingActivity.this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME));
                         dialog.cancel();
                     } catch (IOException ex) {
                         Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
