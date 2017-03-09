@@ -407,49 +407,22 @@ public class SongContentPortraitViewFragment extends Fragment
         {
             if (isCopySelectedVerse()) {
                 String selectedVerse = song.getContents().get(position);
-
+                presentSongCardViewAdapter.setItemSelected(position);
+                presentSongCardViewAdapter.notifyDataSetChanged();
                 shareSongInSocialMedia(selectedVerse);
-                view.startAnimation(getAnimation(position));
             }
             return false;
-        }
-
-        @NonNull
-        private Animation getAnimation(final int position)
-        {
-            Animation fadeIn =  AnimationUtils.loadAnimation(getActivity(), R.anim.splash_fade_in);
-            fadeIn.setInterpolator(new AccelerateInterpolator());
-            fadeIn.setDuration(600);
-            fadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    presentSongCardViewAdapter.setItemSelected(position);
-                    presentSongCardViewAdapter.notifyDataSetChanged();
-                }
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    presentSongCardViewAdapter.setItemSelected(-1);
-                    presentSongCardViewAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            return fadeIn;
         }
 
         void shareSongInSocialMedia(String selectedText)
         {
             String formattedContent = song.getTitle() + "\n\n" +
-                    customTagColorService.getFormattedLines(selectedText) + "\n" + getContext().getString(R.string.verse_share_info) +" "+
-                    getContext().getString(R.string.app_name);
+                    customTagColorService.getFormattedLines(selectedText) + "\n" + String.format(getString(R.string.verse_share_info), getString(R.string.app_name));
             Intent textShareIntent = new Intent(Intent.ACTION_SEND);
             textShareIntent.putExtra(Intent.EXTRA_TEXT, formattedContent);
             textShareIntent.setType("text/plain");
             Intent intent = Intent.createChooser(textShareIntent, "Share verse with...");
-            getActivity().startActivityForResult(intent, 1);
+            getActivity().startActivity(intent);
         }
 
         boolean isCopySelectedVerse()
