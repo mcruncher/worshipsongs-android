@@ -83,7 +83,7 @@ public class DatabaseSettingActivityTest
     public void testProperties()
     {
         assertEquals("Are you sure that you want to revert to the default database? " +
-                "<br><br><font size='15' color='#c5c4c4'>Warning: All favourite lists will be removed if you restore a default database!</font>",
+                "<br><br><font size='15' color='#c5c4c4'>Warning: All favourite lists will be removed if you restore the default database!</font>",
                 databaseSettingActivity.getString(R.string.message_database_confirmation));
         assertEquals("Warning", databaseSettingActivity.getString(R.string.warning));
         assertEquals("You have chosen an invalid database! Please choose a valid database.",
