@@ -69,7 +69,7 @@
     <string name="warning">Warning</string>
     <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database.</string>
     <string name="type">Import OpenLP database from</string>
-    <string name="message_database_confirmation"><![CDATA[Are you sure that you want to revert to the default database? <br><br><font size=\'15\' color=\'#c5c4c4\'>Warning: All favourite lists will be removed if you restore a default database!</font>]]></string>
+    <string name="message_database_confirmation"><![CDATA[Are you sure that you want to revert to the default database? <br><br><font size=\'15\' color=\'#c5c4c4\'>Warning: All favourite lists will be removed if you restore the default database!</font>]]></string>
     <string name="message_choose_local_db_confirmation"><![CDATA[Are you sure you want to import %1$s? <br><br> <font size=\'50\' color=\'#c5c4c4\'>Warning: All favourite lists will be removed if you import a new database!</font]]></string>
     <string name="message_choose_remote_db_confirmation"><![CDATA[<font size=\'50\' color=\'#c5c4c4\'>Warning: All favourite lists will be removed if you import a new database!</font]]></string>
     <string name="message.database.successfull">Database copied successfully</string>
