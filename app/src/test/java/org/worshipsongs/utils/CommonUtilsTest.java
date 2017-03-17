@@ -1,11 +1,18 @@
 package org.worshipsongs.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.worship.BuildConfig;
 
 import static org.junit.Assert.*;
@@ -18,6 +25,14 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 22)
 public class CommonUtilsTest
 {
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+
+    @After
+    public void tearDown()
+    {
+        sharedPreferences.edit().clear().apply();
+    }
+
     @Test
     public void testIsProductionMode()
     {
@@ -62,5 +77,38 @@ public class CommonUtilsTest
     {
         String version = CommonUtils.getProjectVersion();
         assertTrue(version.contains("3."));
+    }
+
+    @Test
+    public void testIsNotImportedDatabase() throws Exception
+    {
+        assertTrue(CommonUtils.isNotImportedDatabase());
+    }
+
+    @Test
+    public void testIsImportedDatabase() throws Exception
+    {
+        sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
+        assertFalse(CommonUtils.isNotImportedDatabase());
+    }
+
+
+    @Test
+    public void testIsNewVersion()
+    {
+       assertTrue(CommonUtils.isNewVersion("3.x", "100.34"));
+    }
+
+    @Test
+    public void testIsNewVersionEmptyVersionInPropertyFile()
+    {
+        assertTrue(CommonUtils.isNewVersion("3.x", ""));
+    }
+
+    @Test
+    public void testIsNotNewVersion() throws PackageManager.NameNotFoundException
+    {
+
+        assertFalse(CommonUtils.isNewVersion("3.x", "3.x"));
     }
 }
