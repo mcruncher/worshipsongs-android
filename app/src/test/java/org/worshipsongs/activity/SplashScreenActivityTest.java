@@ -1,11 +1,7 @@
 package org.worshipsongs.activity;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +9,10 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.worshipsongs.CommonConstants;
 import org.worshipsongs.worship.BuildConfig;
 import org.worshipsongs.worship.R;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Author : Madasamy

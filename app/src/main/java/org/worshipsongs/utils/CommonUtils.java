@@ -1,11 +1,9 @@
 package org.worshipsongs.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.activity.SplashScreenActivity;
 
 /**
  * Author : madasamy

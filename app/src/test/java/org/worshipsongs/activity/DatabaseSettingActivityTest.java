@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
-import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;

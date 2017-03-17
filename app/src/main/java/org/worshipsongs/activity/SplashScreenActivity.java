@@ -7,14 +7,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionContext;
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;

@@ -1,6 +1,5 @@
 package org.worshipsongs.utils;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -15,7 +14,8 @@ import org.robolectric.annotation.Config;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.worship.BuildConfig;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Author : Madasamy
