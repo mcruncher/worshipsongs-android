@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="5dp"
+              android:orientation="vertical" >
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Foo"
+        android:textColor="@color/black"
+        android:layout_marginLeft="5dp"
+        android:theme="@style/MyRadioButton"
+        android:padding="10dp"
+        android:buttonTint="@color/teal"/>
+</LinearLayout>
