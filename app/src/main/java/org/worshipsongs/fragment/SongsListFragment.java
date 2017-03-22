@@ -2,15 +2,21 @@ package org.worshipsongs.fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,10 +25,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import org.worshipsongs.CommonConstants;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.utils.CommonUtils;
+import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -43,6 +52,9 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+    private SearchView searchView;
+    private MenuItem filterMenuItem;
 
     public SongsListFragment()
     {
@@ -57,7 +69,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         setHasOptionsMenu(true);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
-
     }
 
     @Override
@@ -71,6 +82,9 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         songDao.open();
         loadSongs();
+        if (!sharedPreferences.contains(CommonConstants.SEARCH_BY_TITLE_KEY)) {
+            sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
+        }
     }
 
     private void loadSongs()
@@ -85,13 +99,54 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         inflater.inflate(R.menu.action_bar_menu, menu);
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
         Drawable drawable = image.getDrawable();
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        searchView.setOnCloseListener(getSearchViewCloseListener());
+        searchView.setOnSearchClickListener(getSearchViewClickListener());
+        searchView.setOnQueryTextListener(getQueryTextListener());
+
+        boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
+        searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
+        filterMenuItem = menu.getItem(0).setVisible(false);
+        filterMenuItem.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(searchByText)), 35));
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @NonNull
+    private SearchView.OnCloseListener getSearchViewCloseListener()
+    {
+        return new SearchView.OnCloseListener()
+        {
+            @Override
+            public boolean onClose()
+            {
+                filterMenuItem.setVisible(false);
+                return false;
+            }
+        };
+    }
+
+    @NonNull
+    private View.OnClickListener getSearchViewClickListener()
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                filterMenuItem.setVisible(true);
+            }
+        };
+    }
+
+    @NonNull
+    private SearchView.OnQueryTextListener getQueryTextListener()
+    {
+        return new SearchView.OnQueryTextListener()
         {
             @Override
             public boolean onQueryTextSubmit(String query)
@@ -108,19 +163,52 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
                 setListAdapter(adapterService.getSongListAdapter(getFilteredSong(newText, songs), getFragmentManager()));
                 return true;
             }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
+        };
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.filter:
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
+                builder.setTitle(getString(R.string.search_title));
+                builder.setCancelable(true);
+                builder.setItems(R.array.searchTypes, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (which == 0) {
+                            searchView.setQueryHint(getString(R.string.hint_title));
+                            sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
+                            item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(true)), 35));
+                        } else {
+                            searchView.setQueryHint(getString(R.string.hint_content));
+                            sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply();
+                            item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(false)), 35));
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     List<Song> getFilteredSong(String text, List<Song> songs)
     {
         Set<Song> filteredSongSet = new HashSet<>();
         for (Song song : songs) {
-            if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
-                filteredSongSet.add(song);
-            }
-            if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
-                filteredSongSet.add(song);
+            if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
+                if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
+                    filteredSongSet.add(song);
+                }
+            } else {
+                if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
+                    filteredSongSet.add(song);
+                }
             }
         }
         List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
@@ -132,6 +220,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         List<String> titles = new ArrayList<>();
         String[] titleArray = searchTitle.split("@");
+
         for (String title : titleArray) {
             titles.add(title);
         }
@@ -141,17 +230,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
-        // SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//        searchView.clearFocus();
         super.onPrepareOptionsMenu(menu);
-        //menu.close();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -165,11 +244,22 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
+        boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
         if (isVisibleToUser) {
             CommonUtils.hideKeyboard(getActivity());
+            if (searchView != null) {
+                searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
+            }
+            if (filterMenuItem != null) {
+                filterMenuItem.setVisible(false);
+            }
             setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
         }
+    }
+
+    int getResourceId(boolean searchByText)
+    {
+        return searchByText ? R.drawable.ic_format_title : R.drawable.ic_content_paste;
     }
 
     @Override

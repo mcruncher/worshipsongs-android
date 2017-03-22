@@ -109,6 +109,7 @@ public class ServiceSongListActivity extends AppCompatActivity
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
+        menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 

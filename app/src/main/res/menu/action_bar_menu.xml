@@ -2,10 +2,15 @@
       xmlns:appcompat="http://schemas.android.com/apk/res-auto"
       xmlns:app="http://schemas.android.com/tools">
 
+    <item
+        android:id="@+id/filter"
+        android:title="Search by title"
+        android:icon="@drawable/ic_format_title"
+        appcompat:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_search"
-        android:title="Search"
+        android:title="Search by title"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         appcompat:showAsAction="always"/>
 
