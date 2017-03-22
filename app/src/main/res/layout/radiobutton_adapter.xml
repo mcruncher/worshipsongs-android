@@ -13,7 +13,7 @@
         android:text="Foo"
         android:textColor="@color/black"
         android:layout_marginLeft="5dp"
-        android:theme="@style/MyRadioButton"
+        android:theme="@style/CustomRadioButton"
         android:padding="10dp"
         android:buttonTint="@color/teal"/>
 </LinearLayout>
