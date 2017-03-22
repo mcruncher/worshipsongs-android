@@ -115,6 +115,7 @@ public class AuthorListFragment extends ListFragment implements SwipeRefreshLayo
 
             }
         });
+        menu.getItem(0).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
