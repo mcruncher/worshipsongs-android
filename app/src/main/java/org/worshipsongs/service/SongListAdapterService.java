@@ -30,8 +30,10 @@ import org.worshipsongs.worship.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.worshipsongs.WorshipSongApplication.getContext;
+
 /**
- * author: Madasamy,Seenivasan
+ * author: Madasamy,Seenivasan, Vignesh Palanisamy
  * version: 1.0.0
  */
 @Deprecated
@@ -40,16 +42,16 @@ public class SongListAdapterService
 
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private SongDao songDao = new SongDao(getContext());
 
     public ArrayAdapter<Song> getSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
     {
-        return new ArrayAdapter<Song>(WorshipSongApplication.getContext(), R.layout.songs_listview_content, songs)
+        return new ArrayAdapter<Song>(getContext(), R.layout.songs_listview_content, songs)
         {
             @Override
             public View getView(final int position, View convertView, final ViewGroup parent)
             {
-                LayoutInflater inflater = (LayoutInflater) WorshipSongApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 String title = songs.get(position).getTitle();
                 setTextView(rowView, songs, position);
@@ -72,11 +74,15 @@ public class SongListAdapterService
                 displaySelectedSong(songs, position);
             }
         });
+        Song presentingSong = Setting.getInstance().getSong();
+        if (presentingSong != null && presentingSong.getTitle().equals(songs.get(position).getTitle())) {
+            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+        }
     }
 
     private void displaySelectedSong(List<Song> songs, int position)
     {
-        Intent intent = new Intent(WorshipSongApplication.getContext(), SongContentViewActivity.class);
+        Intent intent = new Intent(getContext(), SongContentViewActivity.class);
         ArrayList<String> songList = new ArrayList<String>();
         for (Song song : songs) {
             songList.add(song.getTitle());
@@ -87,7 +93,7 @@ public class SongListAdapterService
         //bundle.putInt(CommonConstants.POSITION_KEY, position);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        WorshipSongApplication.getContext().startActivity(intent);
+        getContext().startActivity(intent);
     }
 
     private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager) {
@@ -119,7 +125,7 @@ public class SongListAdapterService
 
     public void showPopupmenu(View view, final String songName, final FragmentManager fragmentManager, boolean hidePlay)
     {
-        Context wrapper = new ContextThemeWrapper(WorshipSongApplication.getContext(), R.style.PopupMenu_Theme);
+        Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
         final PopupMenu popupMenu;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             popupMenu = new PopupMenu(wrapper, view, Gravity.RIGHT);
@@ -167,31 +173,31 @@ public class SongListAdapterService
             builder.append(customTagColorService.getFormattedLines(content));
             builder.append("\n");
         }
-        builder.append(WorshipSongApplication.getContext().getString(R.string.share_info));
+        builder.append(getContext().getString(R.string.share_info));
         Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
         textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
         textShareIntent.setType("text/plain");
         Intent intent = Intent.createChooser(textShareIntent, "Share " + songName + " with...");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        WorshipSongApplication.getContext().startActivity(intent);
+        getContext().startActivity(intent);
     }
 
     private void showYouTube(String urlKey, String songName)
     {
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
-        Intent youTubeIntent = new Intent(WorshipSongApplication.getContext(), CustomYoutubeBoxActivity.class);
+        Intent youTubeIntent = new Intent(getContext(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
         youTubeIntent.putExtra("title", songName);
         youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        WorshipSongApplication.getContext().startActivity(youTubeIntent);
+        getContext().startActivity(youTubeIntent);
     }
 
     private void startPresentActivity(String title)
     {
-        Intent intent = new Intent(WorshipSongApplication.getContext(), PresentSongActivity.class);
+        Intent intent = new Intent(getContext(), PresentSongActivity.class);
         intent.putExtra(CommonConstants.TITLE_KEY, title);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        WorshipSongApplication.getContext().startActivity(intent);
+        getContext().startActivity(intent);
     }
 }

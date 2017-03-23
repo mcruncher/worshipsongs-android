@@ -127,6 +127,7 @@ public class ServiceSongListActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
+        loadSongs();
         presentationScreenService.onResume();
     }
 
