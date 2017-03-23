@@ -20,7 +20,7 @@
         android:textColorHint="@android:color/darker_gray"
         android:textCursorDrawable="@null"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:maxLines="5"
         android:layout_marginBottom="5dp"
         android:theme="@style/CustomEditTextTheme"
@@ -35,7 +35,16 @@
         android:text="foooooo"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/name_edit_text"
-        android:visibility="gone"
+        android:visibility="visible"
         android:textSize="17sp" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"/>
 
 </RelativeLayout>

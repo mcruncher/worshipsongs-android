@@ -62,6 +62,10 @@
 
     </style>
 
+    <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/teal</item>
+        <item name="colorControlActivated">@color/teal</item>
+    </style>
 
     <style name="CustomSubheaderTheme">
         <item name="subheaderTitleColor">#FFF</item>

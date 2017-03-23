@@ -1,15 +1,26 @@
 package org.worshipsongs.dialog;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.worshipsongs.domain.DialogConfiguration;
 import org.worshipsongs.worship.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author : Madasamy
@@ -23,6 +34,8 @@ public class CustomDialogBuilder
     private final DialogConfiguration dialogConfiguration;
     private EditText editText;
     private AlertDialog.Builder builder;
+    private ListView listView;
+    private RadioButtonAdapter radioButtonAdapter;
 
     public CustomDialogBuilder(Context context, DialogConfiguration dialogConfiguration)
     {
@@ -49,14 +62,14 @@ public class CustomDialogBuilder
         View view = li.inflate(R.layout.custom_dialog, null);
         setMessage(view, dialogConfiguration);
         setEditText(view, dialogConfiguration);
+        setListView(view, dialogConfiguration);
         return view;
     }
 
     private void setMessage(View promptsView, DialogConfiguration dialogConfiguration)
     {
         TextView messageTextView = (TextView) promptsView.findViewById(R.id.message);
-
-        messageTextView.setText(Html.fromHtml(dialogConfiguration.getMessage()),TextView.BufferType.SPANNABLE);
+        messageTextView.setText(Html.fromHtml(dialogConfiguration.getMessage()), TextView.BufferType.SPANNABLE);
         messageTextView.setVisibility(dialogConfiguration.getMessage().isEmpty() ? View.GONE : View.VISIBLE);
     }
 
@@ -71,5 +84,60 @@ public class CustomDialogBuilder
         return editText;
     }
 
+    private void setListView(View view, DialogConfiguration dialogConfiguration)
+    {
+        listView = (ListView) view.findViewById(R.id.list_view);
+        radioButtonAdapter = new RadioButtonAdapter(context, new ArrayList<String>());
+        listView.setAdapter(radioButtonAdapter);
+    }
 
+    public void setSingleChoices(List<String> items, int checked) {
+        listView.setVisibility(View.VISIBLE);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        radioButtonAdapter.clear();
+        radioButtonAdapter.addAll(items);
+        radioButtonAdapter.setSelectedItem(checked);
+        radioButtonAdapter.notifyDataSetChanged();
+    }
+
+    public void setSingleChoiceOnClickListener(AdapterView.OnItemClickListener choiceOnClickListener) {
+        listView.setOnItemClickListener(choiceOnClickListener);
+    }
+
+    private class RadioButtonAdapter extends ArrayAdapter<String>
+    {
+        private int selectedItem = -1;
+
+        RadioButtonAdapter(Context context, List<String> objects)
+        {
+            super(context, R.layout.radiobutton_adapter, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                view = layoutInflater.inflate(R.layout.radiobutton_adapter, null);
+            }
+            setRadioButton(position, view);
+            return view;
+        }
+
+        private void setRadioButton(int position, View view)
+        {
+            RadioButton radioButton = (RadioButton) view.findViewById(R.id.radioButton);
+            if (selectedItem == position) {
+                radioButton.setChecked(true);
+            } else {
+                radioButton.setChecked(false);
+            }
+        }
+
+        public void setSelectedItem(int selectedItem)
+        {
+            this.selectedItem = selectedItem;
+        }
+    }
 }
