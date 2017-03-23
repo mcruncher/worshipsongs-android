@@ -41,16 +41,17 @@ import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 
 /**
- * Author: Madasamy
+ * Author: Madasamy, Vignesh Palanisamy
  * version: 1.0.0
  */
 
-public class SongContentPortraitViewFragment extends Fragment
+public class SongContentPortraitViewFragment extends Fragment implements ISongContentPortraitViewFragment
 {
     public static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
@@ -86,7 +87,6 @@ public class SongContentPortraitViewFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-
         final View view = inflater.inflate(R.layout.song_content_portrait_view, container, false);
         initSetUp();
         setBackImageView(view);
@@ -97,7 +97,54 @@ public class SongContentPortraitViewFragment extends Fragment
         setNextButton(view);
         setPreviousButton(view);
         view.setOnTouchListener(new SongContentPortraitViewTouchListener());
+        setPresentationView(song);
         return view;
+    }
+
+    private void setPresentationView(Song song) {
+        Song presentingSong = Setting.getInstance().getSong();
+        if (presentingSong != null && presentingSong.equals(song) &&  presentationScreenService.getPresentation() != null) {
+            currentPosition = Setting.getInstance().getSlidePosition();
+            presentSongCardViewAdapter.setItemSelected(currentPosition);
+            getPresentationScreenService().showNextVerse(song, currentPosition);
+            if (floatingActionMenu != null) {
+                floatingActionMenu.setVisibility(View.GONE);
+            }
+            if (presentSongFloatingButton != null) {
+                presentSongFloatingButton.setVisibility(View.GONE);
+            }
+            presentSongCardViewAdapter.notifyDataSetChanged();
+            if ((song.getContents().size() - 1) == currentPosition) {
+                nextButton.setVisibility(View.GONE);
+            } else {
+                nextButton.setVisibility(View.VISIBLE);
+            }
+            if (currentPosition == 0) {
+                previousButton.setVisibility(View.GONE);
+            } else {
+                previousButton.setVisibility(View.VISIBLE);
+            }
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            if (nextButton != null) {
+                nextButton.setVisibility(View.GONE);
+            }
+            if (previousButton != null) {
+                previousButton.setVisibility(View.GONE);
+            }
+            if (isPlayVideo(song.getUrlKey()) && isPresentSong() && floatingActionMenu != null) {
+                floatingActionMenu.setVisibility(View.VISIBLE);
+            } else if (presentSongFloatingButton != null) {
+                presentSongFloatingButton.setVisibility(View.VISIBLE);
+            }
+            if (presentSongCardViewAdapter != null) {
+                presentSongCardViewAdapter.setItemSelected(-1);
+                presentSongCardViewAdapter.notifyDataSetChanged();
+            }
+            if (listView != null) {
+                listView.smoothScrollToPosition(0);
+            }
+        }
     }
 
     private void initSetUp()
@@ -309,6 +356,11 @@ public class SongContentPortraitViewFragment extends Fragment
         previousButton = (FloatingActionButton) view.findViewById(R.id.previous_verse_floating_button);
         previousButton.setVisibility(View.GONE);
         previousButton.setOnClickListener(new PreviousButtonOnClickListener());
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+        setPresentationView(song);
     }
 
     private class NextButtonOnClickListener implements View.OnClickListener
@@ -535,32 +587,6 @@ public class SongContentPortraitViewFragment extends Fragment
         {
             songListAdapterService = new SongListAdapterService();
             songListAdapterService.showPopupmenu(view, title, getFragmentManager(), false);
-        }
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (nextButton != null) {
-            nextButton.setVisibility(View.GONE);
-        }
-        if (previousButton != null) {
-            previousButton.setVisibility(View.GONE);
-        }
-        if (song != null && isPlayVideo(song.getUrlKey()) && isPresentSong() && floatingActionMenu != null) {
-            floatingActionMenu.setVisibility(View.VISIBLE);
-        } else if (presentSongFloatingButton != null) {
-            presentSongFloatingButton.setVisibility(View.VISIBLE);
-        }
-        if (presentSongCardViewAdapter != null) {
-            presentSongCardViewAdapter.setItemSelected(-1);
-            presentSongCardViewAdapter.notifyDataSetChanged();
-        }
-        if (listView != null) {
-            listView.smoothScrollToPosition(0);
         }
     }
 

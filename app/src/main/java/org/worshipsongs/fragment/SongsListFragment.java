@@ -162,6 +162,12 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);

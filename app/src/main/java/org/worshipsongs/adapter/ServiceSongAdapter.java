@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentManager;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author : Madasamy
+ * Author : Madasamy, Vignesh Palanisamy
  * Version : 2.x
  */
 
@@ -112,6 +113,12 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
                 return false;
             }
         });
+        Song presentingSong = Setting.getInstance().getSong();
+        if (presentingSong != null && presentingSong.getTitle().equals(title)) {
+            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+        } else {
+            textView.setTextColor(Color.BLACK);
+        }
 
         textView.setOnClickListener(new View.OnClickListener()
         {
