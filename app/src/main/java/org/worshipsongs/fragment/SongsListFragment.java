@@ -22,8 +22,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -55,6 +58,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private SearchView searchView;
     private MenuItem filterMenuItem;
+
 
     public SongsListFragment()
     {
@@ -108,7 +112,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         searchView.setOnCloseListener(getSearchViewCloseListener());
         searchView.setOnSearchClickListener(getSearchViewClickListener());
         searchView.setOnQueryTextListener(getQueryTextListener());
-
+        
         boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
         searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
         filterMenuItem = menu.getItem(0).setVisible(false);
@@ -183,11 +187,13 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
                             searchView.setQueryHint(getString(R.string.hint_title));
                             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
                             item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(true)), 35));
+
                         } else {
                             searchView.setQueryHint(getString(R.string.hint_content));
                             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply();
                             item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(false)), 35));
                         }
+                        searchView.setQuery(searchView.getQuery(), true);
                     }
                 });
                 builder.show();
