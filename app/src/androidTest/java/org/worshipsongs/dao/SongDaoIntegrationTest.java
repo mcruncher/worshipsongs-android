@@ -13,6 +13,7 @@ import java.util.List;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 /**
  * Author : Madasamy
@@ -51,6 +52,14 @@ public class SongDaoIntegrationTest
         Song song = songDao.findContentsByTitle("Allelooyaa Karththaraiyae");
         System.out.print("Song" + song.getContents());
         assertEquals("Allelooyaa Karththaraiyae", song.getTitle());
+    }
+
+    @Test
+    public void testFindByWrongTitle()
+    {
+        System.out.println("--findByTitle--");
+        Song song = songDao.findContentsByTitle("foobar");
+        assertNull(song);
     }
 
     @Test
