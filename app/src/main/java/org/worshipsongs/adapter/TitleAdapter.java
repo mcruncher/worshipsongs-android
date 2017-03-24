@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 3.x
  */
 
 public class TitleAdapter<E> extends ArrayAdapter<E>
@@ -39,7 +39,6 @@ public class TitleAdapter<E> extends ArrayAdapter<E>
     public TitleAdapter(@NonNull Activity activity, List<E> objects, String type)
     {
         super(activity, R.layout.songs_listview_content, objects);
-
         this.activity = activity;
         this.type = type;
     }
@@ -53,7 +52,6 @@ public class TitleAdapter<E> extends ArrayAdapter<E>
             view = layoutInflater.inflate(R.layout.songs_listview_content, null);
         }
         E text = getItem(position);
-        Log.i(this.getClass().getSimpleName(), "Item "+text);
         if (text != null) {
             setTextView(position, view, text);
             setImageView(view);
