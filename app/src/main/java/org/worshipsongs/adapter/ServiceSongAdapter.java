@@ -236,6 +236,8 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
         MenuItem favouriteMenuItem = popupMenu.getMenu().findItem(R.id.addToList);
         favouriteMenuItem.setVisible(false);
+        MenuItem presentSongItem = popupMenu.getMenu().findItem(R.id.present_song);
+        presentSongItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)
