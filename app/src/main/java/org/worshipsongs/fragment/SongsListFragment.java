@@ -50,7 +50,7 @@ import java.util.Set;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
+public class SongsListFragment extends ListFragment
 {
 
     private SongService songService;
@@ -82,7 +82,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         songDao = new SongDao(getActivity());
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
     }
 
@@ -232,13 +231,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public void onPrepareOptionsMenu(Menu menu)
     {
         super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        Log.d("On refresh in Song list", "");
-        setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
     }
 
     @Override

@@ -94,8 +94,6 @@ public class ServiceListFragment extends Fragment
                         serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
                         PropertyUtils.removeProperty(serviceName, serviceFile);
                         Toast.makeText(getActivity(), "Favourite " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
-                        SongsListFragment listFragment = new SongsListFragment();
-                        listFragment.onRefresh();
                         serviceNames.clear();
                         loadService();
                     }

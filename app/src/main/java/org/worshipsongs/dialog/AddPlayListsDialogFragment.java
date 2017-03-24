@@ -66,8 +66,6 @@ public class AddPlayListsDialogFragment extends DialogFragment
                     commonService.saveIntoFile(service_name, songName);
                     Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    SongsListFragment listFragment = new SongsListFragment();
-                    listFragment.onRefresh();
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
