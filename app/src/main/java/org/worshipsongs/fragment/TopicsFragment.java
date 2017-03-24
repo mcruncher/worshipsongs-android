@@ -11,6 +11,7 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ImageView;
 
 import org.worshipsongs.adapter.TitleAdapter;
@@ -37,6 +38,13 @@ public class TopicsFragment extends ListFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initSetUp();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics("", topicsList), "topics"));
     }
 
     private void initSetUp()

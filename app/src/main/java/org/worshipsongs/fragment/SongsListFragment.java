@@ -83,6 +83,7 @@ public class SongsListFragment extends ListFragment
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
         initSetUp();
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
     }
 
     @Override
