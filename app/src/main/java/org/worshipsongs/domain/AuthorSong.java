@@ -54,7 +54,7 @@ public class AuthorSong {
     public String toString()
     {
         ToStringBuilder stringBuilder = new ToStringBuilder(this);
-        stringBuilder.append("authorname", getAuthor().getDisplayName());
+        stringBuilder.append("authorname", getAuthor().getName());
         stringBuilder.append("song title", getSong().getTitle());
         return stringBuilder.toString();
     }

@@ -42,6 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         songDao = new SongDao(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
     }
 
 

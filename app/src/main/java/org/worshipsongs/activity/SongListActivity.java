@@ -3,35 +3,25 @@ package org.worshipsongs.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ListView;
 
-import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.CommonService;
+import org.worshipsongs.CommonConstants;
+import org.worshipsongs.fragment.SongsListFragment;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.worship.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * author: Seenivasan, Madasamy
  * version: 2.1.0
  */
-public class SongListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
+public class SongListActivity extends AppCompatActivity
 {
-    private ListView songListView;
-    private List<String> songNames = new ArrayList<String>();
-    private ArrayAdapter<Song> adapter;
-    private SongListAdapterService adapterService = new SongListAdapterService();
-    private CommonService commonService = new CommonService();
     private PresentationScreenService presentationScreenService;
 
     @Override
@@ -39,74 +29,42 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
+        initSetUp();
+        setListView();
+        setFragment();
+    }
+
+    private void initSetUp()
+    {
         presentationScreenService = new PresentationScreenService(this);
-        Intent intent = getIntent();
-        songNames = intent.getStringArrayListExtra("songNames");
-        songListView = (ListView) findViewById(R.id.song_list_view);
-        String title = intent.getStringExtra("title");
+        setActionBar();
+    }
+
+    private void setActionBar()
+    {
+        String title = getIntent().getStringExtra(CommonConstants.TITLE_KEY);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
-
-        List<Song> songs = new ArrayList<>();
-        for (String songTitle : songNames) {
-            Song song = new Song();
-            song.setTitle(songTitle);
-            songs.add(song);
-        }
-        adapter = adapterService.getSongListAdapter(songs, getSupportFragmentManager());
-        songListView.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    private void setListView()
     {
-        //TODO:Add search view
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.default_action_bar_menu, menu);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager);
-//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager));
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                adapter = adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager);
-//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager));
-//                return true;
-//            }
-//        };
-//        searchView.setOnQueryTextListener(textChangeListener);
-        super.onCreateOptionsMenu(menu);
-        return true;
+        ListView songListView = (ListView) findViewById(R.id.song_list_view);
+        songListView.setVisibility(View.GONE);
     }
 
-    private List<String> getFilteredSong(String text)
+    private void setFragment()
     {
-        List<String> filteredSongs = new ArrayList<String>();
-        for (String song : songNames) {
-            if (song.toLowerCase().contains(text.toLowerCase())) {
-                filteredSongs.add(song);
-            }
-        }
-        return filteredSongs;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return true;
+        FragmentActivity fragmentActivity = (FragmentActivity) this;
+        Intent intent = getIntent();
+        String type = intent.getStringExtra(CommonConstants.TYPE);
+        int id = intent.getIntExtra(CommonConstants.ID, 0);
+        SongsListFragment songsListFragment = SongsListFragment.newInstance(type, id);
+        FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.song_list_fragment, songsListFragment).commit();
     }
 
     @Override
@@ -114,12 +72,6 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     {
         super.onPrepareOptionsMenu(menu);
         return true;
-    }
-
-    @Override
-    public void onRefresh()
-    {
-
     }
 
     @Override
@@ -142,6 +94,5 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
         super.onStop();
         presentationScreenService.onStop();
     }
-
 
 }

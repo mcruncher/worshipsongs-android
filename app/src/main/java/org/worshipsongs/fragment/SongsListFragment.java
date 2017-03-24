@@ -28,11 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
@@ -48,9 +50,10 @@ import java.util.Set;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
+public class SongsListFragment extends ListFragment
 {
-    public PopupWindow popupWindow;
+
+    private SongService songService;
     private SongDao songDao;
     private List<Song> songs;
     private ArrayAdapter<Song> adapter;
@@ -59,9 +62,16 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private SearchView searchView;
     private MenuItem filterMenuItem;
 
-
-    public SongsListFragment()
+    public static SongsListFragment newInstance(String type, int id)
     {
+        SongsListFragment songsListFragment = new SongsListFragment();
+        if (StringUtils.isNotBlank(type) && id > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putString(CommonConstants.TYPE, type);
+            bundle.putInt(CommonConstants.ID, id);
+            songsListFragment.setArguments(bundle);
+        }
+        return songsListFragment;
     }
 
     @Override
@@ -70,8 +80,8 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         Log.i(this.getClass().getSimpleName(), "Preparing to load db..");
         songDao = new SongDao(getActivity());
+        songService = new SongService(getActivity());
         setHasOptionsMenu(true);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
         initSetUp();
     }
 
@@ -93,7 +103,18 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
 
     private void loadSongs()
     {
-        songs = songDao.findAll();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String type = bundle.getString(CommonConstants.TYPE);
+            int id = bundle.getInt(CommonConstants.ID);
+            if (type.equalsIgnoreCase("author")) {
+                songs = songService.findByAuthorId(id);
+            } else if (type.equalsIgnoreCase("topics")) {
+                songs = songService.findByTopicId(id);
+            }
+        } else {
+            songs = songDao.findAll();
+        }
     }
 
     @Override
@@ -112,7 +133,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         searchView.setOnCloseListener(getSearchViewCloseListener());
         searchView.setOnSearchClickListener(getSearchViewClickListener());
         searchView.setOnQueryTextListener(getQueryTextListener());
-        
+
         boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
         searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
         filterMenuItem = menu.getItem(0).setVisible(false);
@@ -155,16 +176,16 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(query, songs), getFragmentManager());
-                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(query, songs), getFragmentManager()));
+                adapter = adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager());
+                setListAdapter(adapterService.getSongListAdapter(songService.filterSongs(query, songs), getFragmentManager()));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(newText, songs), getFragmentManager());
-                setListAdapter(adapterService.getSongListAdapter(getFilteredSong(newText, songs), getFragmentManager()));
+                adapter = adapterService.getSongListAdapter(songService.filterSongs(newText, songs), getFragmentManager());
+                setListAdapter(adapterService.getSongListAdapter(songService.filterSongs(newText, songs), getFragmentManager()));
                 return true;
             }
         };
@@ -174,6 +195,9 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     public boolean onOptionsItemSelected(final MenuItem item)
     {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
             case R.id.filter:
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
                 builder.setTitle(getString(R.string.search_title));
@@ -203,36 +227,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
         }
     }
 
-    List<Song> getFilteredSong(String text, List<Song> songs)
-    {
-        Set<Song> filteredSongSet = new HashSet<>();
-        for (Song song : songs) {
-            if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
-                if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
-                    filteredSongSet.add(song);
-                }
-            } else {
-                if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
-                    filteredSongSet.add(song);
-                }
-            }
-        }
-        List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
-        Collections.sort(filteredSongs, new SongComparator());
-        return filteredSongs;
-    }
-
-    List<String> getTitles(String searchTitle)
-    {
-        List<String> titles = new ArrayList<>();
-        String[] titleArray = searchTitle.split("@");
-
-        for (String title : titleArray) {
-            titles.add(title);
-        }
-        return titles;
-    }
-
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
@@ -240,16 +234,10 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onRefresh()
+    public void onResume()
     {
-        Log.d("On refresh in Song list", "");
-        setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
-    }
-
-    @Override
-    public void onResume() {
         super.onResume();
-        setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
+        setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
     }
 
     @Override
@@ -265,7 +253,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
-            setListAdapter(adapterService.getSongListAdapter(songs, getFragmentManager()));
+            setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
         }
     }
 
@@ -279,15 +267,5 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
-    }
-
-    private class SongComparator implements Comparator<Song>
-    {
-
-        @Override
-        public int compare(Song song1, Song song2)
-        {
-            return song1.getTitle().compareTo(song2.getTitle());
-        }
     }
 }

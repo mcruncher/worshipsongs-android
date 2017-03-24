@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment;
 
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
@@ -7,30 +8,28 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
 import org.worshipsongs.adapter.TitleAdapter;
-import org.worshipsongs.domain.Author;
-import org.worshipsongs.service.AuthorService;
+import org.worshipsongs.domain.Topics;
+import org.worshipsongs.service.TopicsService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * @Author : Seenivasan,Madasamy
- * @Version : 1.0
+ * Author : Madasamy
+ * Version : 3.x
  */
-public class AuthorListFragment extends ListFragment
+
+public class TopicsFragment extends ListFragment
 {
-    private AuthorService authorService;
-    private TitleAdapter titleAdapter;
-    private List<Author> authorList = new ArrayList<>();
+    private TopicsService topicsService;
+    private List<Topics> topicsList;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -42,12 +41,8 @@ public class AuthorListFragment extends ListFragment
 
     private void initSetUp()
     {
-        authorService = new AuthorService(getContext());
-        for (Author author : authorService.findAll()) {
-            if (!author.getName().toLowerCase().contains("unknown") && author.getName() != null) {
-                authorList.add(author);
-            }
-        }
+        topicsService = new TopicsService(getActivity());
+        topicsList = topicsService.findAll();
     }
 
     @Override
@@ -66,44 +61,19 @@ public class AuthorListFragment extends ListFragment
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                setListAdapter(titleAdapter = new TitleAdapter<Author>(getActivity(), getFilteredAuthors(query), "author"));
+                setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(query, topicsList), "topics"));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                getListView().invalidateViews();
-                setListAdapter(titleAdapter = new TitleAdapter<Author>(getActivity(), getFilteredAuthors(newText), "author"));
+                setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(newText, topicsList), "topics"));
                 return true;
-
             }
         });
         menu.getItem(0).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private List<Author> getFilteredAuthors(String text)
-    {
-        List<Author> filteredAuthors = new ArrayList<Author>();
-        for (Author author : authorList) {
-            if (author.getName().toLowerCase().contains(text.toLowerCase())) {
-                filteredAuthors.add(author);
-            }
-        }
-        return filteredAuthors;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu)
-    {
-        super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -111,9 +81,9 @@ public class AuthorListFragment extends ListFragment
     {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            setListAdapter(titleAdapter = new TitleAdapter<Author>(getActivity(), authorList, "author"));
+            Log.i(this.getClass().getSimpleName(), "Topic list" + topicsList);
+            setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsList, "topics"));
             CommonUtils.hideKeyboard(getActivity());
         }
     }
-
 }

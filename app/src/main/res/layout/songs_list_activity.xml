@@ -8,4 +8,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <FrameLayout
+        android:id="@+id/song_list_fragment"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/song_list_view"
+        android:visibility="visible"
+        />
+
 </RelativeLayout>
