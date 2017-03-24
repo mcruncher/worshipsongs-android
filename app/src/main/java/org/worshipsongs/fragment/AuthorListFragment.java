@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import org.worshipsongs.adapter.TitleAdapter;
@@ -38,6 +39,13 @@ public class AuthorListFragment extends ListFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initSetUp();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        setListAdapter(titleAdapter = new TitleAdapter<Author>(getActivity(), getFilteredAuthors(""), "author"));
     }
 
     private void initSetUp()
