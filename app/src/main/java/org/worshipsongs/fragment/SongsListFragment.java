@@ -52,7 +52,7 @@ import java.util.Set;
  */
 public class SongsListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
 {
-    public PopupWindow popupWindow;
+
     private SongService songService;
     private SongDao songDao;
     private List<Song> songs;
@@ -61,7 +61,6 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private SearchView searchView;
     private MenuItem filterMenuItem;
-
 
     public static SongsListFragment newInstance(String type, int id)
     {
@@ -228,7 +227,7 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
                 return super.onOptionsItemSelected(item);
         }
     }
-    
+
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
@@ -276,15 +275,5 @@ public class SongsListFragment extends ListFragment implements SwipeRefreshLayou
     {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
-    }
-
-    private class SongComparator implements Comparator<Song>
-    {
-
-        @Override
-        public int compare(Song song1, Song song2)
-        {
-            return song1.getTitle().compareTo(song2.getTitle());
-        }
     }
 }
