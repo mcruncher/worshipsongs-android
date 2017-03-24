@@ -75,10 +75,13 @@ public class SongDao extends AbstractDao
         String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = getDatabase().query(TABLE_NAME,
                 new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
-        cursor.moveToFirst();
-        song = cursorToSong(cursor);
-        cursor.close();
-        return song;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            song = cursorToSong(cursor);
+            cursor.close();
+            return song;
+        }
+        return null;
     }
 
     public Song getSongById(int songId)
@@ -89,10 +92,12 @@ public class SongDao extends AbstractDao
             String whereClause = " id=" + songId + ";";
             Cursor cursor = getDatabase().query(TABLE_NAME,
                     new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
-            cursor.moveToFirst();
-            song = cursorToSong(cursor);
-            Log.d(this.getClass().getName(), "Song:" + song);
-            cursor.close();
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                song = cursorToSong(cursor);
+                Log.d(this.getClass().getName(), "Song:" + song);
+                cursor.close();
+            }
         } catch (Exception e) {
             Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
         } finally {
@@ -138,41 +143,44 @@ public class SongDao extends AbstractDao
     public Song findContentsByTitle(String title)
     {
         Song song = getSongByTitle(title);
-        String lyrics = song.getLyrics();
-        ArrayList<String> contents = new ArrayList<>();
-        List<Verse> verseList = utilitiesService.getVerse(lyrics);
-        List<String> verseName = new ArrayList<String>();
-        List<String> contentsByDefaultOrder = new ArrayList<String>();
-        Map<String, String> verseDataMap = new HashMap<String, String>();
-        for (Verse verses : verseList) {
-            verseName.add(verses.getType() + verses.getLabel());
-            contentsByDefaultOrder.add(verses.getContent());
-            verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-        }
-        List<String> contentsByVerseOrder = new ArrayList<String>();
-        List<String> verseOrderList = new ArrayList<String>();
-        String verseOrder = song.getVerseOrder();
-        if (StringUtils.isNotBlank(verseOrder)) {
-            verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
-        }
-
-        if (verseOrderList.size() > 0) {
-            for (int i = 0; i < verseOrderList.size(); i++) {
-                contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
+        if (song != null) {
+            String lyrics = song.getLyrics();
+            ArrayList<String> contents = new ArrayList<>();
+            List<Verse> verseList = utilitiesService.getVerse(lyrics);
+            List<String> verseName = new ArrayList<String>();
+            List<String> contentsByDefaultOrder = new ArrayList<String>();
+            Map<String, String> verseDataMap = new HashMap<String, String>();
+            for (Verse verses : verseList) {
+                verseName.add(verses.getType() + verses.getLabel());
+                contentsByDefaultOrder.add(verses.getContent());
+                verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
             }
-            contents.addAll(contentsByVerseOrder);
-            Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
-        } else {
-            contents.addAll(contentsByDefaultOrder);
+            List<String> contentsByVerseOrder = new ArrayList<String>();
+            List<String> verseOrderList = new ArrayList<String>();
+            String verseOrder = song.getVerseOrder();
+            if (StringUtils.isNotBlank(verseOrder)) {
+                verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
+            }
+
+            if (verseOrderList.size() > 0) {
+                for (int i = 0; i < verseOrderList.size(); i++) {
+                    contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
+                }
+                contents.addAll(contentsByVerseOrder);
+                Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
+            } else {
+                contents.addAll(contentsByDefaultOrder);
+            }
+            Song parsedSong = new Song();
+            parsedSong.setTitle(title);
+            parsedSong.setContents(contents);
+            parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
+            Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
+            parsedSong.setChord(parseChord(song.getComments()));
+            Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
+            return parsedSong;
         }
-        Song parsedSong = new Song();
-        parsedSong.setTitle(title);
-        parsedSong.setContents(contents);
-        parsedSong.setUrlKey(parseMediaUrlKey(song.getComments()));
-        Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
-        parsedSong.setChord(parseChord(song.getComments()));
-        Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
-        return parsedSong;
+        return song;
     }
 
     String parseMediaUrlKey(String comments)
