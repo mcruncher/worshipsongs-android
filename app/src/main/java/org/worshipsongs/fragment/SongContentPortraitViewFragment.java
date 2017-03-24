@@ -250,7 +250,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             {
                 if (presentationScreenService.getPresentation() != null) {
                     presentSelectedVerse(0);
-                    nextButton.setVisibility(View.VISIBLE);
+                    presentSongFloatingButton.setVisibility(View.GONE);
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else {
                     Toast.makeText(getActivity(), "Your device is not connected to any remote display", Toast.LENGTH_SHORT).show();
