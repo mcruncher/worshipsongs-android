@@ -1,61 +1,110 @@
 package org.worshipsongs.activity;
 
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
+import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.service.CommonService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * author: Seenivasan, Madasamy
  * version: 2.1.0
  */
-public class SongListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
+public class SongListActivity extends AppCompatActivity
 {
     private ListView songListView;
-    private List<String> songNames = new ArrayList<String>();
+
+    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
-    private CommonService commonService = new CommonService();
     private PresentationScreenService presentationScreenService;
+    private List<Song> songs;
+    private SearchView searchView;
+    private MenuItem filterMenuItem;
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
+        initSetUp();
+        setListView();
+    }
+
+
+    private void initSetUp()
+    {
         presentationScreenService = new PresentationScreenService(this);
+        setActionBar();
+        setSongs();
+    }
+
+    private void setSongs()
+    {
         Intent intent = getIntent();
-        songNames = intent.getStringArrayListExtra("songNames");
-        songListView = (ListView) findViewById(R.id.song_list_view);
-        String title = intent.getStringExtra("title");
+        String type = intent.getStringExtra(CommonConstants.TYPE);
+        int id = intent.getIntExtra(CommonConstants.ID, 0);
+        if (type.equalsIgnoreCase("author")) {
+            songs = songDao.findByAuthorId(id);
+        } else if (type.equalsIgnoreCase("topics")) {
+            songs = songDao.findByTopicId(id);
+        }
+    }
+
+    private void setActionBar()
+    {
+        String title = getIntent().getStringExtra(CommonConstants.TITLE_KEY);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
+        //setTitle(title);
+    }
 
-        List<Song> songs = new ArrayList<>();
-        for (String songTitle : songNames) {
-            Song song = new Song();
-            song.setTitle(songTitle);
-            songs.add(song);
-        }
+    private void setListView()
+    {
+        songListView = (ListView) findViewById(R.id.song_list_view);
         adapter = adapterService.getSongListAdapter(songs, getSupportFragmentManager());
         songListView.setAdapter(adapter);
     }
@@ -64,49 +113,149 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     public boolean onCreateOptionsMenu(Menu menu)
     {
         //TODO:Add search view
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.default_action_bar_menu, menu);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter = adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager);
-//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(newText), fragmentManager));
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                adapter = adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager);
-//                songListView.setAdapter(adapterService.getSongListAdapter(getFilteredSong(query), fragmentManager));
-//                return true;
-//            }
-//        };
-//        searchView.setOnQueryTextListener(textChangeListener);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+
+        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        Drawable drawable = image.getDrawable();
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        searchView.setOnCloseListener(getSearchViewCloseListener());
+        searchView.setOnSearchClickListener(getSearchViewClickListener());
+        searchView.setOnQueryTextListener(getQueryTextListener());
+
+        boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
+        searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
+        filterMenuItem = menu.getItem(0).setVisible(false);
+        filterMenuItem.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(searchByText)), 35));
         super.onCreateOptionsMenu(menu);
         return true;
     }
 
-    private List<String> getFilteredSong(String text)
+    @NonNull
+    private SearchView.OnCloseListener getSearchViewCloseListener()
     {
-        List<String> filteredSongs = new ArrayList<String>();
-        for (String song : songNames) {
-            if (song.toLowerCase().contains(text.toLowerCase())) {
-                filteredSongs.add(song);
+        return new SearchView.OnCloseListener()
+        {
+            @Override
+            public boolean onClose()
+            {
+                filterMenuItem.setVisible(false);
+                return false;
+            }
+        };
+    }
+
+    @NonNull
+    private View.OnClickListener getSearchViewClickListener()
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                filterMenuItem.setVisible(true);
+            }
+        };
+    }
+
+    @NonNull
+    private SearchView.OnQueryTextListener getQueryTextListener()
+    {
+        return new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                adapter = adapterService.getSongListAdapter(getFilteredSong(query, songs), getSupportFragmentManager());
+                songListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                adapter = adapterService.getSongListAdapter(getFilteredSong(newText, songs), getSupportFragmentManager());
+                songListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        };
+    }
+
+    List<Song> getFilteredSong(String text, List<Song> songs)
+    {
+        Log.i(this.getClass().getSimpleName(), "No. of songs"+ songs.size());
+        Set<Song> filteredSongSet = new HashSet<>();
+        if (StringUtils.isBlank(text)) {
+            filteredSongSet.addAll(songs);
+        } else {
+            for (Song song : songs) {
+                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
+                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
+                        filteredSongSet.add(song);
+                    }
+                } else {
+                    if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
+                        filteredSongSet.add(song);
+                    }
+                }
             }
         }
+        List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
+        Collections.sort(filteredSongs, new SongComparator());
         return filteredSongs;
     }
 
+    List<String> getTitles(String searchTitle)
+    {
+        return Arrays.asList(searchTitle.split("@"));
+    }
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected(final MenuItem item)
     {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                break;
+                return true;
+            case R.id.filter:
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.MyDialogTheme));
+                builder.setTitle(getString(R.string.search_title));
+                builder.setCancelable(true);
+                builder.setItems(R.array.searchTypes, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (which == 0) {
+                            searchView.setQueryHint(getString(R.string.hint_title));
+                            sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
+                            item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(true)), 35));
+
+                        } else {
+                            searchView.setQueryHint(getString(R.string.hint_content));
+                            sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply();
+                            item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(false)), 35));
+                        }
+                        searchView.setQuery(searchView.getQuery(), true);
+                    }
+                });
+                builder.show();
+                return true;
         }
         return true;
+    }
+
+    int getResourceId(boolean searchByText)
+    {
+        return searchByText ? R.drawable.ic_format_title : R.drawable.ic_content_paste;
     }
 
     @Override
@@ -116,11 +265,6 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
         return true;
     }
 
-    @Override
-    public void onRefresh()
-    {
-
-    }
 
     @Override
     protected void onPause()
@@ -141,6 +285,16 @@ public class SongListActivity extends AppCompatActivity implements SwipeRefreshL
     {
         super.onStop();
         presentationScreenService.onStop();
+    }
+
+    private class SongComparator implements Comparator<Song>
+    {
+
+        @Override
+        public int compare(Song song1, Song song2)
+        {
+            return song1.getTitle().compareTo(song2.getTitle());
+        }
     }
 
 

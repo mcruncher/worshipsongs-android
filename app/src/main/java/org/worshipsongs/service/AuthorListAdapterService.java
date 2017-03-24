@@ -27,6 +27,8 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
+
+@Deprecated
 public class AuthorListAdapterService {
 
     List<String> songNames;

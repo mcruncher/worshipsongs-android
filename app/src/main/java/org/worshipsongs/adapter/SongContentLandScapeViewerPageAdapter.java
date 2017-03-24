@@ -55,7 +55,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
         String content = contents.get(position);
         bundle.putString("content", content);
         bundle.putString(CommonConstants.TITLE_KEY, title);
-        bundle.putString("authorName", authorSong.getAuthor().getDisplayName());
+        bundle.putString("authorName", authorSong.getAuthor().getName());
         bundle.putString("position", String.valueOf(position));
         bundle.putString("size", String.valueOf(contents.size()));
         bundle.putString("chord", song.getChord());

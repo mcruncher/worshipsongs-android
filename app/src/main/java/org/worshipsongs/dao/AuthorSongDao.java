@@ -49,7 +49,7 @@ public class AuthorSongDao extends AbstractDao {
         Author author = new Author();
         author.setFirstName(cursor.getString(3));
         author.setLastName(cursor.getString(4));
-        author.setDisplayName(cursor.getString(5));
+        author.setName(cursor.getString(5));
 
         AuthorSong authorSong = new AuthorSong();
         authorSong.setSong(song);

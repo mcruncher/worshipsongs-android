@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Created by Seenivasan on 5/17/2015.
  */
+@Deprecated
 public class SongBookListFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener
 {
 

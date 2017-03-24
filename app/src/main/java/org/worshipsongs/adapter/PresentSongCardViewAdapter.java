@@ -33,10 +33,6 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
         customTagColorService = new CustomTagColorService();
     }
 
-    public void setItemSelected(int position)
-    {
-        selectedItem = position;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
@@ -72,6 +68,16 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
             textView.setBackgroundResource(R.color.white);
 
         }
+    }
+
+    public void setItemSelected(int position)
+    {
+        selectedItem = position;
+    }
+
+    public int getSelectedItem()
+    {
+        return selectedItem;
     }
 }
 

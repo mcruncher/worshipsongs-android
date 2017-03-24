@@ -69,6 +69,40 @@ public class SongDao extends AbstractDao
         return songs;
     }
 
+    public List<Song> findByTopicId(int topicId)
+    {
+        List<Song> songs = new ArrayList<Song>();
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments " +
+                "from songs as s inner join songs_topics as st on st.song_id = s.id inner join " +
+                "topics as t on st.topic_id = t.id where t.id= ?";
+        Cursor cursor = getDatabase().rawQuery(query, new String[]{String.valueOf(topicId)});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Song song = cursorToSong(cursor);
+            songs.add(song);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return songs;
+    }
+
+    public List<Song> findByAuthorId(int authorId)
+    {
+        List<Song> songs = new ArrayList<Song>();
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments " +
+                "from songs as s inner join authors_songs as aus on aus.song_id = s.id inner join" +
+                " authors as t on aus.author_id = t.id where t.id= ?";
+        Cursor cursor = getDatabase().rawQuery(query, new String[]{String.valueOf(authorId)});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Song song = cursorToSong(cursor);
+            songs.add(song);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return songs;
+    }
+
     public Song getSongByTitle(String title)
     {
         Song song = new Song();
@@ -203,14 +237,13 @@ public class SongDao extends AbstractDao
         return chord;
     }
 
-    public long count(){
-
+    public long count()
+    {
         Cursor c = getDatabase().query(TABLE_NAME, null, null, null, null, null, null);
         int result = c.getCount();
         c.close();
         return result;
     }
-
 
     public boolean isValidDataBase()
     {
