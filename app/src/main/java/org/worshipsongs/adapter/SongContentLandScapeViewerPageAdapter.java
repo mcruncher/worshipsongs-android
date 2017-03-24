@@ -4,18 +4,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.AuthorSong;
-import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.SongContentLandscapeViewFragment;
+import org.worshipsongs.service.AuthorService;
+import org.worshipsongs.service.IAuthorService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,11 +22,11 @@ import java.util.List;
 public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAdapter
 {
     private String title;
-    private WorshipSongApplication application = new WorshipSongApplication();
-    private SongDao songDao = new SongDao(application.getContext());
-    private AuthorSongDao authorSongDao = new AuthorSongDao(application.getContext());
+
+    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private List<String> contents;
-    private AuthorSong authorSong;
+    private String authorName;
     private Song song;
 
 
@@ -44,7 +41,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
     {
         song = songDao.findContentsByTitle(title);
         contents = song.getContents();
-        authorSong = authorSongDao.findByTitle(title);
+        authorName = authorService.findNameByTitle(title);
     }
 
     @Override
@@ -55,7 +52,7 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
         String content = contents.get(position);
         bundle.putString("content", content);
         bundle.putString(CommonConstants.TITLE_KEY, title);
-        bundle.putString("authorName", authorSong.getAuthor().getName());
+        bundle.putString("authorName", authorName);
         bundle.putString("position", String.valueOf(position));
         bundle.putString("size", String.valueOf(contents.size()));
         bundle.putString("chord", song.getChord());

@@ -13,11 +13,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +30,11 @@ import android.widget.ListView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
@@ -53,7 +54,7 @@ public class SongListActivity extends AppCompatActivity
 {
     private ListView songListView;
 
-    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private ISongService songService = new SongService(WorshipSongApplication.getContext());
     private ArrayAdapter<Song> adapter;
     private SongListAdapterService adapterService = new SongListAdapterService();
     private PresentationScreenService presentationScreenService;
@@ -69,8 +70,8 @@ public class SongListActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         initSetUp();
         setListView();
+        FragmentActivity FragmentActivity = (FragmentActivity) this;
     }
-
 
     private void initSetUp()
     {
@@ -85,9 +86,9 @@ public class SongListActivity extends AppCompatActivity
         String type = intent.getStringExtra(CommonConstants.TYPE);
         int id = intent.getIntExtra(CommonConstants.ID, 0);
         if (type.equalsIgnoreCase("author")) {
-            songs = songDao.findByAuthorId(id);
+            songs = songService.findByAuthorId(id);
         } else if (type.equalsIgnoreCase("topics")) {
-            songs = songDao.findByTopicId(id);
+            songs = songService.findByTopicId(id);
         }
     }
 
@@ -105,7 +106,7 @@ public class SongListActivity extends AppCompatActivity
     private void setListView()
     {
         songListView = (ListView) findViewById(R.id.song_list_view);
-        adapter = adapterService.getSongListAdapter(songs, getSupportFragmentManager());
+        adapter = adapterService.getSongListAdapter(songService.filterSongs("", songs), getSupportFragmentManager());
         songListView.setAdapter(adapter);
     }
 
@@ -170,53 +171,24 @@ public class SongListActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(query, songs), getSupportFragmentManager());
-                songListView.setAdapter(adapter);
+                List<Song> filteredSong = songService.filterSongs(query, songs);
+                adapter.clear();
+                adapter.addAll(filteredSong);
                 adapter.notifyDataSetChanged();
-
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                adapter = adapterService.getSongListAdapter(getFilteredSong(newText, songs), getSupportFragmentManager());
-                songListView.setAdapter(adapter);
+                List<Song> filteredSong = songService.filterSongs(newText, songs);
+                adapter.clear();
+                adapter.addAll(filteredSong);
                 adapter.notifyDataSetChanged();
                 return true;
             }
         };
     }
-
-    List<Song> getFilteredSong(String text, List<Song> songs)
-    {
-        Log.i(this.getClass().getSimpleName(), "No. of songs"+ songs.size());
-        Set<Song> filteredSongSet = new HashSet<>();
-        if (StringUtils.isBlank(text)) {
-            filteredSongSet.addAll(songs);
-        } else {
-            for (Song song : songs) {
-                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
-                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
-                        filteredSongSet.add(song);
-                    }
-                } else {
-                    if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
-                        filteredSongSet.add(song);
-                    }
-                }
-            }
-        }
-        List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
-        Collections.sort(filteredSongs, new SongComparator());
-        return filteredSongs;
-    }
-
-    List<String> getTitles(String searchTitle)
-    {
-        return Arrays.asList(searchTitle.split("@"));
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item)

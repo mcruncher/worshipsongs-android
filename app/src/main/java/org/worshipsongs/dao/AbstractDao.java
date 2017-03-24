@@ -12,7 +12,6 @@ import java.io.IOException;
  * @Version : 1.0
  */
 
-@Deprecated
 public class AbstractDao
 {
     private SQLiteDatabase database;
@@ -20,7 +19,8 @@ public class AbstractDao
     private Context context;
 
     public AbstractDao()
-    {}
+    {
+    }
 
     public AbstractDao(Context context)
     {

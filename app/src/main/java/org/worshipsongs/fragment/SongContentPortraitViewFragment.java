@@ -28,12 +28,12 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
-import org.worshipsongs.dao.AuthorSongDao;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
+import org.worshipsongs.service.IAuthorService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -55,7 +55,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService;
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
-    private AuthorSongDao authorSongDao;
+    private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private SongListAdapterService songListAdapterService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
@@ -107,9 +107,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
         song = songDao.findContentsByTitle(title);
-        authorSongDao = new AuthorSongDao(getContext());
-        AuthorSong authorSong = authorSongDao.findByTitle(song.getTitle());
-        song.setAuthorName(authorSong.getAuthor().getName());
+        song.setAuthorName(authorService.findNameByTitle(title));
         preferenceSettingService = new UserPreferenceSettingService();
     }
 

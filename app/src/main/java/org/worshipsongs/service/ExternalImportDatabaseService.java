@@ -1,4 +1,4 @@
-package org.worshipsongs.fragment;
+package org.worshipsongs.service;
 
 import android.content.Intent;
 import android.net.Uri;

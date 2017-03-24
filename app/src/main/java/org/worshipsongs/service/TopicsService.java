@@ -3,6 +3,10 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.dao.AbstractDao;
+import org.worshipsongs.dao.ITopicDao;
+import org.worshipsongs.dao.TopicDao;
 import org.worshipsongs.domain.Topics;
 
 import java.util.ArrayList;
@@ -10,37 +14,39 @@ import java.util.List;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 3.x
  */
 
-public class TopicsService extends GenericService
+public class TopicsService implements ITopicsService
 {
-    public static final String TABLE_NAME = "topics";
-    private String[] allColumns = {"id", "name"};
+    private ITopicDao iTopicDao;
 
-    public TopicsService(Context context) {
-        super(context);
+    public TopicsService(Context context)
+    {
+        iTopicDao = new TopicDao(context);
     }
 
+    @Override
     public List<Topics> findAll()
     {
-        List<Topics> authors = new ArrayList<Topics>();
-        Cursor cursor = getDatabase().query(true, TABLE_NAME,
-                allColumns, null, null, null, null, allColumns[1], null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Topics topics = cursorToTopics(cursor);
-            authors.add(topics);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return authors;
+        return iTopicDao.findAll();
     }
 
-    private Topics cursorToTopics(Cursor cursor) {
-        Topics topics = new Topics();
-        topics.setId(cursor.getInt(0));
-        topics.setName(cursor.getString(1));
-        return topics;
+    @Override
+    public List<Topics> filteredTopics(String query, List<Topics> topicsList)
+    {
+
+        List<Topics> filteredTextList = new ArrayList<Topics>();
+        if (StringUtils.isBlank(query)) {
+            filteredTextList.addAll(topicsList);
+        } else {
+            for (Topics topics : topicsList) {
+                if (topics.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredTextList.add(topics);
+                }
+            }
+        }
+        return filteredTextList;
+
     }
 }

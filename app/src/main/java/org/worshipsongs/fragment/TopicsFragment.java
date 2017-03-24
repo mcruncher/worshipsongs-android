@@ -19,7 +19,6 @@ import org.worshipsongs.service.TopicsService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +45,6 @@ public class TopicsFragment extends ListFragment
         topicsList = topicsService.findAll();
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
@@ -63,31 +61,19 @@ public class TopicsFragment extends ListFragment
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                setListAdapter(new TitleAdapter<Topics>(getActivity(), getFilteredTopics(query), "topics"));
+                setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(query, topicsList), "topics"));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                setListAdapter(new TitleAdapter<Topics>(getActivity(), getFilteredTopics(newText), "topics"));
+                setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(newText, topicsList), "topics"));
                 return true;
             }
         });
         menu.getItem(0).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    private List<Topics> getFilteredTopics(String text)
-    {
-        List<Topics> filteredTextList = new ArrayList<Topics>();
-        for (Topics topics : topicsList) {
-            if (topics.getName().toLowerCase().contains(text.toLowerCase())) {
-                filteredTextList.add(topics);
-            }
-        }
-        return filteredTextList;
     }
 
     @Override
