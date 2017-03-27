@@ -225,7 +225,6 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 revertDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
                 resultTextView.setText(getCountQueryResult());
                 sharedPreferences.edit().putString(CommonConstants.REMOTE_URL, remoteUrl).apply();
-                FileUtils.deleteQuietly(PropertyUtils.getPropertyFile(appCompatActivity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME));
                 Toast.makeText(appCompatActivity, appCompatActivity.getString(R.string.import_database_successfull), Toast.LENGTH_SHORT).show();
             } else {
                 showWarningDialog(resultTextView);

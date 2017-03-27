@@ -6,22 +6,13 @@ import java.io.Serializable;
  * @Author : Madasamy
  * @Version : 1.0
  */
-public class Author implements Serializable
+public class Author extends AbstractDomain
 {
-    private int id;
+
     private String firstName;
     private String lastName;
-    private String displayName;
 
-    public int getId()
-    {
-        return id;
-    }
 
-    public void setId(int id)
-    {
-        this.id = id;
-    }
 
     public String getLastName()
     {
@@ -43,19 +34,5 @@ public class Author implements Serializable
         this.firstName = firstName;
     }
 
-    public String getDisplayName()
-    {
-        return displayName;
-    }
 
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-    @Override
-    public String toString()
-    {
-        return displayName;
-    }
 }

@@ -50,4 +50,9 @@ public final class CommonConstants
     public static final String PRIMARY_FONT_SIZE_KEY = "portraitFontSize";
     public static final String PRESENTATION_FONT_SIZE_KEY = "landscapeFontSize";
     public static final String REMOTE_URL = "remoteUrl";
+    public static final String SEARCH_BY_TITLE_KEY = "searchByTitle";
+
+    public static final String TYPE = "type";
+    public static final String ID = "id";
+
 }

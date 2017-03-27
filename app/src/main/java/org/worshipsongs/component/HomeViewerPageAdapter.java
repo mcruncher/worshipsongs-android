@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import org.worshipsongs.fragment.AuthorListFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
+import org.worshipsongs.fragment.TopicsFragment;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
             case 1:
                 return new AuthorListFragment();
             case 2:
+                return new TopicsFragment();
+            case 3:
                 return new ServiceListFragment();
         }
         return null;

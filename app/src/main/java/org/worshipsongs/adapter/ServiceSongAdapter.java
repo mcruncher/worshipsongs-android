@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentManager;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author : Madasamy
+ * Author : Madasamy, Vignesh Palanisamy
  * Version : 2.x
  */
 
@@ -54,6 +55,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
     private  String serviceName;
     private  AppCompatActivity activity;
     private ArrayList<String> titles;
+    private ArrayList<String> titlesOfSongsInDatabase;
     private SongDao songDao;
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
@@ -63,8 +65,15 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         super(aciivity.getApplicationContext(), R.layout.songs_listview_content, titles);
         this.activity = aciivity;
         this.titles =  new ArrayList<String>(titles);
+        this.titlesOfSongsInDatabase = new ArrayList<String>();
         this.serviceName = serviceName;
         songDao = new SongDao(aciivity);
+        for (String title : titles) {
+            Song song = songDao.findContentsByTitle(title);
+            if (song != null) {
+                titlesOfSongsInDatabase.add(title);
+            }
+        }
         preferenceSettingService = new UserPreferenceSettingService();
         customTagColorService = new CustomTagColorService();
     }
@@ -82,14 +91,16 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             setTextView(view, title, position);
         }
         Song song = songDao.findContentsByTitle(title);
-        setPlayImageView(view, song, activity.getSupportFragmentManager());
-        setImageView(view, song.getTitle(), activity.getSupportFragmentManager());
+        if (song != null) {
+            setPlayImageView(view, song, activity.getSupportFragmentManager());
+            setImageView(view, song.getTitle(), activity.getSupportFragmentManager());
+        }
         return view;
     }
 
     private void setTextView(View view, final String title, final int position)
     {
-        TextView textView = (TextView) view.findViewById(R.id.songsTextView);
+        final TextView textView = (TextView) view.findViewById(R.id.songsTextView);
         textView.setText(title);
         textView.setOnLongClickListener(new View.OnLongClickListener()
         {
@@ -112,23 +123,61 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
                 return false;
             }
         });
+        Song presentingSong = Setting.getInstance().getSong();
+        if (presentingSong != null && presentingSong.getTitle().equals(title)) {
+            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+        } else {
+            textView.setTextColor(Color.BLACK);
+        }
 
         textView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(activity, SongContentViewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
-                bundle.putInt(CommonConstants.POSITION_KEY, position);
-                Setting.getInstance().setPosition(position);
-                intent.putExtras(bundle);
-                activity.startActivity(intent);
+                if (titlesOfSongsInDatabase.contains(textView.getText().toString())) {
+                    Intent intent = new Intent(activity, SongContentViewActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titlesOfSongsInDatabase);
+                    bundle.putInt(CommonConstants.POSITION_KEY, position);
+                    Setting.getInstance().setPosition(position);
+                    intent.putExtras(bundle);
+                    activity.startActivity(intent);
+                } else {
+                    final AlertDialog alertDialog = getAlertDialogBuilder(textView.getText().toString()).create();
+                    alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+                    {
+                        @Override
+                        public void onShow(DialogInterface dialog)
+                        {
+                            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                            negativeButton.setTextColor(activity.getResources().getColor(R.color.accent_material_light));
+                        }
+                    });
+                    alertDialog.show();
 
+                }
             }
         });
 
+    }
+
+    private AlertDialog.Builder getAlertDialogBuilder(final String title)
+    {
+        LayoutInflater li = LayoutInflater.from(activity);
+        View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
+        TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
+        deleteMsg.setText(String.format(getContext().getString(R.string.message_song_not_available), "\"" + title + "\""));
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.MyDialogTheme));
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setCancelable(false).setNegativeButton(activity.getString(R.string.ok), new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                dialog.cancel();
+            }
+        });
+        return alertDialogBuilder;
     }
 
     private AlertDialog.Builder getDeleteAlertDialogBuilder(final String title)
@@ -229,6 +278,8 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
         MenuItem favouriteMenuItem = popupMenu.getMenu().findItem(R.id.addToList);
         favouriteMenuItem.setVisible(false);
+        MenuItem presentSongItem = popupMenu.getMenu().findItem(R.id.present_song);
+        presentSongItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
         {
             public boolean onMenuItemClick(final MenuItem item)

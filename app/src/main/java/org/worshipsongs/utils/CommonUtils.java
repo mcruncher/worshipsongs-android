@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 
 /**
@@ -57,4 +58,21 @@ public final class CommonUtils
         }
         return version;
     }
+
+   public static boolean isNotImportedDatabase()
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+        return !(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false));
+    }
+
+   public static boolean isNewVersion(String versionInPropertyFile, String currentVersion)
+    {
+        try {
+            return !(StringUtils.isNotBlank(versionInPropertyFile) && versionInPropertyFile.equalsIgnoreCase(currentVersion));
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+
 }

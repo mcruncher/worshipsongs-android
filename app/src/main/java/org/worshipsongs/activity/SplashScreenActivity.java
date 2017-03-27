@@ -1,16 +1,17 @@
 package org.worshipsongs.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 
-import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
@@ -24,6 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity
 {
 
     private SongDao songDao;
+    private SharedPreferences sharedPreferences;
     // private ProgressBar progressBar;
 
     @Override
@@ -31,19 +33,25 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-        // progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        songDao = new SongDao(this);
+        initSetUp(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         loadDatabase();
     }
+
+    void initSetUp(Context context)
+    {
+        songDao = new SongDao(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
 
     private void loadDatabase()
     {
         try {
             SplashScreenActivity context = SplashScreenActivity.this;
-            String projectVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            Log.i(SplashScreenActivity.class.getSimpleName(), "Project version " + projectVersion);
-            copyBundleDatabase(context, projectVersion);
+            String currentVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            Log.i(SplashScreenActivity.class.getSimpleName(), "Current  version " + currentVersion);
+            copyBundleDatabase(context, currentVersion);
         } catch (Exception e) {
             Log.e(this.getClass().getSimpleName(), "Error occurred while loading database");
         }
@@ -56,22 +64,18 @@ public class SplashScreenActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
-    private void copyBundleDatabase(SplashScreenActivity context, String projectVersion)
+    private void copyBundleDatabase(SplashScreenActivity context, String currentVersion)
     {
         try {
             File commonPropertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
-            String existingVersion = PropertyUtils.getProperty(CommonConstants.VERSION_KEY, commonPropertyFile);
-            Log.i(SplashScreenActivity.class.getSimpleName(), "Project version in property file" + existingVersion);
-            if (StringUtils.isNotBlank(existingVersion) && existingVersion.equalsIgnoreCase(projectVersion)) {
-                Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database already copied.");
-            } else {
-                // progressBar.setVisibility(View.VISIBLE);
+            String versionInPropertyFile = PropertyUtils.getProperty(CommonConstants.VERSION_KEY, commonPropertyFile);
+            Log.i(SplashScreenActivity.class.getSimpleName(), "Version in property file " + versionInPropertyFile);
+            if (CommonUtils.isNotImportedDatabase() && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion)) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
                 songDao.copyDatabase("", true);
                 songDao.open();
-                PropertyUtils.setProperty(CommonConstants.VERSION_KEY, projectVersion, commonPropertyFile);
+                PropertyUtils.setProperty(CommonConstants.VERSION_KEY, currentVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
-                //progressBar.setVisibility(View.INVISIBLE);
             }
             moveToMainActivity();
         } catch (Exception ex) {

@@ -19,6 +19,7 @@ import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.Setting;
+import org.worshipsongs.fragment.ISongContentPortraitViewFragment;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -27,7 +28,7 @@ import org.worshipsongs.worship.R;
 import java.util.ArrayList;
 
 /**
- * @Author : Seenivasan, Madasamy
+ * @Author : Seenivasan, Madasamy, Vignesh Palanisamy
  * @Version : 1.0
  */
 public class SongContentViewActivity extends AppCompatActivity
@@ -57,7 +58,7 @@ public class SongContentViewActivity extends AppCompatActivity
 
         ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
-            SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
+            final SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), titleList, presentationScreenService);
             // Assigning ViewPager View and setting the adapter
             final ViewPager pager = (ViewPager) findViewById(R.id.pager);
@@ -93,7 +94,10 @@ public class SongContentViewActivity extends AppCompatActivity
                 @Override
                 public void onPageSelected(int position)
                 {
-
+                    ISongContentPortraitViewFragment fragment = (ISongContentPortraitViewFragment) songContentLandScapeViewerPageAdapter.instantiateItem(pager, position);
+                    if (fragment != null) {
+                        fragment.fragmentBecameVisible();
+                    }
                 }
 
                 @Override
