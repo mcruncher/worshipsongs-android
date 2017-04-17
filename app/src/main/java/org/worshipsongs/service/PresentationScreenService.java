@@ -122,12 +122,6 @@ public class PresentationScreenService
             }
             if (remoteSongPresentation != null && selectedDisplay != null) {
                 if (Setting.getInstance().getSong() != null) {
-                    remoteSongPresentation.customTagColorService.tagExists = false;
-                    for (String object: Setting.getInstance().getSong().getContents()) {
-                        if (remoteSongPresentation.customTagColorService.isTagExists(object)) {
-                            remoteSongPresentation.customTagColorService.tagExists = true;
-                        }
-                    }
                     showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
                 }
             }

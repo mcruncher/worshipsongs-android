@@ -18,7 +18,7 @@ public class CustomTagColorServiceTest
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
     @Test
-    public void getFormattedLines() {
+    public void testGetFormattedLines() {
         System.out.println("--getFormattedLines--");
         String content = "{y}ஆளுகை செய்யும் ஆவியானவரே {/y}\n" +
                 "                                Aalugai seiyyum aaviyaanavarae\n" +
@@ -26,10 +26,25 @@ public class CustomTagColorServiceTest
                 "                                Paliyaai thanthaen parisuththamaanavarae\n" +
                 "                                {y}ஆவியானவரே - என் ஆற்றலானவரே{/y}\n" +
                 "                                Aaviyaanavarae - En aatralaanavarae";
-//        List<String> result = customTagColorService.getFormattedLines(content);
-//        assertEquals(6, result.size());
-//        assertFalse(result.contains("{y}"));
-//        assertFalse(result.contains("{/y}"));
+        String expected = "ஆளுகை செய்யும் ஆவியானவரே \n" +
+                "                                Aalugai seiyyum aaviyaanavarae\n" +
+                "                                பலியாய் தந்தேன் பரிசுத்தமானவரே\n" +
+                "                                Paliyaai thanthaen parisuththamaanavarae\n" +
+                "                                ஆவியானவரே - என் ஆற்றலானவரே\n" +
+                "                                Aaviyaanavarae - En aatralaanavarae\n";
+        CustomTagColorService customTagColorService = new CustomTagColorService(){
+            @Override
+            protected boolean displayRomanisedLyrics() {
+                return true;
+            }
+
+            @Override
+            protected boolean displayTamilLyrics() {
+                return true;
+            }
+        };
+        String result = customTagColorService.getFormattedLines(content);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -48,15 +63,6 @@ public class CustomTagColorServiceTest
         String lyricsLine = "song foo {y}year {/y}";
         String expected = "song foo year ";
         assertEquals(expected, customTagColorService.removeTag(lyricsLine, "y"));
-    }
-
-    @Test
-    public void testIsTagExists() {
-        System.out.println("--isTagExists--");
-        String lyricsLine1 = "song foo {y}year {/y}";
-        assertTrue(customTagColorService.isTagExists(lyricsLine1));
-        String lyricsLine2 = "song foo year";
-        assertFalse(customTagColorService.isTagExists(lyricsLine2));
     }
 
     @Test
@@ -115,7 +121,6 @@ public class CustomTagColorServiceTest
                 result.append("\n");
             }
         };
-        customTagColorService.tagExists = true;
         String content = "{y}ஆளுகை செய்யும் ஆவியானவரே {/y}\n" +
                 "                                Aalugai seiyyum aaviyaanavarae\n" +
                 "                                {y}பலியாய் தந்தேன் பரிசுத்தமானவரே{/y}\n" +
@@ -151,7 +156,6 @@ public class CustomTagColorServiceTest
                 result.append("\n");
             }
         };
-        customTagColorService.tagExists = false;
         String content = "Aalugai seiyyum aaviyaanavarae\n" +
                 "                                Paliyaai thanthaen parisuththamaanavarae\n" +
                 "                                Aaviyaanavarae - En aatralaanavarae";

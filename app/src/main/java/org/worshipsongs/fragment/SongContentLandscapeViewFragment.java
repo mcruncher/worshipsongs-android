@@ -42,7 +42,6 @@ public class SongContentLandscapeViewFragment extends Fragment
         String position = bundle.getString("position");
         String size = bundle.getString("size");
         String chord = bundle.getString("chord");
-        customTagColorService.tagExists = bundle.getBoolean("isTagExists");
         setScrollView(view);
         setContent(content, view);
         setSongTitle(view, title, chord);
