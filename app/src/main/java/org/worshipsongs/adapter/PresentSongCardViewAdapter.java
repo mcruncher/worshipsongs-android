@@ -24,13 +24,21 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
     private final Context context;
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
+    private Boolean isTagExists;
 
     public PresentSongCardViewAdapter(Context context, List<String> objects)
     {
         super(context, R.layout.present_song_card_view, objects);
         this.context = context;
+        this.isTagExists = false;
         preferenceSettingService = new UserPreferenceSettingService();
         customTagColorService = new CustomTagColorService();
+        for (String object: objects) {
+           if (customTagColorService.isTagExists(object)) {
+               isTagExists = true;
+           }
+        }
+        customTagColorService.tagExists = isTagExists;
     }
 
 
