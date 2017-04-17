@@ -11,7 +11,6 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.SongContentLandscapeViewFragment;
 import org.worshipsongs.service.AuthorService;
-import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.IAuthorService;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
     private List<String> contents;
     private String authorName;
     private Song song;
-    private Boolean isTagExists = false;
 
 
     public SongContentLandScapeViewerPageAdapter(FragmentManager fragmentManager, String title)
@@ -43,12 +41,6 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
     {
         song = songDao.findContentsByTitle(title);
         contents = song.getContents();
-        CustomTagColorService customTagColorService = new CustomTagColorService();
-        for (String object: contents) {
-            if (customTagColorService.isTagExists(object)) {
-                isTagExists = true;
-            }
-        }
         authorName = authorService.findNameByTitle(title);
     }
 
@@ -64,7 +56,6 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
         bundle.putString("position", String.valueOf(position));
         bundle.putString("size", String.valueOf(contents.size()));
         bundle.putString("chord", song.getChord());
-        bundle.putBoolean("isTagExists", isTagExists);
         songContentLandscapeViewFragment.setArguments(bundle);
         return songContentLandscapeViewFragment;
     }

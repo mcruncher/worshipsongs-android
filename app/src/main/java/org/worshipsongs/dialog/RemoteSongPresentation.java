@@ -27,7 +27,7 @@ public class RemoteSongPresentation extends Presentation
 {
 
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    public CustomTagColorService customTagColorService = new CustomTagColorService();
+    private CustomTagColorService customTagColorService = new CustomTagColorService();
 
     // private Context context;
     private TextView songSlideTextView;
