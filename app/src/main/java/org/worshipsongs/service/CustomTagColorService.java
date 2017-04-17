@@ -18,7 +18,8 @@ import java.util.regex.Pattern;
 public class CustomTagColorService
 {
     private static Pattern pattern = Pattern.compile("\\{\\w\\}");
-
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    public Boolean tagExists = false;
 
     public void setCustomTagTextView(TextView textView, String text, int primaryColor, int secondaryColor)
     {
@@ -30,11 +31,39 @@ public class CustomTagColorService
             if (matcher.find()) {
                 String value = matcher.group(0).replace("{", "");
                 tagKey = value.replace("}", "");
-                PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    setColoredTextView(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+                }
             } else {
-                PropertyUtils.appendColoredText(textView, strings.get(i), primaryColor);
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    setColoredTextView(textView, strings.get(i), primaryColor);
+                }
             }
         }
+    }
+
+    protected void setColoredTextView(TextView textView, String content, int color) {
+        PropertyUtils.appendColoredText(textView, content, color);
+    }
+
+    protected boolean displayTamilLyrics() {
+        return preferenceSettingService.isTamilLyrics();
+    }
+
+    protected boolean displayRomanisedLyrics() {
+        return preferenceSettingService.isRomanisedLyrics();
+    }
+
+    public Boolean isTagExists(String content)
+    {
+        List<String> strings = getStringsByTag(content);
+        for (int i = 0; i < strings.size(); i++) {
+            Matcher matcher = pattern.matcher(strings.get(i));
+            if (matcher.find()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -111,4 +140,8 @@ public class CustomTagColorService
         String replacedWithSecondPattern = replacedWithFirstPattern.replaceAll(secondRemovePattern, "");
         return replacedWithSecondPattern;
     }
+
+
+
+
 }
