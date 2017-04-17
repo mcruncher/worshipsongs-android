@@ -31,15 +31,27 @@ public class CustomTagColorService
             if (matcher.find()) {
                 String value = matcher.group(0).replace("{", "");
                 tagKey = value.replace("}", "");
-                if (preferenceSettingService.isTamilLyrics() || !preferenceSettingService.isRomanisedLyrics()) {
-                    PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    setColoredTextView(textView, removeTag(strings.get(i), tagKey), secondaryColor);
                 }
             } else {
-                if (preferenceSettingService.isRomanisedLyrics() || !preferenceSettingService.isTamilLyrics() || !tagExists) {
-                    PropertyUtils.appendColoredText(textView, strings.get(i), primaryColor);
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    setColoredTextView(textView, strings.get(i), primaryColor);
                 }
             }
         }
+    }
+
+    protected void setColoredTextView(TextView textView, String content, int color) {
+        PropertyUtils.appendColoredText(textView, content, color);
+    }
+
+    protected boolean displayTamilLyrics() {
+        return preferenceSettingService.isTamilLyrics();
+    }
+
+    protected boolean displayRomanisedLyrics() {
+        return preferenceSettingService.isRomanisedLyrics();
     }
 
     public Boolean isTagExists(String content)
