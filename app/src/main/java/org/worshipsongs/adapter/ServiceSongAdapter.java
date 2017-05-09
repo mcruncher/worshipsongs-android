@@ -30,6 +30,7 @@ import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.dialog.ListDialogFragment;
@@ -49,29 +50,26 @@ import java.util.List;
 
 //TODO: Remove duplicate code
 @Deprecated
-public class ServiceSongAdapter extends ArrayAdapter<String>
+public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
 {
 
     private  String serviceName;
     private  AppCompatActivity activity;
-    private ArrayList<String> titles;
-    private ArrayList<String> titlesOfSongsInDatabase;
-    private SongDao songDao;
+    private ArrayList<String> songWithContent;
+    private ArrayList<ServiceSong> serviceSongs;
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
 
-    public ServiceSongAdapter(AppCompatActivity aciivity, List<String> titles, String serviceName)
+    public ServiceSongAdapter(AppCompatActivity aciivity, ArrayList<ServiceSong> songs, String serviceName)
     {
-        super(aciivity.getApplicationContext(), R.layout.songs_listview_content, titles);
+        super(aciivity.getApplicationContext(), R.layout.songs_listview_content, songs);
         this.activity = aciivity;
-        this.titles =  new ArrayList<String>(titles);
-        this.titlesOfSongsInDatabase = new ArrayList<String>();
         this.serviceName = serviceName;
-        songDao = new SongDao(aciivity);
-        for (String title : titles) {
-            Song song = songDao.findContentsByTitle(title);
-            if (song != null) {
-                titlesOfSongsInDatabase.add(title);
+        serviceSongs = new ArrayList<ServiceSong>(songs);
+        songWithContent = new ArrayList<>();
+        for (ServiceSong serviceSong : songs) {
+            if(serviceSong.getSong()!=null){
+                songWithContent.add(serviceSong.getTitle());
             }
         }
         preferenceSettingService = new UserPreferenceSettingService();
@@ -86,22 +84,21 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             view = layoutInflater.inflate(R.layout.songs_listview_content, null);
         }
-        String title = getItem(position);
-        if (title != null) {
-            setTextView(view, title, position);
+        ServiceSong serviceSong = getItem(position);
+        if (serviceSong != null) {
+            setTextView(view, serviceSong, position);
         }
-        Song song = songDao.findContentsByTitle(title);
-        if (song != null) {
-            setPlayImageView(view, song, activity.getSupportFragmentManager());
-            setImageView(view, song.getTitle(), activity.getSupportFragmentManager());
+        if (serviceSong.getSong() != null) {
+            setPlayImageView(view, serviceSong, activity.getSupportFragmentManager());
+            setImageView(view, serviceSong, activity.getSupportFragmentManager());
         }
         return view;
     }
 
-    private void setTextView(View view, final String title, final int position)
+    private void setTextView(View view, final ServiceSong serviceSong, final int position)
     {
         final TextView textView = (TextView) view.findViewById(R.id.songsTextView);
-        textView.setText(title);
+        textView.setText(serviceSong.getTitle());
         textView.setOnLongClickListener(new View.OnLongClickListener()
         {
             @Override
@@ -109,7 +106,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             {
                 final Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(15);
-                final AlertDialog alertDialog = getDeleteAlertDialogBuilder(title).create();
+                final AlertDialog alertDialog = getDeleteAlertDialogBuilder(serviceSong).create();
                 alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
                 {
                     @Override
@@ -124,7 +121,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             }
         });
         Song presentingSong = Setting.getInstance().getSong();
-        if (presentingSong != null && presentingSong.getTitle().equals(title)) {
+        if (presentingSong != null && presentingSong.getTitle().equals(serviceSong)) {
             textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
         } else {
             textView.setTextColor(Color.BLACK);
@@ -135,10 +132,10 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View v)
             {
-                if (titlesOfSongsInDatabase.contains(textView.getText().toString())) {
+                if (serviceSong.getSong() != null) {
                     Intent intent = new Intent(activity, SongContentViewActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titlesOfSongsInDatabase);
+                    bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songWithContent);
                     bundle.putInt(CommonConstants.POSITION_KEY, position);
                     Setting.getInstance().setPosition(position);
                     intent.putExtras(bundle);
@@ -180,7 +177,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         return alertDialogBuilder;
     }
 
-    private AlertDialog.Builder getDeleteAlertDialogBuilder(final String title)
+    private AlertDialog.Builder getDeleteAlertDialogBuilder(final ServiceSong serviceSong)
     {
         LayoutInflater li = LayoutInflater.from(activity);
         View promptsView = li.inflate(R.layout.delete_confirmation_dialog, null);
@@ -192,9 +189,9 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         {
             public void onClick(DialogInterface dialog, int id)
             {
-                removeSong(title);
+                removeSong(serviceSong);
 
-                Toast.makeText(activity, "Song " + title + " Deleted...!", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "Song " + serviceSong.getTitle() + " Deleted...!", Toast.LENGTH_LONG).show();
             }
         }).setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener()
         {
@@ -206,11 +203,11 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
         return alertDialogBuilder;
     }
 
-    private void removeSong(String songTitle)
+    private void removeSong(ServiceSong serviceSong)
     {
         try {
             String propertyValue = "";
-            System.out.println("Preparing to remove service:" + songTitle);
+            System.out.println("Preparing to remove service:" + serviceSong.getTitle());
             File serviceFile = PropertyUtils.getPropertyFile(activity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
             String property = PropertyUtils.getProperty(serviceName, serviceFile);
             String propertyValues[] = property.split(";");
@@ -218,51 +215,51 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             for (int i = 0; i < propertyValues.length; i++) {
                 System.out.println("Property length: " + propertyValues.length);
                 Log.i(this.getClass().getSimpleName(), "Property value  " + propertyValues[i]);
-                if (StringUtils.isNotBlank(propertyValues[i]) && !propertyValues[i].equalsIgnoreCase(songTitle)) {
+                if (StringUtils.isNotBlank(propertyValues[i]) && !propertyValues[i].equalsIgnoreCase(serviceSong.getTitle())) {
                     Log.i(this.getClass().getSimpleName(), "Append property value" + propertyValues[i]);
                     propertyValue = propertyValue + propertyValues[i] + ";";
                 }
             }
             Log.i(this.getClass().getSimpleName(), "Property value after removed  " + propertyValue);
             PropertyUtils.setProperty(serviceName, propertyValue, serviceFile);
-            titles.remove(songTitle);
-            remove(songTitle);
+            serviceSongs.remove(serviceSong);
+            remove(serviceSong);
             notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", e);
         }
     }
 
-    private void setPlayImageView(final View rowView, Song song, FragmentManager fragmentManager) {
+    private void setPlayImageView(final View rowView, ServiceSong serviceSong, FragmentManager fragmentManager) {
         ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
-        final String urlKey = song.getUrlKey();
+        final String urlKey = serviceSong.getSong().getUrlKey();
         if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
             imageView.setVisibility(View.VISIBLE);
         } else {
             imageView.setVisibility(View.GONE);
         }
-        imageView.setOnClickListener(onClickPopupListener(song.getTitle(), fragmentManager));
+        imageView.setOnClickListener(onClickPopupListener(serviceSong, fragmentManager));
     }
 
-    private void setImageView(View rowView, final String songTitle, final FragmentManager fragmentManager)
+    private void setImageView(View rowView, final ServiceSong serviceSong, final FragmentManager fragmentManager)
     {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
-        imageView.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
+        imageView.setOnClickListener(onClickPopupListener(serviceSong, fragmentManager));
     }
 
-    private View.OnClickListener onClickPopupListener(final String title, final FragmentManager fragmentManager)
+    private View.OnClickListener onClickPopupListener(final ServiceSong song, final FragmentManager fragmentManager)
     {
         return new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                showPopupmenu(view, title, fragmentManager, true);
+                showPopupmenu(view, song, fragmentManager, true);
             }
         };
     }
 
-    public void showPopupmenu(View view, final String songName, final FragmentManager fragmentManager, boolean hidePlay)
+    public void showPopupmenu(View view, final ServiceSong serviceSong, final FragmentManager fragmentManager, boolean hidePlay)
     {
         Context wrapper = new ContextThemeWrapper(WorshipSongApplication.getContext(), R.style.PopupMenu_Theme);
         final PopupMenu popupMenu;
@@ -272,7 +269,7 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             popupMenu = new PopupMenu(wrapper, view);
         }
         popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
-        final Song song = songDao.findContentsByTitle(songName);
+        final Song song = serviceSong.getSong();
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
@@ -286,17 +283,17 @@ public class ServiceSongAdapter extends ArrayAdapter<String>
             {
                 switch (item.getItemId()) {
                     case R.id.addToList:
-                        ListDialogFragment listDialogFragment = ListDialogFragment.newInstance(songName);
+                        ListDialogFragment listDialogFragment = ListDialogFragment.newInstance(serviceSong.getTitle());
                         listDialogFragment.show(fragmentManager, "ListDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
-                        shareSongInSocialMedia(songName, song);
+                        shareSongInSocialMedia(serviceSong.getTitle(), song);
                         return true;
                     case R.id.play_song:
-                        showYouTube(urlKey, songName);
+                        showYouTube(urlKey, serviceSong.getTitle());
                         return true;
                     case R.id.present_song:
-                        startPresentActivity(songName);
+                        startPresentActivity(serviceSong.getTitle());
                         return true;
                     default:
                         return false;
