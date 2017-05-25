@@ -10,7 +10,7 @@ ext.set('AppVersion', APP_VERSION)
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
