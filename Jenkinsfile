@@ -18,7 +18,7 @@ stage 'Code coverage'
                sh '$GRADLE_HOME/bin/gradle clean sonarComplete'
            } finally {
                androidLint canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/build/outputs/lint-results*.xml', unHealthy: ''
-               publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'furiend/build/reports/jacoco/jacocoTestReport/html', reportFiles: 'index.html', reportName: 'Code coverage'])
+               publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'app/build/reports/jacoco/jacocoTestReport/html', reportFiles: 'index.html', reportName: 'Code coverage'])
            }
         }
     }
