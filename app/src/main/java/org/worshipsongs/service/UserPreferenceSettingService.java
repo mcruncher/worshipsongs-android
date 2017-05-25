@@ -81,4 +81,11 @@ public class UserPreferenceSettingService
         return sharedPreferences.getBoolean("prefVideoPlay", true);
     }
 
+    public boolean isTamilLyrics() {
+        return sharedPreferences.getBoolean("displayTamilLyrics", true);
+    }
+
+    public boolean isRomanisedLyrics() {
+        return sharedPreferences.getBoolean("displayRomanisedLyrics", true);
+    }
 }
