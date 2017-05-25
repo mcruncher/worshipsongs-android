@@ -18,10 +18,12 @@ import java.util.regex.Pattern;
 public class CustomTagColorService
 {
     private static Pattern pattern = Pattern.compile("\\{\\w\\}");
-
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    private Boolean tagExists = false;
 
     public void setCustomTagTextView(TextView textView, String text, int primaryColor, int secondaryColor)
     {
+        tagExists = pattern.matcher(text).find();
         List<String> strings = getStringsByTag(text);
         String tagKey = null;
 
@@ -30,31 +32,52 @@ public class CustomTagColorService
             if (matcher.find()) {
                 String value = matcher.group(0).replace("{", "");
                 tagKey = value.replace("}", "");
-                PropertyUtils.appendColoredText(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    setColoredTextView(textView, removeTag(strings.get(i), tagKey), secondaryColor);
+                }
             } else {
-                PropertyUtils.appendColoredText(textView, strings.get(i), primaryColor);
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    setColoredTextView(textView, strings.get(i), primaryColor);
+                }
             }
         }
     }
 
+    protected void setColoredTextView(TextView textView, String content, int color) {
+        PropertyUtils.appendColoredText(textView, content, color);
+    }
+
+    protected boolean displayTamilLyrics() {
+        return preferenceSettingService.isTamilLyrics();
+    }
+
+    protected boolean displayRomanisedLyrics() {
+        return preferenceSettingService.isRomanisedLyrics();
+    }
 
     public String getFormattedLines(String content)
     {
-        TextView textView = new TextView(WorshipSongApplication.getContext());
+        tagExists = pattern.matcher(content).find();
+        StringBuilder textView = new StringBuilder();
         List<String> lyricsListWithTag = getStringsByTag(content);
         String tagKey = null;
         for (int i = 0; i < lyricsListWithTag.size(); i++) {
             Matcher matcher = pattern.matcher(lyricsListWithTag.get(i));
             if (matcher.find()) {
-                String value = matcher.group(0).replace("{", "");
-                tagKey = value.replace("}", "");
-                textView.append(removeTag(lyricsListWithTag.get(i), tagKey));
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    String value = matcher.group(0).replace("{", "");
+                    tagKey = value.replace("}", "");
+                    textView.append(removeTag(lyricsListWithTag.get(i), tagKey));
+                    textView.append("\n");
+                }
             } else {
-                textView.append(lyricsListWithTag.get(i));
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    textView.append(lyricsListWithTag.get(i));
+                    textView.append("\n");
+                }
             }
-            textView.append("\n");
         }
-        return textView.getText().toString();
+        return textView.toString();
     }
 
     private List<String> getStringsByTag(String songContent)
@@ -111,4 +134,5 @@ public class CustomTagColorService
         String replacedWithSecondPattern = replacedWithFirstPattern.replaceAll(secondRemovePattern, "");
         return replacedWithSecondPattern;
     }
+
 }
