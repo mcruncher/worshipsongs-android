@@ -1,0 +1,39 @@
+stage 'Unit test'
+  node('android') {
+    checkout scm
+    withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+         try {
+             sh '$GRADLE_HOME/bin/gradle clean testDebug'
+         } finally {
+             step([$class: 'JUnitResultArchiver', testResults: '**/*.xml'])
+         }
+    }
+  }
+
+stage 'Commit changes'
+  node('android') {
+      checkout scm
+      withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+
+             sh 'git checkout origin/$GIT_BRANCH'
+             sh 'git remote set-url origin https://cruncherapp:$GITHUB_PASSWORD@github.com/mcruncher/worshipsongs-android.git'
+             sh 'git config user.email "github@mcruncher.com"'
+             sh 'git config user.name "cruncherapp"'
+             sh 'git commit -am "Updated verson name"'
+             sh 'git push origin HEAD:$GIT_BRANCH'
+
+      }
+  }
+
+stage 'Package'
+  node('android') {
+      checkout scm
+      withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+           try {
+               sh './bundle-db.sh'
+               sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
+           } finally {
+               archive includes:'**/*.apk'
+           }
+      }
+  }
