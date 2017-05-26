@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -22,11 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
@@ -39,12 +34,7 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author : Seenivasan,Madasamy
@@ -245,16 +235,20 @@ public class SongsListFragment extends ListFragment
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);
-        boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
         if (isVisibleToUser) {
-            CommonUtils.hideKeyboard(getActivity());
+            if (getActivity() != null) {
+                CommonUtils.hideKeyboard(getActivity());
+            }
             if (searchView != null) {
+                boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
                 searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
             }
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
-            setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+            if (songService != null && adapterService != null) {
+                setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+            }
         }
     }
 
