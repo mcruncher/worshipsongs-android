@@ -120,10 +120,11 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3.2'
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    testCompile 'org.robolectric:robolectric:3.2.2'
+
 }
 
 //Jacoco configuration
