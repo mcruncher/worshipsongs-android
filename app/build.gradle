@@ -89,7 +89,7 @@ def getCurrentVersionName() {
         versionProps.load(new FileInputStream(gradlePropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
         minorVersion = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "91"
-        def currentBranch = System.getenv("BRANCH")?:"development"
+        def currentBranch = System.getenv("GIT_BRANCH")?:"development"
         if (currentBranch.toLowerCase().contains("development")) {
             currentVersionName = majorVersion + "." + minorVersion
             versionProps['MAJOR_VERSION'] = majorVersion
