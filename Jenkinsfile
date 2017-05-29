@@ -9,3 +9,16 @@ stage 'Unit test'
            }
         }
     }
+
+stage 'Package'
+  node('android') {
+      checkout scm
+      withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+           try {
+               sh './bundle-db.sh'
+               sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
+           } finally {
+               archive includes:'**/*.apk'
+           }
+      }
+  }

@@ -79,7 +79,8 @@ android {
 
 }
 
-def getCurrentVersionName() {
+def getCurrentVersionName()
+{
     def gradlePropertyFile = file('../version.properties')
     def majorVersion
     def minorVersion
@@ -88,17 +89,17 @@ def getCurrentVersionName() {
         def Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(gradlePropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
-        minorVersion = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "91"
-        def currentBranch = System.getenv("GIT_BRANCH")?:"development"
+        def buildNumber = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "279"
+        minorVersion =  buildNumber.toString().toInteger() + 264
+        def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
-            currentVersionName = majorVersion + "." + minorVersion
+            currentVersionName = majorVersion + "." + minorVersion.toString()
             versionProps['MAJOR_VERSION'] = majorVersion
-            versionProps["MINOR_VERSION"] = minorVersion
+            versionProps["MINOR_VERSION"] = minorVersion.toString()
             versionProps.store(gradlePropertyFile.newWriter(), null)
         } else {
-            currentVersionName = majorVersion+"."+minorVersion
+            currentVersionName = majorVersion + "." + minorVersion.toString()
         }
-
     }
     return currentVersionName
 }
@@ -112,7 +113,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     // Navigation drawer dependencies
     compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
-  //  compile 'com.google.android.gms:play-services:7.0.0'
+    //  compile 'com.google.android.gms:play-services:7.0.0'
     // cardview and recyclerview
     compile 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -143,7 +144,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
                        '**/BuildConfig.*',
-                       '**/Manifest*.*','**/**Test*']
+                       '**/Manifest*.*', '**/**Test*']
     )
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
