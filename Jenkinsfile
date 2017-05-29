@@ -9,3 +9,11 @@ stage 'Unit test'
            }
         }
     }
+stage 'Commit changes'
+  node('android') {
+      checkout scm
+      withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+             def branch = env.GIT_LOCAL_BRANCH
+             sh 'git checkout origin/$branch'
+      }
+  }
