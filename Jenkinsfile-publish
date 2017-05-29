@@ -14,13 +14,7 @@ stage 'Commit changes'
   node('android') {
       checkout scm
       withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-             sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
-             sh 'git checkout origin/development'
-             sh 'git remote set-url origin https://cruncherapp:$GITHUB_PASSWORD@github.com/mcruncher/worshipsongs-android.git'
-             sh 'git config user.email "github@mcruncher.com"'
-             sh 'git config user.name "cruncherapp"'
-             sh 'git commit -am "Updated verson name"'
-             sh 'git push origin HEAD:development'
+             sh './commit-changes.sh'
       }
   }
 
