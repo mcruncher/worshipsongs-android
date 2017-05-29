@@ -1,10 +1,9 @@
 package org.worshipsongs.dialog;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ public class CustomDialogBuilder
 
     private void setBuilder()
     {
-        builder = new AlertDialog.Builder(context);
+        builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.MyDialogTheme));
         builder.setView(getCustomView(context, dialogConfiguration));
         builder.setTitle(dialogConfiguration.getTitle());
     }
