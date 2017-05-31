@@ -82,22 +82,21 @@ public class SongListAdapterService
 
     private void displaySelectedSong(List<Song> songs, int position)
     {
-        Intent intent = new Intent(getContext(), SongContentViewActivity.class);
-        ArrayList<String> songList = new ArrayList<String>();
-        for (Song song : songs) {
-            songList.add(song.getTitle());
-        }
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, songList);
         Setting.getInstance().setPosition(position);
-        //bundle.putInt(CommonConstants.POSITION_KEY, position);
+        ArrayList<String> titleList = new ArrayList<String>();
+        titleList.add(songs.get(position).getTitle());
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
+
+        Intent intent = new Intent(getContext(), SongContentViewActivity.class);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }
 
-    private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager) {
-        ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
+    private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager)
+    {
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.play_imageview);
         final String urlKey = song.getUrlKey();
         if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
             imageView.setVisibility(View.VISIBLE);

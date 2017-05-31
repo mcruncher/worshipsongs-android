@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -42,6 +43,7 @@ public class ServiceSongListActivity extends AppCompatActivity
     private PresentationScreenService presentationScreenService;
     private ArrayList<ServiceSong> serviceSongs;
     private SongDao songDao;
+    private Parcelable state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -135,6 +137,9 @@ public class ServiceSongListActivity extends AppCompatActivity
         super.onResume();
         loadSongs();
         presentationScreenService.onResume();
+        if(state != null) {
+            songListView.onRestoreInstanceState(state);
+        }
     }
 
     @Override
@@ -149,5 +154,6 @@ public class ServiceSongListActivity extends AppCompatActivity
     {
         super.onPause();
         presentationScreenService.onPause();
+        state = songListView.onSaveInstanceState();
     }
 }

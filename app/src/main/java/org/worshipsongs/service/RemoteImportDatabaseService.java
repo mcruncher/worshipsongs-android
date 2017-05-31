@@ -101,7 +101,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     private void showRemoteUrlConfigurationDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.url), appCompatActivity.getString(R.string.message_choose_remote_db_confirmation));
+        DialogConfiguration dialogConfiguration = new DialogConfiguration(appCompatActivity.getString(R.string.url), "");
         dialogConfiguration.setEditTextVisibility(true);
         CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(appCompatActivity, dialogConfiguration);
         final EditText editText = customDialogBuilder.getEditText();

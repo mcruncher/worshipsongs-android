@@ -4,7 +4,7 @@
     <style name="MainAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
-        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorAccent">@color/teal</item>
         <item name="android:textColor">@color/background_material_dark</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/white</item>
@@ -14,7 +14,7 @@
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
-        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorAccent">@color/teal</item>
         <item name="singleAccount">true</item>
         <item name="android:textColor">@color/background_material_dark</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
