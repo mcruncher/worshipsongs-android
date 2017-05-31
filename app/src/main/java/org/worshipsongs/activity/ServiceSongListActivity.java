@@ -20,6 +20,9 @@ import android.widget.ListView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.adapter.ServiceSongAdapter;
+import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.ServiceSong;
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
@@ -34,10 +37,12 @@ import java.util.List;
  */
 public class ServiceSongListActivity extends AppCompatActivity
 {
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<ServiceSong> adapter;
     private String serviceName;
     private ListView songListView;
     private PresentationScreenService presentationScreenService;
+    private ArrayList<ServiceSong> serviceSongs;
+    private SongDao songDao;
     private Parcelable state;
 
     @Override
@@ -72,11 +77,13 @@ public class ServiceSongListActivity extends AppCompatActivity
         File serviceFile = PropertyUtils.getPropertyFile(this, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
-        List<String> titles = new ArrayList<>();
+        songDao = new SongDao(this);
+        serviceSongs = new ArrayList<ServiceSong>();
         for (String title : propertyValues) {
-            titles.add(title);
+            Song song = songDao.findContentsByTitle(title);
+            serviceSongs.add(new ServiceSong(title, song));
         }
-        adapter = new ServiceSongAdapter(ServiceSongListActivity.this, titles, serviceName);
+        adapter = new ServiceSongAdapter(ServiceSongListActivity.this, serviceSongs, serviceName);
         songListView.setAdapter(adapter);
     }
 
