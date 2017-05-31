@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
@@ -42,7 +43,7 @@ import java.util.List;
  */
 public class SongsListFragment extends ListFragment
 {
-
+    private Parcelable state;
     private SongService songService;
     private SongDao songDao;
     private List<Song> songs;
@@ -229,6 +230,9 @@ public class SongsListFragment extends ListFragment
     {
         super.onResume();
         setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+        if(state != null) {
+            getListView().onRestoreInstanceState(state);
+        }
     }
 
     @Override
@@ -262,5 +266,12 @@ public class SongsListFragment extends ListFragment
     {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause()
+    {
+        state = getListView().onSaveInstanceState();
+        super.onPause();
     }
 }
