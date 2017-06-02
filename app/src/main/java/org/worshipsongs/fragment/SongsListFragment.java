@@ -229,7 +229,6 @@ public class SongsListFragment extends ListFragment
     public void onResume()
     {
         super.onResume();
-        setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
         if(state != null) {
             getListView().onRestoreInstanceState(state);
         }
