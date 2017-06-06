@@ -229,8 +229,10 @@ public class SongsListFragment extends ListFragment
     public void onResume()
     {
         super.onResume();
-        if(state != null) {
+        if (state != null) {
             getListView().onRestoreInstanceState(state);
+        } else {
+            setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
         }
     }
 
