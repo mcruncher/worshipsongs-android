@@ -2,6 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory android:title="@string/Lyrics_preference_settings">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="displayTamilLyrics"
+            android:summary="@string/tamilLyricsSummary"
+            android:title="@string/tamil">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="displayRomanisedLyrics"
+            android:summary="@string/romanisedLyricsSummary"
+            android:title="@string/romanised">
+        </SwitchPreference>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
             maxSize="30"

@@ -9,10 +9,10 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -22,11 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
@@ -39,12 +35,7 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author : Seenivasan,Madasamy
@@ -52,7 +43,7 @@ import java.util.Set;
  */
 public class SongsListFragment extends ListFragment
 {
-
+    private Parcelable state;
     private SongService songService;
     private SongDao songDao;
     private List<Song> songs;
@@ -238,23 +229,31 @@ public class SongsListFragment extends ListFragment
     public void onResume()
     {
         super.onResume();
-        setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+        if (state != null) {
+            getListView().onRestoreInstanceState(state);
+        } else {
+            setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);
-        boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
         if (isVisibleToUser) {
-            CommonUtils.hideKeyboard(getActivity());
+            if (getActivity() != null) {
+                CommonUtils.hideKeyboard(getActivity());
+            }
             if (searchView != null) {
+                boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
                 searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
             }
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
-            setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+            if (songService != null && adapterService != null) {
+                setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
+            }
         }
     }
 
@@ -268,5 +267,12 @@ public class SongsListFragment extends ListFragment
     {
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause()
+    {
+        state = getListView().onSaveInstanceState();
+        super.onPause();
     }
 }

@@ -9,13 +9,13 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-}
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '2.14'
+//}
 
 allprojects {
     repositories {

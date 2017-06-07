@@ -9,12 +9,12 @@ def APP_VERSION = getCurrentVersionName()
 ext.set('AppVersion', APP_VERSION)
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
         versionName APP_VERSION
     }
@@ -22,9 +22,9 @@ android {
     signingConfigs {
         releaseConfig {
             storeFile file('../worshipsongs-key.jks')
-            storePassword System.getenv('WORSHIPSONGS_KEYSTOREPWD')
-            keyAlias System.getenv('WORSHIPSONGS_KEYALIAS')
-            keyPassword System.getenv('WORSHIPSONGS_KEYPASSWORD')
+            storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
+            keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
+            keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
         }
     }
 
@@ -70,11 +70,17 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 
 }
 
-def getCurrentVersionName() {
+def getCurrentVersionName()
+{
     def gradlePropertyFile = file('../version.properties')
     def majorVersion
     def minorVersion
@@ -83,51 +89,51 @@ def getCurrentVersionName() {
         def Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(gradlePropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
-        minorVersion = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "91"
-        def currentBranch = System.getenv("BRANCH")?:"development"
+        def buildNumber = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "279"
+        minorVersion =  buildNumber.toString().toInteger() + 0
+        def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
-            currentVersionName = majorVersion + "." + minorVersion
+            currentVersionName = majorVersion + "." + minorVersion.toString()
             versionProps['MAJOR_VERSION'] = majorVersion
-            versionProps["MINOR_VERSION"] = minorVersion
+            versionProps["MINOR_VERSION"] = minorVersion.toString()
             versionProps.store(gradlePropertyFile.newWriter(), null)
         } else {
-            currentVersionName = majorVersion+"."+minorVersion
+            currentVersionName = majorVersion + "." + minorVersion.toString()
         }
-
     }
     return currentVersionName
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/robotium-solo-2.5.jar')
+    //compile files('libs/robotium-solo-2.5.jar')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     // Navigation drawer dependencies
     compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
-    compile 'com.google.android.gms:play-services:7.0.0'
+    //  compile 'com.google.android.gms:play-services:7.0.0'
     // cardview and recyclerview
     compile 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3.2'
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    testCompile 'org.robolectric:robolectric:3.2.2'
 }
 
 //Jacoco configuration
 jacoco {
     // https://github.com/jacoco/jacoco/issues/288
-    toolVersion = "0.7.5.201505241946"
+    toolVersion = "0.7.4+"
 }
 
-def coverageSourceDirs = ['../app/src']
-task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
+def coverageSourceDirs = ['../app/src/main/java']
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
     classDirectories = fileTree(
@@ -136,7 +142,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
                        '**/BuildConfig.*',
-                       '**/Manifest*.*','**/**Test*']
+                       '**/Manifest*.*', '**/**Test*']
     )
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
@@ -145,6 +151,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
     reports {
         xml.enabled = true
         html.enabled = true
+    }
+    doFirst {
+        files('build/intermediates/classes/debug').getFiles().each { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
     }
 }
 

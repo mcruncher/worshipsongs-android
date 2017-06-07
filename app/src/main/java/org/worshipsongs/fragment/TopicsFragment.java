@@ -88,7 +88,7 @@ public class TopicsFragment extends ListFragment
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && topicsList != null) {
             Log.i(this.getClass().getSimpleName(), "Topic list" + topicsList);
             setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsList, "topics"));
             CommonUtils.hideKeyboard(getActivity());
