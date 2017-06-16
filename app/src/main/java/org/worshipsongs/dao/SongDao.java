@@ -25,6 +25,7 @@ public class SongDao extends AbstractDao
     public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
             "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
+    private static final String I18NTITLE_REGEX = "i18nTitle.*";
     private UtilitiesService utilitiesService = new UtilitiesService();
 
 
@@ -171,6 +172,7 @@ public class SongDao extends AbstractDao
         song.setComments(cursor.getString(5));
         song.setUrlKey(parseMediaUrlKey(song.getComments()));
         song.setChord(parseChord(song.getComments()));
+        song.setTamilTitle(parseTamilTitle(song.getComments()));
         return song;
     }
 
@@ -212,6 +214,7 @@ public class SongDao extends AbstractDao
             Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
             parsedSong.setChord(parseChord(song.getComments()));
             Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
+            parsedSong.setTamilTitle(parseTamilTitle(song.getComments()));
             return parsedSong;
         }
         return song;
@@ -243,6 +246,19 @@ public class SongDao extends AbstractDao
             }
         }
         return chord;
+    }
+
+    String parseTamilTitle(String comments)
+    {
+        String tamilTitle = "";
+        if (comments != null && comments.length() > 0) {
+            String tamilTitleLine = RegexUtils.getMatchString(comments, I18NTITLE_REGEX);
+            String[] chordArray = tamilTitleLine.split("=");
+            if (chordArray != null && chordArray.length >= 2) {
+                tamilTitle = chordArray[1];
+            }
+        }
+        return tamilTitle;
     }
 
     public long count()

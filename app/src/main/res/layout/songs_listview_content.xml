@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/songs_list_layout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
                 android:padding="5dp">
 
 
     <TextView
-        android:id="@+id/songsTextView"
+        android:id="@+id/tamil_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
-        android:clickable="true"
+        android:clickable="false"
         android:longClickable="false"
         android:maxLines="1"
-        android:padding="7dp"
-        android:text="Title"
+        android:padding="3dp"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         />
@@ -30,10 +30,10 @@
         android:layout_toLeftOf="@+id/optionMenuIcon"
         android:layout_toStartOf="@+id/optionMenuIcon"
         android:clickable="false"
-        android:visibility="gone"
         android:contentDescription="optionMenuIcon"
         android:src="@android:drawable/presence_video_online"
-        android:tint="@color/gray"/>
+        android:tint="@color/gray"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/optionMenuIcon"
@@ -41,8 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:contentDescription="optionMenuIcon"
         android:src="@drawable/ic_action_overflow"/>
+
+
 </RelativeLayout>

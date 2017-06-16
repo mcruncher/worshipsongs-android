@@ -2,7 +2,9 @@ package org.worshipsongs.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -14,10 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
@@ -42,6 +44,7 @@ public class SongListAdapterService
 
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     private SongDao songDao = new SongDao(getContext());
 
     public ArrayAdapter<Song> getSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
@@ -54,7 +57,8 @@ public class SongListAdapterService
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
                 String title = songs.get(position).getTitle();
-                setTextView(rowView, songs, position);
+                setRelativeLayout(rowView, songs, position);
+                setTitleTextView(rowView, songs, position);
                 setPlayImageView(rowView, songs.get(position), fragmentManager);
                 setImageView(rowView, title, fragmentManager);
                 return rowView;
@@ -62,18 +66,24 @@ public class SongListAdapterService
         };
     }
 
-    private void setTextView(View rowView, final List<Song> songs, final int position)
+    private void setRelativeLayout(View rowView, final List<Song> songs, final int position)
     {
-        String title = songs.get(position).getTitle();
-        TextView textView = (TextView) rowView.findViewById(R.id.songsTextView);
-        textView.setText(title);
-        textView.setOnClickListener(new View.OnClickListener()
+        RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.songs_list_layout);
+        relativeLayout.setOnClickListener(new View.OnClickListener()
         {
-            public void onClick(View arg0)
+            @Override
+            public void onClick(View v)
             {
                 displaySelectedSong(songs, position);
             }
         });
+    }
+
+    private void setTitleTextView(View rowView, List<Song> songs, int position)
+    {
+        TextView textView = (TextView) rowView.findViewById(R.id.tamil_title);
+        textView.setText((preferenceSettingService.isTamil() && songs.get(position).getTamilTitle().length() > 0) ?
+                songs.get(position).getTamilTitle() : songs.get(position).getTitle());
         Song presentingSong = Setting.getInstance().getSong();
         if (presentingSong != null && presentingSong.getTitle().equals(songs.get(position).getTitle())) {
             textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));

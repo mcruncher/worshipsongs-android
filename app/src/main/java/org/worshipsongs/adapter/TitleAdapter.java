@@ -62,7 +62,7 @@ public class TitleAdapter<E> extends ArrayAdapter<E>
 
     private void setTextView(int position, View v, E e)
     {
-        TextView textView = (TextView) v.findViewById(R.id.songsTextView);
+        TextView textView = (TextView) v.findViewById(R.id.tamil_title);
         if (textView != null) {
             AbstractDomain abstractDomain = (AbstractDomain) e;
             textView.setText(abstractDomain.getName());

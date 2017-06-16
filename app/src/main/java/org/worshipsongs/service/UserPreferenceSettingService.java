@@ -63,11 +63,13 @@ public class UserPreferenceSettingService
         return sharedPreferences.getInt("presentationBackgroundColor", 0xff000000);
     }
 
-    public int getPresentationPrimaryColor() {
+    public int getPresentationPrimaryColor()
+    {
         return sharedPreferences.getInt("presentationPrimaryColor", 0xffffffff);
     }
 
-    public int getPresentationSecondaryColor() {
+    public int getPresentationSecondaryColor()
+    {
         return sharedPreferences.getInt("presentationSecondaryColor", 0xffffff00);
     }
 
@@ -81,11 +83,18 @@ public class UserPreferenceSettingService
         return sharedPreferences.getBoolean("prefVideoPlay", true);
     }
 
-    public boolean isTamilLyrics() {
+    public boolean isTamilLyrics()
+    {
         return sharedPreferences.getBoolean("displayTamilLyrics", true);
     }
 
-    public boolean isRomanisedLyrics() {
+    public boolean isRomanisedLyrics()
+    {
         return sharedPreferences.getBoolean("displayRomanisedLyrics", true);
+    }
+
+    public boolean isTamil()
+    {
+        return sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0) == 0;
     }
 }

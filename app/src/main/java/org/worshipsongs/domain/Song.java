@@ -21,6 +21,7 @@ public class Song implements Parcelable
     private int songBookId;
     private String title;
     private String alternateTitle;
+    private String tamilTitle;
     private String lyrics;
     private String verse_order;
     private String copyright;
@@ -88,6 +89,16 @@ public class Song implements Parcelable
     public void setAlternateTitle(String alternateTitle)
     {
         this.alternateTitle = alternateTitle;
+    }
+
+    public String getTamilTitle()
+    {
+        return tamilTitle;
+    }
+
+    public void setTamilTitle(String tamilTitle)
+    {
+        this.tamilTitle = tamilTitle;
     }
 
     public String getLyrics()
