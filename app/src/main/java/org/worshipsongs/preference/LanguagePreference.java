@@ -18,7 +18,7 @@ import org.worshipsongs.worship.R;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 3.x
  */
 
 public class LanguagePreference extends Preference

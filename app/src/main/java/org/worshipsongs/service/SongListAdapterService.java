@@ -81,7 +81,7 @@ public class SongListAdapterService
 
     private void setTitleTextView(View rowView, List<Song> songs, int position)
     {
-        TextView textView = (TextView) rowView.findViewById(R.id.tamil_title);
+        TextView textView = (TextView) rowView.findViewById(R.id.title);
         textView.setText((preferenceSettingService.isTamil() && songs.get(position).getTamilTitle().length() > 0) ?
                 songs.get(position).getTamilTitle() : songs.get(position).getTitle());
         Song presentingSong = Setting.getInstance().getSong();

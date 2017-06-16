@@ -97,7 +97,7 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
 
     private void setTextView(View view, final ServiceSong serviceSong, final int position)
     {
-        final TextView textView = (TextView) view.findViewById(R.id.tamil_title);
+        final TextView textView = (TextView) view.findViewById(R.id.title);
         textView.setText((preferenceSettingService.isTamil() && serviceSong.getSong().getTamilTitle().length() > 0) ?
                 serviceSong.getSong().getTamilTitle() : serviceSong.getSong().getTitle());
         textView.setOnLongClickListener(new View.OnLongClickListener()
