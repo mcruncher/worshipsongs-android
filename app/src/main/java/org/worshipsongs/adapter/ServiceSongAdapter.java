@@ -53,8 +53,8 @@ import java.util.List;
 public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
 {
 
-    private  String serviceName;
-    private  AppCompatActivity activity;
+    private String serviceName;
+    private AppCompatActivity activity;
     private ArrayList<String> songWithContent;
     private ArrayList<ServiceSong> serviceSongs;
     private UserPreferenceSettingService preferenceSettingService;
@@ -68,7 +68,7 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
         serviceSongs = new ArrayList<ServiceSong>(songs);
         songWithContent = new ArrayList<>();
         for (ServiceSong serviceSong : songs) {
-            if(serviceSong.getSong()!=null){
+            if (serviceSong.getSong() != null) {
                 songWithContent.add(serviceSong.getTitle());
             }
         }
@@ -97,8 +97,9 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
 
     private void setTextView(View view, final ServiceSong serviceSong, final int position)
     {
-        final TextView textView = (TextView) view.findViewById(R.id.songsTextView);
-        textView.setText(serviceSong.getTitle());
+        final TextView textView = (TextView) view.findViewById(R.id.title);
+        textView.setText((preferenceSettingService.isTamil() && serviceSong.getSong().getTamilTitle().length() > 0) ?
+                serviceSong.getSong().getTamilTitle() : serviceSong.getSong().getTitle());
         textView.setOnLongClickListener(new View.OnLongClickListener()
         {
             @Override
@@ -185,7 +186,7 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
         deleteMsg.setText(R.string.message_delete_song);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.MyDialogTheme));
         alertDialogBuilder.setView(promptsView);
-        alertDialogBuilder.setCancelable(false).setPositiveButton( activity.getString(R.string.ok), new DialogInterface.OnClickListener()
+        alertDialogBuilder.setCancelable(false).setPositiveButton(activity.getString(R.string.ok), new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -230,8 +231,9 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
         }
     }
 
-    private void setPlayImageView(final View rowView, ServiceSong serviceSong, FragmentManager fragmentManager) {
-        ImageView imageView = (ImageView)rowView.findViewById(R.id.play_imageview);
+    private void setPlayImageView(final View rowView, ServiceSong serviceSong, FragmentManager fragmentManager)
+    {
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.play_imageview);
         final String urlKey = serviceSong.getSong().getUrlKey();
         if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
             imageView.setVisibility(View.VISIBLE);
