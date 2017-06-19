@@ -43,7 +43,6 @@ android {
         debug {
             minifyEnabled false
             testCoverageEnabled true
-            signingConfig signingConfigs.releaseConfig
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
