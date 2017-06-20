@@ -142,7 +142,8 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private void setTitleTextView(View view)
     {
         TextView textView = (TextView) view.findViewById(R.id.song_title);
-        textView.setText(title);
+        textView.setText((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+                song.getTamilTitle() : song.getTitle());
     }
 
     private void setOptionsImageView(View view)
@@ -150,7 +151,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
         optionMenu.setOnClickListener(new OptionsImageClickListener());
     }
-
 
     private void setListView(View view, final Song song)
     {

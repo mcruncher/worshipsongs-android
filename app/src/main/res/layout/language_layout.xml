@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Tamil"
-                android:textColor="@color/liteGray"/>
+                android:textColor="@color/black"/>
 
             <RadioButton
                 android:id="@+id/language_english"
@@ -34,7 +34,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:text="English"
-                android:textColor="@color/liteGray"/>
+                android:textColor="@color/black"/>
         </RadioGroup>
 
     </LinearLayout>
