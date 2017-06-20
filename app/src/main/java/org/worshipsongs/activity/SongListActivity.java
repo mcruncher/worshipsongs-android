@@ -64,7 +64,9 @@ public class SongListActivity extends AppCompatActivity
         int id = intent.getIntExtra(CommonConstants.ID, 0);
         SongsListFragment songsListFragment = SongsListFragment.newInstance(type, id);
         FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.song_list_fragment, songsListFragment).commit();
+        transaction.replace(R.id.song_list_fragment, songsListFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
