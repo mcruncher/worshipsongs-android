@@ -1,12 +1,16 @@
 package org.worshipsongs.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
@@ -24,6 +28,7 @@ import java.io.File;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
+    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosed";
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
     // private ProgressBar progressBar;
@@ -77,10 +82,41 @@ public class SplashScreenActivity extends AppCompatActivity
                 PropertyUtils.setProperty(CommonConstants.VERSION_KEY, currentVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
             }
-            moveToMainActivity();
+            showLanguageSelectionDialog();
         } catch (Exception ex) {
             Log.e(this.getClass().getSimpleName(), "Error occurred while coping databases", ex);
         }
+    }
+
+    private void showLanguageSelectionDialog()
+    {
+        boolean languageChoosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
+        if (!languageChoosed) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
+            builder.setTitle("Language");
+            String[] languageList = new String[]{"Tamil", "English"};
+            int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
+            builder.setSingleChoiceItems(languageList, index, getDialogListener());
+            builder.show();
+        } else {
+            moveToMainActivity();
+        }
+    }
+
+    @NonNull
+    private DialogInterface.OnClickListener getDialogListener()
+    {
+        return new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, which).apply();
+                sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
+                dialog.cancel();
+                moveToMainActivity();
+            }
+        };
     }
 
     private void moveToMainActivity()
