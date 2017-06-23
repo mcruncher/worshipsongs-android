@@ -53,13 +53,13 @@ public class SongService implements ISongService
                     if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
-                    if (song.getComments() != null && song.getComments().toLowerCase().contains(text.toLowerCase())) {
-                        filteredSongSet.add(song);
-                    }
                 } else {
                     if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
+                }
+                if (song.getComments() != null && song.getComments().toLowerCase().contains(text.toLowerCase())) {
+                    filteredSongSet.add(song);
                 }
             }
         }
