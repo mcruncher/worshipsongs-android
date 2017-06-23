@@ -3,65 +3,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/action_bar_linear_Layout"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/light_navy_blue"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        android:weightSum="6">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="5">
-
-            <ImageView
-                android:id="@+id/back_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/arrow_back_white"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/song_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:text="foobar"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:textColor="@color/primary_text_default_material_dark"
-            android:textSize="20dp"/>
-
-        <ImageView
-            android:id="@+id/optionMenu"
-            android:layout_width="25dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="14dp"
-            android:src="@drawable/option_menu"/>
-    </LinearLayout>
-
-
-    <!--TODO: Support to display video in this view-->
-    <!--<FrameLayout-->
-    <!--android:id="@+id/youtube_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/linearLayout"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:visibility="visible" />-->
 
     <ListView
         android:id="@+id/content_list"
@@ -69,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/action_bar_linear_Layout"
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/darker_gray"/>
 
@@ -164,53 +106,4 @@
         fab:fab_labelStyle="@style/menu_labels_style"
         fab:fab_size="mini"
         fab:fab_title="Present song"/>
-
-    <!--TODO: Provide settings -->
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/color_settings"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@color/black_semi_transparent"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:visibility="visible"-->
-        <!--android:animateLayoutChanges="true"-->
-        <!--android:weightSum="3">-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/background_color"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:contentDescription="@string/background_color"-->
-            <!--android:src="@drawable/ic_format_color_fill_white"-->
-            <!--android:visibility="visible"/>-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/primary_text_color"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:contentDescription="@string/primary_color"-->
-            <!--android:src="@drawable/ic_format_color_text_white"-->
-            <!--android:visibility="visible"/>-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/secondary_text_color"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/ic_format_color_text_white"-->
-            <!--android:contentDescription="@string/secondary_color"-->
-            <!--android:visibility="visible"/>-->
-
-    <!--</LinearLayout>-->
-
-
-
-
 </RelativeLayout>
