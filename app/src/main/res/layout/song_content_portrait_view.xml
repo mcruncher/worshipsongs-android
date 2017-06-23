@@ -6,51 +6,54 @@
 
                 android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/action_bar_linear_Layout"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/light_navy_blue"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        android:weightSum="6">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/action_bar_linear_Layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:background="@color/light_navy_blue"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible"-->
+        <!--android:weightSum="6">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="5">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/back_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginTop="14dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:background="?attr/selectableItemBackground"-->
+            <!--android:layout_weight="5">-->
 
-            <ImageView
-                android:id="@+id/back_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/arrow_back_white"/>
-        </LinearLayout>
+            <!--<ImageView-->
+                <!--android:id="@+id/back_navigation"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="?attr/selectableItemBackground"-->
+                <!--android:clickable="false"-->
+                <!--android:src="@drawable/arrow_back_white"/>-->
+        <!--</LinearLayout>-->
 
-        <TextView
-            android:id="@+id/song_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:text="foobar"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:textColor="@color/primary_text_default_material_dark"
-            android:textSize="20dp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/song_title"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="13dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:maxLines="1"-->
+            <!--android:text="foobar"-->
+            <!--android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+            <!--android:textColor="@color/primary_text_default_material_dark"-->
+            <!--android:textSize="20dp"/>-->
 
-        <ImageView
-            android:id="@+id/optionMenu"
-            android:layout_width="25dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="14dp"
-            android:src="@drawable/option_menu"/>
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/optionMenu"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="14dp"-->
+            <!--android:src="@drawable/option_menu"/>-->
+    <!--</LinearLayout>-->
 
 
     <!--TODO: Support to display video in this view-->

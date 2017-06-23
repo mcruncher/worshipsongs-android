@@ -97,6 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity
             String[] languageList = new String[]{"Tamil", "English"};
             int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
             builder.setSingleChoiceItems(languageList, index, getDialogListener());
+            builder.setPositiveButton(R.string.ok, getPositiveListener());
             builder.show();
         } else {
             moveToMainActivity();
@@ -113,6 +114,19 @@ public class SplashScreenActivity extends AppCompatActivity
             {
                 sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, which).apply();
                 sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
+
+            }
+        };
+    }
+
+    @NonNull
+    private DialogInterface.OnClickListener getPositiveListener()
+    {
+        return new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
                 dialog.cancel();
                 moveToMainActivity();
             }

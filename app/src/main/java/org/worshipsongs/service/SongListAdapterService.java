@@ -92,7 +92,7 @@ public class SongListAdapterService
 
     private void displaySelectedSong(List<Song> songs, int position)
     {
-        Setting.getInstance().setPosition(position);
+        Setting.getInstance().setPosition(0);
         ArrayList<String> titleList = new ArrayList<String>();
         titleList.add(songs.get(position).getTitle());
         Bundle bundle = new Bundle();

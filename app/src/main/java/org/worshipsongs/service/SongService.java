@@ -26,11 +26,13 @@ public class SongService implements ISongService
 {
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
+    private UserPreferenceSettingService userPreferenceSettingService;
 
     public SongService(Context context)
     {
         songDao = new SongDao(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        userPreferenceSettingService = new UserPreferenceSettingService();
     }
 
     @Override
@@ -49,6 +51,9 @@ public class SongService implements ISongService
             for (Song song : songs) {
                 if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
                     if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
+                        filteredSongSet.add(song);
+                    }
+                    if (song.getComments() != null && song.getComments().toLowerCase().contains(text.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
                 } else {

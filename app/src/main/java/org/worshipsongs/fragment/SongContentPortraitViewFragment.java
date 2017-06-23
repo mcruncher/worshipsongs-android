@@ -1,21 +1,31 @@
 package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +47,7 @@ import org.worshipsongs.service.IAuthorService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
+import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
@@ -79,13 +90,21 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View view = inflater.inflate(R.layout.song_content_portrait_view, container, false);
         initSetUp();
-        setBackImageView(view);
-        setTitleTextView(view);
-        setOptionsImageView(view);
+
+        //setBackImageView(view);
+        //setTitleTextView(view);
+        // setOptionsImageView(view);
         setListView(view, song);
         setFloatingActionMenu(view, song);
         setNextButton(view);
@@ -109,6 +128,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         song = songDao.findContentsByTitle(title);
         song.setAuthorName(authorService.findNameByTitle(title));
         preferenceSettingService = new UserPreferenceSettingService();
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void showStatusBar()
@@ -126,31 +148,31 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 //        actionBarlinearLayout = (LinearLayout) view.findViewById(R.id.action_bar_linear_Layout);
 //    }
 
-    private void setBackImageView(View view)
-    {
-        ImageView imageView = (ImageView) view.findViewById(R.id.back_navigation);
-        imageView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                getActivity().finish();
-            }
-        });
-    }
-
-    private void setTitleTextView(View view)
-    {
-        TextView textView = (TextView) view.findViewById(R.id.song_title);
-        textView.setText((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
-                song.getTamilTitle() : song.getTitle());
-    }
-
-    private void setOptionsImageView(View view)
-    {
-        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
-        optionMenu.setOnClickListener(new OptionsImageClickListener());
-    }
+//    private void setBackImageView(View view)
+//    {
+//        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.back_view);
+//        linearLayout.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                getActivity().finish();
+//            }
+//        });
+//    }
+//
+//    private void setTitleTextView(View view)
+//    {
+//        TextView textView = (TextView) view.findViewById(R.id.song_title);
+//        textView.setText((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+//                song.getTamilTitle() : song.getTitle());
+//    }
+//
+//    private void setOptionsImageView(View view)
+//    {
+//        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
+//        optionMenu.setOnClickListener(new OptionsImageClickListener());
+//    }
 
     private void setListView(View view, final Song song)
     {
@@ -311,6 +333,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         } else {
             hideOrShowComponents(song);
         }
+//        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+//        appCompatActivity.setTitle((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+//                song.getTamilTitle() : song.getTitle());
     }
 
     private void setPresentation(Song song)
@@ -530,6 +555,66 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             int position = tilteList.indexOf(title);
             Setting.getInstance().setPosition(position);
             return true;
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Menu options");
+        inflater.inflate(R.menu.action_bar_options, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Menu item " + item.getItemId() + " " + R.id.options);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
+            case R.id.options:
+                Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "On tapped options");
+                songListAdapterService = new SongListAdapterService();
+                songListAdapterService.showPopupmenu(getActivity().findViewById(R.id.options), title, getFragmentManager(), false);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        setActionBarTitle();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            setActionBarTitle();
+        }
+    }
+
+    private void setActionBarTitle()
+    {
+        if (preferenceSettingService != null) {
+            int position = Setting.getInstance().getPosition();
+            String title = tilteList.get(position);
+            Song song = songDao.findContentsByTitle(title);
+            AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+            appCompatActivity.setTitle((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+                    song.getTamilTitle() : song.getTitle());
         }
     }
 
