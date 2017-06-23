@@ -101,10 +101,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     {
         final View view = inflater.inflate(R.layout.song_content_portrait_view, container, false);
         initSetUp();
-
-        //setBackImageView(view);
-        //setTitleTextView(view);
-        // setOptionsImageView(view);
         setListView(view, song);
         setFloatingActionMenu(view, song);
         setNextButton(view);
@@ -142,37 +138,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
     }
-
-//    private void setActionBarLayout(View view)
-//    {
-//        actionBarlinearLayout = (LinearLayout) view.findViewById(R.id.action_bar_linear_Layout);
-//    }
-
-//    private void setBackImageView(View view)
-//    {
-//        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.back_view);
-//        linearLayout.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                getActivity().finish();
-//            }
-//        });
-//    }
-//
-//    private void setTitleTextView(View view)
-//    {
-//        TextView textView = (TextView) view.findViewById(R.id.song_title);
-//        textView.setText((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
-//                song.getTamilTitle() : song.getTitle());
-//    }
-//
-//    private void setOptionsImageView(View view)
-//    {
-//        ImageView optionMenu = (ImageView) view.findViewById(R.id.optionMenu);
-//        optionMenu.setOnClickListener(new OptionsImageClickListener());
-//    }
 
     private void setListView(View view, final Song song)
     {
@@ -481,62 +446,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         return presentationScreenService != null && presentationScreenService.getPresentation() != null;
     }
 
-//    private void setColorSettingsLayout(View view)
-//    {
-//        colorSettingsLayout = (LinearLayout) view.findViewById(R.id.color_settings);
-//        colorSettingsLayout.setVisibility(View.GONE);
-//    }
-
-//    private void setPresentationBackgroundColor(View view)
-//    {
-//        final ImageView presentationBackgroundColor = (ImageView) view.findViewById(R.id.background_color);
-//        presentationBackgroundColor.setColorFilter(preferenceSettingService.getPresentationBackgroundColor());
-//        presentationBackgroundColor.setOnClickListener(new ColorSettingsOnClickListener(presentationBackgroundColor, "presentationBackgroundColor"));
-//    }
-//
-//    private void setPresentationPrimaryColor(View view)
-//    {
-//        final ImageView presentationPrimaryColor = (ImageView) view.findViewById(R.id.primary_text_color);
-//        presentationPrimaryColor.setColorFilter(preferenceSettingService.getPresentationPrimaryColor());
-//        presentationPrimaryColor.setOnClickListener(new ColorSettingsOnClickListener(presentationPrimaryColor, "presentationPrimaryColor"));
-//    }
-//
-//    private void setPresentationSecondaryColor(View view)
-//    {
-//        final ImageView presentationSecondaryColor = (ImageView) view.findViewById(R.id.secondary_text_color);
-//        presentationSecondaryColor.setColorFilter(preferenceSettingService.getPresentationSecondaryColor());
-//        presentationSecondaryColor.setOnClickListener(new ColorSettingsOnClickListener(presentationSecondaryColor, "presentationSecondaryColor"));
-//    }
-//
-//    private class ColorSettingsOnClickListener implements View.OnClickListener
-//    {
-//
-//        private final ImageView imageView;
-//        private final String key;
-//
-//        private ColorSettingsOnClickListener(ImageView imageView, String key)
-//        {
-//            this.imageView = imageView;
-//            this.key = key;
-//        }
-//
-//        @Override
-//        public void onClick(View view)
-//        {
-//            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), preferenceSettingService.getPresentationSecondaryColor());
-//            dialog.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener()
-//            {
-//                @Override
-//                public void onColorChanged(int color)
-//                {
-//                    sharedPreferences.edit().putInt(key, color).apply();
-//                    imageView.setColorFilter(color);
-//                }
-//            });
-//            dialog.show();
-//        }
-//    }
-
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
@@ -618,15 +527,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         }
     }
 
-    private class OptionsImageClickListener implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View view)
-        {
-            songListAdapterService = new SongListAdapterService();
-            songListAdapterService.showPopupmenu(view, title, getFragmentManager(), false);
-        }
-    }
 
     public PresentationScreenService getPresentationScreenService()
     {
