@@ -1,7 +1,6 @@
 package org.worshipsongs.dao;
 
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,6 +50,7 @@ public class SongDaoTest
                 "originalKey=G";
         assertEquals("G", songDao.parseChord(comments));
     }
+
     @Test
     public void testParseChord_ChordpresentInfirst()
     {
@@ -74,5 +74,29 @@ public class SongDaoTest
         System.out.println("--parseChord_NotDefinedNoNewLine--");
         String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI";
         assertEquals("", songDao.parseChord(comments));
+    }
+
+    @Test
+    public void testParseTamilTitle()
+    {
+        System.out.println("--parseTamilTitle--");
+        String comments = "i18nTitle=இடைவிடா நன்றி உமக்குத்தானே";
+        assertEquals("இடைவிடா நன்றி உமக்குத்தானே", songDao.parseTamilTitle(comments));
+    }
+
+    @Test
+    public void testParseTamilTitle_NotDefined()
+    {
+        System.out.println("--parseTamilTitle_NotDefined--");
+        String comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI";
+        assertEquals("", songDao.parseTamilTitle(comments));
+    }
+
+    @Test
+    public void testParseTamilTitle_End()
+    {
+        System.out.println("--parseTamilTitle_End--");
+        String comments = "originalKey=g\nmediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\ni18nTitle=இடைவிடா நன்றி உமக்குத்தானே";
+        assertEquals("இடைவிடா நன்றி உமக்குத்தானே", songDao.parseTamilTitle(comments));
     }
 }

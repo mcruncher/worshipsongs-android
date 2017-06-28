@@ -25,6 +25,7 @@ public class SongDao extends AbstractDao
     public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
             "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
             "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
+    private static final String I18NTITLE_REGEX = "i18nTitle.*";
     private UtilitiesService utilitiesService = new UtilitiesService();
 
 
@@ -105,59 +106,16 @@ public class SongDao extends AbstractDao
 
     public Song getSongByTitle(String title)
     {
-        Song song = new Song();
+        Song song = null;
         String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, "title");
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             song = cursorToSong(cursor);
             cursor.close();
-            return song;
         }
-        return null;
-    }
-
-    public Song getSongById(int songId)
-    {
-        Song song = new Song();
-        try {
-            Log.d(this.getClass().getName(), "Song ID" + songId);
-            String whereClause = " id=" + songId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                song = cursorToSong(cursor);
-                Log.d(this.getClass().getName(), "Song:" + song);
-                cursor.close();
-            }
-        } catch (Exception e) {
-            Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
-        } finally {
-            return song;
-        }
-    }
-
-    public List<Song> getSongTitlesByBookId(int songBookId)
-    {
-        List<Song> songs = new ArrayList<Song>();
-        try {
-            String whereClause = " song_book_id=" + songBookId + ";";
-            Cursor cursor = getDatabase().query(TABLE_NAME,
-                    new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, null);
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Song song = cursorToSong(cursor);
-                songs.add(song);
-                cursor.moveToNext();
-            }
-            cursor.close();
-        } catch (Exception e) {
-            Log.d(this.getClass().getName(), "Exception to get song by id:" + e);
-        } finally {
-            return songs;
-        }
+        return song;
     }
 
     private Song cursorToSong(Cursor cursor)
@@ -171,6 +129,7 @@ public class SongDao extends AbstractDao
         song.setComments(cursor.getString(5));
         song.setUrlKey(parseMediaUrlKey(song.getComments()));
         song.setChord(parseChord(song.getComments()));
+        song.setTamilTitle(parseTamilTitle(song.getComments()));
         return song;
     }
 
@@ -212,6 +171,7 @@ public class SongDao extends AbstractDao
             Log.d(this.getClass().getName(), "Parsed media url : " + parsedSong.getUrlKey());
             parsedSong.setChord(parseChord(song.getComments()));
             Log.d(this.getClass().getName(), "Parsed chord  : " + parsedSong.getChord());
+            parsedSong.setTamilTitle(parseTamilTitle(song.getComments()));
             return parsedSong;
         }
         return song;
@@ -243,6 +203,19 @@ public class SongDao extends AbstractDao
             }
         }
         return chord;
+    }
+
+    String parseTamilTitle(String comments)
+    {
+        String tamilTitle = "";
+        if (comments != null && comments.length() > 0) {
+            String tamilTitleLine = RegexUtils.getMatchString(comments, I18NTITLE_REGEX);
+            String[] chordArray = tamilTitleLine.split("=");
+            if (chordArray != null && chordArray.length >= 2) {
+                tamilTitle = chordArray[1];
+            }
+        }
+        return tamilTitle;
     }
 
     public long count()

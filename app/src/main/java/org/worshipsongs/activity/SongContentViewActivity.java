@@ -53,8 +53,6 @@ public class SongContentViewActivity extends AppCompatActivity
             isTabView = savedInstanceState.getBoolean("isTabView");
         }
         Intent intent = getIntent();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
 
         ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
@@ -135,7 +133,6 @@ public class SongContentViewActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        //  setListAdapter(customListViewAdapter);
         presentationScreenService.onResume();
     }
 
@@ -160,29 +157,4 @@ public class SongContentViewActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
 
-
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        super.onPrepareOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return true;
-    }
 }

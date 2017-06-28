@@ -1,9 +1,11 @@
 package org.worshipsongs.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.UserSettingActivity;
@@ -13,6 +15,7 @@ import org.worshipsongs.worship.R;
  * Author:Seenivasan, Madasamy
  * version:1.0.0
  */
+
 public class SettingsPreferenceFragment extends PreferenceFragment
 {
     private UserSettingActivity userSettingActivity = new UserSettingActivity();
@@ -43,7 +46,5 @@ public class SettingsPreferenceFragment extends PreferenceFragment
             }
         });
     }
-
-
 
 }

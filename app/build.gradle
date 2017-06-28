@@ -25,6 +25,7 @@ android {
             storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
             keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
             keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
+            
         }
     }
 
@@ -42,7 +43,6 @@ android {
         debug {
             minifyEnabled false
             testCoverageEnabled true
-            signingConfig signingConfigs.releaseConfig
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
@@ -90,7 +90,7 @@ def getCurrentVersionName()
         versionProps.load(new FileInputStream(gradlePropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
         def buildNumber = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "279"
-        minorVersion =  buildNumber.toString().toInteger() + 0
+        minorVersion = buildNumber.toString().toInteger() + 0
         def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
             currentVersionName = majorVersion + "." + minorVersion.toString()

@@ -19,6 +19,11 @@
         </SwitchPreference>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Language">
+       <org.worshipsongs.preference.LanguagePreference
+           />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
             maxSize="30"
