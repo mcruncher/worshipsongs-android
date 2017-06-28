@@ -102,5 +102,7 @@
     <string name="search_title">Search by</string>
     <string name="hint_title">Search by title</string>
     <string name="hint_content">Search by content</string>
+    <string name="tamil_key">தமிழ்</string>
+    <string name="english_key">English</string>
 
 </resources>

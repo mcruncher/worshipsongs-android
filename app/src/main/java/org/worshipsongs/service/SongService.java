@@ -3,18 +3,21 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -63,9 +66,27 @@ public class SongService implements ISongService
                 }
             }
         }
-        List<Song> filteredSongs = new ArrayList<>(filteredSongSet);
-        Collections.sort(filteredSongs, new SongComparator());
-        return filteredSongs;
+        return getSortedSongs(filteredSongSet);
+    }
+
+    @NonNull
+    private List<Song> getSortedSongs(Set<Song> filteredSongSet)
+    {
+        List<Song> tamilSongs = new ArrayList<>();
+        List<Song> englishSongs = new ArrayList<>();
+        for (Song song : filteredSongSet) {
+            if (StringUtils.isNotBlank(song.getTamilTitle())) {
+                tamilSongs.add(song);
+            } else {
+                englishSongs.add(song);
+            }
+        }
+        Collections.sort(tamilSongs, new SongComparator());
+        Collections.sort(englishSongs, new SongComparator());
+        List<Song> sortedSongs = new ArrayList<>();
+        sortedSongs.addAll(tamilSongs);
+        sortedSongs.addAll(englishSongs);
+        return sortedSongs;
     }
 
     @Override
@@ -90,7 +111,27 @@ public class SongService implements ISongService
         @Override
         public int compare(Song song1, Song song2)
         {
-            return song1.getTitle().compareTo(song2.getTitle());
+            if (userPreferenceSettingService.isTamil()) {
+                int result = nullSafeStringComparator(song1.getTamilTitle(), song2.getTamilTitle());
+                if (result != 0) {
+                    return result;
+                }
+                return nullSafeStringComparator(song1.getTitle(), song2.getTitle());
+            } else {
+                return song1.getTitle().compareTo(song2.getTitle());
+            }
         }
+
+        public int nullSafeStringComparator(final String one, final String two)
+        {
+            if (StringUtils.isBlank(one) ^ StringUtils.isBlank(two)) {
+                return (StringUtils.isBlank(one)) ? -1 : 1;
+            }
+            if (StringUtils.isBlank(one) && StringUtils.isBlank(one)) {
+                return 0;
+            }
+            return one.toLowerCase().trim().compareTo(two.toLowerCase().trim());
+        }
+
     }
 }

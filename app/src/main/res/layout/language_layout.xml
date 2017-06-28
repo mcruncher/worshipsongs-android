@@ -24,7 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Tamil"
+                android:text="@string/tamil_key"
                 android:textColor="@color/black"/>
 
             <RadioButton
@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="English"
+                android:text="@string/english_key"
                 android:textColor="@color/black"/>
         </RadioGroup>
 
