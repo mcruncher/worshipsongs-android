@@ -94,7 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity
         if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
             builder.setTitle("Language");
-            String[] languageList = new String[]{"Tamil", "English"};
+            String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
             int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
             builder.setSingleChoiceItems(languageList, index, getDialogListener());
             builder.setPositiveButton(R.string.ok, getPositiveListener());
