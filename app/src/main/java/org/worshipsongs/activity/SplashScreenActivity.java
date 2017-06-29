@@ -9,9 +9,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
@@ -31,7 +36,6 @@ public class SplashScreenActivity extends AppCompatActivity
     private static final String LANGUAGE_CHOOSED_KEY = "languageChoosed";
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
-    // private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -93,11 +97,13 @@ public class SplashScreenActivity extends AppCompatActivity
         boolean languageChoosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
         if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
-            builder.setTitle("Language");
             String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
             int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
             builder.setSingleChoiceItems(languageList, index, getDialogListener());
             builder.setPositiveButton(R.string.ok, getPositiveListener());
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
+            builder.setCustomTitle(titleView);
             builder.show();
         } else {
             moveToMainActivity();
@@ -113,8 +119,6 @@ public class SplashScreenActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which)
             {
                 sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, which).apply();
-                sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
-
             }
         };
     }
@@ -127,6 +131,7 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
                 dialog.cancel();
                 moveToMainActivity();
             }
