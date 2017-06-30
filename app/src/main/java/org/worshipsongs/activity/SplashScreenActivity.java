@@ -101,6 +101,7 @@ public class SplashScreenActivity extends AppCompatActivity
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
             builder.setCustomTitle(titleView);
+            builder.setCancelable(false);
             builder.show();
         } else {
             moveToMainActivity();
