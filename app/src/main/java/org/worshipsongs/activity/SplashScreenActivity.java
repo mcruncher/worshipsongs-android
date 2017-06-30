@@ -30,7 +30,7 @@ import java.io.File;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosed";
+    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
 
@@ -91,8 +91,8 @@ public class SplashScreenActivity extends AppCompatActivity
 
     private void showLanguageSelectionDialog()
     {
-        boolean languageChooosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
-        if (!languageChooosed) {
+        boolean languageChoosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
+        if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
             String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
             int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
