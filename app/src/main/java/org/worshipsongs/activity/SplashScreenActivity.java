@@ -9,14 +9,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
@@ -33,7 +30,7 @@ import java.io.File;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosed";
+    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
     private SongDao songDao;
     private SharedPreferences sharedPreferences;
 
@@ -99,8 +96,8 @@ public class SplashScreenActivity extends AppCompatActivity
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
             String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
             int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
-            builder.setSingleChoiceItems(languageList, index, getDialogListener());
-            builder.setPositiveButton(R.string.ok, getPositiveListener());
+            builder.setSingleChoiceItems(languageList, index, getOnItemClickListener());
+            builder.setPositiveButton(R.string.ok, getOkButtonClickListener());
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
             builder.setCustomTitle(titleView);
@@ -111,7 +108,7 @@ public class SplashScreenActivity extends AppCompatActivity
     }
 
     @NonNull
-    private DialogInterface.OnClickListener getDialogListener()
+    private DialogInterface.OnClickListener getOnItemClickListener()
     {
         return new DialogInterface.OnClickListener()
         {
@@ -124,7 +121,7 @@ public class SplashScreenActivity extends AppCompatActivity
     }
 
     @NonNull
-    private DialogInterface.OnClickListener getPositiveListener()
+    private DialogInterface.OnClickListener getOkButtonClickListener()
     {
         return new DialogInterface.OnClickListener()
         {
