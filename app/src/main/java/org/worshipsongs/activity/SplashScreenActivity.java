@@ -50,7 +50,6 @@ public class SplashScreenActivity extends AppCompatActivity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-
     private void loadDatabase()
     {
         try {
