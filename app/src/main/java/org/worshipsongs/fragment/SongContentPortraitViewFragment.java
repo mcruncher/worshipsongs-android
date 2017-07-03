@@ -470,6 +470,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
+        menu.clear();
         Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Menu options");
         inflater.inflate(R.menu.action_bar_options, menu);
         super.onCreateOptionsMenu(menu, inflater);
