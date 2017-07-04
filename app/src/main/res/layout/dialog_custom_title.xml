@@ -24,7 +24,7 @@
         android:layout_alignRight="@+id/title"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/title"
-        android:textColor="#c5c4c4"
+        android:textColor="@color/liteGray"
         android:maxLines="4"
         android:textAppearance="?android:attr/textAppearanceSearchResultSubtitle"
         android:text="@string/language_sub_title"/>
