@@ -104,6 +104,7 @@ public class SongContentViewActivity extends AppCompatActivity
                 }
             });
         } else {
+            getSupportActionBar().hide();
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(),
                             titleList.get(Setting.getInstance().getPosition()));
