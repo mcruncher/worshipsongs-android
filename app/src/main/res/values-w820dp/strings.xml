@@ -3,4 +3,6 @@
     <string name="awakeScreenSummary">Keep the screen awake while viewing a song</string>
     <string name="tamil_key">தமிழ்</string>
     <string name="english_key">English</string>
+    <string name="language_title">Language</string>
+    <string name="language_sub_title">Please choose your preferred display language</string>
 </resources>
