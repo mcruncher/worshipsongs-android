@@ -94,7 +94,7 @@
     <string name="downloading_title"><![CDATA[Downloading database...]]></string>
     <string name="rate_this_app">Rate us</string>
     <string name="feedback">Send feedback</string>
-    <string name="feedback_subject">Feedback Worshipsongs Android - %1$s</string>
+    <string name="feedback_subject">Worship Songs Android Feedback - %1$s</string>
     <string name="version">Version:</string>
     <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
     <string name="reset_default_title">Reset to default</string>
