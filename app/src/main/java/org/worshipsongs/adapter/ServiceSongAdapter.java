@@ -29,7 +29,6 @@ import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
@@ -41,7 +40,6 @@ import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author : Madasamy, Vignesh Palanisamy
@@ -98,8 +96,7 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
     private void setTextView(View view, final ServiceSong serviceSong, final int position)
     {
         final TextView textView = (TextView) view.findViewById(R.id.title);
-        textView.setText((preferenceSettingService.isTamil() && serviceSong.getSong().getTamilTitle().length() > 0) ?
-                serviceSong.getSong().getTamilTitle() : serviceSong.getSong().getTitle());
+        textView.setText(getTitle(serviceSong));
         textView.setOnLongClickListener(new View.OnLongClickListener()
         {
             @Override
@@ -158,6 +155,16 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
             }
         });
 
+    }
+
+    private String getTitle(ServiceSong serviceSong)
+    {
+        try {
+            return (preferenceSettingService.isTamil() && StringUtils.isNotBlank(serviceSong.getSong().getTamilTitle())) ?
+                    serviceSong.getSong().getTamilTitle() : serviceSong.getSong().getTitle();
+        } catch (Exception ex) {
+           return serviceSong.getTitle();
+        }
     }
 
     private AlertDialog.Builder getAlertDialogBuilder(final String title)
