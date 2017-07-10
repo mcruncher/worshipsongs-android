@@ -45,7 +45,7 @@ public class NavigationDrawerActivityTest
     public void testEmailSubject() throws PackageManager.NameNotFoundException
     {
         Context context = RuntimeEnvironment.application.getApplicationContext();
-        String expected = "Feedback Worshipsongs Android - "+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        String expected = "Worship Songs Android Feedback - "+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         assertEquals(expected, navigationDrawerActivity.getEmailSubject(context));
     }
 
