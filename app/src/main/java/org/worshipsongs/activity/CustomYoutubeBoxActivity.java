@@ -89,6 +89,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
+            bundle.remove("android:fragments");
         }
 
         Bundle extras = getIntent().getExtras();
