@@ -88,7 +88,6 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     {
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
-            //bundle.remove("android:fragments");
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
 
@@ -232,7 +231,6 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-    /* release ut when home button pressed. */
         if (youTubePlayer != null) {
             youTubePlayer.release();
         }
@@ -243,7 +241,6 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     @Override
     public void onStop()
     {
-    /* release ut when go to other fragment or back pressed */
         if (youTubePlayer != null) {
             youTubePlayer.release();
         }
