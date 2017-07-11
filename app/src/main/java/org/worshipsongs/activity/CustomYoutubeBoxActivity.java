@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,7 +64,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
-
+    @Nullable
     private YouTubePlayer youTubePlayer;
     private boolean isFullscreen;
     private int millis;
@@ -73,10 +74,10 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     @Override
     protected void onCreate(Bundle bundle)
     {
+        initSetUp(bundle);
         super.onCreate(bundle);
         songDao = new SongDao(this);
         setContentView(R.layout.custom_youtube_box_activity);
-        initSetUp(bundle);
         setRelativeLayout();
         setYouTubePlayerFragment();
         setRecyclerView();
@@ -88,6 +89,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
+            bundle.remove("android:fragments");
         }
 
         Bundle extras = getIntent().getExtras();
@@ -228,13 +230,23 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
+    public void onSaveInstanceState(Bundle outState)
     {
-        super.onSaveInstanceState(outState);
         if (youTubePlayer != null) {
-            outState.putInt(KEY_VIDEO_TIME, youTubePlayer.getCurrentTimeMillis());
-            Log.i(this.getClass().getSimpleName(), "Video duration: " + youTubePlayer.getCurrentTimeMillis());
+            youTubePlayer.release();
         }
+        youTubePlayer = null;
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop()
+    {
+        if (youTubePlayer != null) {
+            youTubePlayer.release();
+        }
+        youTubePlayer = null;
+        super.onStop();
     }
 
     @Override
