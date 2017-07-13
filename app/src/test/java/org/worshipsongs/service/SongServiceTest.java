@@ -12,6 +12,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.worship.BuildConfig;
 
@@ -93,6 +94,45 @@ public class SongServiceTest
         System.out.println("--getTitles--");
         String searchTitle = "foo@foo @bar";
         assertEquals(3, songService.getTitles(searchTitle).size());
+    }
+
+    @Test
+    public void testGetDefaultTitle()
+    {
+        System.out.println("--getDefaultTitle--");
+        Song song = new Song();
+        ServiceSong serviceSong = new ServiceSong("foo", song);
+        String title = songService.getTitle(false, serviceSong);
+        assertEquals("foo", title);
+    }
+
+    @Test
+    public void testGetTamilTitle()
+    {
+        System.out.println("--getDefaultTitle--");
+        Song song = new Song();
+        song.setTamilTitle("தமிழ்");
+        ServiceSong serviceSong = new ServiceSong("foo", song);
+        String title = songService.getTitle(true, serviceSong);
+        assertEquals("தமிழ்", title);
+    }
+
+    @Test
+    public void testGetTitleFromNullObject()
+    {
+        System.out.println("--getDefaultTitle--");
+        ServiceSong serviceSong = new ServiceSong("foo", null);
+        String title = songService.getTitle(true, serviceSong);
+        assertEquals("foo", title);
+    }
+
+    @Test
+    public void testGetTitleFromEmptyObject()
+    {
+        System.out.println("--getDefaultTitle--");
+        ServiceSong serviceSong = new ServiceSong("foo", new Song());
+        String title = songService.getTitle(true, serviceSong);
+        assertEquals("foo", title);
     }
 
 }

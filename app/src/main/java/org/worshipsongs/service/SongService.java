@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 
 import java.util.ArrayList;
@@ -131,5 +132,15 @@ public class SongService implements ISongService
             return one.toLowerCase().trim().compareTo(two.toLowerCase().trim());
         }
 
+    }
+
+   public String getTitle(boolean isTamil, ServiceSong serviceSong)
+    {
+        try {
+            return (isTamil && StringUtils.isNotBlank(serviceSong.getSong().getTamilTitle())) ?
+                    serviceSong.getSong().getTamilTitle() : serviceSong.getTitle();
+        } catch (Exception ex) {
+            return serviceSong.getTitle();
+        }
     }
 }
