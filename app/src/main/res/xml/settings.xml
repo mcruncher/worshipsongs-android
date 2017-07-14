@@ -20,12 +20,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Language">
-       <org.worshipsongs.preference.LanguagePreference
-           />
+        <org.worshipsongs.preference.LanguagePreference
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
         <org.worshipsongs.preference.FontDialogPreference
+            fontSize="20"
             maxSize="30"
             android:defaultValue="20"
             android:key="portraitFontSize"
@@ -49,6 +50,7 @@
 
     <PreferenceCategory android:title="@string/presentation_color_settings_title">
         <org.worshipsongs.preference.FontDialogPreference
+            fontSize="28"
             maxSize="50"
             android:defaultValue="28"
             android:key="landscapeFontSize"
