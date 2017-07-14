@@ -34,11 +34,6 @@
         <item name="android:listPreferredItemHeightSmall">35dp</item>
     </style>
 
-    <!--<item name="android:windowContentOverlay">@null</item>-->
-    <!--<item name="android:background">@color/white</item>-->
-    <!--<item name="background">@color/white</item>-->
-
-    <!--<item name="android:windowBackground">@color/white</item>-->
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
@@ -59,7 +54,6 @@
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorAccent">@color/teal</item>
         <item name="android:background">@color/white</item>
-
     </style>
 
     <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
@@ -83,7 +77,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category.Material</item>
@@ -122,8 +116,5 @@
         <item name="colorButtonNormal">@android:color/holo_blue_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
-
-
-
 
 </resources>

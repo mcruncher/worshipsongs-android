@@ -106,8 +106,7 @@ public class SongContentViewActivity extends AppCompatActivity
         } else {
             getSupportActionBar().hide();
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
-                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(),
-                            titleList.get(Setting.getInstance().getPosition()));
+                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), titleList.get(Setting.getInstance().getPosition()));
             // Assigning ViewPager View and setting the adapter
             ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
             pager.setAdapter(songContentLandScapeViewerPageAdapter);
