@@ -83,13 +83,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <!--<style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--<item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>-->
-        <!--<item name="colorPrimary">@color/light_navy_blue</item>-->
-        <!--<item name="colorPrimaryDark">@color/dark_navy_blue</item>-->
-    <!--</style>-->
-
+    
     <style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
         <item name="android:preferenceCategoryStyle">@style/Preference.Category.Material</item>
