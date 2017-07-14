@@ -84,10 +84,18 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!--<style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">-->
+        <!--<item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>-->
+        <!--<item name="colorPrimary">@color/light_navy_blue</item>-->
+        <!--<item name="colorPrimaryDark">@color/dark_navy_blue</item>-->
+    <!--</style>-->
+
     <style name="Theme.CustomPreferenceSetting" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
+        <item name="android:preferenceCategoryStyle">@style/Preference.Category.Material</item>
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
+        <item name="colorAccent">@color/teal</item>
     </style>
 
     <style name="AppTheme.Translucent" parent="AppTheme.Base">
@@ -120,5 +128,8 @@
         <item name="colorButtonNormal">@android:color/holo_blue_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+
+
 
 </resources>

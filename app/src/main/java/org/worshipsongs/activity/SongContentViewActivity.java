@@ -56,11 +56,11 @@ public class SongContentViewActivity extends AppCompatActivity
 
         ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
-            final SongContentPortraitViewerPageAdapter songContentLandScapeViewerPageAdapter =
+            final SongContentPortraitViewerPageAdapter songContentPortraitViewPagerAdapter =
                     new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), titleList, presentationScreenService);
             // Assigning ViewPager View and setting the adapter
             final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            pager.setAdapter(songContentLandScapeViewerPageAdapter);
+            pager.setAdapter(songContentPortraitViewPagerAdapter);
             // Assiging the Sliding Tab Layout View
             SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
             //tabs.setVerticalScrollbarPosition();
@@ -92,7 +92,7 @@ public class SongContentViewActivity extends AppCompatActivity
                 @Override
                 public void onPageSelected(int position)
                 {
-                    ISongContentPortraitViewFragment fragment = (ISongContentPortraitViewFragment) songContentLandScapeViewerPageAdapter.instantiateItem(pager, position);
+                    ISongContentPortraitViewFragment fragment = (ISongContentPortraitViewFragment) songContentPortraitViewPagerAdapter.instantiateItem(pager, position);
                     if (fragment != null) {
                         fragment.fragmentBecameVisible();
                     }

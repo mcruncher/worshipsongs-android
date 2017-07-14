@@ -61,7 +61,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 {
     public static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
     private String title;
-    private ArrayList<String> tilteList;
+    private ArrayList<String> tilteList = new ArrayList<>();
     private int millis;
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService;
@@ -518,13 +518,26 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 
     private void setActionBarTitle()
     {
-        if (preferenceSettingService != null) {
-            int position = Setting.getInstance().getPosition();
-            String title = tilteList.get(position);
+        if (preferenceSettingService != null && tilteList.size() > 0) {
+            String title;
+            if (tilteList.size() == 1) {
+                title = tilteList.get(0);
+            } else {
+                title = tilteList.get(Setting.getInstance().getPosition());
+            }
             Song song = songDao.findContentsByTitle(title);
             AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-            appCompatActivity.setTitle((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
-                    song.getTamilTitle() : song.getTitle());
+            appCompatActivity.setTitle(getTitle(song, title));
+        }
+    }
+
+    private String getTitle(Song song, String title)
+    {
+        try {
+            return (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+                    song.getTamilTitle() : song.getTitle();
+        } catch (Exception e) {
+            return title;
         }
     }
 
