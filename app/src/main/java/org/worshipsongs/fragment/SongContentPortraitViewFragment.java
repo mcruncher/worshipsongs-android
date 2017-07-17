@@ -60,7 +60,7 @@ import java.util.ArrayList;
 public class SongContentPortraitViewFragment extends Fragment implements ISongContentPortraitViewFragment
 {
     public static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
-    private String title;
+    private String title = "";
     private ArrayList<String> tilteList = new ArrayList<>();
     private int millis;
     private YouTubePlayer youTubePlayer;
@@ -298,9 +298,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         } else {
             hideOrShowComponents(song);
         }
-//        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-//        appCompatActivity.setTitle((preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
-//                song.getTamilTitle() : song.getTitle());
+        setActionBarTitle();
     }
 
     private void setPresentation(Song song)
@@ -501,12 +499,6 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         super.onPrepareOptionsMenu(menu);
     }
 
-    public void onResume()
-    {
-        super.onResume();
-        setActionBarTitle();
-    }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
@@ -518,16 +510,20 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 
     private void setActionBarTitle()
     {
-        if (preferenceSettingService != null && tilteList.size() > 0) {
-            String title;
-            if (tilteList.size() == 1) {
-                title = tilteList.get(0);
-            } else {
-                title = tilteList.get(Setting.getInstance().getPosition());
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        try {
+            if (preferenceSettingService != null && tilteList.size() > 0) {
+                String title;
+                if (tilteList.size() == 1) {
+                    title = tilteList.get(0);
+                } else {
+                    title = tilteList.get(Setting.getInstance().getPosition());
+                }
+                Song song = songDao.findContentsByTitle(title);
+                appCompatActivity.setTitle(getTitle(song, title));
             }
-            Song song = songDao.findContentsByTitle(title);
-            AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-            appCompatActivity.setTitle(getTitle(song, title));
+        } catch (Exception ex) {
+            appCompatActivity.setTitle(title);
         }
     }
 
