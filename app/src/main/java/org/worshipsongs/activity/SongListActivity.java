@@ -97,4 +97,10 @@ public class SongListActivity extends AppCompatActivity
         presentationScreenService.onStop();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
+    }
 }
