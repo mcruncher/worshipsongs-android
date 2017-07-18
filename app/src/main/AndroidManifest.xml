@@ -37,17 +37,13 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name="org.worshipsongs.activity.ServiceSongListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="fullSensor">
+            android:name="org.worshipsongs.activity.ServiceSongListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name="org.worshipsongs.activity.UserSettingActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.CustomPreferenceSetting">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

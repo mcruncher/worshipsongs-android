@@ -2,7 +2,6 @@ package org.worshipsongs.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -21,7 +20,7 @@ import org.worshipsongs.worship.R;
 public class FontDialogPreference extends Preference
 {
     private int fontSize;
-    private int defaultFontSize;
+    private int defaultFontSize = 20;
     private int maxSize = 100;
     private SharedPreferences customSharedPreference = PreferenceManager.getDefaultSharedPreferences(FontDialogPreference.this.getContext());
     private TextView fontSizetextView;
@@ -31,7 +30,8 @@ public class FontDialogPreference extends Preference
         super(context, attrs);
         setPersistent(true);
         if (attrs != null) {
-            maxSize = attrs.getAttributeIntValue(null, "maxSize", 20);
+            maxSize = attrs.getAttributeIntValue(null, "maxSize", 100);
+            defaultFontSize = attrs.getAttributeIntValue(null, "fontSize", 20);
         }
     }
 
@@ -88,19 +88,6 @@ public class FontDialogPreference extends Preference
     {
         TextView textView = (TextView) view.findViewById(R.id.maxsize_textView);
         textView.setText(String.valueOf(maxSize));
-    }
-
-    @Override
-    protected void onSetInitialValue(boolean restore, Object defaultValue)
-    {
-        setDefaultValue(restore ? getPersistedInt(20) : (Integer) defaultValue);
-    }
-
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index)
-    {
-        defaultFontSize = a.getInteger(index, 20);
-        return defaultFontSize;
     }
 
     private void saveFontSizePreference(String key, int fontSize)

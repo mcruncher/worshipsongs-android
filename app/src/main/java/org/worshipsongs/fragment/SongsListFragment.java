@@ -43,6 +43,7 @@ import java.util.List;
  */
 public class SongsListFragment extends ListFragment
 {
+    private static final String STATE_KEY = "listViewState";
     private Parcelable state;
     private SongService songService;
     private SongDao songDao;
@@ -70,6 +71,9 @@ public class SongsListFragment extends ListFragment
     {
         super.onCreate(savedInstanceState);
         Log.i(this.getClass().getSimpleName(), "Preparing to load db..");
+        if (savedInstanceState != null) {
+            state = savedInstanceState.getParcelable(STATE_KEY);
+        }
         songDao = new SongDao(getActivity());
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
@@ -81,6 +85,7 @@ public class SongsListFragment extends ListFragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
         getListView().setClickable(false);
     }
 
@@ -251,9 +256,6 @@ public class SongsListFragment extends ListFragment
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
-            if (songService != null && adapterService != null) {
-                setListAdapter(adapterService.getSongListAdapter(songService.filterSongs("", songs), getFragmentManager()));
-            }
         }
     }
 
@@ -265,7 +267,9 @@ public class SongsListFragment extends ListFragment
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+        if (this.isAdded()) {
+            outState.putParcelable(STATE_KEY, getListView().onSaveInstanceState());
+        }
         super.onSaveInstanceState(outState);
     }
 
