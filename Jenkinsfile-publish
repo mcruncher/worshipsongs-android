@@ -22,7 +22,7 @@ stage 'Package and Publish'
                changes = readFile "${env.WORKSPACE}/changelist"
            } finally {
                 archive includes:'**/*.apk'
-                androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-US', text: changes]], trackName: 'beta'
+                androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: changes]], trackName: 'beta'
            }
       }
   }
