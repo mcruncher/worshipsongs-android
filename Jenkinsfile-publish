@@ -19,7 +19,7 @@ stage 'Package and Publish'
                sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
            } finally {
                 env.WORKSPACE = pwd()
-                def changes = readFile "${env.WORKSPACE}/changeList"
+                def changes = readFile "${env.WORKSPACE}/changelist"
                 archive includes:'**/*.apk'
                 androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-US', text: changes]], trackName: 'beta'
            }
