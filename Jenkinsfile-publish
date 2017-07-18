@@ -10,7 +10,7 @@ stage 'Unit test'
     }
   }
 
-stage 'Package'
+stage 'Package and Publish'
   node('android') {
       checkout scm
       withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
@@ -18,7 +18,10 @@ stage 'Package'
                sh './bundle-db.sh'
                sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
            } finally {
-               archive includes:'**/*.apk'
+                env.WORKSPACE = pwd()
+                def changes = readFile "${env.WORKSPACE}/changeList"
+                archive includes:'**/*.apk'
+                androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-US', text: changes]], trackName: 'beta'
            }
       }
   }
