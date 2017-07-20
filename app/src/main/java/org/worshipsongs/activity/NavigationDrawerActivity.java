@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import org.worshipsongs.fragment.HomeTabFragment;
+import org.worshipsongs.fragment.NewHomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
@@ -31,7 +32,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         presentationScreenService = new PresentationScreenService(this);
         this.addSubheader("");
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, new HomeTabFragment()));
+        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, NewHomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));

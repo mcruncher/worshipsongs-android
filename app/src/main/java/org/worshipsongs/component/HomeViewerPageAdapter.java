@@ -1,43 +1,44 @@
 package org.worshipsongs.component;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.worshipsongs.fragment.AuthorListFragment;
+import org.worshipsongs.fragment.NewSongsFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 import org.worshipsongs.fragment.TopicsFragment;
+import org.worshipsongs.listener.SongContentViewListener;
 
 import java.util.List;
 
 /**
- *  Author: madasamy.
- *  version: 1.0.0
+ * Author: madasamy.
+ * version: 1.0.0
  */
 public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
-
-    //CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when HomeViewerPageAdapter is created
-    //int NumbOfTabs; // Store the number of tabs, this will also be passed when the HomeViewerPageAdapter is created
-
     private List<String> titles;
+    private SongContentViewListener songContentViewListener;
 
-
-    public HomeViewerPageAdapter(FragmentManager fragmentManager, List<String> titles)
+    public HomeViewerPageAdapter(FragmentManager fragmentManager, List<String> titles, SongContentViewListener songContentViewListener)
     {
         super(fragmentManager);
         this.titles = titles;
+        this.songContentViewListener = songContentViewListener;
     }
 
-    //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position)
     {
 
         switch (position) {
             case 0:
-                return new SongsListFragment();
+                NewSongsFragment newSongsFragment = NewSongsFragment.newInstance(null);
+                newSongsFragment.setSongContentViewListener(songContentViewListener);
+                return newSongsFragment;
             case 1:
                 return new AuthorListFragment();
             case 2:
@@ -48,17 +49,11 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
         return null;
     }
 
-
-
-    // This method return the titles for the Tabs in the Tab Strip
-
     @Override
     public CharSequence getPageTitle(int position)
     {
         return titles.get(position);
     }
-
-    // This method return the Number of tabs for the tabs Strip
 
     @Override
     public int getCount()
