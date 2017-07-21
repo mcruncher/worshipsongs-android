@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.fragment.NewSongsFragment;
 import org.worshipsongs.fragment.SongsListFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
@@ -31,7 +32,7 @@ public class SongListActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         initSetUp();
         setListView();
-        setFragment();
+        setFragment(savedInstanceState);
     }
 
     private void initSetUp()
@@ -56,13 +57,17 @@ public class SongListActivity extends AppCompatActivity
         songListView.setVisibility(View.GONE);
     }
 
-    private void setFragment()
+    private void setFragment(Bundle bundle)
     {
         FragmentActivity fragmentActivity = (FragmentActivity) this;
         Intent intent = getIntent();
-        String type = intent.getStringExtra(CommonConstants.TYPE);
-        int id = intent.getIntExtra(CommonConstants.ID, 0);
-        SongsListFragment songsListFragment = SongsListFragment.newInstance(type, id);
+//        String type = intent.getStringExtra(CommonConstants.TYPE);
+//        int id = intent.getIntExtra(CommonConstants.ID, 0);
+        //SongsListFragment songsListFragment = SongsListFragment.newInstance(bundle);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(CommonConstants.TYPE, intent.getStringExtra(CommonConstants.TYPE));
+        bundle1.putInt(CommonConstants.ID, intent.getIntExtra(CommonConstants.ID, 0));
+        NewSongsFragment songsListFragment = NewSongsFragment.newInstance(bundle1);
         FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.song_list_fragment, songsListFragment);
         transaction.addToBackStack(null);

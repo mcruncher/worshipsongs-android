@@ -37,6 +37,7 @@ import org.worshipsongs.adapter.NewTitleAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.SongService;
@@ -57,7 +58,6 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
 {
 
     private static final String STATE_KEY = "listViewState";
-
     private Parcelable state;
     private SearchView searchView;
     private MenuItem filterMenuItem;
@@ -107,9 +107,9 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
         if (bundle != null) {
             String type = bundle.getString(CommonConstants.TYPE);
             int id = bundle.getInt(CommonConstants.ID);
-            if (type.equalsIgnoreCase("author")) {
+            if (Type.AUTHOR.name().equalsIgnoreCase(type)) {
                 songs = songService.findByAuthorId(id);
-            } else if (type.equalsIgnoreCase("topics")) {
+            } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
                 songs = songService.findByTopicId(id);
             } else {
                 songs = songDao.findAll();
@@ -303,30 +303,10 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
         super.onPause();
     }
 
-
-//    @Override
-//    public void setSelectedSong(Song song, int position)
-//    {
-//        Setting.getInstance().setPosition(0);
-//        ArrayList<String> titleList = new ArrayList<String>();
-//        titleList.add(song.getTitle());
-//        Bundle bundle = new Bundle();
-//        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
-//        if (songContentViewListener == null) {
-//            Intent intent = new Intent(getContext(), SongContentViewActivity.class);
-//            intent.putExtras(bundle);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            getContext().startActivity(intent);
-//        } else {
-//            songContentViewListener.displayContent(song.getTitle(), titleList, 0);
-//        }
-//    }
-
     public void setSongContentViewListener(SongContentViewListener songContentViewListener)
     {
         this.songContentViewListener = songContentViewListener;
     }
-
 
     @Override
     public void setTitleTextView(TextView textView, final Song song)

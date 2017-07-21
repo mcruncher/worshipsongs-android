@@ -7,5 +7,5 @@ package org.worshipsongs.domain;
 
 public enum Type
 {
-    SONG, AUTHOR, CATEGORY
+    SONG, AUTHOR, TOPICS
 }

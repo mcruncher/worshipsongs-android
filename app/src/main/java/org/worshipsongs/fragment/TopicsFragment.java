@@ -25,6 +25,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.NewTitleAdapter;
 import org.worshipsongs.domain.Topics;
+import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.TopicsService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
@@ -95,7 +96,6 @@ public class TopicsFragment extends Fragment implements NewTitleAdapter.TitleAda
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                //setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(query, topicsList), "topics"));
                 titleAdapter.addObjects(topicsService.filteredTopics(query, topicsList));
                 return true;
             }
@@ -104,7 +104,6 @@ public class TopicsFragment extends Fragment implements NewTitleAdapter.TitleAda
             public boolean onQueryTextChange(String newText)
             {
                 titleAdapter.addObjects(topicsService.filteredTopics(newText, topicsList));
-                //setListAdapter(new TitleAdapter<Topics>(getActivity(), topicsService.filteredTopics(newText, topicsList), "topics"));
                 return true;
             }
         });
@@ -158,8 +157,7 @@ public class TopicsFragment extends Fragment implements NewTitleAdapter.TitleAda
             public void onClick(View v)
             {
                 Intent intent = new Intent(getContext(), SongListActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(CommonConstants.TYPE, "topics");
+                intent.putExtra(CommonConstants.TYPE, Type.TOPICS.name());
                 intent.putExtra(CommonConstants.TITLE_KEY, topics.getName());
                 intent.putExtra(CommonConstants.ID, topics.getId());
                 startActivity(intent);

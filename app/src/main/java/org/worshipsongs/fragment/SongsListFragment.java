@@ -29,6 +29,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
@@ -41,6 +42,7 @@ import java.util.List;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
+@Deprecated
 public class SongsListFragment extends ListFragment
 {
     private static final String STATE_KEY = "listViewState";
@@ -54,15 +56,16 @@ public class SongsListFragment extends ListFragment
     private SearchView searchView;
     private MenuItem filterMenuItem;
 
-    public static SongsListFragment newInstance(String type, int id)
+    public static SongsListFragment newInstance(Bundle bundle)
     {
         SongsListFragment songsListFragment = new SongsListFragment();
-        if (StringUtils.isNotBlank(type) && id > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.TYPE, type);
-            bundle.putInt(CommonConstants.ID, id);
-            songsListFragment.setArguments(bundle);
-        }
+//        if (StringUtils.isNotBlank(type) && id > 0) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString(CommonConstants.TYPE, type);
+//            bundle.putInt(CommonConstants.ID, id);
+//            songsListFragment.setArguments(bundle);
+//        }
+        songsListFragment.setArguments(bundle);
         return songsListFragment;
     }
 
@@ -104,9 +107,9 @@ public class SongsListFragment extends ListFragment
         if (bundle != null) {
             String type = bundle.getString(CommonConstants.TYPE);
             int id = bundle.getInt(CommonConstants.ID);
-            if (type.equalsIgnoreCase("author")) {
+            if (Type.AUTHOR.name().equalsIgnoreCase(type)) {
                 songs = songService.findByAuthorId(id);
-            } else if (type.equalsIgnoreCase("topics")) {
+            } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
                 songs = songService.findByTopicId(id);
             }
         } else {

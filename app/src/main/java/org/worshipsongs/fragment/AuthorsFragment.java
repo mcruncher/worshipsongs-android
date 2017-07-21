@@ -27,6 +27,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.NewTitleAdapter;
 import org.worshipsongs.domain.Author;
+import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.worship.R;
@@ -91,7 +92,6 @@ public class AuthorsFragment extends Fragment implements NewTitleAdapter.TitleAd
         titleAdapter.addObjects(getFilteredAuthors(""));
         authorListView.setAdapter(titleAdapter);
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
@@ -184,7 +184,6 @@ public class AuthorsFragment extends Fragment implements NewTitleAdapter.TitleAd
     {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            // setListAdapter(titleAdapter = new TitleAdapter<Author>(getActivity(), authorList, "author"));
             CommonUtils.hideKeyboard(getActivity());
         }
     }
@@ -206,7 +205,7 @@ public class AuthorsFragment extends Fragment implements NewTitleAdapter.TitleAd
             {
                 Intent intent = new Intent(getContext(), SongListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(CommonConstants.TYPE, "author");
+                intent.putExtra(CommonConstants.TYPE, Type.AUTHOR.name());
                 intent.putExtra(CommonConstants.TITLE_KEY, author.getName());
                 intent.putExtra(CommonConstants.ID, author.getId());
                 startActivity(intent);
