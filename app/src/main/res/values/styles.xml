@@ -9,6 +9,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="background">@color/white</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -94,6 +95,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
