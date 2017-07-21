@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -37,7 +38,9 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.SongService;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
 import org.worshipsongs.worship.R;
@@ -50,21 +53,24 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleAdapterListener
+public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleAdapterListener<Song>
 {
 
     private static final String STATE_KEY = "listViewState";
-    private SongService songService;
-    private SongDao songDao;
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
-    private List<Song> songs;
+
     private Parcelable state;
     private SearchView searchView;
     private MenuItem filterMenuItem;
     private ListView songListView;
-    private NewTitleAdapter titleAdapter;
+
+    private List<Song> songs;
+    private NewTitleAdapter<Song> titleAdapter;
     private SongContentViewListener songContentViewListener;
-    // private FrameLayout songContentFrameLayout;
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    private SongListAdapterService songListAdapterService = new SongListAdapterService();
+    private SongService songService;
+    private SongDao songDao;
 
     public static NewSongsFragment newInstance(Bundle bundle)
     {
@@ -126,9 +132,9 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     private void setListView(View view)
     {
         songListView = (ListView) view.findViewById(R.id.song_list_view);
-        titleAdapter = new NewTitleAdapter((AppCompatActivity) getActivity(), R.layout.songs_layout);
+        titleAdapter = new NewTitleAdapter<Song>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
-        titleAdapter.addSongs(songService.filterSongs("", songs));
+        titleAdapter.addObjects(songService.filterSongs("", songs));
         songListView.setAdapter(titleAdapter);
     }
 
@@ -192,14 +198,14 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
             public boolean onQueryTextSubmit(String query)
             {
 
-                titleAdapter.addSongs(songService.filterSongs(query, songs));
+                titleAdapter.addObjects(songService.filterSongs(query, songs));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                titleAdapter.addSongs(songService.filterSongs(newText, songs));
+                titleAdapter.addObjects(songService.filterSongs(newText, songs));
                 return true;
             }
         };
@@ -254,7 +260,7 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
         if (state != null) {
             songListView.onRestoreInstanceState(state);
         } else {
-            titleAdapter.addSongs(songService.filterSongs("", songs));
+            titleAdapter.addObjects(songService.filterSongs("", songs));
         }
     }
 
@@ -298,23 +304,23 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     }
 
 
-    @Override
-    public void setSelectedSong(Song song, int position)
-    {
-        Setting.getInstance().setPosition(0);
-        ArrayList<String> titleList = new ArrayList<String>();
-        titleList.add(song.getTitle());
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
-        if (songContentViewListener == null) {
-            Intent intent = new Intent(getContext(), SongContentViewActivity.class);
-            intent.putExtras(bundle);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        } else {
-            songContentViewListener.displayContent(song.getTitle(), titleList, 0);
-        }
-    }
+//    @Override
+//    public void setSelectedSong(Song song, int position)
+//    {
+//        Setting.getInstance().setPosition(0);
+//        ArrayList<String> titleList = new ArrayList<String>();
+//        titleList.add(song.getTitle());
+//        Bundle bundle = new Bundle();
+//        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
+//        if (songContentViewListener == null) {
+//            Intent intent = new Intent(getContext(), SongContentViewActivity.class);
+//            intent.putExtras(bundle);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            getContext().startActivity(intent);
+//        } else {
+//            songContentViewListener.displayContent(song.getTitle(), titleList, 0);
+//        }
+//    }
 
     public void setSongContentViewListener(SongContentViewListener songContentViewListener)
     {
@@ -322,4 +328,80 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     }
 
 
+    @Override
+    public void setTitleTextView(TextView textView, final Song song)
+    {
+        textView.setText(getTitle(song));
+        Song presentingSong = Setting.getInstance().getSong();
+        if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
+            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+        }
+        textView.setOnClickListener(textViewOnClickListener(song));
+    }
+
+    @NonNull
+    private View.OnClickListener textViewOnClickListener(final Song song)
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Setting.getInstance().setPosition(0);
+                ArrayList<String> titleList = new ArrayList<String>();
+                titleList.add(song.getTitle());
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
+                if (songContentViewListener == null) {
+                    Intent intent = new Intent(getContext(), SongContentViewActivity.class);
+                    intent.putExtras(bundle);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getContext().startActivity(intent);
+                } else {
+                    songContentViewListener.displayContent(song.getTitle(), titleList, 0);
+                }
+            }
+        };
+    }
+
+    private String getTitle(Song song)
+    {
+        try {
+            return (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+                    song.getTamilTitle() : song.getTitle();
+        } catch (Exception e) {
+            return song.getTitle();
+        }
+    }
+
+    @Override
+    public void setPlayImageView(ImageView imageView, Song song, int position)
+    {
+        imageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
+        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
+    }
+
+    boolean isShowPlayIcon(Song song)
+    {
+        String urlKey = song.getUrlKey();
+        return urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo();
+    }
+
+    @Override
+    public void setOptionsImageView(ImageView imageView, Song song, int position)
+    {
+        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
+    }
+
+    private View.OnClickListener imageOnClickListener(final String title)
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                songListAdapterService.showPopupmenu(view, title, getFragmentManager(), true);
+            }
+        };
+    }
 }

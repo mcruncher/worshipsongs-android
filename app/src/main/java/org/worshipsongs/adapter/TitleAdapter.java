@@ -24,6 +24,8 @@ import java.util.List;
  * Version : 3.x
  */
 
+
+@Deprecated
 public class TitleAdapter<E> extends ArrayAdapter<E>
 {
     private String type;

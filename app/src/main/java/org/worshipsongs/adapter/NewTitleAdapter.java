@@ -1,5 +1,6 @@
 package org.worshipsongs.adapter;
 
+import android.media.Image;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
@@ -25,18 +27,14 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class NewTitleAdapter extends ArrayAdapter<Song>
+public class NewTitleAdapter<T> extends ArrayAdapter<T>
 {
 
-    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private SongListAdapterService songListAdapterService = new SongListAdapterService();
-    private TitleAdapterListener titleAdapterListener;
-    private AppCompatActivity activity;
+    private TitleAdapterListener<T> titleAdapterListener;
 
     public NewTitleAdapter(@NonNull AppCompatActivity context, @LayoutRes int resource)
     {
         super(context, resource);
-        this.activity = context;
     }
 
     @NonNull
@@ -48,84 +46,34 @@ public class NewTitleAdapter extends ArrayAdapter<Song>
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             view = layoutInflater.inflate(R.layout.new_title_row, null);
         }
-        Song song = getItem(position);
-        setTitleTextView(view, song, position);
-        setPlayImageView(view, song, activity.getSupportFragmentManager());
-        setImageView(view, song.getTitle(), activity.getSupportFragmentManager());
+        setTitleTextView(view, position);
+        setPlayImageView(view, position);
+        setImageView(view, position);
         return view;
     }
 
-    private void setTitleTextView(View view, Song song, int position)
+    private void setTitleTextView(View view, int position)
     {
         TextView titleTextView = (TextView) view.findViewById(R.id.title_text_view);
-        titleTextView.setText(getTitle(song));
-        titleTextView.setOnClickListener(getTitleOnClickListener(song, position));
-        Song presentingSong = Setting.getInstance().getSong();
-        if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
-            titleTextView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
-        }
+        titleAdapterListener.setTitleTextView(titleTextView, getItem(position));
     }
 
-    private String getTitle(Song song)
-    {
-        try {
-            return (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
-                    song.getTamilTitle() : song.getTitle();
-        } catch (Exception e) {
-            return song.getTitle();
-        }
-    }
-
-    @NonNull
-    private View.OnClickListener getTitleOnClickListener(final Song song, final int position)
-    {
-        return new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (titleAdapterListener != null) {
-                    titleAdapterListener.setSelectedSong(song, position);
-                }
-            }
-        };
-    }
-
-    private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager)
+    private void setPlayImageView(final View rowView, int position)
     {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.video_image_view);
-        final String urlKey = song.getUrlKey();
-        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
-            imageView.setVisibility(View.VISIBLE);
-        }else{
-            imageView.setVisibility(View.GONE);
-        }
-        imageView.setOnClickListener(onClickPopupListener(song.getTitle(), fragmentManager));
+        titleAdapterListener.setPlayImageView(imageView, getItem(position), position);
     }
 
-    private void setImageView(View rowView, final String songTitle, final FragmentManager fragmentManager)
+    private void setImageView(View rowView, int position)
     {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.option_image_view);
-        imageView.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
+        titleAdapterListener.setOptionsImageView(imageView, getItem(position), position);
     }
 
-    private View.OnClickListener onClickPopupListener(final String title, final FragmentManager fragmentManager)
-    {
-        return new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                songListAdapterService.showPopupmenu(view, title, fragmentManager, true);
-            }
-        };
-    }
-
-
-    public void addSongs(List<Song> songs)
+    public void addObjects(List<T> objects)
     {
         clear();
-        addAll(songs);
+        addAll(objects);
         notifyDataSetChanged();
     }
 
@@ -134,8 +82,14 @@ public class NewTitleAdapter extends ArrayAdapter<Song>
         this.titleAdapterListener = titleAdapterListener;
     }
 
-    public interface TitleAdapterListener
+    public interface TitleAdapterListener<T>
     {
-        void setSelectedSong(Song song, int position);
+
+        void setTitleTextView(TextView textView, T t);
+
+        void setPlayImageView(ImageView imageView, T t, int position);
+
+        void setOptionsImageView(ImageView imageView, T t, int position);
+
     }
 }
