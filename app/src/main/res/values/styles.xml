@@ -6,6 +6,10 @@
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
         <item name="android:textColor">@color/background_material_dark</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="background">@color/white</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <!-- <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/white</item>
@@ -17,6 +21,7 @@
         <item name="colorAccent">@color/teal</item>
         <item name="singleAccount">true</item>
         <item name="android:textColor">@color/background_material_dark</item>
+        <item name="android:textSize">18sp</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
         <item name="drawerColor">@color/dark_navy_blue</item>
         <item name="uniqueToolbarColor">false</item>
@@ -91,6 +96,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="menu_labels_style">
