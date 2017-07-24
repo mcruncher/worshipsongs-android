@@ -54,7 +54,7 @@ public class VerseParser
         } catch (Exception ex) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", ex);
         } finally {
-            xmlFile.deleteOnExit();
+            FileUtils.deleteQuietly(xmlFile);
         }
         return verses;
     }
@@ -82,7 +82,7 @@ public class VerseParser
         } catch (Exception ex) {
             Log.e(this.getClass().getName(), "Error occurred while parsing verse", ex);
         } finally {
-            xmlFile.deleteOnExit();
+            FileUtils.deleteQuietly(xmlFile);
         }
         return verses;
     }
