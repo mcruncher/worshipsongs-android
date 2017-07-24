@@ -45,13 +45,14 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
             homeTabFragment.setSongContentViewListener(this);
         }
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.tabs_fragment, homeTabFragment).commit();
+        transaction.replace(R.id.tabs_fragment, homeTabFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void setContentViewFragment(View view)
     {
         songContentFrameLayout = (FrameLayout) view.findViewById(R.id.song_content_fragment);
-
     }
 
     @Override
@@ -60,7 +61,9 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
         if (songContentFrameLayout != null) {
             SongContentPortraitViewFragment songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, new ArrayList<String>(titleList));
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.song_content_fragment, songContentPortraitViewFragment).commit();
+            transaction.replace(R.id.song_content_fragment, songContentPortraitViewFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 
