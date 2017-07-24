@@ -63,6 +63,9 @@
             android:name="org.worshipsongs.activity.DatabaseSettingActivity"
             android:launchMode="singleTask">
         </activity>
+        <activity
+            android:name="org.worshipsongs.activity.UpdateSongsDatabaseActivity"
+            android:theme="@style/AppTheme.Translucent"/>
     </application>
 
 </manifest>
