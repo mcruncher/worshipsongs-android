@@ -6,9 +6,6 @@
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
         <item name="android:textColor">@color/background_material_dark</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="background">@color/white</item>
         <item name="android:textSize">18sp</item>
     </style>
     <!-- <item name="android:windowContentOverlay">@null</item>
