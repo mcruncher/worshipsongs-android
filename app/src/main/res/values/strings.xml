@@ -110,5 +110,6 @@
     <string name="message_no_update">Song database update not available</string>
     <string name="message_update_available">Song database update available. Do you want to update songs?</string>
     <string name="download_song_database">Download song database</string>
+    <string name="update_song_database">Update song database</string>
 
 </resources>
