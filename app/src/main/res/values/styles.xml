@@ -5,8 +5,10 @@
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
-        <item name="android:textColor">@color/background_material_dark</item>
+        <item name="android:textColor">@color/text_black_color</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="background">@android:color/white</item>
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -14,7 +16,7 @@
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
         <item name="singleAccount">true</item>
-        <item name="android:textColor">@color/background_material_dark</item>
+        <item name="android:textColor">@color/text_black_color</item>
         <item name="android:textSize">18sp</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
         <item name="drawerColor">@color/dark_navy_blue</item>
@@ -22,7 +24,8 @@
         <item name="sectionStyle">@style/MaterialSectionTheme</item>
         <item name="subheaderStyle">@style/CustomSubheaderTheme</item>
         <item name="learningPattern">false</item>
-
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="background">@android:color/white</item>
     </style>
 
     <style name="PopupMenu_Theme" parent="Widget.AppCompat.Light.ListPopupWindow">

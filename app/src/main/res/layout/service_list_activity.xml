@@ -16,6 +16,8 @@
     <ListView
         android:id="@+id/list_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:divider="@color/gray_transparent"
+        android:dividerHeight="0.01sp"/>
 
 </LinearLayout>

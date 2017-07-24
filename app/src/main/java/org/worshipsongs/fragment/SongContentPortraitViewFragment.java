@@ -113,7 +113,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 
     private void initSetUp()
     {
-        showStatusBar();
+       // showStatusBar();
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);

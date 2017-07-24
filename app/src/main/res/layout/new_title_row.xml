@@ -13,6 +13,7 @@
         android:layout_toLeftOf="@+id/video_image_view"
         android:layout_toStartOf="@+id/video_image_view"
         android:background="?attr/selectableItemBackground"
+        android:clickable="true"
         android:maxLines="1"
         android:text="TextView"/>
 

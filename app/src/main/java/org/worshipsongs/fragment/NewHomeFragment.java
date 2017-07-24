@@ -3,6 +3,7 @@ package org.worshipsongs.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,13 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View view = (View) inflater.inflate(R.layout.new_home_layout, container, false);
@@ -40,14 +48,18 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
 
     private void setTabsFragment()
     {
-        HomeTabFragment homeTabFragment = HomeTabFragment.newInstance();
-        if (songContentFrameLayout != null) {
-            homeTabFragment.setSongContentViewListener(this);
+        FragmentManager fragmentManager = getFragmentManager();
+        HomeTabFragment existingHomeTabFragment = (HomeTabFragment) fragmentManager.findFragmentByTag(HomeTabFragment.class.getSimpleName());
+        if (existingHomeTabFragment == null) {
+            HomeTabFragment homeTabFragment = HomeTabFragment.newInstance();
+            if (songContentFrameLayout != null) {
+                homeTabFragment.setSongContentViewListener(this);
+            }
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.tabs_fragment, homeTabFragment, HomeTabFragment.class.getSimpleName());
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.tabs_fragment, homeTabFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     private void setContentViewFragment(View view)
@@ -66,5 +78,12 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
             transaction.commit();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle state)
+    {
+        super.onSaveInstanceState(state);
+    }
+
 
 }

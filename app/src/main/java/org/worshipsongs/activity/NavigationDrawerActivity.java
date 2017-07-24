@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.fragment.NewHomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
@@ -139,5 +138,12 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         super.onStop();
         presentationScreenService.onResume();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
     }
 }
