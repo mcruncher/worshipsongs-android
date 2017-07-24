@@ -121,6 +121,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.json:json:20140107'
     testCompile 'org.robolectric:robolectric:3.3.2'
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
