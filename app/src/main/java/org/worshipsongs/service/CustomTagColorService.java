@@ -1,10 +1,11 @@
 package org.worshipsongs.service;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.TextView;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.util.ArrayList;
@@ -78,6 +79,31 @@ public class CustomTagColorService
             }
         }
         return textView.toString();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public float getFormattedPage(String content, PdfDocument.Page page, float x, float y)
+    {
+        tagExists = pattern.matcher(content).find();
+        List<String> lyricsListWithTag = getStringsByTag(content);
+        String tagKey = null;
+        for (int i = 0; i < lyricsListWithTag.size(); i++) {
+            Matcher matcher = pattern.matcher(lyricsListWithTag.get(i));
+            if (matcher.find()) {
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    String value = matcher.group(0).replace("{", "");
+                    tagKey = value.replace("}", "");
+                    page.getCanvas().drawText(removeTag(lyricsListWithTag.get(i), tagKey) + "\n", x, y, new Paint());
+                    y = y + 20;
+                }
+            } else {
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    page.getCanvas().drawText(lyricsListWithTag.get(i) + "\n", x, y, new Paint());
+                    y = y + 20;
+                }
+            }
+        }
+        return y;
     }
 
     private List<String> getStringsByTag(String songContent)
