@@ -161,6 +161,8 @@ public class SongListAdapterService
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
+        MenuItem exportMenuItem = popupMenu.getMenu().findItem(R.id.export_pdf);
+        exportMenuItem.setVisible(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT);
         MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
         presentSongMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
@@ -182,11 +184,7 @@ public class SongListAdapterService
                         startPresentActivity(songName);
                         return true;
                     case R.id.export_pdf:
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                            exportSongToPDF(songName, song);
-                        } else {
-                            shareSongInSocialMedia(songName, song);
-                        }
+                        exportSongToPDF(songName, song);
                         return true;
                     default:
                         return false;
@@ -232,6 +230,7 @@ public class SongListAdapterService
         if (page != null) {
             Paint titleDesign = new Paint();
             titleDesign.setTextAlign(Paint.Align.LEFT);
+            titleDesign.setTextSize(18);
             String title = song.getTamilTitle() + "/" + songName;
             float titleLength = titleDesign.measureText(title);
             float i = 50;
@@ -242,8 +241,8 @@ public class SongListAdapterService
                 int xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(song.getTamilTitle()) / 2;
                 page.getCanvas().drawText(song.getTamilTitle() + "/", xPos, 20, titleDesign);
                 xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(songName) / 2;
-                page.getCanvas().drawText(songName, xPos, 35, titleDesign);
-                i = 65;
+                page.getCanvas().drawText(songName, xPos, 45, titleDesign);
+                i = 75;
             }
             for (String content : song.getContents()) {
                 if(i > 620) {

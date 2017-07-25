@@ -106,6 +106,6 @@
     <string name="english_key">English</string>
     <string name="language_title">Language</string>
     <string name="language_sub_title">Please choose your preferred display language</string>
-    <string name="export_pdf">Export to PDF</string>
+    <string name="export_pdf">Share as PDF</string>
 
 </resources>
