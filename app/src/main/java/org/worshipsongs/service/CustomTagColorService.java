@@ -59,7 +59,7 @@ public class CustomTagColorService
     public String getFormattedLines(String content)
     {
         tagExists = pattern.matcher(content).find();
-        StringBuilder textView = new StringBuilder();
+        StringBuilder lyricsBuilder = new StringBuilder();
         List<String> lyricsListWithTag = getStringsByTag(content);
         String tagKey = null;
         for (int i = 0; i < lyricsListWithTag.size(); i++) {
@@ -68,17 +68,17 @@ public class CustomTagColorService
                 if (displayTamilLyrics() || !displayRomanisedLyrics()) {
                     String value = matcher.group(0).replace("{", "");
                     tagKey = value.replace("}", "");
-                    textView.append(removeTag(lyricsListWithTag.get(i), tagKey));
-                    textView.append("\n");
+                    lyricsBuilder.append(removeTag(lyricsListWithTag.get(i), tagKey));
+                    lyricsBuilder.append("\n");
                 }
             } else {
                 if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
-                    textView.append(lyricsListWithTag.get(i));
-                    textView.append("\n");
+                    lyricsBuilder.append(lyricsListWithTag.get(i));
+                    lyricsBuilder.append("\n");
                 }
             }
         }
-        return textView.toString();
+        return lyricsBuilder.toString();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

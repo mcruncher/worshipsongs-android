@@ -68,7 +68,7 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="verse_share_info">Content shared from %1$s app</string>
-     <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs
+    <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
 
     <string name="background_color">Background color</string>
@@ -76,7 +76,7 @@
     <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database.</string>
     <string name="type">Import OpenLP database from</string>
     <string name="message_database_confirmation">Are you sure that you want to revert to the default database?</string>
-   <string name="message_choose_local_db_confirmation">Are you sure you want to import %1$s? </string>
+    <string name="message_choose_local_db_confirmation">Are you sure you want to import %1$s? </string>
     <string name="message.database.successfull">Database copied successfully</string>
     <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
     <string name="confirmation">Confirmation</string>
@@ -107,5 +107,13 @@
     <string name="language_title">Language</string>
     <string name="language_sub_title">Please choose your preferred display language</string>
     <string name="export_pdf">Share as PDF</string>
+    <string name="updates_title">Updates</string>
+    <string name="message_no_update">No updates were found!</string>
+    <string name="message_update_available">Song database update available. Do you want to update songs?</string>
+    <string name="download_song_database">Download song database</string>
+    <string name="update_song_database">Update song database</string>
+    <string name="message_warning_internet_connection">Internet connection is needed to update the song database</string>
+    <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
+    <string name="message_update_song_successfull">Updated song database successfully</string>
 
 </resources>
