@@ -7,7 +7,7 @@ apply from: '../sonarqube.gradle'
 
 
 def buildNumber = System.getenv("BUILD_NUMBER") ?: "308"
-def versionCodeNumber = buildNumber.toString().toInteger() + 291
+def versionCodeNumber = Integer.parseInt(buildNumber) + 291
 def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
@@ -97,6 +97,7 @@ def getCurrentVersionName(versionCodeNumber)
             currentVersionName = majorVersion + "." + minorVersion.toString()
             versionProps['MAJOR_VERSION'] = majorVersion
             versionProps["MINOR_VERSION"] = minorVersion.toString()
+            versionProps["VERSION_CODE"] = minorVersion.toString()
             versionProps.store(gradlePropertyFile.newWriter(), null)
         } else {
             currentVersionName = majorVersion + "." + minorVersion.toString()
