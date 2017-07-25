@@ -112,5 +112,7 @@
     <string name="download_song_database">Download song database</string>
     <string name="update_song_database">Update song database</string>
     <string name="message_warning_internet_connection">Internet connection is needed to update the song database</string>
+    <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
+    <string name="message_update_song_successfull">Updated song database successfully</string>
 
 </resources>

@@ -134,9 +134,14 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         if ("NoUpdateFragment".equalsIgnoreCase(tag)) {
             context.finish();
         } else {
-            new AsyncDownloadTask(context).execute(context.getString(R.string.remoteUrl));
+            new AsyncDownloadTask(context).execute(getRemoteUrl());
             sharedPreferences.edit().putString(CommonConstants.COMMIT_SHA_KEY, bundle.getString(CommonConstants.COMMIT_SHA_KEY)).apply();
         }
+    }
+
+    private String getRemoteUrl()
+    {
+       return sharedPreferences.getString(CommonConstants.REMOTE_URL, context.getString(R.string.remoteUrl));
     }
 
     @Override

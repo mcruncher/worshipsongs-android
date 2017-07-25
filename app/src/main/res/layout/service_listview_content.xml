@@ -12,8 +12,7 @@
         android:layout_weight="1"
         android:padding="20dp"
         android:background="?attr/selectableItemBackground"
-        android:text="TextView"
-        android:textSize="18sp" />
+        />
 
     <Button
         android:id="@+id/delete"

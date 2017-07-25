@@ -1,6 +1,7 @@
 package org.worshipsongs.task;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.worship.R;
 
 import java.io.BufferedInputStream;
@@ -122,16 +125,43 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
             alertDialog.cancel();
             if (successfull) {
                 Log.i(AsyncDownloadTask.class.getSimpleName(), "Remote database copied successfully.");
-                songDao.close();
-                songDao.copyDatabase(destinationFile.getAbsolutePath(), true);
-                songDao.open();
-                FileUtils.deleteQuietly(destinationFile);
-                context.finish();
+                validateDatabase(destinationFile.getAbsolutePath());
+            } else {
+                showWarningDialog();
             }
         } catch (Exception ex) {
             Log.e(AsyncDownloadTask.class.getSimpleName(), "Error");
+        } finally {
+            context.finish();
+            FileUtils.deleteQuietly(destinationFile);
         }
     }
 
+    private void validateDatabase(String absolutePath)
+    {
+        try {
+            songDao.close();
+            songDao.copyDatabase(absolutePath, true);
+            songDao.open();
+            if (songDao.isValidDataBase()) {
+                Toast.makeText(context, R.string.message_update_song_successfull, Toast.LENGTH_SHORT).show();
+            } else {
+                showWarningDialog();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showWarningDialog()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.warning));
+        bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_configure_invalid_url));
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        alertDialogFragment.setCancelable(false);
+        alertDialogFragment.setVisibleNegativeButton(false);
+        alertDialogFragment.show(context.getFragmentManager(), "WarningUpdateFragment");
+    }
 
 }
