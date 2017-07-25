@@ -1,10 +1,18 @@
 package org.worshipsongs.service;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.print.PrintAttributes;
+import android.print.pdf.PrintedPdfDocument;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -20,18 +28,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.dialog.ListDialogFragment;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.dialog.ListDialogFragment;
 import org.worshipsongs.worship.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.PRINT_SERVICE;
 import static org.worshipsongs.WorshipSongApplication.getContext;
 
 /**
@@ -132,7 +146,7 @@ public class SongListAdapterService
         };
     }
 
-    public void showPopupmenu(View view, final String songName, final FragmentManager fragmentManager, boolean hidePlay)
+    public void showPopupmenu(final View view, final String songName, final FragmentManager fragmentManager, boolean hidePlay)
     {
         Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
         final PopupMenu popupMenu;
@@ -146,6 +160,8 @@ public class SongListAdapterService
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
+        MenuItem exportMenuItem = popupMenu.getMenu().findItem(R.id.export_pdf);
+        exportMenuItem.setVisible(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT);
         MenuItem presentSongMenuItem = popupMenu.getMenu().findItem(R.id.present_song);
         presentSongMenuItem.setVisible(false);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
@@ -165,6 +181,9 @@ public class SongListAdapterService
                         return true;
                     case R.id.present_song:
                         startPresentActivity(songName);
+                        return true;
+                    case R.id.export_pdf:
+                        exportSongToPDF(songName, song);
                         return true;
                     default:
                         return false;
@@ -190,6 +209,68 @@ public class SongListAdapterService
         Intent intent = Intent.createChooser(textShareIntent, "Share " + songName + " with...");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void exportSongToPDF(String songName, Song song)
+    {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), songName + ".pdf");
+
+        PrintAttributes printAttrs = new PrintAttributes.Builder().
+                setColorMode(PrintAttributes.COLOR_MODE_COLOR).
+                setMediaSize(PrintAttributes.MediaSize.ISO_A4).
+                setResolution(new PrintAttributes.Resolution("zooey", PRINT_SERVICE, 450, 700)).
+                setMinMargins(PrintAttributes.Margins.NO_MARGINS).
+                build();
+        PdfDocument document = new PrintedPdfDocument(WorshipSongApplication.getContext(), printAttrs);
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(450, 700, 1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        if (page != null) {
+            Paint titleDesign = new Paint();
+            titleDesign.setTextAlign(Paint.Align.LEFT);
+            titleDesign.setTextSize(18);
+            String title = song.getTamilTitle() + "/" + songName;
+            float titleLength = titleDesign.measureText(title);
+            float yPos = 50;
+            if(page.getCanvas().getWidth() > titleLength) {
+                int xPos = (page.getCanvas().getWidth() / 2) - (int) titleLength / 2;
+                page.getCanvas().drawText(title, xPos, 20, titleDesign);
+            } else {
+                int xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(song.getTamilTitle()) / 2;
+                page.getCanvas().drawText(song.getTamilTitle() + "/", xPos, 20, titleDesign);
+                xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(songName) / 2;
+                page.getCanvas().drawText(songName, xPos, 45, titleDesign);
+                yPos = 75;
+            }
+            for (String content : song.getContents()) {
+                if(yPos > 620) {
+                    document.finishPage(page);
+                    page = document.startPage(pageInfo);
+                    yPos = 40;
+                }
+                yPos = customTagColorService.getFormattedPage(content, page, 10, yPos);
+                yPos = yPos + 20;
+            }
+        }
+        document.finishPage(page);
+        try {
+            OutputStream os = new FileOutputStream(file);
+            document.writeTo(os);
+            document.close();
+            os.close();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("application/pdf");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+file.getAbsolutePath()));
+
+            Intent intent = Intent.createChooser(shareIntent, "Share " + songName + " with...");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+            Log.i("done", file.getAbsolutePath().toString());
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error generating file", e);
+        }
     }
 
     private void showYouTube(String urlKey, String songName)
