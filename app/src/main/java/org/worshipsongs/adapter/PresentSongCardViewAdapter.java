@@ -60,7 +60,6 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
                     preferenceSettingService.getSecondaryColor());
             textView.setTextSize(preferenceSettingService.getPortraitFontSize());
             textView.setTextColor(preferenceSettingService.getPrimaryColor());
-            textView.setVerticalScrollBarEnabled(true);
         }
         if (selectedItem == position) {
             textView.setBackgroundResource(R.color.gray);
@@ -68,6 +67,7 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
             textView.setBackgroundResource(R.color.white);
 
         }
+        textView.setLineSpacing(0, 1.2f);
     }
 
     public void setItemSelected(int position)

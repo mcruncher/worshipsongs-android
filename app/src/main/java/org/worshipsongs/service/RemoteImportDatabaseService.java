@@ -126,7 +126,6 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             }
         });
         builder.show();
-
     }
 
     private void showNetWorkWarningDialog()

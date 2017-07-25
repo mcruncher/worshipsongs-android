@@ -2,8 +2,7 @@
 <RelativeLayout android:id="@+id/songs_list_layout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_height="wrap_content">
 
 
     <TextView
@@ -16,9 +15,7 @@
         android:clickable="false"
         android:longClickable="false"
         android:maxLines="1"
-        android:padding="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:padding="20dp"
         />
 
     <ImageView
@@ -33,18 +30,20 @@
         android:contentDescription="optionMenuIcon"
         android:src="@android:drawable/presence_video_online"
         android:tint="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <ImageView
         android:id="@+id/optionMenuIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/title"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="optionMenuIcon"
+        android:visibility="visible"
         android:src="@drawable/ic_action_overflow"/>
 
 
