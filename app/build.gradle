@@ -19,7 +19,6 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode versionCodeNumber
-        versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
         versionName APP_VERSION
     }
 
