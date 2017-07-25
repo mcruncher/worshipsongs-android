@@ -5,7 +5,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply from: '../sonarqube.gradle'
 
-def APP_VERSION = getCurrentVersionName()
+
+def buildNumber = System.getenv("BUILD_NUMBER") ?: "308"
+def versionCodeNumber = buildNumber.toString().toInteger() + 291
+def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
 android {
@@ -15,7 +18,7 @@ android {
         applicationId "org.worshipsongs"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode System.getenv("BUILD_NUMBER") as Integer ?: 12
+        versionCode versionCodeNumber
         versionName APP_VERSION
     }
 
@@ -79,18 +82,16 @@ android {
 
 }
 
-def getCurrentVersionName()
+def getCurrentVersionName(versionCodeNumber)
 {
     def gradlePropertyFile = file('../version.properties')
     def majorVersion
-    def minorVersion
+    def minorVersion = versionCodeNumber
     def currentVersionName = "2.91"
     if (gradlePropertyFile.canRead()) {
         def Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(gradlePropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
-        def buildNumber = System.getenv("BUILD_NUMBER") ?: versionProps["MINOR_VERSION"] ?: "279"
-        minorVersion = buildNumber.toString().toInteger() + 0
         def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
             currentVersionName = majorVersion + "." + minorVersion.toString()
