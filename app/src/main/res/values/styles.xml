@@ -5,10 +5,9 @@
         <item name="colorPrimary">@color/light_navy_blue</item>
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
-        <item name="android:textColor">@color/background_material_dark</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="background">@color/white</item>
+        <item name="android:textColor">@color/text_black_color</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="background">@android:color/white</item>
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -16,15 +15,15 @@
         <item name="colorPrimaryDark">@color/dark_navy_blue</item>
         <item name="colorAccent">@color/teal</item>
         <item name="singleAccount">true</item>
-        <item name="android:textColor">@color/background_material_dark</item>
+        <item name="android:textColor">@color/text_black_color</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
         <item name="drawerColor">@color/dark_navy_blue</item>
         <item name="uniqueToolbarColor">false</item>
         <item name="sectionStyle">@style/MaterialSectionTheme</item>
         <item name="subheaderStyle">@style/CustomSubheaderTheme</item>
         <item name="learningPattern">false</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="background">@color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="background">@android:color/white</item>
     </style>
 
     <style name="PopupMenu_Theme" parent="Widget.AppCompat.Light.ListPopupWindow">
@@ -53,7 +52,6 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorAccent">@color/teal</item>
-        <item name="android:background">@color/white</item>
     </style>
 
     <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
@@ -86,19 +84,13 @@
         <item name="colorAccent">@color/teal</item>
     </style>
 
-    <style name="AppTheme.Translucent" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/app_primary_dark</item>
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/app_primary_accent</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
+    <style name="AppTheme.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
-    </style>
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/app_primary</item>
-        <item name="colorPrimaryDark">@color/app_primary_dark</item>
-        <item name="colorAccent">@color/app_primary_accent</item>
+        <item name="android:windowBackground">@color/black_transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
     <style name="menu_labels_style">

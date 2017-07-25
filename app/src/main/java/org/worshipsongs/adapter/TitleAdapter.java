@@ -1,119 +1,88 @@
 package org.worshipsongs.adapter;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.worshipsongs.CommonConstants;
-import org.worshipsongs.activity.SongListActivity;
-import org.worshipsongs.domain.AbstractDomain;
 import org.worshipsongs.worship.R;
 
 import java.util.List;
 
 /**
  * Author : Madasamy
- * Version : 3.x
+ * Version : 4.x
  */
 
-public class TitleAdapter<E> extends ArrayAdapter<E>
+public class TitleAdapter<T> extends ArrayAdapter<T>
 {
-    private String type;
-    private int selectedItem = -1;
-    private Activity activity;
 
-    public TitleAdapter(@NonNull Activity activity, List<E> objects)
+    private TitleAdapterListener<T> titleAdapterListener;
+
+    public TitleAdapter(@NonNull AppCompatActivity context, @LayoutRes int resource)
     {
-        super(activity, R.layout.songs_listview_content, objects);
-        this.activity = activity;
+        super(context, resource);
     }
 
-    public TitleAdapter(@NonNull Activity activity, List<E> objects, String type)
-    {
-        super(activity, R.layout.songs_listview_content, objects);
-        this.activity = activity;
-        this.type = type;
-    }
-
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
         View view = convertView;
         if (view == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            view = layoutInflater.inflate(R.layout.songs_listview_content, null);
+            view = layoutInflater.inflate(R.layout.title_row, null);
         }
-        E text = getItem(position);
-        if (text != null) {
-            setTextView(position, view, text);
-            setImageView(view);
-        }
-
+        setTitleTextView(view, position);
+        setPlayImageView(view, position);
+        setImageView(view, position);
         return view;
     }
 
-    private void setTextView(int position, View v, E e)
+    private void setTitleTextView(View view, int position)
     {
-        TextView textView = (TextView) v.findViewById(R.id.title);
-        if (textView != null) {
-            AbstractDomain abstractDomain = (AbstractDomain) e;
-            textView.setText(abstractDomain.getName());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, 0, 0);
-            textView.setLayoutParams(layoutParams);
-            textView.setOnClickListener(new TextOnClickListener(e));
-        }
-        if (getSelectedItem() == position) {
-            textView.setBackgroundResource(R.color.gray);
-        } else {
-            textView.setBackgroundResource(R.color.white);
-        }
+        TextView titleTextView = (TextView) view.findViewById(R.id.title_text_view);
+        titleAdapterListener.setTitleTextView(titleTextView, getItem(position));
     }
 
-    private void setImageView(View rowView)
+    private void setPlayImageView(final View rowView, int position)
     {
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
-        imageView.setVisibility(View.GONE);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.video_image_view);
+        titleAdapterListener.setPlayImageView(imageView, getItem(position), position);
     }
 
-    public void setItemSelected(int position)
+    private void setImageView(View rowView, int position)
     {
-        selectedItem = position;
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.option_image_view);
+        titleAdapterListener.setOptionsImageView(imageView, getItem(position), position);
     }
 
-    public int getSelectedItem()
+    public void addObjects(List<T> objects)
     {
-        return selectedItem;
+        clear();
+        addAll(objects);
+        notifyDataSetChanged();
     }
 
-    private class TextOnClickListener implements View.OnClickListener
+    public void setTitleAdapterListener(TitleAdapterListener titleAdapterListener)
     {
-        private AbstractDomain abstractDomain;
-
-        TextOnClickListener(E e)
-        {
-            this.abstractDomain = (AbstractDomain) e;
-        }
-
-        @Override
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(activity, SongListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(CommonConstants.TYPE, type);
-            intent.putExtra(CommonConstants.TITLE_KEY, abstractDomain.getName());
-            intent.putExtra(CommonConstants.ID, abstractDomain.getId());
-            activity.startActivity(intent);
-        }
+        this.titleAdapterListener = titleAdapterListener;
     }
 
+    public interface TitleAdapterListener<T>
+    {
 
+        void setTitleTextView(TextView textView, T t);
+
+        void setPlayImageView(ImageView imageView, T t, int position);
+
+        void setOptionsImageView(ImageView imageView, T t, int position);
+
+    }
 }

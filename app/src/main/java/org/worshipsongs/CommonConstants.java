@@ -22,6 +22,7 @@ public final class CommonConstants
     public static final String TITLE_LIST_KEY = "titles";
 
     public static final String TITLE_KEY = "title";
+    public static final String MESSAGE_KEY = "message";
     public static final String POSITION_KEY = "position";
 
     public static final String VERSION_KEY = "version";
@@ -55,5 +56,6 @@ public final class CommonConstants
     public static final String TYPE = "type";
     public static final String ID = "id";
     public static final String LANGUAGE_INDEX_KEY = "languageIndex";
+    public static final String COMMIT_SHA_KEY = "commitShaKey";
 
 }
