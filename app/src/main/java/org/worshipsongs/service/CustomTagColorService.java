@@ -82,7 +82,7 @@ public class CustomTagColorService
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public float getFormattedPage(String content, PdfDocument.Page page, float x, float y)
+    public float getFormattedPage(String content, PdfDocument.Page page, float xPos, float yPos)
     {
         tagExists = pattern.matcher(content).find();
         List<String> lyricsListWithTag = getStringsByTag(content);
@@ -93,17 +93,17 @@ public class CustomTagColorService
                 if (displayTamilLyrics() || !displayRomanisedLyrics()) {
                     String value = matcher.group(0).replace("{", "");
                     tagKey = value.replace("}", "");
-                    page.getCanvas().drawText(removeTag(lyricsListWithTag.get(i), tagKey) + "\n", x, y, new Paint());
-                    y = y + 20;
+                    page.getCanvas().drawText(removeTag(lyricsListWithTag.get(i), tagKey) + "\n", xPos, yPos, new Paint());
+                    yPos = yPos + 20;
                 }
             } else {
                 if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
-                    page.getCanvas().drawText(lyricsListWithTag.get(i) + "\n", x, y, new Paint());
-                    y = y + 20;
+                    page.getCanvas().drawText(lyricsListWithTag.get(i) + "\n", xPos, yPos, new Paint());
+                    yPos = yPos + 20;
                 }
             }
         }
-        return y;
+        return yPos;
     }
 
     private List<String> getStringsByTag(String songContent)

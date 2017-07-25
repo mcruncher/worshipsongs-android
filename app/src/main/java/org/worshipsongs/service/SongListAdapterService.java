@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
@@ -233,7 +232,7 @@ public class SongListAdapterService
             titleDesign.setTextSize(18);
             String title = song.getTamilTitle() + "/" + songName;
             float titleLength = titleDesign.measureText(title);
-            float i = 50;
+            float yPos = 50;
             if(page.getCanvas().getWidth() > titleLength) {
                 int xPos = (page.getCanvas().getWidth() / 2) - (int) titleLength / 2;
                 page.getCanvas().drawText(title, xPos, 20, titleDesign);
@@ -242,16 +241,16 @@ public class SongListAdapterService
                 page.getCanvas().drawText(song.getTamilTitle() + "/", xPos, 20, titleDesign);
                 xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(songName) / 2;
                 page.getCanvas().drawText(songName, xPos, 45, titleDesign);
-                i = 75;
+                yPos = 75;
             }
             for (String content : song.getContents()) {
-                if(i > 620) {
+                if(yPos > 620) {
                     document.finishPage(page);
                     page = document.startPage(pageInfo);
-                    i = 40;
+                    yPos = 40;
                 }
-                i = customTagColorService.getFormattedPage(content, page, 10, i);
-                i = i + 20;
+                yPos = customTagColorService.getFormattedPage(content, page, 10, yPos);
+                yPos = yPos + 20;
             }
         }
         document.finishPage(page);
@@ -267,8 +266,6 @@ public class SongListAdapterService
             Intent intent = Intent.createChooser(shareIntent, "Share " + songName + " with...");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
-
-            Toast.makeText(getContext(), "PDF exported, check in download folder", Toast.LENGTH_LONG);
             Log.i("done", file.getAbsolutePath().toString());
 
         } catch (IOException e) {
