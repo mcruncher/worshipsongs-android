@@ -27,14 +27,23 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        hideStatusBar();
+        setContentView(R.layout.update_song_database_layout);
+        updateSongDatabase();
+    }
+
+    private void hideStatusBar()
+    {
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
+    }
 
-        setContentView(R.layout.update_song_database_layout);
+    private void updateSongDatabase()
+    {
         if (CommonUtils.isWifiOrMobileDataConnectionExists(this)) {
             new HttpAsyncTask(this).execute(DB_API_URL);
         } else {
