@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.worship.R;
 
 /**
  * Author : madasamy
@@ -89,6 +90,16 @@ public final class CommonUtils
             }
         }
         return false;
+    }
+
+    public static boolean isTablet(Context context)
+    {
+        return context.getResources().getBoolean(R.bool.tablet);
+    }
+
+    public static boolean isPhone(Context context)
+    {
+        return !context.getResources().getBoolean(R.bool.tablet);
     }
 
 }

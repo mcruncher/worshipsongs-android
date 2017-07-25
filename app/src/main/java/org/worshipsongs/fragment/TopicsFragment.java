@@ -88,6 +88,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
         Drawable drawable = image.getDrawable();
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);

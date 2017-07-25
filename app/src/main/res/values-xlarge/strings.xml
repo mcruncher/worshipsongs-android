@@ -68,8 +68,7 @@
         https://play.google.com/store/apps/details?id=org.worshipsongs
     </string>
     <string name="verse_share_info">Content shared from %1$s app</string>
-    <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs
-    </string>
+    <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs</string>
 
     <string name="background_color">Background color</string>
     <string name="warning">Warning</string>
@@ -115,5 +114,5 @@
     <string name="message_warning_internet_connection">Internet connection is needed to update the song database</string>
     <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
     <string name="message_update_song_successfull">Updated song database successfully</string>
-    <bool name="tablet">false</bool>
+    <bool name="tablet">true</bool>
 </resources>

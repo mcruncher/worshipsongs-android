@@ -146,6 +146,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
