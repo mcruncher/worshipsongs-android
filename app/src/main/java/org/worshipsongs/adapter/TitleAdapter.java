@@ -1,10 +1,8 @@
 package org.worshipsongs.adapter;
 
-import android.media.Image;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.worshipsongs.domain.Setting;
-import org.worshipsongs.domain.Song;
-import org.worshipsongs.domain.Type;
-import org.worshipsongs.service.SongListAdapterService;
-import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.worship.R;
 
 import java.util.List;
@@ -27,12 +20,12 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class NewTitleAdapter<T> extends ArrayAdapter<T>
+public class TitleAdapter<T> extends ArrayAdapter<T>
 {
 
     private TitleAdapterListener<T> titleAdapterListener;
 
-    public NewTitleAdapter(@NonNull AppCompatActivity context, @LayoutRes int resource)
+    public TitleAdapter(@NonNull AppCompatActivity context, @LayoutRes int resource)
     {
         super(context, resource);
     }
@@ -44,7 +37,7 @@ public class NewTitleAdapter<T> extends ArrayAdapter<T>
         View view = convertView;
         if (view == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            view = layoutInflater.inflate(R.layout.new_title_row, null);
+            view = layoutInflater.inflate(R.layout.title_row, null);
         }
         setTitleTextView(view, position);
         setPlayImageView(view, position);

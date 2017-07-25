@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SongListActivity;
-import org.worshipsongs.adapter.NewTitleAdapter;
+import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.TopicsService;
@@ -37,14 +37,14 @@ import java.util.List;
  * Version : 3.x
  */
 
-public class TopicsFragment extends Fragment implements NewTitleAdapter.TitleAdapterListener<Topics>
+public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
     private TopicsService topicsService;
     private List<Topics> topicsList;
     private ListView topicsListView;
-    private NewTitleAdapter<Topics> titleAdapter;
+    private TitleAdapter<Topics> titleAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -75,7 +75,7 @@ public class TopicsFragment extends Fragment implements NewTitleAdapter.TitleAda
     private void setListView(View view)
     {
         topicsListView = (ListView) view.findViewById(R.id.song_list_view);
-        titleAdapter = new NewTitleAdapter<Topics>((AppCompatActivity) getActivity(), R.layout.songs_layout);
+        titleAdapter = new TitleAdapter<Topics>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
         titleAdapter.addObjects(topicsService.filteredTopics("", topicsList));
         topicsListView.setAdapter(titleAdapter);

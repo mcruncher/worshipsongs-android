@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:background="?attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/title_text_view"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/video_image_view"
         android:layout_toStartOf="@+id/video_image_view"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:maxLines="1"
         android:text="TextView"/>
@@ -27,7 +27,7 @@
         android:contentDescription="videoImage"
         android:tint="@color/light_gray_header_color"
         android:visibility="gone"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         app:srcCompat="@android:drawable/presence_video_online"/>
 
@@ -40,7 +40,7 @@
         android:layout_alignBottom="@+id/title_text_view"
         android:contentDescription="optionImage"
         android:tint="@color/light_gray_header_color"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         app:srcCompat="@drawable/option_menu"/>
 

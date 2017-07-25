@@ -107,9 +107,10 @@
     <string name="language_title">Language</string>
     <string name="language_sub_title">Please choose your preferred display language</string>
     <string name="updates_title">Updates</string>
-    <string name="message_no_update">Song database update not available</string>
+    <string name="message_no_update">No updates were found!</string>
     <string name="message_update_available">Song database update available. Do you want to update songs?</string>
     <string name="download_song_database">Download song database</string>
     <string name="update_song_database">Update song database</string>
+    <string name="message_warning_internet_connection">Internet connection is needed to update the song database</string>
 
 </resources>

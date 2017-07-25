@@ -21,13 +21,13 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class NewHomeFragment extends Fragment implements SongContentViewListener
+public class HomeFragment extends Fragment implements SongContentViewListener
 {
     private FrameLayout songContentFrameLayout;
 
-    public static NewHomeFragment newInstance()
+    public static HomeFragment newInstance()
     {
-        return new NewHomeFragment();
+        return new HomeFragment();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class NewHomeFragment extends Fragment implements SongContentViewListener
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = (View) inflater.inflate(R.layout.new_home_layout, container, false);
+        View view = (View) inflater.inflate(R.layout.home_layout, container, false);
         setContentViewFragment(view);
         setTabsFragment();
         return view;

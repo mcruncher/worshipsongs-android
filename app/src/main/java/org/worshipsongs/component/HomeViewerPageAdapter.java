@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.worshipsongs.fragment.AuthorsFragment;
-import org.worshipsongs.fragment.NewSongsFragment;
+import org.worshipsongs.fragment.SongsFragment;
 import org.worshipsongs.fragment.ServiceListFragment;
 import org.worshipsongs.fragment.TopicsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
@@ -34,9 +34,9 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
 
         switch (position) {
             case 0:
-                NewSongsFragment newSongsFragment = NewSongsFragment.newInstance(null);
-                newSongsFragment.setSongContentViewListener(songContentViewListener);
-                return newSongsFragment;
+                SongsFragment songsFragment = SongsFragment.newInstance(null);
+                songsFragment.setSongContentViewListener(songContentViewListener);
+                return songsFragment;
             case 1:
                 return new AuthorsFragment();
             case 2:

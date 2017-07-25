@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.fragment.NewSongsFragment;
+import org.worshipsongs.fragment.SongsFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.worship.R;
 
@@ -63,7 +63,7 @@ public class SongListActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.TYPE, intent.getStringExtra(CommonConstants.TYPE));
         bundle.putInt(CommonConstants.ID, intent.getIntExtra(CommonConstants.ID, 0));
-        NewSongsFragment songsListFragment = NewSongsFragment.newInstance(bundle);
+        SongsFragment songsListFragment = SongsFragment.newInstance(bundle);
         FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.song_list_fragment, songsListFragment);
         transaction.addToBackStack(null);

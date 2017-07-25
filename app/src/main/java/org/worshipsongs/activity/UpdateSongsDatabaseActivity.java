@@ -21,6 +21,8 @@ import org.worshipsongs.worship.R;
 
 public class UpdateSongsDatabaseActivity extends AppCompatActivity
 {
+    private static String DB_API_URL = "https://api.github.com/repos/mcruncher/worshipsongs-db-dev/git/refs/heads/master";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -34,11 +36,11 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity
 
         setContentView(R.layout.update_song_database_layout);
         if (CommonUtils.isWifiOrMobileDataConnectionExists(this)) {
-            new HttpAsyncTask(this).execute("https://api.github.com/repos/mcruncher/worshipsongs-db-dev/git/refs/heads/master");
+            new HttpAsyncTask(this).execute(DB_API_URL);
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.TITLE_KEY, "Warning");
-            bundle.putString(CommonConstants.MESSAGE_KEY, "Internet connection is needed to update the song database");
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_warning_internet_connection));
             AlertDialogFragment.newInstance(bundle).show(getFragmentManager(), AlertDialogFragment.class.getSimpleName());
         }
     }

@@ -25,7 +25,7 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SongListActivity;
-import org.worshipsongs.adapter.NewTitleAdapter;
+import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.AuthorService;
@@ -40,14 +40,14 @@ import java.util.List;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class AuthorsFragment extends Fragment implements NewTitleAdapter.TitleAdapterListener<Author>
+public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
     private AuthorService authorService;
     private List<Author> authorList = new ArrayList<>();
     private ListView authorListView;
-    private NewTitleAdapter<Author> titleAdapter;
+    private TitleAdapter<Author> titleAdapter;
 
     public static AuthorsFragment newInstance()
     {
@@ -87,7 +87,7 @@ public class AuthorsFragment extends Fragment implements NewTitleAdapter.TitleAd
     private void setListView(View view)
     {
         authorListView = (ListView) view.findViewById(R.id.song_list_view);
-        titleAdapter = new NewTitleAdapter<Author>((AppCompatActivity) getActivity(), R.layout.songs_layout);
+        titleAdapter = new TitleAdapter<Author>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
         titleAdapter.addObjects(getFilteredAuthors(""));
         authorListView.setAdapter(titleAdapter);

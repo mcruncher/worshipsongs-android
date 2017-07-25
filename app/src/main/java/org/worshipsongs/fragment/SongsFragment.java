@@ -33,7 +33,7 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
-import org.worshipsongs.adapter.NewTitleAdapter;
+import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
@@ -54,7 +54,7 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleAdapterListener<Song>
+public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>
 {
 
     private static final String STATE_KEY = "listViewState";
@@ -64,7 +64,7 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     private ListView songListView;
 
     private List<Song> songs;
-    private NewTitleAdapter<Song> titleAdapter;
+    private TitleAdapter<Song> titleAdapter;
     private SongContentViewListener songContentViewListener;
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
@@ -72,11 +72,11 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     private SongService songService;
     private SongDao songDao;
 
-    public static NewSongsFragment newInstance(Bundle bundle)
+    public static SongsFragment newInstance(Bundle bundle)
     {
-        NewSongsFragment newSongsFragment = new NewSongsFragment();
-        newSongsFragment.setArguments(bundle);
-        return newSongsFragment;
+        SongsFragment songsFragment = new SongsFragment();
+        songsFragment.setArguments(bundle);
+        return songsFragment;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class NewSongsFragment extends Fragment implements NewTitleAdapter.TitleA
     private void setListView(View view)
     {
         songListView = (ListView) view.findViewById(R.id.song_list_view);
-        titleAdapter = new NewTitleAdapter<Song>((AppCompatActivity) getActivity(), R.layout.songs_layout);
+        titleAdapter = new TitleAdapter<Song>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
         titleAdapter.addObjects(songService.filterSongs("", songs));
         songListView.setAdapter(titleAdapter);
