@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.activity.ServiceSongListActivity;
+import org.worshipsongs.activity.ServiceSongsActivity;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
@@ -50,7 +50,7 @@ import java.util.Properties;
  * author  :Pitchumani, madasamy
  * version: 1.0.0
  */
-public class ServiceListFragment extends Fragment
+public class ServicesFragment extends Fragment
 {
     List<String> serviceNames = new ArrayList<String>();
     String serviceName;
@@ -66,7 +66,7 @@ public class ServiceListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         FragmentActivity = (FragmentActivity) super.getActivity();
-        linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list_activity, container, false);
+        linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list, container, false);
         serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
         serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
         serviceNames.clear();
@@ -127,7 +127,7 @@ public class ServiceListFragment extends Fragment
                 serviceName = adapter.getItem(position).toString();
                 //serviceName = serviceListView.getItemAtPosition(position).toString();
                 System.out.println("Selected Service:" + serviceName);
-                Intent intent = new Intent(getActivity(), ServiceSongListActivity.class);
+                Intent intent = new Intent(getActivity(), ServiceSongsActivity.class);
                 intent.putExtra("serviceName", serviceName);
                 startActivity(intent);
             }
@@ -238,7 +238,7 @@ public class ServiceListFragment extends Fragment
 
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            convertView = inflater.inflate(R.layout.service_listview_content, null);
+            convertView = inflater.inflate(R.layout.service_row, null);
             TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
             Button delete = (Button) convertView.findViewById(R.id.delete);
             delete.setVisibility(View.GONE);
