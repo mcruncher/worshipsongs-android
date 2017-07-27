@@ -8,6 +8,7 @@
         <item name="android:textColor">@color/text_black_color</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="background">@android:color/white</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -17,13 +18,14 @@
         <item name="singleAccount">true</item>
         <item name="android:textColor">@color/text_black_color</item>
         <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
-        <item name="drawerColor">@color/dark_navy_blue</item>
+        <item name="drawerColor">@android:color/white</item>
         <item name="uniqueToolbarColor">false</item>
-        <item name="sectionStyle">@style/MaterialSectionTheme</item>
-        <item name="subheaderStyle">@style/CustomSubheaderTheme</item>
+        <item name="sectionStyle">@style/MaterialSectionTheme.Light</item>
+        <item name="subheaderStyle">@style/MaterialSubheaderTheme.Light</item>
         <item name="learningPattern">false</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="background">@android:color/white</item>
+        <item name="background">?android:attr/selectableItemBackground</item>
+        <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
     </style>
 
     <style name="PopupMenu_Theme" parent="Widget.AppCompat.Light.ListPopupWindow">
@@ -57,11 +59,6 @@
     <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/teal</item>
         <item name="colorControlActivated">@color/teal</item>
-    </style>
-
-    <style name="CustomSubheaderTheme">
-        <item name="subheaderTitleColor">#FFF</item>
-        <item name="textAllCaps">true</item>
     </style>
 
     <style name="PreferenceListHeader">

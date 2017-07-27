@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -188,6 +189,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
             CommonUtils.hideKeyboard(getActivity());
         }
     }
+
 
     @Override
     public void setTitleTextView(TextView textView, final Author author)

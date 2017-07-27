@@ -57,5 +57,6 @@ public final class CommonConstants
     public static final String ID = "id";
     public static final String LANGUAGE_INDEX_KEY = "languageIndex";
     public static final String COMMIT_SHA_KEY = "commitShaKey";
+    public static final String STATE_KEY = "listViewState";
 
 }
