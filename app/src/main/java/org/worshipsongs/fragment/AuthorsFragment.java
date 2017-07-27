@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -101,6 +102,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
         Drawable drawable = image.getDrawable();
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
@@ -187,6 +189,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
             CommonUtils.hideKeyboard(getActivity());
         }
     }
+
 
     @Override
     public void setTitleTextView(TextView textView, final Author author)

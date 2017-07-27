@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
@@ -88,6 +90,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
         Drawable drawable = image.getDrawable();
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
@@ -147,11 +150,18 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
         }
     }
 
+
     @Override
     public void setTitleTextView(TextView textView, final Topics topics)
     {
         textView.setText(topics.getName());
-        textView.setOnClickListener(new View.OnClickListener()
+        textView.setOnClickListener(getOnClickListener(topics));
+    }
+
+    @NonNull
+    private View.OnClickListener getOnClickListener(final Topics topics)
+    {
+        return new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -162,7 +172,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
                 intent.putExtra(CommonConstants.ID, topics.getId());
                 startActivity(intent);
             }
-        });
+        };
     }
 
     @Override

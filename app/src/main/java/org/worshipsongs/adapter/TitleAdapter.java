@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.worship.R;
@@ -44,6 +45,7 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
         setImageView(view, position);
         return view;
     }
+
 
     private void setTitleTextView(View view, int position)
     {

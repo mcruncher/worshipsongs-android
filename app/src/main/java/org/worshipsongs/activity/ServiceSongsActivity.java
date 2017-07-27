@@ -29,13 +29,12 @@ import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Seenivasan, Madasamy
  * version 1.0.0
  */
-public class ServiceSongListActivity extends AppCompatActivity
+public class ServiceSongsActivity extends AppCompatActivity
 {
     private ArrayAdapter<ServiceSong> adapter;
     private String serviceName;
@@ -50,7 +49,7 @@ public class ServiceSongListActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_list_activity);
-        presentationScreenService = new PresentationScreenService(ServiceSongListActivity.this);
+        presentationScreenService = new PresentationScreenService(ServiceSongsActivity.this);
         Intent intent = getIntent();
         serviceName = intent.getStringExtra("serviceName");
         setActionBar();
@@ -83,7 +82,7 @@ public class ServiceSongListActivity extends AppCompatActivity
             Song song = songDao.findContentsByTitle(title);
             serviceSongs.add(new ServiceSong(title, song));
         }
-        adapter = new ServiceSongAdapter(ServiceSongListActivity.this, serviceSongs, serviceName);
+        adapter = new ServiceSongAdapter(ServiceSongsActivity.this, serviceSongs, serviceName);
         songListView.setAdapter(adapter);
     }
 

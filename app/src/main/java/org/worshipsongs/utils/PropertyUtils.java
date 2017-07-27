@@ -118,8 +118,25 @@ public final class PropertyUtils
         spannableText.setSpan(new ForegroundColorSpan(color), start, end, 0);
     }
 
-    public static String getClassName()
+    public static List<String> getServices(File propertyFileName)
     {
-        return "PropertyUtils";
+        List<String> services = new ArrayList<>();
+        InputStream inputStream = null;
+        try {
+            Properties property = new Properties();
+            inputStream = new FileInputStream(propertyFileName);
+            property.load(inputStream);
+            Enumeration<?> enumeration = property.propertyNames();
+            while (enumeration.hasMoreElements()) {
+                String key = (String) enumeration.nextElement();
+                services.add(key);
+            }
+            inputStream.close();
+
+        } catch (Exception ex) {
+            Log.e(PropertyUtils.class.getSimpleName(), "Error occurred while reading services", ex);
+        }
+        return services;
     }
+
 }

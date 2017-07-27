@@ -36,7 +36,7 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name="org.worshipsongs.activity.ServiceSongListActivity">
+            android:name="org.worshipsongs.activity.ServiceSongsActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>

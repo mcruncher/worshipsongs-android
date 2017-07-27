@@ -40,6 +40,7 @@ import org.worshipsongs.service.IAuthorService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongListAdapterService;
 import org.worshipsongs.service.UserPreferenceSettingService;
+import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PermissionUtils;
 import org.worshipsongs.worship.R;
 
@@ -86,7 +87,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(CommonUtils.isPhone(getContext()));
     }
 
     @Override
@@ -119,18 +120,8 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         preferenceSettingService = new UserPreferenceSettingService();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
-    private void showStatusBar()
-    {
-        if (Build.VERSION.SDK_INT < 16) {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            View decorView = getActivity().getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        }
-    }
 
     private void setListView(View view, final Song song)
     {
@@ -462,8 +453,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         menu.clear();
-        Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Menu options");
-        inflater.inflate(R.menu.action_bar_options, menu);
+        if(CommonUtils.isPhone(getContext())) {
+            inflater.inflate(R.menu.action_bar_options, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -506,7 +498,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     {
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         try {
-            if (preferenceSettingService != null && tilteList.size() > 0) {
+            if (preferenceSettingService != null && tilteList.size() > 0 && CommonUtils.isPhone(getContext())) {
                 String title;
                 if (tilteList.size() == 1) {
                     title = tilteList.get(0);
