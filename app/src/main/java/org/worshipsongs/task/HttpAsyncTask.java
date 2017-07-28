@@ -61,7 +61,7 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
     protected void onPreExecute()
     {
         super.onPreExecute();
-        progressDialog.setMessage("Checking updates...");
+        progressDialog.setMessage(context.getString(R.string.check_update_message));
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -141,7 +141,7 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
 
     private String getRemoteUrl()
     {
-       return sharedPreferences.getString(CommonConstants.REMOTE_URL, context.getString(R.string.remoteUrl));
+        return sharedPreferences.getString(CommonConstants.REMOTE_URL, context.getString(R.string.remoteUrl));
     }
 
     @Override
