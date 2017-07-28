@@ -51,7 +51,7 @@ public class ServiceSongsActivity extends AppCompatActivity
         setContentView(R.layout.songs_list_activity);
         presentationScreenService = new PresentationScreenService(ServiceSongsActivity.this);
         Intent intent = getIntent();
-        serviceName = intent.getStringExtra("serviceName");
+        serviceName = intent.getStringExtra(CommonConstants.SERVICE_NAME_KEY);
         setActionBar();
         setSongListView();
         loadSongs();
