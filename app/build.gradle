@@ -12,12 +12,12 @@ def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode versionCodeNumber
         versionName APP_VERSION
     }
