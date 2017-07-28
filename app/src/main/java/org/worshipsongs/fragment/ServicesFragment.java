@@ -1,264 +1,198 @@
 package org.worshipsongs.fragment;
 
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Vibrator;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.ServiceSongsActivity;
-import org.worshipsongs.utils.CommonUtils;
+import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.worship.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
 
 /**
- * author  :Pitchumani, madasamy
- * version: 1.0.0
+ * Author : Madasamy
+ * Version : 4.x
  */
-public class ServicesFragment extends Fragment
+
+public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener
 {
-    List<String> serviceNames = new ArrayList<String>();
-    String serviceName;
-    TextView serviceMsg;
-    ListAdapter listAdapter;
-    private LinearLayout linearLayout;
-    private FragmentActivity FragmentActivity;
+    private List<String> services = new ArrayList<>();
+    private Parcelable state;
     private ListView serviceListView;
-    private File serviceFile = null;
-    private ArrayAdapter<String> adapter;
+    private TitleAdapter<String> titleAdapter;
+    private View headerView;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public static ServicesFragment newInstance()
     {
-        FragmentActivity = (FragmentActivity) super.getActivity();
-        linearLayout = (LinearLayout) inflater.inflate(R.layout.service_list, container, false);
-        serviceListView = (ListView) linearLayout.findViewById(R.id.list_view);
-        serviceMsg = (TextView) linearLayout.findViewById(R.id.serviceMsg);
-        serviceNames.clear();
-        loadService();
-        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
-            {
-                vibrator.vibrate(15);
-                //serviceName = serviceListView.getItemAtPosition(position).toString();
-                serviceName = adapter.getItem(position).toString();
-                System.out.println("Selected Song for Service:" + serviceName);
-                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                View promptsView = layoutInflater.inflate(R.layout.delete_confirmation_dialog, null);
-                TextView deleteMsg = (TextView) promptsView.findViewById(R.id.deleteMsg);
-                deleteMsg.setText(R.string.message_delete_playlist);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
-                alertDialogBuilder.setView(promptsView);
-                alertDialogBuilder.setCancelable(false).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-                        PropertyUtils.removeProperty(serviceName, serviceFile);
-                        Toast.makeText(getActivity(), "Favourite " + serviceName + " deleted...!", Toast.LENGTH_SHORT).show();
-                        serviceNames.clear();
-                        loadService();
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        dialog.cancel();
-                    }
-                });
-                final AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
-                {
-                    @Override
-                    public void onShow(DialogInterface dialog)
-                    {
-                        Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        negativeButton.setTextColor(getResources().getColor(R.color.accent_material_light));
-                    }
-                });
-                alertDialog.show();
-                return true;
-            }
-        });
-
-        serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                serviceName = adapter.getItem(position).toString();
-                //serviceName = serviceListView.getItemAtPosition(position).toString();
-                System.out.println("Selected Service:" + serviceName);
-                Intent intent = new Intent(getActivity(), ServiceSongsActivity.class);
-                intent.putExtra("serviceName", serviceName);
-                startActivity(intent);
-            }
-        });
-        return linearLayout;
+        return new ServicesFragment();
     }
 
-    public void loadService()
+    @Override
+    public void onCreate(Bundle savedInstanceState)
     {
-        serviceNames.clear();
-        readServiceName();
-        if (serviceNames.size() <= 0) {
-            serviceMsg.setText("You haven't created any Favourite yet!\n" +
-                    "Favourites are a great way to organize selected songs for events.\n" +
-                    "To add a song to a Favourites, tap the : icon near a song and select the " + "Add to Favourite" + " action.");
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY);
+        }
+        setHasOptionsMenu(true);
+        initSetUp();
+    }
+
+    private void initSetUp()
+    {
+        File serviceFileName = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+        services = PropertyUtils.getServices(serviceFileName);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View view = (View) inflater.inflate(R.layout.songs_layout, container, false);
+        setListView(view);
+        setHeaderView();
+        return view;
+    }
+
+    private void setListView(View view)
+    {
+        serviceListView = (ListView) view.findViewById(R.id.song_list_view);
+        titleAdapter = new TitleAdapter<String>((AppCompatActivity) getActivity(), R.layout.songs_layout);
+        titleAdapter.setTitleAdapterListener(this);
+        titleAdapter.addObjects(services);
+        serviceListView.setAdapter(titleAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        if (this.isAdded()) {
+            outState.putParcelable(CommonConstants.STATE_KEY, serviceListView.onSaveInstanceState());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        initSetUp();
+        if (state != null) {
+            serviceListView.onRestoreInstanceState(state);
         } else {
-            serviceMsg.setVisibility(View.GONE);
+            titleAdapter.addObjects(services);
         }
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, serviceNames);
-        listAdapter = new ListAdapter(getActivity());
-        serviceListView.setAdapter(listAdapter);
+        addHeaderView();
     }
 
-
-    public List readServiceName()
+    //Adapter listener methods
+    @Override
+    public void setTitleTextView(TextView textView, final String text)
     {
-        Properties property = new Properties();
-        InputStream inputStream = null;
-        try {
-            serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-            inputStream = new FileInputStream(serviceFile);
-            property.load(inputStream);
-            Enumeration<?> e = property.propertyNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                //String value = property.getProperty(key);
-                serviceNames.add(key);
-            }
-            inputStream.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return serviceNames;
+        textView.setText(text);
+        textView.setOnLongClickListener(new TextViewLongClickListener(text));
+        textView.setOnClickListener(new TextViewOnClickListener(text));
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    public void setPlayImageView(ImageView imageView, String text, int position)
     {
-        inflater.inflate(R.menu.action_bar_menu, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
-        Drawable drawable = image.getDrawable();
-        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                adapter.getFilter().filter(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query)
-            {
-                adapter.getFilter().filter(query);
-                return true;
-
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
+        imageView.setVisibility(View.GONE);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu)
+    public void setOptionsImageView(ImageView imageView, String text, int position)
     {
-        super.onPrepareOptionsMenu(menu);
+        imageView.setVisibility(View.GONE);
+    }
+
+    //Dialog Listener method
+    @Override
+    public void onClickPositiveButton(Bundle bundle, String tag)
+    {
+        File serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+        PropertyUtils.removeProperty(bundle.getString(CommonConstants.NAME_KEY), serviceFile);
+        services.clear();
+        initSetUp();
+        titleAdapter.addObjects(services);
+        addHeaderView();
+    }
+
+    private void addHeaderView()
+    {
+        if (services.isEmpty()) {
+            serviceListView.removeHeaderView(headerView);
+            serviceListView.addHeaderView(headerView);
+        }
+    }
+
+    private void setHeaderView()
+    {
+        headerView = LayoutInflater.from(getContext()).inflate(R.layout.service_header, null);
+        TextView infoTextView = (TextView) headerView.findViewById(R.id.info_text_view);
+        infoTextView.setText(R.string.favourite_info_message_);
+        infoTextView.setLineSpacing(0, 1.2f);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public void onClickNegativeButton()
     {
-        return super.onOptionsItemSelected(item);
+        // Do nothing
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
+    private class TextViewLongClickListener implements View.OnLongClickListener
     {
-        super.setUserVisibleHint(isVisibleToUser);
-        Log.d(this.getClass().getSimpleName(), "Is visible to user ?" + isVisibleToUser);
-        if (isVisibleToUser && getView() != null) {
-            loadService();
-            CommonUtils.hideKeyboard(getActivity());
+        private String serviceName;
+
+        TextViewLongClickListener(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
+
+        @Override
+        public boolean onLongClick(View v)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.delete));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_delete_playlist, serviceName));
+            bundle.putString(CommonConstants.NAME_KEY, serviceName);
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            alertDialogFragment.setDialogListener(ServicesFragment.this);
+            alertDialogFragment.show(getActivity().getFragmentManager(), "DeleteConfirmationDialog");
+            return false;
         }
     }
 
-    private class ListAdapter extends BaseAdapter
+    private class TextViewOnClickListener implements View.OnClickListener
     {
-        LayoutInflater inflater;
+        private String serviceName;
 
-        public ListAdapter(Context context)
+        TextViewOnClickListener(String serviceName)
         {
-            inflater = LayoutInflater.from(context);
+            this.serviceName = serviceName;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent)
+        @Override
+        public void onClick(View v)
         {
-            convertView = inflater.inflate(R.layout.service_row, null);
-            TextView serviceName = (TextView) convertView.findViewById(R.id.serviceName);
-            Button delete = (Button) convertView.findViewById(R.id.delete);
-            delete.setVisibility(View.GONE);
-            serviceName.setText(serviceNames.get(position).trim());
-            return convertView;
-        }
-
-        public int getCount()
-        {
-            return serviceNames.size();
-        }
-
-        public Object getItem(int position)
-        {
-            return position;
-        }
-
-        public long getItemId(int position)
-        {
-            return position;
+            Intent intent = new Intent(getActivity(), ServiceSongsActivity.class);
+            intent.putExtra(CommonConstants.SERVICE_NAME_KEY, serviceName);
+            startActivity(intent);
         }
     }
 }

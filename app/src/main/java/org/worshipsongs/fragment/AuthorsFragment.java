@@ -190,7 +190,6 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         }
     }
 
-
     @Override
     public void setTitleTextView(TextView textView, final Author author)
     {
