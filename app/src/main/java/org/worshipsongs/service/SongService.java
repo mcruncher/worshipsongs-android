@@ -68,6 +68,31 @@ public class SongService implements ISongService
         return getSortedSongs(filteredSongSet);
     }
 
+    @Override
+    public List<ServiceSong> filteredServiceSongs(String query, List<ServiceSong> serviceSongs)
+    {
+        List<ServiceSong> filteredServiceSongs = new ArrayList<>();
+        if (StringUtils.isBlank(query)) {
+            filteredServiceSongs.addAll(serviceSongs);
+        } else {
+            for (ServiceSong serviceSong : serviceSongs) {
+                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
+                    if (getTitles(serviceSong.getSong().getSearchTitle()).toString().toLowerCase().contains(query.toLowerCase())) {
+                        filteredServiceSongs.add(serviceSong);
+                    }
+                } else {
+                    if (serviceSong.getSong().getSearchLyrics().toLowerCase().contains(query.toLowerCase())) {
+                        filteredServiceSongs.add(serviceSong);
+                    }
+                }
+                if (serviceSong.getSong().getComments() != null && serviceSong.getSong().getComments().toLowerCase().contains(query.toLowerCase())) {
+                    filteredServiceSongs.add(serviceSong);
+                }
+            }
+        }
+        return filteredServiceSongs;
+    }
+
     @NonNull
     private List<Song> getSortedSongs(Set<Song> filteredSongSet)
     {
@@ -134,7 +159,7 @@ public class SongService implements ISongService
 
     }
 
-   public String getTitle(boolean isTamil, ServiceSong serviceSong)
+    public String getTitle(boolean isTamil, ServiceSong serviceSong)
     {
         try {
             return (isTamil && StringUtils.isNotBlank(serviceSong.getSong().getTamilTitle())) ?

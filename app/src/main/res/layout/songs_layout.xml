@@ -2,11 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/info_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:text=""/>
+
     <ListView
         android:id="@+id/song_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/gray_transparent"
-        android:dividerHeight="0.01dp" />
-
+        android:layout_below="@+id/info_text_view"
+        android:dividerHeight="0.01dp"/>
 </RelativeLayout>

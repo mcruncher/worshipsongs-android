@@ -1,49 +1,39 @@
 package org.worshipsongs.service;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
-import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.ListDialogFragment;
-import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.utils.PermissionUtils;
 import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Context.PRINT_SERVICE;
 import static org.worshipsongs.WorshipSongApplication.getContext;
@@ -52,101 +42,15 @@ import static org.worshipsongs.WorshipSongApplication.getContext;
  * author: Madasamy,Seenivasan, Vignesh Palanisamy
  * version: 1.0.0
  */
-@Deprecated
-public class SongListAdapterService
+
+public class PopupMenuService
 {
 
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     private SongDao songDao = new SongDao(getContext());
 
-    public ArrayAdapter<Song> getSongListAdapter(final List<Song> songs, final FragmentManager fragmentManager)
-    {
-        return new ArrayAdapter<Song>(getContext(), R.layout.songs_listview_content, songs)
-        {
-            @Override
-            public View getView(final int position, View convertView, final ViewGroup parent)
-            {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View rowView = inflater.inflate(R.layout.songs_listview_content, parent, false);
-                String title = songs.get(position).getTitle();
-                setRelativeLayout(rowView, songs, position);
-                setTitleTextView(rowView, songs, position);
-                setPlayImageView(rowView, songs.get(position), fragmentManager);
-                setImageView(rowView, title, fragmentManager);
-                return rowView;
-            }
-        };
-    }
-
-    private void setRelativeLayout(View rowView, final List<Song> songs, final int position)
-    {
-        RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.songs_list_layout);
-        relativeLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                displaySelectedSong(songs, position);
-            }
-        });
-    }
-
-    private void setTitleTextView(View rowView, List<Song> songs, int position)
-    {
-        TextView textView = (TextView) rowView.findViewById(R.id.title);
-        textView.setText((preferenceSettingService.isTamil() && songs.get(position).getTamilTitle().length() > 0) ?
-                songs.get(position).getTamilTitle() : songs.get(position).getTitle());
-        Song presentingSong = Setting.getInstance().getSong();
-        if (presentingSong != null && presentingSong.getTitle().equals(songs.get(position).getTitle())) {
-            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
-        }
-    }
-
-    private void displaySelectedSong(List<Song> songs, int position)
-    {
-        Setting.getInstance().setPosition(0);
-        ArrayList<String> titleList = new ArrayList<String>();
-        titleList.add(songs.get(position).getTitle());
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
-
-        Intent intent = new Intent(getContext(), SongContentViewActivity.class);
-        intent.putExtras(bundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getContext().startActivity(intent);
-    }
-
-    private void setPlayImageView(final View rowView, final Song song, FragmentManager fragmentManager)
-    {
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.play_imageview);
-        final String urlKey = song.getUrlKey();
-        if (urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo()) {
-            imageView.setVisibility(View.VISIBLE);
-        }
-        imageView.setOnClickListener(onClickPopupListener(song.getTitle(), fragmentManager));
-    }
-
-    private void setImageView(View rowView, final String songTitle, final FragmentManager fragmentManager)
-    {
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.optionMenuIcon);
-        imageView.setOnClickListener(onClickPopupListener(songTitle, fragmentManager));
-    }
-
-    private View.OnClickListener onClickPopupListener(final String title, final FragmentManager fragmentManager)
-    {
-        return new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                showPopupmenu(view, title, fragmentManager, true);
-            }
-        };
-    }
-
-    public void showPopupmenu(final View view, final String songName, final FragmentManager fragmentManager, boolean hidePlay)
+    public void showPopupmenu(final AppCompatActivity activity, final View view, final String songName, boolean hidePlay)
     {
         Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
         final PopupMenu popupMenu;
@@ -171,7 +75,7 @@ public class SongListAdapterService
                 switch (item.getItemId()) {
                     case R.id.addToList:
                         ListDialogFragment listDialogFragment = ListDialogFragment.newInstance(songName);
-                        listDialogFragment.show(fragmentManager, "ListDialogFragment");
+                        listDialogFragment.show(activity.getSupportFragmentManager(), "ListDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
                         shareSongInSocialMedia(songName, song);
@@ -183,7 +87,9 @@ public class SongListAdapterService
                         startPresentActivity(songName);
                         return true;
                     case R.id.export_pdf:
-                        exportSongToPDF(songName, song);
+                        if (PermissionUtils.isStoragePermissionGranted(activity)) {
+                            exportSongToPDF(songName, song);
+                        }
                         return true;
                     default:
                         return false;
@@ -202,7 +108,7 @@ public class SongListAdapterService
             builder.append("\n");
         }
         builder.append(getContext().getString(R.string.share_info));
-        Log.i(SongListAdapterService.this.getClass().getSimpleName(), builder.toString());
+        Log.i(PopupMenuService.this.getClass().getSimpleName(), builder.toString());
         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
         textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString());
         textShareIntent.setType("text/plain");
@@ -233,7 +139,7 @@ public class SongListAdapterService
             String title = song.getTamilTitle() + "/" + songName;
             float titleLength = titleDesign.measureText(title);
             float yPos = 50;
-            if(page.getCanvas().getWidth() > titleLength) {
+            if (page.getCanvas().getWidth() > titleLength) {
                 int xPos = (page.getCanvas().getWidth() / 2) - (int) titleLength / 2;
                 page.getCanvas().drawText(title, xPos, 20, titleDesign);
             } else {
@@ -244,7 +150,7 @@ public class SongListAdapterService
                 yPos = 75;
             }
             for (String content : song.getContents()) {
-                if(yPos > 620) {
+                if (yPos > 620) {
                     document.finishPage(page);
                     page = document.startPage(pageInfo);
                     yPos = 40;
@@ -261,7 +167,7 @@ public class SongListAdapterService
             os.close();
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("application/pdf");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+file.getAbsolutePath()));
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
 
             Intent intent = Intent.createChooser(shareIntent, "Share " + songName + " with...");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

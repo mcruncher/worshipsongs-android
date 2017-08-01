@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.IAuthorService;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PermissionUtils;
@@ -61,7 +60,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private UserPreferenceSettingService preferenceSettingService;
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
     private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
-    private SongListAdapterService songListAdapterService;
+    private PopupMenuService popupMenuService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
     private ListView listView;
@@ -107,7 +106,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 
     private void initSetUp()
     {
-       // showStatusBar();
+        // showStatusBar();
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
@@ -453,7 +452,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         menu.clear();
-        if(CommonUtils.isPhone(getContext())) {
+        if (CommonUtils.isPhone(getContext())) {
             inflater.inflate(R.menu.action_bar_options, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -470,9 +469,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
                 return true;
             case R.id.options:
                 Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "On tapped options");
-                songListAdapterService = new SongListAdapterService();
+                popupMenuService = new PopupMenuService();
                 PermissionUtils.isStoragePermissionGranted(getActivity());
-                songListAdapterService.showPopupmenu(getActivity().findViewById(R.id.options), title, getFragmentManager(), false);
+                popupMenuService.showPopupmenu((AppCompatActivity) getActivity(), getActivity().findViewById(R.id.options), title, false);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

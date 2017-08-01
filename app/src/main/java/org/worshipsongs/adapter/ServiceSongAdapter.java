@@ -100,7 +100,7 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
     private void setTextView(View view, final ServiceSong serviceSong, final int position)
     {
         final TextView textView = (TextView) view.findViewById(R.id.title);
-       textView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
+        textView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
         textView.setOnLongClickListener(new View.OnLongClickListener()
         {
             @Override
@@ -160,7 +160,6 @@ public class ServiceSongAdapter extends ArrayAdapter<ServiceSong>
         });
 
     }
-
 
 
     private AlertDialog.Builder getAlertDialogBuilder(final String title)
