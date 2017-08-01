@@ -119,5 +119,7 @@
     <string name="delete">Delete</string>
     <string name="favourite_info_message_">You haven\'t created any Favourite yet! Favourites are a great way to organize selected songs for events.To add a song to a Favourites, tap the : icon near a song and select the Add to Favourite action.</string>
     <string name="check_update_message">Checking for song updates...</string>
+    <string name="permission">Permission</string>
+    <string name="storage_permission_meaage">Tamil christian Worshipsongs doesn\'t have permission to write file on storage. Tap on settings to enable storage permission</string>
     <bool name="tablet">false</bool>
 </resources>

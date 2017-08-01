@@ -47,11 +47,11 @@ public final class PermissionUtils
                     LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
                     TextView titleTextView = (TextView) titleView.findViewById(R.id.title);
-                    titleTextView.setText("Permission");
+                    titleTextView.setText(R.string.permission);
 
                     TextView messageTextView = (TextView) titleView.findViewById(R.id.subtitle);
                     messageTextView.setTextColor(activity.getResources().getColor(R.color.black_semi_transparent));
-                    messageTextView.setText("Tamil christian Worshipsongs doesn't have permission to write file on storage. Tap on settings to enable storage permission");
+                    messageTextView.setText(R.string.storage_permission_meaage);
                     builder.setCustomTitle(titleView);
                     builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
                     {
