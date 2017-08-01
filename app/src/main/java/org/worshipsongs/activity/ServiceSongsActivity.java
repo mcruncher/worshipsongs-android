@@ -101,39 +101,6 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu)
-//    {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.action_bar_menu, menu);
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setIconifiedByDefault(true);
-//        ImageView image = (ImageView) searchView.findViewById(R.id.search_close_btn);
-//        Drawable drawable = image.getDrawable();
-//        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
-//        {
-//            @Override
-//            public boolean onQueryTextChange(String newText)
-//            {
-//                adapter.getFilter().filter(newText);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query)
-//            {
-//                adapter.getFilter().filter(query);
-//                return true;
-//            }
-//        };
-//        searchView.setOnQueryTextListener(textChangeListener);
-//        menu.getItem(0).setVisible(false);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
