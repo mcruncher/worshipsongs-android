@@ -61,7 +61,7 @@ public final class PermissionUtils
                             dialog.cancel();
                         }
                     });
-                    builder.setPositiveButton("Settings", new DialogInterface.OnClickListener()
+                    builder.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
