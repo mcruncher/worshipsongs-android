@@ -1,15 +1,13 @@
 package org.worshipsongs.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.UserSettingActivity;
-import org.worshipsongs.worship.R;
 
 /**
  * Author:Seenivasan, Madasamy

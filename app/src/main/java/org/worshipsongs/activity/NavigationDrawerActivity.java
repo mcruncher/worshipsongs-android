@@ -7,11 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.utils.PermissionUtils;
-import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;

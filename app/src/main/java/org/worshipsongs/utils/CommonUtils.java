@@ -14,8 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.worship.R;
 
 /**
  * Author : madasamy

@@ -1,41 +1,21 @@
 package org.worshipsongs.activity;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.adapter.ServiceSongAdapter;
-import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.domain.ServiceSong;
-import org.worshipsongs.domain.Song;
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.fragment.ServiceSongsFragment;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

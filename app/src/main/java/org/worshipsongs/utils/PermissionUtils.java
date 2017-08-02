@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,15 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import org.worshipsongs.CommonConstants;
-import org.worshipsongs.fragment.AlertDialogFragment;
-import org.worshipsongs.worship.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.worshipsongs.R;
 
 import static android.content.ContentValues.TAG;
-import static android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale;
 
 /**
  * Created by vignesh on 24/07/2017.

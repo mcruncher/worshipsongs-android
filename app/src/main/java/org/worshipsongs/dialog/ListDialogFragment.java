@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.worshipsongs.service.CommonService;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,8 @@ public class ListDialogFragment extends DialogFragment
 {
     private CommonService commonService = new CommonService();
 
-    public static ListDialogFragment newInstance(String songName) {
+    public static ListDialogFragment newInstance(String songName)
+    {
         ListDialogFragment listDialogFragment = new ListDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("songName", songName);
@@ -50,18 +51,20 @@ public class ListDialogFragment extends DialogFragment
         return builder.create();
     }
 
-    private  String[] getProductListsArray(){
+    private String[] getProductListsArray()
+    {
         List<String> services = new ArrayList<String>();
         services.addAll(commonService.readServiceName());
         services.add(0, "New favourite...");
         Log.d("service names list", commonService.readServiceName().toString());
-        String[]  serviceNames = new String[services.size()];
+        String[] serviceNames = new String[services.size()];
         services.toArray(serviceNames);
         Log.d("service names are", services.toString());
         return serviceNames;
     }
 
-    private  void onClick(int which){
+    private void onClick(int which)
+    {
         Bundle args = getArguments();
         String songName = args.getString("songName");
         if (which == 0) {

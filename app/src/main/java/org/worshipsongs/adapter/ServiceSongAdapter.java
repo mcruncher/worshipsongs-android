@@ -38,7 +38,7 @@ import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 import java.io.File;
 import java.util.ArrayList;

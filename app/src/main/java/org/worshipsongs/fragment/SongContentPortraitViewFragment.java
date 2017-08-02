@@ -27,6 +27,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.youtube.player.YouTubePlayer;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
@@ -36,12 +37,11 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.IAuthorService;
-import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.PopupMenuService;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PermissionUtils;
-import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 

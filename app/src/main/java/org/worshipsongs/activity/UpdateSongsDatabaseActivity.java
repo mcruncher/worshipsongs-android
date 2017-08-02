@@ -12,7 +12,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.task.HttpAsyncTask;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /**
  * Author : Madasamy

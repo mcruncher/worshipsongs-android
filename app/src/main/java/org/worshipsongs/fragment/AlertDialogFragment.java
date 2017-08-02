@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 
 /**

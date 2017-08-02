@@ -15,10 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.ServiceSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;

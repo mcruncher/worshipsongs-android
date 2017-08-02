@@ -3,19 +3,15 @@ package org.worshipsongs.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableRow;
 
+import org.worshipsongs.R;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
-import org.worshipsongs.worship.R;
 
 import java.util.Arrays;
 import java.util.List;

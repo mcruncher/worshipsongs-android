@@ -20,17 +20,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.TopicsService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.worship.R;
 
 import java.util.List;
 

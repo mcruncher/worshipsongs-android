@@ -31,7 +31,7 @@ import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;

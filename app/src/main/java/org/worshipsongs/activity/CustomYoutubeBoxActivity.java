@@ -27,7 +27,7 @@ import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /***********************************************************************************
  * The MIT License (MIT)

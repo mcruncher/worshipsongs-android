@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
@@ -44,7 +45,6 @@ import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
-import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package org.worshipsongs.service;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -11,7 +10,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -21,6 +19,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
@@ -28,7 +27,6 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.ListDialogFragment;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.utils.PermissionUtils;
-import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

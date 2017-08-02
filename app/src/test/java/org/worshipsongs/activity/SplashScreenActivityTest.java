@@ -9,8 +9,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.worshipsongs.worship.BuildConfig;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.BuildConfig;
+import org.worshipsongs.R;
 
 import static org.junit.Assert.assertEquals;
 
