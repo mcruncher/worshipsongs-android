@@ -110,7 +110,6 @@ def getCurrentVersionName(versionCodeNumber)
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile files('libs/robotium-solo-2.5.jar')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.android.support:preference-v14:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -137,43 +136,3 @@ dependencies {
     testCompile 'org.robolectric:shadows-support-v4:3.0'
     testCompile 'com.github.hkhc:electricspock:0.5.0.1'
 }
-
-//Jacoco configuration
-jacoco {
-    // https://github.com/jacoco/jacoco/issues/288
-    toolVersion = "0.7.9"
-}
-
-def coverageSourceDirs = ['../app/src/main/java']
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports"
-    classDirectories = fileTree(
-            dir: '../app/build/intermediates/classes',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*', '**/**Test*']
-    )
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/testDebugUnitTest.exec')
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-    doFirst {
-        files('build/intermediates/classes/debug').getFiles().each { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-    }
-}
-
-
-
-
-
