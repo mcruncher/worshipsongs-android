@@ -23,6 +23,7 @@ android {
         versionCode versionCodeNumber
         versionName APP_VERSION
     }
+    compileOptions.encoding = "UTF-8"
 
     signingConfigs {
         releaseConfig {
