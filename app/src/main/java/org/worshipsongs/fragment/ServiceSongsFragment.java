@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -26,11 +27,13 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.domain.Service;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.ISongService;
+import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
@@ -58,6 +61,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
     private ArrayList<String> titles = new ArrayList<>();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private SongContentViewListener songContentViewListener;
+    private PopupMenuService popupMenuService = new PopupMenuService();
 
     public static ServiceSongsFragment newInstance(Bundle bundle)
     {
@@ -153,13 +157,45 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
     @Override
     public void setPlayImageView(ImageView imageView, ServiceSong serviceSong, int position)
     {
+        imageView.setVisibility(isShowPlayIcon(serviceSong.getSong()) ? View.VISIBLE : View.GONE);
+        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+    }
 
+    boolean isShowPlayIcon(Song song)
+    {
+        try {
+            String urlKey = song.getUrlKey();
+            return urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public void setOptionsImageView(ImageView imageView, ServiceSong serviceSong, int position)
     {
+        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+    }
 
+    private View.OnClickListener imageOnClickListener(final Song song, final String title)
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (song != null) {
+                    popupMenuService.showPopupmenu((AppCompatActivity) getActivity(), view, song.getTitle(), true);
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
+                    bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_song_not_available, "\"" + title + "\""));
+                    AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+                    alertDialogFragment.setVisibleNegativeButton(false);
+                    alertDialogFragment.show(getActivity().getFragmentManager(), "WarningDialogFragment");
+                }
+            }
+        };
     }
 
     //Dialog listener methods
