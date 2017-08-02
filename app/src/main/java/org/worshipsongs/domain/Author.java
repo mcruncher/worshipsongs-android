@@ -1,5 +1,7 @@
 package org.worshipsongs.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,6 @@ public class Author extends AbstractDomain
 
     private String firstName;
     private String lastName;
-
 
 
     public String getLastName()
@@ -34,5 +35,13 @@ public class Author extends AbstractDomain
         this.firstName = firstName;
     }
 
-
+    @Override
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append(super.toString());
+        builder.append("firstname", firstName);
+        builder.append("lastName", lastName);
+        return builder.toString();
+    }
 }
