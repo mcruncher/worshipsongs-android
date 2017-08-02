@@ -9,24 +9,22 @@ sonarqube {
         def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-25/android.jar," +
                 "build/intermediates/exploded-aar/**/classes.jar"
         property "sonar.host.url", "http://sonarqube.mcruncher.com"
-        property "sonar.projectName", "Worshipsongs::ANDROID"
-        property "sonar.projectKey", "songsandroid"
+        property "sonar.projectName", "WORSHIPSONGS::ANDROID"
+        property "sonar.projectKey", "org.worshipsongs"
+        property "sonar.branch", System.getenv("BRANCH_NAME")
+        property "sonar.profile", "Android java"
         property "sonar.projectVersion", AppVersion
-
-        property "sonar.sourceEncoding","UTF-8"
+        property "sonar.sourceEncoding", "UTF-8"
         property "sonar.sources", "src/main/java,src/main/res"
         property "sonar.binaries", "build/intermediates/classes/debug"
         property "sonar.libraries", libraries
         property "sonar.java.binaries", "build/intermediates/classes/debug"
         property "sonar.java.libraries", libraries
-
-        property "sonar.tests", "src/test/java" // where the tests are located
-        property "sonar.java.test.binaries", "build/intermediates/classes/debug"
-        property "sonar.java.test.libraries", libraries
-        property "sonar.jacoco.reportPaths", "build/jacoco/testDebugUnitTest.exec" // path to coverage reports
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest/debug" // path to junit reports
         property "sonar.android.lint.report", "build/outputs/lint-results-debug.xml"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.jacoco.reportPath", "build/jacoco/testDebugUnitTest.exec"
+        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest/debug"
     }
 }
 

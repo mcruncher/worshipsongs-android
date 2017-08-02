@@ -24,7 +24,7 @@ class DialogConfigurationSpockTest extends Specification
 
         expect:
         result.contains("foo")
-        result.contains("bar")
+        !result.contains("bar")
     }
 
     def "Equals"()

@@ -4,6 +4,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply from: '../sonarqube.gradle'
+apply plugin: 'groovyx.android'
 
 
 def buildNumber = System.getenv("BUILD_NUMBER") ?: "308"
@@ -140,7 +141,7 @@ dependencies {
 //Jacoco configuration
 jacoco {
     // https://github.com/jacoco/jacoco/issues/288
-    toolVersion = "0.7.4+"
+    toolVersion = "0.7.9"
 }
 
 def coverageSourceDirs = ['../app/src/main/java']
