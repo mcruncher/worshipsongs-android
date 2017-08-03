@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.worshipsongs.listener.SongContentViewListener;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;

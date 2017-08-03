@@ -12,14 +12,14 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.task.HttpAsyncTask;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 
-public class UpdateSongsDatabaseActivity extends AppCompatActivity
+public class UpdateSongsDatabaseActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
 {
     private static String DB_API_URL = "https://api.github.com/repos/mcruncher/worshipsongs-db-dev/git/refs/heads/master";
 
@@ -50,7 +50,10 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity
             Bundle bundle = new Bundle();
             bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
             bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_warning_internet_connection));
-            AlertDialogFragment.newInstance(bundle).show(getFragmentManager(), AlertDialogFragment.class.getSimpleName());
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            alertDialogFragment.setVisibleNegativeButton(false);
+            alertDialogFragment.setDialogListener(this);
+            alertDialogFragment.show(getFragmentManager(), AlertDialogFragment.class.getSimpleName());
         }
     }
 
@@ -59,5 +62,17 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity
     {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onClickPositiveButton(Bundle bundle, String tag)
+    {
+        finish();
+    }
+
+    @Override
+    public void onClickNegativeButton()
+    {
+
     }
 }

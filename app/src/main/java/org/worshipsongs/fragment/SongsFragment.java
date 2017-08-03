@@ -28,10 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
@@ -40,12 +40,11 @@ import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
-import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
-import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     private SongContentViewListener songContentViewListener;
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private SongListAdapterService songListAdapterService = new SongListAdapterService();
+    private PopupMenuService popupMenuService = new PopupMenuService();
     private SongService songService;
     private SongDao songDao;
 
@@ -124,7 +123,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = (View) inflater.inflate(R.layout.songs_layout, container, false);
+        View view = inflater.inflate(R.layout.songs_layout, container, false);
         setListView(view);
         return view;
     }
@@ -382,7 +381,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             @Override
             public void onClick(View view)
             {
-                songListAdapterService.showPopupmenu(view, title, getFragmentManager(), true);
+                popupMenuService.showPopupmenu((AppCompatActivity) getActivity(), view, title, true);
             }
         };
     }

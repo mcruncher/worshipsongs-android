@@ -10,11 +10,11 @@ import android.view.Menu;
 import android.widget.FrameLayout;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.fragment.SongsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class SongListActivity extends AppCompatActivity implements SongContentVi
 
     private void setContentViewFragment()
     {
-        songContentFrameLayout = (FrameLayout)findViewById(R.id.song_content_fragment);
+        songContentFrameLayout = (FrameLayout) findViewById(R.id.song_content_fragment);
     }
 
     private void setFragment()

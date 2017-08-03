@@ -7,7 +7,7 @@ import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /**
  * Created by Seenivasan on 12/4/2014.

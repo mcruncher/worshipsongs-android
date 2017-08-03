@@ -15,10 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.ServiceSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     private Parcelable state;
     private ListView serviceListView;
     private TitleAdapter<String> titleAdapter;
-    private View headerView;
+    private TextView infoTextView;
 
     public static ServicesFragment newInstance()
     {
@@ -63,10 +63,18 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = (View) inflater.inflate(R.layout.songs_layout, container, false);
+        View view = inflater.inflate(R.layout.songs_layout, container, false);
+        setInfoTextView(view);
         setListView(view);
-        setHeaderView();
         return view;
+    }
+
+    private void setInfoTextView(View view)
+    {
+        infoTextView = (TextView) view.findViewById(R.id.info_text_view);
+        infoTextView.setText(getString(R.string.favourite_info_message_));
+        infoTextView.setLineSpacing(0, 1.2f);
+        infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void setListView(View view)
@@ -96,8 +104,8 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
             serviceListView.onRestoreInstanceState(state);
         } else {
             titleAdapter.addObjects(services);
+            infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
         }
-        addHeaderView();
     }
 
     //Adapter listener methods
@@ -130,23 +138,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
         services.clear();
         initSetUp();
         titleAdapter.addObjects(services);
-        addHeaderView();
-    }
-
-    private void addHeaderView()
-    {
-        if (services.isEmpty()) {
-            serviceListView.removeHeaderView(headerView);
-            serviceListView.addHeaderView(headerView);
-        }
-    }
-
-    private void setHeaderView()
-    {
-        headerView = LayoutInflater.from(getContext()).inflate(R.layout.service_header, null);
-        TextView infoTextView = (TextView) headerView.findViewById(R.id.info_text_view);
-        infoTextView.setText(R.string.favourite_info_message_);
-        infoTextView.setLineSpacing(0, 1.2f);
+        infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override

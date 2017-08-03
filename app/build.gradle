@@ -4,6 +4,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply from: '../sonarqube.gradle'
+apply plugin: 'groovyx.android'
 
 
 def buildNumber = System.getenv("BUILD_NUMBER") ?: "308"
@@ -12,8 +13,9 @@ def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
 android {
+
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
@@ -21,6 +23,7 @@ android {
         versionCode versionCodeNumber
         versionName APP_VERSION
     }
+    compileOptions.encoding = "UTF-8"
 
     signingConfigs {
         releaseConfig {
@@ -108,7 +111,6 @@ def getCurrentVersionName(versionCodeNumber)
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile files('libs/robotium-solo-2.5.jar')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.android.support:preference-v14:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -123,50 +125,15 @@ dependencies {
 
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.json:json:20140107'
-    testCompile 'org.robolectric:robolectric:3.3.2'
+
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.json:json:20140107'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
+    testCompile 'com.github.hkhc:electricspock:0.5.0.1'
 }
-
-//Jacoco configuration
-jacoco {
-    // https://github.com/jacoco/jacoco/issues/288
-    toolVersion = "0.7.4+"
-}
-
-def coverageSourceDirs = ['../app/src/main/java']
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports"
-    classDirectories = fileTree(
-            dir: '../app/build/intermediates/classes',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*', '**/**Test*']
-    )
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/testDebugUnitTest.exec')
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-    doFirst {
-        files('build/intermediates/classes/debug').getFiles().each { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-    }
-}
-
-
-
-
-

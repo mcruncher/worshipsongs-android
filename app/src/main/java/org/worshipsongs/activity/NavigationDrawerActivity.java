@@ -7,10 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.worship.R;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
@@ -36,7 +36,6 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
         this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
-
         this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 

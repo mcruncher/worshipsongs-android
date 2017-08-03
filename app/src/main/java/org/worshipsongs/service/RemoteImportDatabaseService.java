@@ -18,14 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.SplashScreenActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
-import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;

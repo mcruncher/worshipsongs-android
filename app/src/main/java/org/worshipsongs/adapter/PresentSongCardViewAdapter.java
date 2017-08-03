@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.worshipsongs.R;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.worship.R;
 
 import java.util.List;
 

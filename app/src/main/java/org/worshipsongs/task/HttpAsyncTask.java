@@ -1,37 +1,22 @@
 package org.worshipsongs.task;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.activity.SplashScreenActivity;
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.parser.CommitMessageParser;
 import org.worshipsongs.parser.ICommitMessageParser;
-import org.worshipsongs.worship.R;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import static org.worshipsongs.worship.R.string.url;
 
 /**
  * Author : Madasamy

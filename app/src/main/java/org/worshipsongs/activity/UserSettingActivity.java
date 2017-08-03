@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /**
  * @Author : Seenivasan
@@ -25,7 +25,8 @@ public class UserSettingActivity extends AppCompatActivity
     private PresentationScreenService presentationScreenService;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -35,7 +36,8 @@ public class UserSettingActivity extends AppCompatActivity
         presentationScreenService = new PresentationScreenService(this);
     }
 
-    public void activityFinish() {
+    public void activityFinish()
+    {
         finish();
     }
 

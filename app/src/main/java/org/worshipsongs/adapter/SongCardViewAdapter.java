@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.worshipsongs.R;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.worship.R;
 
 /**
  * author: Madasamy

@@ -8,7 +8,7 @@
         <item name="android:textColor">@color/text_black_color</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="background">@android:color/white</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <!--<item name="android:windowContentOverlay">@null</item>-->
     </style>
 
     <style name="MaterialAppTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
@@ -23,8 +23,8 @@
         <item name="sectionStyle">@style/MaterialSectionTheme.Light</item>
         <item name="subheaderStyle">@style/MaterialSubheaderTheme.Light</item>
         <item name="learningPattern">false</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="background">?android:attr/selectableItemBackground</item>
+        <!--<item name="android:windowBackground">@android:color/white</item>-->
+        <!--<item name="background">?android:attr/selectableItemBackground</item>-->
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
     </style>
 

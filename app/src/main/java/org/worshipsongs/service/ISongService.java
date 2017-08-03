@@ -18,9 +18,11 @@ public interface ISongService
 
     List<Song> filterSongs(String text, List<Song> songs);
 
+    List<ServiceSong> filteredServiceSongs(String query, List<ServiceSong> serviceSongs);
+
     List<Song> findByAuthorId(int id);
 
     List<Song> findByTopicId(int id);
 
-    String getTitle(boolean tamilLanguage,ServiceSong serviceSong);
+    String getTitle(boolean tamilLanguage, ServiceSong serviceSong);
 }
