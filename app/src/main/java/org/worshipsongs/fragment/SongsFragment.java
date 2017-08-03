@@ -19,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -84,7 +85,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            state = savedInstanceState.getParcelable(STATE_KEY);
+             state = savedInstanceState.getParcelable(STATE_KEY);
         }
         songDao = new SongDao(getActivity());
         songService = new SongService(getActivity());
@@ -316,6 +317,8 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         Song presentingSong = Setting.getInstance().getSong();
         if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
             textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+        } else {
+            textView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
         textView.setOnClickListener(textViewOnClickListener(song));
     }
