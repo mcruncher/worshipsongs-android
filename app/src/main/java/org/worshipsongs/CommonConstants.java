@@ -60,5 +60,5 @@ public final class CommonConstants
     public static final String STATE_KEY = "listViewState";
     public static final String NAME_KEY = "nameKey";
     public static final String SERVICE_NAME_KEY = "serviceNameKey";
-
+    public static final String UPDATED_SONGS_KEY = "updatedSongsKey";
 }

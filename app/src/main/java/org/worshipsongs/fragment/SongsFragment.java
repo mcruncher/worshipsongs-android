@@ -255,11 +255,18 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     public void onResume()
     {
         super.onResume();
-        if (state != null) {
+        if (sharedPreferences.getBoolean(CommonConstants.UPDATED_SONGS_KEY, false)) {
+            songService.open();
+            songs = songService.findAll();
+            titleAdapter.clear();
+            titleAdapter.addObjects(songService.filterSongs("", songs));
+            sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, false).apply();
+        } else if (state != null) {
             songListView.onRestoreInstanceState(state);
         } else {
             titleAdapter.addObjects(songService.filterSongs("", songs));
         }
+
     }
 
     @Override
