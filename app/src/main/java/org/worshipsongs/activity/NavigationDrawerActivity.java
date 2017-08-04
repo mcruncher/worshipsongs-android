@@ -30,7 +30,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void init(Bundle bundle)
     {
         presentationScreenService = new PresentationScreenService(this);
-        this.addSection(newSection("", HomeFragment.newInstance()));
+        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white,  HomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
