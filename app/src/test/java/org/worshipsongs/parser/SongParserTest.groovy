@@ -40,6 +40,12 @@ class SongParserTest extends ElectricSpecification
     def "Regex pattern"()
     {
         expect:
+        SongParser.XML_FILE_NAME == "verse"
+        SongParser.EXTENSION == "xml";
+        SongParser.VERSE_ELEMENT_NAME == "verse";
+        SongParser.LABEL_ATTRIBUTE_NAME == "label";
+        SongParser.TYPE_ATTRIBUTE_NAME == "type";
+
         SongParser.I_18_N_TITLE_REGEX == "i18nTitle.*"
         SongParser.MEDIA_URL_REGEX == "mediaurl.*"
         SongParser.CHORD_REGEX == "originalKey.*"

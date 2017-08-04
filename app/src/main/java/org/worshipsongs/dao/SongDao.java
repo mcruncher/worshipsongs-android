@@ -2,20 +2,14 @@ package org.worshipsongs.dao;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.ISongParser;
 import org.worshipsongs.parser.SongParser;
-import org.worshipsongs.service.UtilitiesService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author : Madasamy
