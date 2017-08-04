@@ -76,6 +76,6 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity implements Al
     @Override
     public void onClickNegativeButton()
     {
-
+        //Do nothing when click negative button
     }
 }

@@ -43,8 +43,9 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
                 return new TopicsFragment();
             case 3:
                 return ServicesFragment.newInstance();
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
