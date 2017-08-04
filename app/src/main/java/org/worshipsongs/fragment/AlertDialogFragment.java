@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 
@@ -65,7 +66,6 @@ public class AlertDialogFragment extends DialogFragment
             });
         }
         return alertDialogBuilder.create();
-
     }
 
     @NonNull
@@ -75,6 +75,7 @@ public class AlertDialogFragment extends DialogFragment
         View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
         TextView titleTextView = (TextView) titleView.findViewById(R.id.title);
         titleTextView.setText(getArguments().getString(CommonConstants.TITLE_KEY));
+        titleTextView.setVisibility(StringUtils.isBlank(titleTextView.getText().toString()) ? View.GONE : View.VISIBLE);
 
         TextView messageTextView = (TextView) titleView.findViewById(R.id.subtitle);
         messageTextView.setTextColor(getActivity().getResources().getColor(R.color.black_semi_transparent));

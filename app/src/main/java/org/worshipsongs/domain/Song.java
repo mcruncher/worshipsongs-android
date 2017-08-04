@@ -41,7 +41,7 @@ public class Song
 
     public Song()
     {
-
+        //Do nothing
     }
 
     public Song(String title)

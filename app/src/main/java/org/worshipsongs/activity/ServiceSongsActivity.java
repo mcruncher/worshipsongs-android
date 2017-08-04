@@ -88,6 +88,8 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
             case android.R.id.home:
                 finish();
                 break;
+            default:
+                break;
         }
         return true;
     }

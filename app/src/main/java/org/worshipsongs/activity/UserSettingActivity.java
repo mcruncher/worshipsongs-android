@@ -65,6 +65,8 @@ public class UserSettingActivity extends AppCompatActivity
                 finish();
                 NavUtils.navigateUpFromSameTask(this);
                 break;
+            default:
+                break;
         }
         return true;
     }

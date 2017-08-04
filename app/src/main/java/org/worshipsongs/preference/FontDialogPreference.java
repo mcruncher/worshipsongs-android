@@ -66,7 +66,7 @@ public class FontDialogPreference extends Preference
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
             {
-
+                //Do nothing
             }
 
             @Override

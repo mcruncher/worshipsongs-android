@@ -95,6 +95,7 @@ public class SongContentViewActivity extends AppCompatActivity
                 @Override
                 public void onPageScrollStateChanged(int state)
                 {
+                    //DO nothing when page scrolled
                 }
             });
         } else {
