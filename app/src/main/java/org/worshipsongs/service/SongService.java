@@ -146,7 +146,7 @@ public class SongService implements ISongService
             }
         }
 
-        public int nullSafeStringComparator(final String one, final String two)
+        private int nullSafeStringComparator(final String one, final String two)
         {
             if (StringUtils.isBlank(one) ^ StringUtils.isBlank(two)) {
                 return (StringUtils.isBlank(one)) ? -1 : 1;

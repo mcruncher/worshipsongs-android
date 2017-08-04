@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Verse;
 import org.worshipsongs.parser.ISongParser;
@@ -23,12 +24,7 @@ import java.util.Map;
 public class SongDao extends AbstractDao
 {
     public static final String TABLE_NAME = "songs";
-    //    public static final String[] allColumns = {"id", "song_book_id", "title", "alternate_title",
-//            "lyrics", "verse_order", "copyright", "comments", "ccli_number", "song_number", "theme_name",
-//            "search_title", "search_lyrics", "create_date", "last_modified", "temporary"};
-
     private ISongParser songParser = new SongParser();
-    private UtilitiesService utilitiesService = new UtilitiesService();
 
     public SongDao()
     {
@@ -39,7 +35,6 @@ public class SongDao extends AbstractDao
     {
         super(context);
     }
-
 
     public List<Song> findAll()
     {
@@ -90,6 +85,26 @@ public class SongDao extends AbstractDao
         return songs;
     }
 
+    public Song findContentsByTitle(String title)
+    {
+        Song song = findByTitle(title);
+        if (song != null) {
+            Song parsedSong = new Song();
+            parsedSong.setTitle(title);
+            parsedSong.setLyrics(song.getLyrics());
+            parsedSong.setVerseOrder(song.getVerseOrder());
+            parsedSong.setSearchTitle(song.getSearchTitle());
+            parsedSong.setSearchLyrics(song.getSearchLyrics());
+            parsedSong.setComments(song.getComments());
+            parsedSong.setContents(songParser.parseContents(WorshipSongApplication.getContext(), song.getLyrics(), song.getVerseOrder()));
+            parsedSong.setUrlKey(songParser.parseMediaUrlKey(song.getComments()));
+            parsedSong.setChord(songParser.parseChord(song.getComments()));
+            parsedSong.setTamilTitle(songParser.parseTamilTitle(song.getComments()));
+            return parsedSong;
+        }
+        return null;
+    }
+
     public Song findByTitle(String title)
     {
         Song song = null;
@@ -118,54 +133,6 @@ public class SongDao extends AbstractDao
         song.setTamilTitle(songParser.parseTamilTitle(song.getComments()));
         return song;
     }
-
-    public Song findContentsByTitle(String title)
-    {
-        Song song = findByTitle(title);
-        if (song != null) {
-            String lyrics = song.getLyrics();
-            ArrayList<String> contents = new ArrayList<>();
-            List<Verse> verseList = utilitiesService.getVerse(lyrics);
-            List<String> verseName = new ArrayList<String>();
-            List<String> contentsByDefaultOrder = new ArrayList<String>();
-            Map<String, String> verseDataMap = new HashMap<String, String>();
-            for (Verse verses : verseList) {
-                verseName.add(verses.getType() + verses.getLabel());
-                contentsByDefaultOrder.add(verses.getContent());
-                verseDataMap.put(verses.getType() + verses.getLabel(), verses.getContent());
-            }
-            List<String> contentsByVerseOrder = new ArrayList<String>();
-            List<String> verseOrderList = new ArrayList<String>();
-            String verseOrder = song.getVerseOrder();
-            if (StringUtils.isNotBlank(verseOrder)) {
-                verseOrderList = utilitiesService.getVerseByVerseOrder(verseOrder);
-            }
-
-            if (verseOrderList.size() > 0) {
-                for (int i = 0; i < verseOrderList.size(); i++) {
-                    contentsByVerseOrder.add(verseDataMap.get(verseOrderList.get(i)));
-                }
-                contents.addAll(contentsByVerseOrder);
-                Log.d(this.getClass().getName(), "Verse List data content :" + contentsByVerseOrder);
-            } else {
-                contents.addAll(contentsByDefaultOrder);
-            }
-            Song parsedSong = new Song();
-            parsedSong.setTitle(title);
-            parsedSong.setLyrics(song.getLyrics());
-            parsedSong.setVerseOrder(song.getVerseOrder());
-            parsedSong.setSearchTitle(song.getSearchTitle());
-            parsedSong.setSearchLyrics(song.getSearchLyrics());
-            parsedSong.setComments(song.getComments());
-            parsedSong.setContents(contents);
-            parsedSong.setUrlKey(songParser.parseMediaUrlKey(song.getComments()));
-            parsedSong.setChord(songParser.parseChord(song.getComments()));
-            parsedSong.setTamilTitle(songParser.parseTamilTitle(song.getComments()));
-            return parsedSong;
-        }
-        return song;
-    }
-
 
     public long count()
     {
