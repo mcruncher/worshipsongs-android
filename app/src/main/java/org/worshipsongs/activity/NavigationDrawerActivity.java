@@ -113,7 +113,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
             @Override
             public void onClick(MaterialSection section)
             {
-
+                //Do nothing when click on version
             }
         };
     }

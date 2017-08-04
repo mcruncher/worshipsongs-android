@@ -120,6 +120,8 @@ public class PresentSongActivity extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 break;
+            default:
+                break;
         }
         return true;
     }

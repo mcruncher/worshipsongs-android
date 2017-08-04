@@ -82,7 +82,6 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
     }
 
 
-
     private class ImportDatabaseOnClickListener implements View.OnClickListener
     {
         @Override
@@ -178,6 +177,8 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
             case android.R.id.home:
                 finish();
                 break;
+            default:
+                break;
         }
         return true;
     }
@@ -191,6 +192,8 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
                     Uri uri = intent.getData();
                     doCopyFile(uri, getFileName(uri));
                 }
+                break;
+            default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, intent);
@@ -226,7 +229,7 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
     @Override
     public void onClickPositiveButton(Bundle bundle, String tag)
     {
-        if("DatabaseImportConfirmation".equalsIgnoreCase(tag)){
+        if ("DatabaseImportConfirmation".equalsIgnoreCase(tag)) {
             String uriString = bundle.getString(CommonConstants.NAME_KEY);
             Uri uri = Uri.parse(uriString);
             copyFile(uri);
@@ -236,7 +239,7 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
     @Override
     public void onClickNegativeButton()
     {
-
+       //Do nothing
     }
 
     private void copyFile(Uri uri)

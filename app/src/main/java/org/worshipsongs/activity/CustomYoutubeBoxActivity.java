@@ -21,6 +21,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
@@ -150,7 +151,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
 
     private void setContentTabs()
     {
-        String title = getIntent().getExtras().getString("title");
+        String title = getIntent().getExtras().getString(CommonConstants.TITLE_KEY);
         SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
                 new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), title);
         setSlidingTab(songContentLandScapeViewerPageAdapter);
@@ -260,28 +261,33 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
             if (youTubePlayer != null) {
                 if (isFullscreen) {
                     finish = false;
-                    youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener()
-                    {
-                        @Override
-                        public void onFullscreen(boolean b)
-                        {
-                            //Wait until we are out of fullscreen before finishing this activity
-                            if (!b) {
-                                finish();
-                            }
-                        }
-                    });
+                    youTubePlayer.setOnFullscreenListener(getOnFullscreenListener());
                     youTubePlayer.setFullscreen(false);
                 }
                 youTubePlayer.pause();
             }
-        } catch (final IllegalStateException e) {
-            //Crashlytics.logException(e);
+        } catch (IllegalStateException e) {
+            Log.e(CustomYoutubeBoxActivity.class.getSimpleName(), "Error", e);
         }
 
         if (finish) {
             super.onBackPressed();
         }
+    }
+
+    @NonNull
+    private YouTubePlayer.OnFullscreenListener getOnFullscreenListener()
+    {
+        return new YouTubePlayer.OnFullscreenListener()
+        {
+            @Override
+            public void onFullscreen(boolean b)
+            {
+                if (!b) {
+                    finish();
+                }
+            }
+        };
     }
 
     @Override

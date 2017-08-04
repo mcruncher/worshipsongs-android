@@ -250,7 +250,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
-        youTubeIntent.putExtra("title", title);
+        youTubeIntent.putExtra(CommonConstants.TITLE_KEY, title);
         getActivity().startActivity(youTubeIntent);
     }
 
