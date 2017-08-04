@@ -24,7 +24,7 @@ import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
 import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.dialog.ListDialogFragment;
+import org.worshipsongs.dialog.FavouritesDialogFragment;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.utils.PermissionUtils;
 
@@ -72,8 +72,8 @@ public class PopupMenuService
             {
                 switch (item.getItemId()) {
                     case R.id.addToList:
-                        ListDialogFragment listDialogFragment = ListDialogFragment.newInstance(songName);
-                        listDialogFragment.show(activity.getSupportFragmentManager(), "ListDialogFragment");
+                        FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.newInstance(songName);
+                        favouritesDialogFragment.show(activity.getSupportFragmentManager(), "FavouritesDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
                         shareSongInSocialMedia(songName, song);

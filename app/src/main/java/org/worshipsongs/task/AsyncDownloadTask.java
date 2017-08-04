@@ -1,7 +1,9 @@
 package org.worshipsongs.task;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -40,12 +42,14 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
     private TextView progressTextView;
+    private SharedPreferences sharedPreferences;
 
     public AsyncDownloadTask(AppCompatActivity context)
     {
         this.context = context;
         songDao = new SongDao(context);
         setDialogBuilder(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     private void setDialogBuilder(final AppCompatActivity context)
@@ -145,6 +149,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
             songDao.open();
             if (songDao.isValidDataBase()) {
                 Toast.makeText(context, R.string.message_update_song_successfull, Toast.LENGTH_SHORT).show();
+                sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, true).apply();
             } else {
                 showWarningDialog();
             }

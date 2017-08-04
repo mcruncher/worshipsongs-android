@@ -28,6 +28,7 @@ import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
+import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
 import org.worshipsongs.service.PresentationScreenService;
@@ -45,7 +46,7 @@ import java.util.Map;
  * Version : 3.x
  */
 
-public class DatabaseSettingActivity extends AppCompatActivity
+public class DatabaseSettingActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
@@ -79,6 +80,8 @@ public class DatabaseSettingActivity extends AppCompatActivity
         Button importDatabaseButton = (Button) findViewById(R.id.upload_database_button);
         importDatabaseButton.setOnClickListener(new ImportDatabaseOnClickListener());
     }
+
+
 
     private class ImportDatabaseOnClickListener implements View.OnClickListener
     {
@@ -209,28 +212,31 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     private void showConfirmationDialog(final Uri uri, String fileName)
     {
-        String formattedMessage = String.format(getString(R.string.message_choose_local_db_confirmation), fileName);
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.confirmation),
-                formattedMessage);
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                copyFile(uri);
-                dialog.cancel();
-            }
-        });
-        customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.cancel();
-            }
-        });
-        customDialogBuilder.getBuilder().show();
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.confirmation));
+        bundle.putString(CommonConstants.MESSAGE_KEY, String.format(getString(R.string.message_choose_local_db_confirmation), fileName));
+        bundle.putString(CommonConstants.NAME_KEY, uri.toString());
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        alertDialogFragment.setVisiblePositiveButton(true);
+        alertDialogFragment.setVisibleNegativeButton(true);
+        alertDialogFragment.setDialogListener(this);
+        alertDialogFragment.show(getFragmentManager(), "DatabaseImportConfirmation");
+    }
+
+    @Override
+    public void onClickPositiveButton(Bundle bundle, String tag)
+    {
+        if("DatabaseImportConfirmation".equalsIgnoreCase(tag)){
+            String uriString = bundle.getString(CommonConstants.NAME_KEY);
+            Uri uri = Uri.parse(uriString);
+            copyFile(uri);
+        }
+    }
+
+    @Override
+    public void onClickNegativeButton()
+    {
+
     }
 
     private void copyFile(Uri uri)

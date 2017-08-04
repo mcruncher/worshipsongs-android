@@ -11,7 +11,6 @@ sonarqube {
         property "sonar.host.url", "http://sonarqube.mcruncher.com"
         property "sonar.projectName", "WORSHIPSONGS::ANDROID"
         property "sonar.projectKey", "org.worshipsongs"
-        property "sonar.branch", System.getenv("BRANCH_NAME")
         property "sonar.profile", "Android java"
         property "sonar.projectVersion", AppVersion
         property "sonar.sourceEncoding", "UTF-8"

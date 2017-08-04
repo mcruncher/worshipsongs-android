@@ -64,7 +64,11 @@
         </activity>
         <activity
             android:name="org.worshipsongs.activity.UpdateSongsDatabaseActivity"
-            android:theme="@style/NoActionBarDimTheme"/>
+            android:theme="@style/NoActionBarDimTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.worshipsongs.activity.NavigationDrawerActivity"/>
+        </activity>
     </application>
 
 </manifest>

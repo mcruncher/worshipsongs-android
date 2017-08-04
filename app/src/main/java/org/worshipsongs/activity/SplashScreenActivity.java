@@ -17,7 +17,8 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.ISongService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -31,7 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity
 {
 
     private static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
-    private SongDao songDao;
+    private ISongService songService;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -46,7 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     void initSetUp(Context context)
     {
-        songDao = new SongDao(context);
+        songService = new SongService(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -77,8 +78,8 @@ public class SplashScreenActivity extends AppCompatActivity
             Log.i(SplashScreenActivity.class.getSimpleName(), "Version in property file " + versionInPropertyFile);
             if (CommonUtils.isNotImportedDatabase() && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion)) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
-                songDao.copyDatabase("", true);
-                songDao.open();
+                songService.copyDatabase("", true);
+                songService.open();
                 PropertyUtils.setProperty(CommonConstants.VERSION_KEY, currentVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
             }

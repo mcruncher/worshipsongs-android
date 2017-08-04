@@ -50,7 +50,7 @@
     <string name="title">Title: </string>
     <string name="author">Author: </string>
     <string name="slide">Slide: </string>
-    <string name="playlist_name_hint">Favourite name</string>
+    <string name="playlist_name_hint">Enter favourite name</string>
 
     <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
     <string name="message_delete_song">Do you want to delete the song?</string>
@@ -120,5 +120,6 @@
     <string name="check_update_message">Checking for song updates...</string>
     <string name="permission">Permission</string>
     <string name="storage_permission_meaage">Tamil christian Worshipsongs doesn\'t have permission to write file on storage. Tap on settings to enable storage permission</string>
+    <string name="favourite_title">Add favourite</string>
     <bool name="tablet">true</bool>
 </resources>

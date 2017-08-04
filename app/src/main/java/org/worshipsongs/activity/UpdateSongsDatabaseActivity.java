@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,7 +22,7 @@ import org.worshipsongs.R;
 
 public class UpdateSongsDatabaseActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
 {
-    private static String DB_API_URL = "https://api.github.com/repos/mcruncher/worshipsongs-db-dev/git/refs/heads/master";
+    private static final String DB_API_URL = "https://api.github.com/repos/mcruncher/worshipsongs-db-dev/git/refs/heads/master";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -62,12 +63,14 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity implements Al
     {
         super.onBackPressed();
         finish();
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override
     public void onClickPositiveButton(Bundle bundle, String tag)
     {
         finish();
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override

@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.service.CommonService;
 import org.worshipsongs.R;
 
@@ -21,30 +23,30 @@ import java.util.List;
  * version :1.0.0
  */
 
-public class ListDialogFragment extends DialogFragment
+public class FavouritesDialogFragment extends DialogFragment
 {
     private CommonService commonService = new CommonService();
 
-    public static ListDialogFragment newInstance(String songName)
+    public static FavouritesDialogFragment newInstance(String songName)
     {
-        ListDialogFragment listDialogFragment = new ListDialogFragment();
+        FavouritesDialogFragment favouritesDialogFragment = new FavouritesDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("songName", songName);
-        listDialogFragment.setArguments(bundle);
-        return listDialogFragment;
+        bundle.putString(CommonConstants.TITLE_KEY, songName);
+        favouritesDialogFragment.setArguments(bundle);
+        return favouritesDialogFragment;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.addToPlayList))
                 .setItems(getProductListsArray(), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        ListDialogFragment.this.onClick(which);
+                        FavouritesDialogFragment.this.onClick(which);
                     }
                 });
 
@@ -66,10 +68,10 @@ public class ListDialogFragment extends DialogFragment
     private void onClick(int which)
     {
         Bundle args = getArguments();
-        String songName = args.getString("songName");
+        String songName = args.getString(CommonConstants.TITLE_KEY);
         if (which == 0) {
-            AddPlayListsDialogFragment addPlayListsDialogFragment = AddPlayListsDialogFragment.newInstance(songName);
-            addPlayListsDialogFragment.show(getActivity().getSupportFragmentManager(), "AddPlayListDialog");
+            AddFavouritesDialogFragment addFavouritesDialogFragment = AddFavouritesDialogFragment.newInstance(songName);
+            addFavouritesDialogFragment.show(getActivity().getSupportFragmentManager(), AddFavouritesDialogFragment.class.getSimpleName());
         } else {
             List<String> services = new ArrayList<String>();
             services.addAll(commonService.readServiceName());

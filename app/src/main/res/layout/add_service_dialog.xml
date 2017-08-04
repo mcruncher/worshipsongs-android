@@ -5,17 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="30dp"
+    android:paddingTop="10dp">
 
     <EditText
         android:id="@+id/service_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:background="@drawable/edit_text_rounded_corner"
         android:hint="@string/playlist_name_hint"
-        android:textColor="@color/button_material_dark"
-        android:textColorHint="@color/dim_foreground_disabled_material_light"
+        android:textColor="@color/text_black_color"
+        android:textColorHint="@color/gray"
         android:textCursorDrawable="@null">
 
         <requestFocus/>
