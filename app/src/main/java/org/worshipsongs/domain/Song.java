@@ -39,6 +39,11 @@ public class Song
     private String chord;
     private String authorName;
 
+    public Song()
+    {
+        //Do nothing
+    }
+
     public Song(String title)
     {
         this.title = title;

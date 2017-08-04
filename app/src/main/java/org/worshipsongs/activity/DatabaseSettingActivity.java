@@ -131,36 +131,12 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
         @Override
         public void onClick(View v)
         {
-            DialogConfiguration dialogConfiguration = new DialogConfiguration("",
-                    getString(R.string.message_database_confirmation));
-            CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-            customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    try {
-                        songDao.close();
-                        songDao.copyDatabase("", true);
-                        songDao.open();
-                        sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
-                        defaultDatabaseButton.setVisibility(View.GONE);
-                        updateResultTextview();
-                        dialog.cancel();
-                    } catch (IOException ex) {
-                        Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
-                    }
-                }
-            });
-            customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.cancel();
-                }
-            });
-            customDialogBuilder.getBuilder().show();
+            Bundle bundle = new Bundle();
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.reset_default_title));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_database_confirmation));
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            alertDialogFragment.setDialogListener(DatabaseSettingActivity.this);
+            alertDialogFragment.show(getFragmentManager(), "RevertDefaultDatabaseDialog");
         }
     }
 
@@ -226,21 +202,6 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
         alertDialogFragment.show(getFragmentManager(), "DatabaseImportConfirmation");
     }
 
-    @Override
-    public void onClickPositiveButton(Bundle bundle, String tag)
-    {
-        if ("DatabaseImportConfirmation".equalsIgnoreCase(tag)) {
-            String uriString = bundle.getString(CommonConstants.NAME_KEY);
-            Uri uri = Uri.parse(uriString);
-            copyFile(uri);
-        }
-    }
-
-    @Override
-    public void onClickNegativeButton()
-    {
-       //Do nothing
-    }
 
     private void copyFile(Uri uri)
     {
@@ -315,26 +276,50 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
 
     private void showWarningDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.warning),
-                getString(R.string.message_database_invalid));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-        customDialogBuilder.getBuilder().setCancelable(false);
-        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                try {
-                    songDao.close();
-                    songDao.copyDatabase("", true);
-                    songDao.open();
-                    dialog.cancel();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
+        bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_database_invalid));
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        alertDialogFragment.setDialogListener(this);
+        alertDialogFragment.setVisibleNegativeButton(false);
+        alertDialogFragment.setCancelable(false);
+        alertDialogFragment.show(getFragmentManager(), "InvalidLocalDbWaringDialog");
+    }
+
+    @Override
+    public void onClickPositiveButton(Bundle bundle, String tag)
+    {
+        if ("DatabaseImportConfirmation".equalsIgnoreCase(tag)) {
+            String uriString = bundle.getString(CommonConstants.NAME_KEY);
+            Uri uri = Uri.parse(uriString);
+            copyFile(uri);
+        } else if ("InvalidLocalDbWaringDialog".equalsIgnoreCase(tag)) {
+            try {
+                songDao.close();
+                songDao.copyDatabase("", true);
+                songDao.open();
+                updateResultTextview();
+            } catch (IOException e) {
+                Log.e(DatabaseSettingActivity.class.getSimpleName(), "Error", e);
             }
-        });
-        customDialogBuilder.getBuilder().show();
+        } else if ("RevertDefaultDatabaseDialog".equalsIgnoreCase(tag)) {
+            try {
+                songDao.close();
+                songDao.copyDatabase("", true);
+                songDao.open();
+                updateResultTextview();
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
+                defaultDatabaseButton.setVisibility(View.GONE);
+            } catch (IOException ex) {
+                Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
+            }
+        }
+    }
+
+    @Override
+    public void onClickNegativeButton()
+    {
+        //Do nothing
     }
 
     public String getCountQueryResult()
