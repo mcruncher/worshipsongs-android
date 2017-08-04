@@ -22,8 +22,9 @@ import java.io.OutputStream;
  */
 public class DatabaseHelper extends SQLiteOpenHelper
 {
+    private static final int DATA_BASE_VERSION = 3;
     public static String dbPath = "";
-    private static final int dataBaseVersion = 3;
+
     public static String dbName = "songs.sqlite";
     private SQLiteDatabase database;
     private final Context context;
@@ -36,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
      */
     public DatabaseHelper(Context context)
     {
-        super(context, dbName, null, dataBaseVersion);
+        super(context, dbName, null, DATA_BASE_VERSION);
         this.context = context;
         this.dbPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
     }
@@ -132,9 +133,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public synchronized void close()
     {
-        if (database != null)
+        if (database != null) {
             database.close();
-
+        }
         super.close();
     }
 
@@ -146,13 +147,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-
+        //Do nothing its read only database
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-
+        //Do nothing its read only database
     }
 
     // Add your public helper methods to access and get content from the database.

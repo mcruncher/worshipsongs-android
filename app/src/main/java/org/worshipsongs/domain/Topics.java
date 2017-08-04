@@ -13,6 +13,7 @@ public class Topics extends AbstractDomain
 
     public Topics()
     {
+        //Do nothing
     }
 
     public Topics(String name)

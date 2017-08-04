@@ -19,6 +19,7 @@ public class DialogConfiguration
 
     public DialogConfiguration()
     {
+        //Do nothing
     }
 
     public DialogConfiguration(String title, String message)
