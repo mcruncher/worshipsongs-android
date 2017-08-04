@@ -11,6 +11,7 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +36,18 @@ public class SongService implements ISongService
         songDao = new SongDao(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         userPreferenceSettingService = new UserPreferenceSettingService();
+    }
+
+    @Override
+    public void copyDatabase(String databasePath, boolean dropDatabase) throws IOException
+    {
+        songDao.copyDatabase(databasePath, dropDatabase);
+    }
+
+    @Override
+    public void open()
+    {
+        songDao.open();
     }
 
     @Override
@@ -123,6 +136,12 @@ public class SongService implements ISongService
     public List<Song> findByTopicId(int id)
     {
         return songDao.findByTopicId(id);
+    }
+
+    @Override
+    public Song findContentsByTitle(String title)
+    {
+        return songDao.findContentsByTitle(title);
     }
 
     List<String> getTitles(String searchTitle)

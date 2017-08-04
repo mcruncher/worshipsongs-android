@@ -71,7 +71,6 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private PopupMenuService popupMenuService = new PopupMenuService();
     private SongService songService;
-    private SongDao songDao;
 
     public static SongsFragment newInstance(Bundle bundle)
     {
@@ -85,9 +84,8 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-             state = savedInstanceState.getParcelable(STATE_KEY);
+            state = savedInstanceState.getParcelable(STATE_KEY);
         }
-        songDao = new SongDao(getActivity());
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
         initSetUp();
@@ -95,7 +93,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
 
     private void initSetUp()
     {
-        songDao.open();
+        songService.open();
         loadSongs();
         if (!sharedPreferences.contains(CommonConstants.SEARCH_BY_TITLE_KEY)) {
             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
@@ -113,10 +111,10 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
                 songs = songService.findByTopicId(id);
             } else {
-                songs = songDao.findAll();
+                songs = songService.findAll();
             }
         } else {
-            songs = songDao.findAll();
+            songs = songService.findAll();
         }
     }
 
