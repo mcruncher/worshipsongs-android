@@ -3,6 +3,7 @@ package org.worshipsongs.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
 import org.worshipsongs.service.PresentationScreenService;
+import org.worshipsongs.utils.PermissionUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -87,7 +89,9 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
         @Override
         public void onClick(View view)
         {
-            showDatabaseTypeDialog();
+            if (PermissionUtils.isStoragePermissionGranted(DatabaseSettingActivity.this)) {
+                showDatabaseTypeDialog();
+            }
         }
     }
 
@@ -284,6 +288,27 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
         alertDialogFragment.setVisibleNegativeButton(false);
         alertDialogFragment.setCancelable(false);
         alertDialogFragment.show(getFragmentManager(), "InvalidLocalDbWaringDialog");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode) {
+            case CommonConstants.STORAGE_PERMISSION_REQUEST_CODE:
+                onRequestPermissionsResult(grantResults);
+                return;
+            default:
+                break;
+        }
+    }
+
+    protected void onRequestPermissionsResult(@NonNull int[] grantResults)
+    {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showDatabaseTypeDialog();
+        } else {
+            Log.i(this.getClass().getSimpleName(), "Permission denied");
+        }
     }
 
     @Override
