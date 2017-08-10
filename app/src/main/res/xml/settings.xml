@@ -19,7 +19,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Language">
-        <org.worshipsongs.preference.LanguagePreference/>
+        <org.worshipsongs.preference.LanguagePreference
+            android:key="languagePreference">
+        </org.worshipsongs.preference.LanguagePreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">

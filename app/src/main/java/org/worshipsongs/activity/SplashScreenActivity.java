@@ -106,8 +106,6 @@ public class SplashScreenActivity extends AppCompatActivity
             builder.setCancelable(false);
             builder.show();
         } else {
-            String localeCode = index == 0 ? "ta" : "en";
-            setLocale(new Locale(localeCode));
             moveToMainActivity();
         }
     }
@@ -134,21 +132,12 @@ public class SplashScreenActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which)
             {
                 sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
-                String localeCode = which == 0 ? "ta" : "en";
-                setLocale(new Locale(localeCode));
                 dialog.cancel();
                 moveToMainActivity();
             }
         };
     }
 
-    private void setLocale(Locale configureLocale)
-    {
-        Locale.setDefault(configureLocale);
-        Configuration config = new Configuration();
-        config.locale = configureLocale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-    }
 
     private void moveToMainActivity()
     {

@@ -3,14 +3,20 @@ package org.worshipsongs.activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
+
+import java.util.Locale;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
@@ -25,11 +31,13 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
 
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private PresentationScreenService presentationScreenService;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void init(Bundle bundle)
     {
         presentationScreenService = new PresentationScreenService(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white,  HomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
@@ -37,6 +45,17 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
         this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
         this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
+    }
+
+    private void setLocale()
+    {
+        int index = sharedPreferences.getInt(CommonConstants.INDEX_KEY, 0);
+        String localeCode = index == 0 ? "ta" : "en";
+        Locale locale = new Locale(localeCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 
     private Intent getUpdateDbIntent()
@@ -123,6 +142,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         super.onResume();
         presentationScreenService.onResume();
+        setLocale();
     }
 
     @Override

@@ -28,12 +28,18 @@ import java.util.Locale;
 public class LanguagePreference extends Preference
 {
     private SharedPreferences sharedPreferences;
+    private LanguageListener languageListener;
+    private int languageIndex;
 
     public LanguagePreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         setPersistent(true);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        if (attrs != null) {
+//            String defaultLanguage = attrs.getAttributeValue(null, "defaultLanguage");
+//            languageIndex = "tamil".equalsIgnoreCase(defaultLanguage) ? 0 : 1;
+//        }
     }
 
     @Override
@@ -49,11 +55,13 @@ public class LanguagePreference extends Preference
     private void setLanguageRadioGroup(final View view)
     {
         RadioGroup languageTypeRadioGroup = (RadioGroup) view.findViewById(R.id.type);
-        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
+        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, languageIndex);
         if (index == 0) {
             languageTypeRadioGroup.check(R.id.language_tamil);
+            //setLocale("ta");
         } else {
             languageTypeRadioGroup.check(R.id.language_english);
+           // setLocale("en");
         }
         languageTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -62,23 +70,33 @@ public class LanguagePreference extends Preference
             {
                 RadioButton foodOrSupplementType = (RadioButton) view.findViewById(checkedId);
                 if (foodOrSupplementType.getId() == R.id.language_tamil) {
-                    Locale configureLocale = new Locale("ta");
-                    setLocale(configureLocale);
+                    setLocale("ta");
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 0).apply();
                 } else {
-                    Locale configureLocale = new Locale("en");
-                    setLocale(configureLocale);
+                    setLocale("en");
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply();
                 }
             }
         });
     }
 
-    private void setLocale(Locale configureLocale)
+    private void setLocale(String localeKey)
     {
-        Locale.setDefault(configureLocale);
+        Locale configLocale = new Locale(localeKey);
+        Locale.setDefault(configLocale);
         Configuration config = new Configuration();
-        config.locale = configureLocale;
+        config.locale = configLocale;
         getContext().getResources().updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+       // languageListener.onSelect();
+    }
+
+    public void setLanguageListener(LanguageListener languageListener)
+    {
+        this.languageListener = languageListener;
+    }
+
+    public interface LanguageListener
+    {
+        void onSelect();
     }
 }

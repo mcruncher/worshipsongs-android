@@ -1,9 +1,7 @@
 package org.worshipsongs.activity;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.R;
 
 /**
  * @Author : Seenivasan
@@ -32,7 +30,9 @@ public class UserSettingActivity extends AppCompatActivity
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle("Settings");
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
+        SettingsPreferenceFragment settingsPreferenceFragment = new SettingsPreferenceFragment();
+        //settingsPreferenceFragment.setUserSettingActivity(this);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit();
         presentationScreenService = new PresentationScreenService(this);
     }
 
@@ -77,6 +77,7 @@ public class UserSettingActivity extends AppCompatActivity
         super.onResume();
         presentationScreenService.onResume();
     }
+
 
     @Override
     protected void onPause()
