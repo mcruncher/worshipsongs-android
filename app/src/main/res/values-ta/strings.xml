@@ -22,7 +22,7 @@
     <string name="Lyrics_preference_settings">பாடல் விருப்பம்</string>
     <string name="tamilLyricsSummary">தமிழ் பாடல் வரிகள்</string>
     <string name="romanised">Romanised</string>
-    <string name="romanisedLyricsSummary">Display romanised lyrics</string>
+    <string name="romanisedLyricsSummary">Romanised பாடல் வரிகள்</string>
 
     <string name="tamil_key">தமிழ்</string>
     <string name="english_key">English</string>

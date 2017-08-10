@@ -119,6 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which)
             {
                 sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, which).apply();
+                setLocale();
             }
         };
     }
@@ -138,12 +139,23 @@ public class SplashScreenActivity extends AppCompatActivity
         };
     }
 
-
     private void moveToMainActivity()
     {
+        setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();
+    }
+
+    private void setLocale()
+    {
+        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
+        String localeCode = (index == 0) ? "ta" : "en";
+        Locale locale = new Locale(localeCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 }

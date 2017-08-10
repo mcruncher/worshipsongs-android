@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
@@ -38,7 +39,8 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         presentationScreenService = new PresentationScreenService(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white,  HomeFragment.newInstance()));
+
+        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, HomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
@@ -47,16 +49,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 
-    private void setLocale()
-    {
-        int index = sharedPreferences.getInt(CommonConstants.INDEX_KEY, 0);
-        String localeCode = index == 0 ? "ta" : "en";
-        Locale locale = new Locale(localeCode);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-    }
+
 
     private Intent getUpdateDbIntent()
     {
@@ -142,7 +135,6 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         super.onResume();
         presentationScreenService.onResume();
-        setLocale();
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.worshipsongs.preference.LanguagePreference;
  * version:1.0.0
  */
 
-public class SettingsPreferenceFragment extends PreferenceFragment //implements LanguagePreference.LanguageListener
+public class SettingsPreferenceFragment extends PreferenceFragment implements LanguagePreference.LanguageListener
 {
     private UserSettingActivity userSettingActivity = new UserSettingActivity();
 
@@ -32,7 +32,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment //implements 
     private void languagePreference(String key)
     {
         LanguagePreference resetDialogPreference = (LanguagePreference) findPreference(key);
-        //resetDialogPreference.setLanguageListener(this);
+        resetDialogPreference.setLanguageListener(this);
     }
 
     public void resetPreferenceSettings(String preferenceKey)
@@ -52,16 +52,16 @@ public class SettingsPreferenceFragment extends PreferenceFragment //implements 
         });
     }
 
-//    public void setUserSettingActivity(UserSettingActivity userSettingActivity)
-//    {
-//        this.userSettingActivity = userSettingActivity;
-//    }
+    public void setUserSettingActivity(UserSettingActivity userSettingActivity)
+    {
+        this.userSettingActivity = userSettingActivity;
+    }
 
-//    @Override
-//    public void onSelect()
-//    {
-//        userSettingActivity.finish();
-//        Intent startIntent = new Intent(WorshipSongApplication.getContext(), UserSettingActivity.class);
-//        startActivity(startIntent);
-//    }
+    @Override
+    public void onSelect()
+    {
+        userSettingActivity.finish();
+        Intent startIntent = new Intent(WorshipSongApplication.getContext(), UserSettingActivity.class);
+        startActivity(startIntent);
+    }
 }

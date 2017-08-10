@@ -36,10 +36,10 @@ public class LanguagePreference extends Preference
         super(context, attrs);
         setPersistent(true);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        if (attrs != null) {
-//            String defaultLanguage = attrs.getAttributeValue(null, "defaultLanguage");
-//            languageIndex = "tamil".equalsIgnoreCase(defaultLanguage) ? 0 : 1;
-//        }
+        if (attrs != null) {
+            String defaultLanguage = attrs.getAttributeValue(null, "defaultLanguage");
+            languageIndex = "tamil".equalsIgnoreCase(defaultLanguage) ? 0 : 1;
+        }
     }
 
     @Override
@@ -58,10 +58,8 @@ public class LanguagePreference extends Preference
         int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, languageIndex);
         if (index == 0) {
             languageTypeRadioGroup.check(R.id.language_tamil);
-            //setLocale("ta");
         } else {
             languageTypeRadioGroup.check(R.id.language_english);
-           // setLocale("en");
         }
         languageTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -87,7 +85,7 @@ public class LanguagePreference extends Preference
         Configuration config = new Configuration();
         config.locale = configLocale;
         getContext().getResources().updateConfiguration(config, getContext().getResources().getDisplayMetrics());
-       // languageListener.onSelect();
+        languageListener.onSelect();
     }
 
     public void setLanguageListener(LanguageListener languageListener)
