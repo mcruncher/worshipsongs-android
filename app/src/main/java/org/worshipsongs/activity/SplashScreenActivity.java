@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * @Author : Seenivasan
@@ -31,7 +33,7 @@ import java.io.File;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
+
     private ISongService songService;
     private SharedPreferences sharedPreferences;
 
@@ -91,11 +93,11 @@ public class SplashScreenActivity extends AppCompatActivity
 
     private void showLanguageSelectionDialog()
     {
-        boolean languageChoosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
+        boolean languageChoosed = sharedPreferences.getBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, false);
+        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
         if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
             String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
-            int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
             builder.setSingleChoiceItems(languageList, index, getOnItemClickListener());
             builder.setPositiveButton(R.string.ok, getOkButtonClickListener());
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,6 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which)
             {
                 sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, which).apply();
+                setLocale();
             }
         };
     }
@@ -129,7 +132,7 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
+                sharedPreferences.edit().putBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, true).apply();
                 dialog.cancel();
                 moveToMainActivity();
             }
@@ -138,9 +141,21 @@ public class SplashScreenActivity extends AppCompatActivity
 
     private void moveToMainActivity()
     {
+        setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();
+    }
+
+    private void setLocale()
+    {
+        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
+        String localeCode = (index == 0) ? "ta" : "en";
+        Locale locale = new Locale(localeCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 }

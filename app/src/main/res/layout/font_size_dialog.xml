@@ -18,7 +18,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:text="Font size"
+        android:text="@string/font_size"
         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
         android:textColor="@color/black"/>
 
