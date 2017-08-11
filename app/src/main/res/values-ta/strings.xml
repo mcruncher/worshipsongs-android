@@ -47,7 +47,7 @@
     <string name="presentation_primary_color_summary">ஆங்கிலம் / ரோமானியத்திற்கான நிறத்தை மாற்றவும்</string>
 
     <string name="pref_screen_settings">திரை அமைப்புகள்</string>
-    <string name="awakeScreenSummary">Keep the screen awake while viewing a song</string>
+    <string name="awakeScreenSummary">பாடல் பார்க்கும் போது திரையை மூட வேண்டாம்</string>
     <string name="awakeScreenTitle">பாடல் பார்க்கும் போது திரை விழித்திருங்கள்</string>
     <string name="pref_video_settings">வீடியோ அமைப்புகள்</string>
     <string name="playVideoTitle">காணொளி இயக்கு</string>
@@ -68,7 +68,7 @@
     <string name="playlist_name_hint">பிடித்த பெயரை உள்ளிடவும்</string>
 
     <string name="message_delete_playlist"> %1$s நீக்க விரும்புகிறீர்களா?</string>
-    <string name="message_delete_song">Do you want to delete the song?</string>
+    <string name="message_delete_song">பாடலை நீக்க விரும்புகிறீர்களா??</string>
     <string name="message_song_not_available">%1$s இந்த தரவுத்தளத்தில் இல்லை அல்லது அதன் தலைப்பு  மாறியிருக்கலாம்</string>
 
 
@@ -93,7 +93,7 @@
     <string name="revert_to_default_database">இயல்புநிலை தரவுத்தளத்துக்கு மாற்றவும் </string>
     <string name="songs_count">"No. of songs: %1$s"</string>
     <string name="database">தரவுத்தளம்</string>
-    <string name="database_summary">Import OpenLP database from local storage/remote URL or revert to default database</string>
+    <string name="database_summary">உள் சேமிப்பு / தொலை URL இலிருந்து OpenLP தரவுத்தள இறக்குமதி செய் அல்லது இயல்புநிலை தரவுத்தளத்தில் மாற்றவும்</string>
     <string name="miscellaneous">இதர அமைப்புகள்</string>
     <string name="import_database_title">OpenLP தரவுத்தளத்தை இறக்குமதி செய்</string>
     <string name="message_invalid_url">சரியான URL ஐ கொடுக்கவும்..</string>
