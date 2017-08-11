@@ -6,7 +6,7 @@
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
 
-    <string name="home">பாடல் புத்தகம்</string>
+    <string name="home">பாடல்கள்</string>
     <string name="settings">அமைப்புகள்</string>
     <string name="rate_this_app">எங்களை மதிப்பிடு</string>
     <string name="feedback">கருத்தினை அனுப்பவும்</string>
@@ -114,7 +114,7 @@
     <string name="message_no_update">அனைத்து பாடல்களும் பதிவிறக்கம் செய்யப்பட்டுள்ன!</string>
     <string name="message_update_available">புதிய பாடல்களை பதிவிறக்கம் செய்ய வேண்டுமா?</string>
     <string name="download_song_database">பாடல்கள் பதிவிறக்கம் செய்து கொண்டுஇருக்கிறது</string>
-    <string name="update_songs">பாடல் பதிவிறக்கம் செய்தல்</string>
+    <string name="update_songs">பாடல்களை பதிவிறக்குக</string>
     <string name="message_warning_internet_connection">பாடல் பதிவிறக்கம் செய்ய இணையம் தேவை படுகிறது</string>
     <string name="message_configure_invalid_url">சரியான URL ஐ கொடுக்கவும்.</string>
     <string name="message_update_song_successfull">பாடல் பதிவிறக்கம் முடிந்தது</string>
