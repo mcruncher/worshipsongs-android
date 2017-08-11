@@ -20,6 +20,7 @@
 
     <PreferenceCategory android:title="Language">
         <org.worshipsongs.preference.LanguagePreference
+            defaultLanguage="tamil"
             android:key="languagePreference">
         </org.worshipsongs.preference.LanguagePreference>
     </PreferenceCategory>
@@ -100,11 +101,11 @@
             android:title="@string/import_database_title">
         </org.worshipsongs.preference.DatabaseSettingsPreference>
         <org.worshipsongs.service.ResetDefaultSettingsService
-            android:dialogMessage="Reset all values to their defaults"
+            android:dialogMessage="@string/reset_default_summary"
             android:key="resetDialog"
-            android:negativeButtonText="No"
+            android:negativeButtonText="@string/no"
             android:persistent="false"
-            android:positiveButtonText="Yes"
+            android:positiveButtonText="@string/yes"
             android:summary="@string/reset_default_summary"
             android:title="@string/reset_default_title">
         </org.worshipsongs.service.ResetDefaultSettingsService>

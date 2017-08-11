@@ -5,6 +5,8 @@
     <string name="action_search">Search</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="categories">Categories</string>
 
     <!-- Done bar strings -->

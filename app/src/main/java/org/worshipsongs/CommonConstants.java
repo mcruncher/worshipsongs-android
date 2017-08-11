@@ -39,6 +39,7 @@ public final class CommonConstants
     public static final String NAME_KEY = "nameKey";
     public static final String SERVICE_NAME_KEY = "serviceNameKey";
     public static final String UPDATED_SONGS_KEY = "updatedSongsKey";
+    public static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
 
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
 

@@ -49,8 +49,6 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 
-
-
     private Intent getUpdateDbIntent()
     {
         return new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);

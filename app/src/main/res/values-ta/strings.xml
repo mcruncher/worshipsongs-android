@@ -3,6 +3,8 @@
     <string name="app_name">Tamil Christian Worship Songs </string>
     <string name="ok">ஆம்</string>
     <string name="cancel">இல்லை</string>
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
 
     <string name="home">பாடல் புத்தகம்</string>
     <string name="settings">அமைப்புகள்</string>

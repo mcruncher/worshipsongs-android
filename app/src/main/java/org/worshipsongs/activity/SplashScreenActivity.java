@@ -33,7 +33,7 @@ import java.util.Locale;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-    private static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
+
     private ISongService songService;
     private SharedPreferences sharedPreferences;
 
@@ -93,7 +93,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     private void showLanguageSelectionDialog()
     {
-        boolean languageChoosed = sharedPreferences.getBoolean(LANGUAGE_CHOOSED_KEY, false);
+        boolean languageChoosed = sharedPreferences.getBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, false);
         int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
         if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
@@ -132,7 +132,7 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                sharedPreferences.edit().putBoolean(LANGUAGE_CHOOSED_KEY, true).apply();
+                sharedPreferences.edit().putBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, true).apply();
                 dialog.cancel();
                 moveToMainActivity();
             }
