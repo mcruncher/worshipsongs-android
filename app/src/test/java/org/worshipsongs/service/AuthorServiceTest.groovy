@@ -49,7 +49,7 @@ class AuthorServiceTest extends ElectricSpecification
         def result = authorService.getAuthors("bar", authorList)
 
         then:
-        result.size() == 1
+        result.size() == 0
     }
 
     def "Get authors when search by valid text"()
