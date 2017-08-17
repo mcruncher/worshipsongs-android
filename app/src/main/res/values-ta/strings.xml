@@ -6,13 +6,13 @@
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
 
-    <string name="home">பாடல்கள்</string>
-    <string name="settings">அமைப்புகள்</string>
-    <string name="rate_this_app">எங்களை மதிப்பிடு</string>
-    <string name="feedback">கருத்தினை அனுப்பவும்</string>
+    <string name="home">Song book</string>
+    <string name="settings">Settings</string>
+    <string name="rate_this_app">Rate us</string>
+    <string name="feedback">Feedback</string>
     <string name="feedback_subject">Worship Songs Android Feedback - %1$s</string>
-    <string name="version">பதிப்பு:</string>
-    <string name="share">பகிர்வு</string>
+    <string name="version">Version:</string>
+    <string name="share">Share</string>
 
     <!--Tabs -->
     <string name="titles">தலைப்புகள்</string>
@@ -21,46 +21,46 @@
     <string name="categories">வகைகள்</string>
 
     <!--Settings-->
-    <string name="Lyrics_preference_settings">பாடல் விருப்பம்</string>
-    <string name="tamilLyricsSummary">தமிழ் பாடல் வரிகள்</string>
+    <string name="Lyrics_preference_settings">Lyrics Preference</string>
+    <string name="tamilLyricsSummary">Display tamil lyrics</string>
     <string name="romanised">Romanised</string>
-    <string name="romanisedLyricsSummary">Romanised பாடல் வரிகள்</string>
+    <string name="romanisedLyricsSummary">Display romanised lyrics</string>
 
     <string name="tamil_key">தமிழ்</string>
     <string name="english_key">English</string>
-    <string name="language_title">மொழி</string>
+    <string name="language_title">Language</string>
 
     <string name="font_size">Font size</string>
-    <string name="pref_color_settings">முதன்மை திரை</string>
-    <string name="font_size_summary">உரைக்கு எழுத்துரு அளவு மாற்றவும்</string>
-    <string name="secondary_summary">தமிழ் மொழிக்கான வண்ணத்தை மாற்றவும்</string>
+    <string name="pref_color_settings">Primary Screen</string>
+    <string name="font_size_summary">Change the font size for text</string>
+    <string name="secondary_summary">Change the color for Tamil</string>
     <string name="secondary_color">தமிழ்</string>
-    <string name="primary_summary">ஆங்கிலம்/ரோமானியத்திற்கான நிறத்தை மாற்றவும்</string>
-    <string name="primary_color">ஆங்கிலம்/ரோமானியும்</string>
+    <string name="primary_summary">Change the color for English/Romanised</string>
+    <string name="primary_color">English/Romanised</string>
+    <string name="presentation_color_settings_title">Presentation Screen</string>
+    <string name="presentation_background_color_summary">Change the color for background</string>
+    <string name="background_color_title">Background</string>
+    <string name="presentation_secondary_color_summary">Change the color for tamil</string>
 
-    <string name="presentation_color_settings_title">விளக்கக்காட்சி திரை</string>
-    <string name="presentation_background_color_summary">பின்னணி வண்ணத்தை மாற்றவும்</string>
-    <string name="background_color_title">பின்னணி</string>
-    <string name="presentation_secondary_color_summary">தமிழ் மொழிக்கான நிறத்தை மாற்றுங்கள்</string>
     <string name="presentation_secondary_color_title">தமிழ்</string>
-    <string name="presentation_primary_color_title">ஆங்கிலம்/ரோமானியும்</string>
-    <string name="presentation_primary_color_summary">ஆங்கிலம் / ரோமானியத்திற்கான நிறத்தை மாற்றவும்</string>
+    <string name="presentation_primary_color_title">English/Romanised</string>
+    <string name="presentation_primary_color_summary">Change the color for English/Romanised</string>
 
-    <string name="pref_screen_settings">திரை அமைப்புகள்</string>
-    <string name="awakeScreenSummary">பாடல் பார்க்கும் போது திரையை மூட வேண்டாம்</string>
-    <string name="awakeScreenTitle">பாடல் பார்க்கும் போது திரை விழித்திருங்கள்</string>
-    <string name="pref_video_settings">வீடியோ அமைப்புகள்</string>
-    <string name="playVideoTitle">காணொளி இயக்கு</string>
-    <string name="videoPlaySummary">காணொளி இயக்கு/முடக்கு</string>
-    <string name="advanced">மேம்பட்ட</string>
+    <string name="pref_screen_settings">Screen Settings</string>
+    <string name="awakeScreenSummary">Keep the screen awake while viewing a song</string>
+    <string name="awakeScreenTitle">Keep the screen awake</string>
+    <string name="pref_video_settings">Video Settings</string>
+    <string name="playVideoTitle">Play video</string>
+    <string name="videoPlaySummary">Enable/Disable video playing</string>
+    <string name="advanced">Advanced</string>
 
     <string name="Play">காணொளி இயக்கு</string>
-    <string name="remote_display_settings">தொலை திரை அமைப்புகள்</string>
-    <string name="remote_display_summary">தொலை திரை பாடல் இயக்கு/முடக்கு</string>
-    <string name="remote_display_title">தொலை திரை  பாடல்</string>
-    <string name="present">தொலை திரை பாடல்</string>
+    <string name="remote_display_settings">Remote Display settings</string>
+    <string name="remote_display_summary">Show/Hide song in remote display</string>
+    <string name="remote_display_title">Present song</string>
+    <string name="present">Present song</string>
 
-    <string name="fontSize">எழுத்துரு அளவு</string>
+    <string name="fontSize">Font size</string>
     <string name="addToPlayList">பிடித்தவையில் சேர்</string>
     <string name="title">தலைப்பு: </string>
     <string name="author">ஆசிரியர்: </string>
@@ -94,7 +94,7 @@
     <string name="songs_count">"No. of songs: %1$s"</string>
     <string name="database">தரவுத்தளம்</string>
     <string name="database_summary">உள் சேமிப்பு / தொலை URL இலிருந்து OpenLP தரவுத்தள இறக்குமதி செய் அல்லது இயல்புநிலை தரவுத்தளத்தில் மாற்றவும்</string>
-    <string name="miscellaneous">இதர அமைப்புகள்</string>
+    <string name="miscellaneous">Miscellaneous</string>
     <string name="import_database_title">OpenLP தரவுத்தளத்தை இறக்குமதி செய்</string>
     <string name="message_invalid_url">சரியான URL ஐ கொடுக்கவும்..</string>
     <string name="import_database_successfull">Imported database successfully.</string>
@@ -114,7 +114,7 @@
     <string name="message_no_update">அனைத்து பாடல்களும் பதிவிறக்கம் செய்யப்பட்டுள்ன!</string>
     <string name="message_update_available">புதிய பாடல்களை பதிவிறக்கம் செய்ய வேண்டுமா?</string>
     <string name="download_song_database">பாடல்கள் பதிவிறக்கம் செய்து கொண்டுஇருக்கிறது</string>
-    <string name="update_songs">பாடல்களை பதிவிறக்குக</string>
+    <string name="update_songs">Update song</string>
     <string name="message_warning_internet_connection">பாடல் பதிவிறக்கம் செய்ய இணையம் தேவை படுகிறது</string>
     <string name="message_configure_invalid_url">சரியான URL ஐ கொடுக்கவும்.</string>
     <string name="message_update_song_successfull">பாடல் பதிவிறக்கம் முடிந்தது</string>
