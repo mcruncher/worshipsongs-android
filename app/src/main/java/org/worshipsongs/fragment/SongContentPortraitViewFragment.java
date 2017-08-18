@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -108,7 +109,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
 
     private void initSetUp()
     {
-        // showStatusBar();
+        showStatusBar();
         Bundle bundle = getArguments();
         title = bundle.getString(CommonConstants.TITLE_KEY);
         tilteList = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY);
@@ -123,7 +124,18 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
+    private void showStatusBar()
+    {
+        if (CommonUtils.isPhone(getContext())) {
+            if (Build.VERSION.SDK_INT < 16) {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                View decorView = getActivity().getWindow().getDecorView();
+                decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
+    }
+    
     private void setListView(View view, final Song song)
     {
         listView = (ListView) view.findViewById(R.id.content_list);
