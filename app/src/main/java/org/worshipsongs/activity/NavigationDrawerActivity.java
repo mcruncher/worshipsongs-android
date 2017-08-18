@@ -3,16 +3,22 @@ package org.worshipsongs.activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
@@ -22,14 +28,20 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
  */
 public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
-
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private PresentationScreenService presentationScreenService;
 
     @Override
     public void init(Bundle bundle)
     {
+        if(!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
+            SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songDao.count()).apply();
+        }
+        long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
         presentationScreenService = new PresentationScreenService(this);
+        this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs +" Songs are available", null, R.drawable.worshipsongs));
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white,  HomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
@@ -39,9 +51,33 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 
-    private Intent getUpdateDbIntent()
+    private MaterialSectionListener getUpdateDbIntent()
     {
-        return new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
+        return new MaterialSectionListener()
+        {
+            @Override
+            public void onClick(MaterialSection materialSection)
+            {
+                Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
+                startActivityForResult(updateSongs, 555);
+            }
+        };
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode) {
+            case 555:
+                long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
+                if(this.getAccountList().size() > 0) {
+                    this.getAccountAtCurrentPosition(0).setSubTitle(noOfSongs +" Songs are available");
+                    this.notifyAccountDataChanged();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private Intent getSettings()

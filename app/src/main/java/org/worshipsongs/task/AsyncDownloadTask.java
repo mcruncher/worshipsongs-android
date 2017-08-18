@@ -150,6 +150,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
             if (songDao.isValidDataBase()) {
                 Toast.makeText(context, R.string.message_update_song_successfull, Toast.LENGTH_SHORT).show();
                 sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, true).apply();
+                sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songDao.count()).apply();
             } else {
                 showWarningDialog();
             }

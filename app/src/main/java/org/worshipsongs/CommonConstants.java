@@ -1,10 +1,6 @@
 package org.worshipsongs;
 
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-
 /**
  * Author: Seenivasan
  * Version: 2.1.0
@@ -39,6 +35,7 @@ public final class CommonConstants
     public static final String NAME_KEY = "nameKey";
     public static final String SERVICE_NAME_KEY = "serviceNameKey";
     public static final String UPDATED_SONGS_KEY = "updatedSongsKey";
+    public static final String NO_OF_SONGS = "noOfSongs";
 
     private CommonConstants()
     {
