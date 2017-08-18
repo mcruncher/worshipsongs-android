@@ -19,7 +19,6 @@ import java.util.List;
 public class AuthorService implements IAuthorService
 {
     private IAuthorDao authorDao;
-    private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
 
     public AuthorService()
     {
