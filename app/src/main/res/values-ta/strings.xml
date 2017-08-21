@@ -124,4 +124,5 @@
     <string name="permission">அனுமதி</string>
     <string name="storage_permission_meaage">இந்த செயலியால் கோப்பில் எழுத அனுமதி இல்லை. அமைப்பு பட்டனை தட்டி அனுமதி வழங்கவும்</string>
     <string name="favourite_title">பிடித்தவை சேர்க்கவும்</string>
+    <string name="noOfSongsAvailable">%1$d Songs are available</string>
 </resources>
