@@ -181,7 +181,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     @Override
     public void setTitleTextView(TextView textView, final Author author)
     {
-        textView.setText(userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getName());
+        textView.setText(userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getDefaultName());
         textView.setOnClickListener(textViewOnClickListener(author));
     }
 

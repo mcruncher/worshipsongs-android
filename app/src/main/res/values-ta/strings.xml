@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tamil Christian Worship Songs </string>
-    <string name="ok">சரி</string>
-    <string name="cancel">இல்லை</string>
-    <string name="yes">ஆம்</string>
-    <string name="no">இல்லை</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="home">Song book</string>
     <string name="settings">Settings</string>
@@ -26,11 +26,6 @@
     <string name="romanised">Romanised</string>
     <string name="romanisedLyricsSummary">Display romanised lyrics</string>
 
-    <string name="tamil_key">தமிழ்</string>
-    <string name="english_key">English</string>
-    <string name="language_title">Language</string>
-
-    <string name="font_size">Font size</string>
     <string name="pref_color_settings">Primary Screen</string>
     <string name="font_size_summary">Change the font size for text</string>
     <string name="secondary_summary">Change the color for Tamil</string>
@@ -54,23 +49,22 @@
     <string name="videoPlaySummary">Enable/Disable video playing</string>
     <string name="advanced">Advanced</string>
 
-    <string name="Play">காணொளி இயக்கு</string>
+    <string name="Play">Play</string>
     <string name="remote_display_settings">Remote Display settings</string>
     <string name="remote_display_summary">Show/Hide song in remote display</string>
     <string name="remote_display_title">Present song</string>
     <string name="present">Present song</string>
 
     <string name="fontSize">Font size</string>
-    <string name="addToPlayList">பிடித்தவையில் சேர்</string>
-    <string name="title">தலைப்பு: </string>
-    <string name="author">ஆசிரியர்: </string>
-    <string name="slide">பக்கம்: </string>
-    <string name="playlist_name_hint">பிடித்த பெயரை உள்ளிடவும்</string>
+    <string name="addToPlayList">Add to favourites</string>
+    <string name="title">Title: </string>
+    <string name="author">Author: </string>
+    <string name="slide">Slide: </string>
+    <string name="playlist_name_hint">Enter favourite name</string>
 
-    <string name="message_delete_playlist"> %1$s நீக்க விரும்புகிறீர்களா?</string>
-    <string name="message_delete_song">பாடலை நீக்க விரும்புகிறீர்களா??</string>
-    <string name="message_song_not_available">%1$s இந்த தரவுத்தளத்தில் இல்லை அல்லது அதன் தலைப்பு  மாறியிருக்கலாம்</string>
-
+    <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
+    <string name="message_delete_song">Do you want to delete the song?</string>
+    <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
 
     <string name="share.info">Content shared from:
         https://play.google.com/store/apps/details?id=org.worshipsongs
@@ -78,50 +72,54 @@
     <string name="verse_share_info">Content shared from %1$s app</string>
     <string name="app_download_info">You can download this app here: https://play.google.com/store/apps/details?id=org.worshipsongs</string>
 
-    <string name="background_color">பின்னணி நிறம்</string>
-    <string name="warning">எச்சரிக்கை</string>
-    <string name="message_database_invalid">தவறான தரவுத்தளத்தை நீங்கள் தேர்வு செய்துள்ளீர்கள்! செல்லுபடியாகும் தரவுத்தளத்தைத் தேர்வுசெய்க.</string>
-    <string name="type">OpenLP தரவுத்தளத்தை தேர்வு செய்க </string>
-    <string name="message_database_confirmation">நீங்கள் இயல்புநிலை தரவுத்தளத்திற்கு மாற்றியமைக்க விரும்புகிறீர்களா?</string>
-    <string name="message_choose_local_db_confirmation">தரவுத்தளம் %1$s இறக்குமதி செய்ய விரும்புகிறீர்களா? </string>
-    <string name="message.database.successfull">தரவுத்தளம் நகலெடுக்கப்பட்டது</string>
-    <string name="message.network.warning"><![CDATA[உங்கள் சாதனம் இணையத்துடன் இணைக்கப்பட்டுள்ளதா என்பதை உறுதிப்படுத்திக் கொள்ளுங்கள். You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
-    <string name="confirmation">உறுதிப்படுத்தல்</string>
+    <string name="background_color">Background color</string>
+    <string name="warning">Warning</string>
+    <string name="message_database_invalid">You have chosen an invalid database! Please choose a valid database.</string>
+    <string name="type">Import OpenLP database from</string>
+    <string name="message_database_confirmation">Are you sure that you want to revert to the default database?</string>
+    <string name="message_choose_local_db_confirmation">Are you sure you want to import %1$s? </string>
+    <string name="message.database.successfull">Database copied successfully</string>
+    <string name="message.network.warning"><![CDATA[Make sure your device is connected to the internet. You can configure either Settings -> Wi-Fi or Settings -> Mobile Data.]]></string>
+    <string name="confirmation">Confirmation</string>
     <string name="remoteUrl">https://raw.githubusercontent.com/crunchersaspire/worshipsongs-db-dev/master/songs.sqlite</string>
     <string name="url">URL</string>
-    <string name="import_database">தரவுத்தள இறக்குமதி</string>
-    <string name="revert_to_default_database">இயல்புநிலை தரவுத்தளத்துக்கு மாற்றவும் </string>
+    <string name="import_database">Import database</string>
+    <string name="revert_to_default_database">Restore default database</string>
     <string name="songs_count">"No. of songs: %1$s"</string>
-    <string name="database">தரவுத்தளம்</string>
-    <string name="database_summary">உள் சேமிப்பு / தொலை URL இலிருந்து OpenLP தரவுத்தள இறக்குமதி செய் அல்லது இயல்புநிலை தரவுத்தளத்தில் மாற்றவும்</string>
+    <string name="database">Database</string>
+    <string name="database_summary">Import OpenLP database from local storage/remote URL or revert to default database</string>
     <string name="miscellaneous">Miscellaneous</string>
-    <string name="import_database_title">OpenLP தரவுத்தளத்தை இறக்குமதி செய்</string>
-    <string name="message_invalid_url">சரியான URL ஐ கொடுக்கவும்..</string>
+    <string name="import_database_title">Import OpenLP database</string>
+    <string name="message_invalid_url">You have entered an invalid URL! Please enter a valid URL.</string>
     <string name="import_database_successfull">Imported database successfully.</string>
     <string name="downloading_title"><![CDATA[Downloading database...]]></string>
 
     <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
-    <string name="reset_default_title">இயல்புநிலைக்கு மாற்றவும்</string>
-    <string name="reset_default_summary">அனைத்து அமைப்புகளை இயல்புநிலைக்கு மாற்றவும்</string>
+    <string name="reset_default_title">Reset to default</string>
+    <string name="reset_default_summary">Reset other settings to default</string>
     <string name="search_title">Search by</string>
-    <string name="hint_title">தலைப்பு தேடல்</string>
-    <string name="hint_content">வரிகள் தேடல்</string>
+    <string name="hint_title">Search by title</string>
+    <string name="hint_content">Search by content</string>
+    <string name="tamil_key">தமிழ்</string>
+    <string name="english_key">English</string>
+    <string name="language_title">Language</string>
+    <string name="language_sub_title">Please choose your preferred display language</string>
+    <string name="export_pdf">Share as PDF</string>
 
-    <string name="language_sub_title">தயவுசெய்து உங்கள் விருப்பமான காட்சி மொழியைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="export_pdf">PDF பகிர்வு</string>
+    <string name="updates_title">Song Updates</string>
+    <string name="message_no_update">Songs are up to date</string>
+    <string name="message_update_available">Song update available. Do you want to update songs?</string>
+    <string name="download_song_database">Downloading songs</string>
+    <string name="update_songs">Update songs</string>
+    <string name="message_warning_internet_connection">Internet connection is needed to update the songs</string>
+    <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
+    <string name="message_update_song_successfull">Updated songs successfully</string>
+    <string name="delete">Delete</string>
+    <string name="favourite_info_message_">You haven\'t created any Favourite yet! Favourites are a great way to organize selected songs for events.To add a song to a Favourites, tap the : icon near a song and select the Add to Favourite action.</string>
+    <string name="check_update_message">Checking for song updates...</string>
+    <string name="permission">Permission</string>
+    <string name="storage_permission_meaage">Tamil christian Worshipsongs doesn\'t have permission to write file on storage. Tap on settings to enable storage permission</string>
+    <string name="favourite_title">Add favourite</string>
+    <string name="font_size">Font size</string>
 
-    <string name="updates_title">பாடல் பதிவிறக்கம் செய்தல்</string>
-    <string name="message_no_update">அனைத்து பாடல்களும் பதிவிறக்கம் செய்யப்பட்டுள்ன!</string>
-    <string name="message_update_available">புதிய பாடல்களை பதிவிறக்கம் செய்ய வேண்டுமா?</string>
-    <string name="download_song_database">பாடல்கள் பதிவிறக்கம் செய்து கொண்டுஇருக்கிறது</string>
-    <string name="update_songs">Update song</string>
-    <string name="message_warning_internet_connection">பாடல் பதிவிறக்கம் செய்ய இணையம் தேவை படுகிறது</string>
-    <string name="message_configure_invalid_url">சரியான URL ஐ கொடுக்கவும்.</string>
-    <string name="message_update_song_successfull">பாடல் பதிவிறக்கம் முடிந்தது</string>
-    <string name="delete">நீக்கம்</string>
-    <string name="favourite_info_message_">நீங்கள் எந்த ஒரு பிடித்த பாடல் தொகுப்புகளையும் சேர்க்க வில்லை. பாடலுக்கு அருகில் உள்ள : இந்த பட்டனை தட்டி அந்த பாடலை உங்களுக்கு பிடித்த தொகுப்பில் சேர்க்கலாம்.</string>
-    <string name="check_update_message">பதிவிறக்கம் உள்ளதா என சரிபார்க்க படுகிறது</string>
-    <string name="permission">அனுமதி</string>
-    <string name="storage_permission_meaage">இந்த செயலியால் கோப்பில் எழுத அனுமதி இல்லை. அமைப்பு பட்டனை தட்டி அனுமதி வழங்கவும்</string>
-    <string name="favourite_title">பிடித்தவை சேர்க்கவும்</string>
 </resources>
