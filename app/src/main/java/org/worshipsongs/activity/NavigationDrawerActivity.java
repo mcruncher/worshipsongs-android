@@ -30,6 +30,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
 {
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
+    private static final int UPDATE_DB_REQUEST_CODE = 555;
     private PresentationScreenService presentationScreenService;
 
     @Override
@@ -59,7 +60,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
             public void onClick(MaterialSection materialSection)
             {
                 Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
-                startActivityForResult(updateSongs, 555);
+                startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
             }
         };
     }
@@ -68,10 +69,10 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         switch (requestCode) {
-            case 555:
+            case UPDATE_DB_REQUEST_CODE:
                 long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
                 if(this.getAccountList().size() > 0) {
-                    this.getAccountAtCurrentPosition(0).setSubTitle(noOfSongs +" Songs are available");
+                    this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
                     this.notifyAccountDataChanged();
                 }
                 break;
