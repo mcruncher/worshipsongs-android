@@ -29,6 +29,7 @@ import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.TopicsService;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     private List<Topics> topicsList;
     private ListView topicsListView;
     private TitleAdapter<Topics> titleAdapter;
+    private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -153,7 +155,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     @Override
     public void setTitleTextView(TextView textView, final Topics topics)
     {
-        textView.setText(topics.getName());
+        textView.setText(userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName());
         textView.setOnClickListener(getOnClickListener(topics));
     }
 

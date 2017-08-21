@@ -62,14 +62,12 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity implements Al
     {
         super.onBackPressed();
         finish();
-        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override
     public void onClickPositiveButton(Bundle bundle, String tag)
     {
         finish();
-        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override

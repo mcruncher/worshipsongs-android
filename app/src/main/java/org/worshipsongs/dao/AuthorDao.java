@@ -3,9 +3,11 @@ package org.worshipsongs.dao;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.AuthorSong;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.utils.RegexUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,13 @@ public class AuthorDao extends AbstractDao implements IAuthorDao
     private String[] allColumns = {COLUMN_ID, COLUMN_FIRST_NAME,
             COLUMN_LAST_NAME, COLUMN_DISPLAY_NAME};
     public static final String COLUMN_AUTHOR_ID = "author_id";
+    public static final String AUTHOR_NAME_REGEX = "\\{.*\\}";
     private String[] columns = {COLUMN_AUTHOR_ID};
+
+    public AuthorDao()
+    {
+        //Invoke only in unit test
+    }
 
     public AuthorDao(Context context)
     {
@@ -55,6 +63,8 @@ public class AuthorDao extends AbstractDao implements IAuthorDao
         author.setFirstName(cursor.getString(1));
         author.setLastName(cursor.getString(2));
         author.setName(cursor.getString(3));
+        author.setTamilName(parseTamilAuthorName(author.getName()));
+        author.setDefaultName(parseDefaultName(author.getName()));
         return author;
     }
 
@@ -81,10 +91,30 @@ public class AuthorDao extends AbstractDao implements IAuthorDao
         author.setFirstName(cursor.getString(3));
         author.setLastName(cursor.getString(4));
         author.setName(cursor.getString(5));
+        author.setTamilName(parseTamilAuthorName(author.getName()));
+        author.setDefaultName(parseDefaultName(author.getName()));
 
         AuthorSong authorSong = new AuthorSong();
         authorSong.setSong(song);
         authorSong.setAuthor(author);
         return authorSong;
+    }
+
+    String parseTamilAuthorName(String authorName)
+    {
+        if (StringUtils.isNotBlank(authorName)) {
+            String tamilAuthorName = RegexUtils.getMatchString(authorName, AUTHOR_NAME_REGEX);
+            String formattedAuthorName = tamilAuthorName.replaceAll("\\{", "").replaceAll("\\}", "");
+            return StringUtils.isNotBlank(formattedAuthorName) ? formattedAuthorName : authorName;
+        }
+        return "";
+    }
+
+    String parseDefaultName(String authorName)
+    {
+        if (StringUtils.isNotBlank(authorName)) {
+            return authorName.replaceAll(AUTHOR_NAME_REGEX, "");
+        }
+        return "";
     }
 }

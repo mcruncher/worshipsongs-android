@@ -5,6 +5,9 @@
     <string name="action_search">Search</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="categories">Categories</string>
 
     <!-- Done bar strings -->
     <string name="save">Save</string>
@@ -122,6 +125,6 @@
     <string name="permission">Permission</string>
     <string name="storage_permission_meaage">Tamil christian Worshipsongs doesn\'t have permission to write file on storage. Tap on settings to enable storage permission</string>
     <string name="favourite_title">Add favourite</string>
-    <bool name="tablet">false</bool>
+    <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
 </resources>

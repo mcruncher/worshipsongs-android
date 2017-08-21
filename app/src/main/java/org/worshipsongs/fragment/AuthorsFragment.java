@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,7 @@ import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.service.AuthorService;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.R;
 
@@ -49,6 +51,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     private List<Author> authorList = new ArrayList<>();
     private ListView authorListView;
     private TitleAdapter<Author> titleAdapter;
+    private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
 
     public static AuthorsFragment newInstance()
     {
@@ -90,7 +93,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         authorListView = (ListView) view.findViewById(R.id.song_list_view);
         titleAdapter = new TitleAdapter<Author>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
-        titleAdapter.addObjects(getFilteredAuthors(""));
+        titleAdapter.addObjects(authorService.getAuthors("", authorList));
         authorListView.setAdapter(titleAdapter);
     }
 
@@ -111,35 +114,20 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                titleAdapter.addObjects(getFilteredAuthors(query));
+                titleAdapter.addObjects(authorService.getAuthors(query, authorList));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                titleAdapter.addObjects(getFilteredAuthors(newText));
+                titleAdapter.addObjects(authorService.getAuthors(newText, authorList));
                 return true;
 
             }
         });
         menu.getItem(0).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private List<Author> getFilteredAuthors(String text)
-    {
-        List<Author> filteredAuthors = new ArrayList<Author>();
-        if (StringUtils.isNotBlank(text)) {
-            for (Author author : authorList) {
-                if (author.getName().toLowerCase().contains(text.toLowerCase())) {
-                    filteredAuthors.add(author);
-                }
-            }
-        } else {
-            filteredAuthors.addAll(authorList);
-        }
-        return filteredAuthors;
     }
 
     @Override
@@ -170,7 +158,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         if (state != null) {
             authorListView.onRestoreInstanceState(state);
         } else {
-            titleAdapter.addObjects(getFilteredAuthors(""));
+            titleAdapter.addObjects(authorService.getAuthors("", authorList));
         }
     }
 
@@ -193,7 +181,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     @Override
     public void setTitleTextView(TextView textView, final Author author)
     {
-        textView.setText(author.getName());
+        textView.setText(userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getName());
         textView.setOnClickListener(textViewOnClickListener(author));
     }
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/Lyrics_preference_settings">
         <SwitchPreference
@@ -8,7 +7,7 @@
             android:enabled="true"
             android:key="displayTamilLyrics"
             android:summary="@string/tamilLyricsSummary"
-            android:title="@string/tamil">
+            android:title="@string/tamil_key">
         </SwitchPreference>
 
         <SwitchPreference
@@ -21,7 +20,9 @@
 
     <PreferenceCategory android:title="Language">
         <org.worshipsongs.preference.LanguagePreference
-            />
+            defaultLanguage="tamil"
+            android:key="languagePreference">
+        </org.worshipsongs.preference.LanguagePreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
@@ -100,11 +101,11 @@
             android:title="@string/import_database_title">
         </org.worshipsongs.preference.DatabaseSettingsPreference>
         <org.worshipsongs.service.ResetDefaultSettingsService
-            android:dialogMessage="Reset all values to their defaults"
+            android:dialogMessage="@string/reset_default_summary"
             android:key="resetDialog"
-            android:negativeButtonText="No"
+            android:negativeButtonText="@string/no"
             android:persistent="false"
-            android:positiveButtonText="Yes"
+            android:positiveButtonText="@string/yes"
             android:summary="@string/reset_default_summary"
             android:title="@string/reset_default_title">
         </org.worshipsongs.service.ResetDefaultSettingsService>

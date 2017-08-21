@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 
 import static android.content.ContentValues.TAG;
@@ -69,7 +70,7 @@ public final class PermissionUtils
                     builder.show();
                 } else {
                     Log.v(TAG, "Permission is revoked");
-                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CommonConstants.STORAGE_PERMISSION_REQUEST_CODE);
                 }
                 return false;
             }

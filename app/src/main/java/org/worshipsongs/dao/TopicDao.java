@@ -3,7 +3,9 @@ package org.worshipsongs.dao;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.domain.Topics;
+import org.worshipsongs.utils.RegexUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +19,32 @@ public class TopicDao extends AbstractDao implements ITopicDao
 {
     public static final String TABLE_NAME = "topics";
     private String[] allColumns = {"id", "name"};
+    public static final String TOPIC_NAME_REGEX = "\\{.*\\}";
 
-    public TopicDao(Context context) {
+    public TopicDao()
+    {
+        //Invoke only in unit test
+    }
+
+    public TopicDao(Context context)
+    {
         super(context);
     }
 
     @Override
     public List<Topics> findAll()
     {
-        List<Topics> authors = new ArrayList<Topics>();
+        List<Topics> topicsList = new ArrayList<Topics>();
         Cursor cursor = getDatabase().query(true, TABLE_NAME,
                 allColumns, null, null, null, null, allColumns[1], null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Topics topics = cursorToTopics(cursor);
-            authors.add(topics);
+            topicsList.add(topics);
             cursor.moveToNext();
         }
         cursor.close();
-        return authors;
+        return topicsList;
     }
 
     private Topics cursorToTopics(Cursor cursor)
@@ -43,6 +52,26 @@ public class TopicDao extends AbstractDao implements ITopicDao
         Topics topics = new Topics();
         topics.setId(cursor.getInt(0));
         topics.setName(cursor.getString(1));
+        topics.setTamilName(parseTamilTopicName(topics.getName()));
+        topics.setDefaultName(parseDefaultName(topics.getName()));
         return topics;
+    }
+
+    String parseTamilTopicName(String topicName)
+    {
+        if (StringUtils.isNotBlank(topicName)) {
+            String tamilTopicName = RegexUtils.getMatchString(topicName, TOPIC_NAME_REGEX);
+            String formattedTopicName = tamilTopicName.replaceAll("\\{", "").replaceAll("\\}", "");
+            return StringUtils.isNotBlank(formattedTopicName) ? formattedTopicName : topicName;
+        }
+        return "";
+    }
+
+    String parseDefaultName(String topicName)
+    {
+        if (StringUtils.isNotBlank(topicName)) {
+            return topicName.replaceAll(TOPIC_NAME_REGEX, "");
+        }
+        return "";
     }
 }
