@@ -15,13 +15,19 @@
         <item name="colorAccent">@color/teal</item>
         <item name="singleAccount">true</item>
         <item name="android:textColor">@color/text_black_color</item>
-        <item name="drawerType">@integer/DRAWERTYPE_NO_HEADER</item>
+        <item name="drawerType">@integer/DRAWERTYPE_ACCOUNTS</item>
+        <item name="accountStyle">@style/MyMaterialAccountTheme</item>
         <item name="drawerColor">@android:color/white</item>
         <item name="uniqueToolbarColor">false</item>
         <item name="sectionStyle">@style/MaterialSectionTheme.Light</item>
         <item name="subheaderStyle">@style/MaterialSubheaderTheme.Light</item>
         <item name="learningPattern">false</item>
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
+    </style>
+
+    <style name="MyMaterialAccountTheme">
+        <item name="titleColor">@color/white</item>
+        <item name="subtitleColor">@color/white_semi_transparent</item>
     </style>
 
     <style name="PopupMenu_Theme" parent="Widget.AppCompat.Light.ListPopupWindow">

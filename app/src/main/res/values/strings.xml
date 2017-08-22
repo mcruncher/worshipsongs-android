@@ -126,5 +126,5 @@
     <string name="storage_permission_meaage">Tamil christian Worshipsongs doesn\'t have permission to write file on storage. Tap on settings to enable storage permission</string>
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
-
+    <string name="noOfSongsAvailable">%1$d Songs are available</string>
 </resources>
