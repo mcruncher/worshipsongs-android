@@ -1,6 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +9,10 @@ import android.view.View;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.task.HttpAsyncTask;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.R;
 
 /**
  * Author : Madasamy
