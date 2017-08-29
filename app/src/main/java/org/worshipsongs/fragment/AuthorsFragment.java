@@ -181,7 +181,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     @Override
     public void setTitleTextView(TextView textView, final Author author)
     {
-        textView.setText(userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getDefaultName());
+        textView.setText(getAuthorName(author));
         textView.setOnClickListener(textViewOnClickListener(author));
     }
 
@@ -196,11 +196,16 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
                 Intent intent = new Intent(getContext(), SongListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(CommonConstants.TYPE, Type.AUTHOR.name());
-                intent.putExtra(CommonConstants.TITLE_KEY, author.getName());
+                intent.putExtra(CommonConstants.TITLE_KEY, getAuthorName(author));
                 intent.putExtra(CommonConstants.ID, author.getId());
                 startActivity(intent);
             }
         };
+    }
+
+    private String getAuthorName(Author author)
+    {
+        return userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getDefaultName();
     }
 
     @Override

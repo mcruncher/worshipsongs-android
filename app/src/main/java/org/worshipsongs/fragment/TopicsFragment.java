@@ -155,7 +155,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     @Override
     public void setTitleTextView(TextView textView, final Topics topics)
     {
-        textView.setText(userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName());
+        textView.setText(getTopicsName(topics));
         textView.setOnClickListener(getOnClickListener(topics));
     }
 
@@ -169,11 +169,16 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
             {
                 Intent intent = new Intent(getContext(), SongListActivity.class);
                 intent.putExtra(CommonConstants.TYPE, Type.TOPICS.name());
-                intent.putExtra(CommonConstants.TITLE_KEY, topics.getName());
+                intent.putExtra(CommonConstants.TITLE_KEY, getTopicsName(topics));
                 intent.putExtra(CommonConstants.ID, topics.getId());
                 startActivity(intent);
             }
         };
+    }
+
+    private String getTopicsName(Topics topics)
+    {
+        return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
     }
 
     @Override
