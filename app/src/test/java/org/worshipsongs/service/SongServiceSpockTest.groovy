@@ -46,15 +46,41 @@ class SongServiceSpockTest extends ElectricSpecification
 
     def "Filter service songs"()
     {
-        setup:
+        given:
         def serviceSongs = new ArrayList<ServiceSong>()
-        def song = new Song()
-        song.setSearchTitle("foo @ bar")
-        serviceSongs.add(new ServiceSong("", song))
+        def song1 = new Song()
+        song1.setSearchTitle("foo @ bar")
+
+        def song2 = new Song()
+        song2.setComments("bar @bar")
+        serviceSongs.add(new ServiceSong("", song1))
+        serviceSongs.add(new ServiceSong("", song2))
+
+        when:
         def result = songService.filteredServiceSongs("fo", serviceSongs)
 
-        expect:
+        then:
         !result.isEmpty()
+    }
+
+    def "Filter multiple service songs"()
+    {
+        given:
+        def serviceSongs = new ArrayList<ServiceSong>()
+        def song1 = new Song()
+        song1.setSearchTitle("foo @ bar")
+
+        def song2 = new Song()
+        song2.setComments("bar @bar")
+        serviceSongs.add(new ServiceSong("", song1))
+        serviceSongs.add(new ServiceSong("", song2))
+
+        when:
+        def result = songService.filteredServiceSongs("bar", serviceSongs)
+
+        then:
+        !result.isEmpty()
+        result.size() == 2
     }
 
     def "Filter service songs when  list is null"()
@@ -65,7 +91,6 @@ class SongServiceSpockTest extends ElectricSpecification
         expect:
         result.isEmpty()
     }
-
 
     def "Get search titles from null"()
     {
