@@ -87,23 +87,27 @@ public class SongService implements ISongService
         List<ServiceSong> filteredServiceSongs = new ArrayList<>();
         if (StringUtils.isBlank(query)) {
             filteredServiceSongs.addAll(serviceSongs);
-        } else {
+        } else if (serviceSongs != null && !serviceSongs.isEmpty()) {
             for (ServiceSong serviceSong : serviceSongs) {
-                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
-                    if (getTitles(serviceSong.getSong().getSearchTitle()).toString().toLowerCase().contains(query.toLowerCase())) {
-                        filteredServiceSongs.add(serviceSong);
-                    }
-                } else {
-                    if (serviceSong.getSong().getSearchLyrics().toLowerCase().contains(query.toLowerCase())) {
-                        filteredServiceSongs.add(serviceSong);
-                    }
+                if (getSearchTitles(serviceSong).toString().toLowerCase().contains(query.toLowerCase())) {
+                    filteredServiceSongs.add(serviceSong);
                 }
-                if (serviceSong.getSong().getComments() != null && serviceSong.getSong().getComments().toLowerCase().contains(query.toLowerCase())) {
+                if (serviceSong.getSong() != null && serviceSong.getSong().getComments() != null &&
+                        serviceSong.getSong().getComments().toLowerCase().contains(query.toLowerCase())) {
                     filteredServiceSongs.add(serviceSong);
                 }
             }
         }
         return filteredServiceSongs;
+    }
+
+    List<String> getSearchTitles(ServiceSong serviceSong)
+    {
+        List<String> searchTitles = new ArrayList<>();
+        if (serviceSong != null && serviceSong.getSong() != null && StringUtils.isNotBlank(serviceSong.getSong().getSearchTitle())) {
+            searchTitles.addAll(getTitles(serviceSong.getSong().getSearchTitle()));
+        }
+        return searchTitles;
     }
 
     @NonNull

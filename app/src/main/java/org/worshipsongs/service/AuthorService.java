@@ -18,6 +18,7 @@ import java.util.List;
 
 public class AuthorService implements IAuthorService
 {
+   private static final String DEFAULT_AUTHOR_NAME = "UNKNOWN";
     private IAuthorDao authorDao;
 
     public AuthorService()
@@ -38,7 +39,11 @@ public class AuthorService implements IAuthorService
     @Override
     public String findNameByTitle(String title)
     {
-        return authorDao.findAuthorNameByTitle(title);
+        try {
+            return authorDao.findAuthorNameByTitle(title);
+        } catch (Exception ex) {
+            return DEFAULT_AUTHOR_NAME;
+        }
     }
 
     public List<Author> getAuthors(String text, List<Author> authorList)
