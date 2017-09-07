@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.parser.CommitMessageParser;
 import org.worshipsongs.parser.ICommitMessageParser;
@@ -93,7 +94,7 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         super.onPostExecute(jsonObject);
         final String shaKey = commitMessageParser.getShaKey(jsonObject);
         String existingShaKey = sharedPreferences.getString(CommonConstants.COMMIT_SHA_KEY, "");
-        progressDialog.hide();
+        progressDialog.dismiss();
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.COMMIT_SHA_KEY, shaKey);
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.updates_title));
