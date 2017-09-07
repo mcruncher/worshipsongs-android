@@ -18,14 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.SplashScreenActivity;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
-import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -126,7 +124,6 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             }
         });
         builder.show();
-
     }
 
     private void showNetWorkWarningDialog()
@@ -225,6 +222,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
                 revertDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
                 resultTextView.setText(getCountQueryResult());
                 sharedPreferences.edit().putString(CommonConstants.REMOTE_URL, remoteUrl).apply();
+                sharedPreferences.edit().remove(CommonConstants.COMMIT_SHA_KEY).apply();
                 Toast.makeText(appCompatActivity, appCompatActivity.getString(R.string.import_database_successfull), Toast.LENGTH_SHORT).show();
             } else {
                 showWarningDialog(resultTextView);

@@ -2,6 +2,7 @@ package org.worshipsongs.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
@@ -13,7 +14,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
+
+import java.util.Locale;
 
 
 /**
@@ -24,12 +27,18 @@ import org.worshipsongs.worship.R;
 public class LanguagePreference extends Preference
 {
     private SharedPreferences sharedPreferences;
+    private LanguageListener languageListener;
+    private int languageIndex;
 
     public LanguagePreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         setPersistent(true);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (attrs != null) {
+            String defaultLanguage = attrs.getAttributeValue(null, "defaultLanguage");
+            languageIndex = "tamil".equalsIgnoreCase(defaultLanguage) ? 0 : 1;
+        }
     }
 
     @Override
@@ -45,7 +54,9 @@ public class LanguagePreference extends Preference
     private void setLanguageRadioGroup(final View view)
     {
         RadioGroup languageTypeRadioGroup = (RadioGroup) view.findViewById(R.id.type);
-        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
+        int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, languageIndex);
+        setLanguagePreferenceProperties(index);
+        setLocale((index == 0) ? "ta" : "en");
         if (index == 0) {
             languageTypeRadioGroup.check(R.id.language_tamil);
         } else {
@@ -58,11 +69,44 @@ public class LanguagePreference extends Preference
             {
                 RadioButton foodOrSupplementType = (RadioButton) view.findViewById(checkedId);
                 if (foodOrSupplementType.getId() == R.id.language_tamil) {
+                    setLocaleAndSelectListener("ta");
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 0).apply();
                 } else {
+                    setLocaleAndSelectListener("en");
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply();
                 }
             }
         });
+    }
+
+    private void setLanguagePreferenceProperties(int index)
+    {
+        sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, index).apply();
+        sharedPreferences.edit().putBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, true).apply();
+    }
+
+    private void setLocaleAndSelectListener(String localeKey)
+    {
+        setLocale(localeKey);
+        languageListener.onSelect();
+    }
+
+    private void setLocale(String localeKey)
+    {
+        Locale configLocale = new Locale(localeKey);
+        Locale.setDefault(configLocale);
+        Configuration config = new Configuration();
+        config.locale = configLocale;
+        getContext().getResources().updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+    }
+
+    public void setLanguageListener(LanguageListener languageListener)
+    {
+        this.languageListener = languageListener;
+    }
+
+    public interface LanguageListener
+    {
+        void onSelect();
     }
 }

@@ -4,6 +4,7 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,13 +15,21 @@ import java.util.List;
 public interface ISongService
 {
 
+    void copyDatabase(String databasePath, boolean dropDatabase) throws IOException;
+
+    void open();
+
     List<Song> findAll();
 
     List<Song> filterSongs(String text, List<Song> songs);
+
+    List<ServiceSong> filteredServiceSongs(String query, List<ServiceSong> serviceSongs);
 
     List<Song> findByAuthorId(int id);
 
     List<Song> findByTopicId(int id);
 
-    String getTitle(boolean tamilLanguage,ServiceSong serviceSong);
+    Song findContentsByTitle(String title);
+
+    String getTitle(boolean tamilLanguage, ServiceSong serviceSong);
 }

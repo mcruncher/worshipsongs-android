@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 /**
  * Author:Madasamy
@@ -66,7 +66,7 @@ public class FontDialogPreference extends Preference
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
             {
-
+                //Do nothing
             }
 
             @Override

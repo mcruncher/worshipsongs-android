@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 
 import java.io.File;
@@ -29,6 +30,8 @@ import java.util.Properties;
  */
 public final class PropertyUtils
 {
+    private static final String CLASS_NAME = PropertyUtils.class.getSimpleName();
+
     public static File getPropertyFile(Context context, String propertyFileName)
     {
         File commonPropertyFile = null;
@@ -118,8 +121,49 @@ public final class PropertyUtils
         spannableText.setSpan(new ForegroundColorSpan(color), start, end, 0);
     }
 
-    public static String getClassName()
+    public static List<String> getServices(File propertyFileName)
     {
-        return "PropertyUtils";
+        List<String> services = new ArrayList<>();
+        InputStream inputStream = null;
+        try {
+            Properties property = new Properties();
+            inputStream = new FileInputStream(propertyFileName);
+            property.load(inputStream);
+            Enumeration<?> enumeration = property.propertyNames();
+            while (enumeration.hasMoreElements()) {
+                String key = (String) enumeration.nextElement();
+                services.add(key);
+            }
+            inputStream.close();
+
+        } catch (Exception ex) {
+            Log.e(PropertyUtils.class.getSimpleName(), "Error occurred while reading services", ex);
+        }
+        return services;
     }
+
+    public static boolean removeSong(File propertyFile, String serviceName, String song)
+    {
+        try {
+            String propertyValue = "";
+            System.out.println("Preparing to remove service:" + song);
+            String property = PropertyUtils.getProperty(serviceName, propertyFile);
+            String propertyValues[] = property.split(";");
+            System.out.println("File:" + propertyFile.getAbsolutePath());
+            for (int i = 0; i < propertyValues.length; i++) {
+                System.out.println("Property length: " + propertyValues.length);
+                Log.i(CLASS_NAME, "Property value  " + propertyValues[i]);
+                if (StringUtils.isNotBlank(propertyValues[i]) && !propertyValues[i].equalsIgnoreCase(song)) {
+                    Log.i(CLASS_NAME, "Append property value" + propertyValues[i]);
+                    propertyValue = propertyValue + propertyValues[i] + ";";
+                }
+            }
+            Log.i(CLASS_NAME, "Property value after removed  " + propertyValue);
+            PropertyUtils.setProperty(serviceName, propertyValue, propertyFile);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

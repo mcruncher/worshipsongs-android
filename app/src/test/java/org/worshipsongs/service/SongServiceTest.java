@@ -10,19 +10,16 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.worshipsongs.BuildConfig;
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.worship.BuildConfig;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Author : Madasamy

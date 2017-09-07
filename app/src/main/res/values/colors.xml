@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
+
     <color name="white">#ffffff</color>
     <color name="gray">#e0e0e0</color>
     <color name="clear">#00000000</color>
@@ -11,18 +11,12 @@
     <color name="green_light">#ff99cc00</color>
     <color name="orange_light">#ffffbb33</color>
     <color name="blue_light">#dc58ade5</color>
-    <color name="aresenic">#3B444B</color>
-    <color name="dark_blue">#003366</color>
+
     <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#992416</color>
-    <color name="list_divider">#272727</color>
-    <color name="counter_text_bg">#626262</color>
+
     <color name="counter_text_color">#c5c4c4</color>
     <color name="default_screen_bg">#f9f9f9</color>
-    <color name="rounded_container_bg">#222222</color>
-    <color name="rounded_container_border">#3b3f44</color>
-    <color name="light_gray_header_color">#646663</color>
+
 
     <color name="light_green">#8bc34a</color>
     <color name="dark_green">#558b2f</color>
@@ -34,20 +28,35 @@
     <!--#06a1ee-->
     <color name="dark_navy_blue">#1ea2fa</color>
     <color name="light_navy_blue">#1ab3ff</color>
-    <color name="shade_blue">#9bd9f8</color>
+    <color name="shade_blue">#cdecfb</color>
     <color name="disabled_white">#F2F2F2</color>
 
     <color name="app_primary">#A94246</color>
     <color name="app_primary_dark">#872328</color>
     <color name="app_primary_accent">#F9B0B4</color>
 
-    <color name="black_semi_transparent">#B2000000</color>
     <color name="white_transparent">#E6FFFFFF</color>
     <color name="gray_transparent">#E6e0e0e0</color>
     <color name="white_semi_transparent">#D9FFFFFF</color>
-
     <color name="red">#dd3044</color>
     <color name="red_mild">	#ee6d6e</color>
     <color name="empty">#00ffffff</color>
+    <color name="list_background_pressed">#992416</color>
+
+    <color name="black">#000000</color>
+    <color name="text_black_color">#191919</color>
+    <color name="transparent_text_black_color">#B3191919</color>
+    <color name="aresenic">#3B444B</color>
+    <color name="dark_blue">#003366</color>
+    <color name="black_transparent">#ff000000</color>
+    <color name="black_transparent_mild">#26000000</color>
+    <color name="black_semi_transparent">#B2000000</color>
+
+    <color name="rounded_container_bg">#222222</color>
+    <color name="rounded_container_border">#3b3f44</color>
+    <color name="light_gray_header_color">#646663</color>
+    <color name="list_background">#303030</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
 
 </resources>

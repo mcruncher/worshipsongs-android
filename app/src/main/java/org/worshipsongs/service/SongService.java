@@ -11,6 +11,7 @@ import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +36,18 @@ public class SongService implements ISongService
         songDao = new SongDao(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         userPreferenceSettingService = new UserPreferenceSettingService();
+    }
+
+    @Override
+    public void copyDatabase(String databasePath, boolean dropDatabase) throws IOException
+    {
+        songDao.copyDatabase(databasePath, dropDatabase);
+    }
+
+    @Override
+    public void open()
+    {
+        songDao.open();
     }
 
     @Override
@@ -66,6 +79,35 @@ public class SongService implements ISongService
             }
         }
         return getSortedSongs(filteredSongSet);
+    }
+
+    @Override
+    public List<ServiceSong> filteredServiceSongs(String query, List<ServiceSong> serviceSongs)
+    {
+        List<ServiceSong> filteredServiceSongs = new ArrayList<>();
+        if (StringUtils.isBlank(query)) {
+            filteredServiceSongs.addAll(serviceSongs);
+        } else if (serviceSongs != null && !serviceSongs.isEmpty()) {
+            for (ServiceSong serviceSong : serviceSongs) {
+                if (getSearchTitles(serviceSong).toString().toLowerCase().contains(query.toLowerCase())) {
+                    filteredServiceSongs.add(serviceSong);
+                }
+                if (serviceSong.getSong() != null && serviceSong.getSong().getComments() != null &&
+                        serviceSong.getSong().getComments().toLowerCase().contains(query.toLowerCase())) {
+                    filteredServiceSongs.add(serviceSong);
+                }
+            }
+        }
+        return filteredServiceSongs;
+    }
+
+    List<String> getSearchTitles(ServiceSong serviceSong)
+    {
+        List<String> searchTitles = new ArrayList<>();
+        if (serviceSong != null && serviceSong.getSong() != null && StringUtils.isNotBlank(serviceSong.getSong().getSearchTitle())) {
+            searchTitles.addAll(getTitles(serviceSong.getSong().getSearchTitle()));
+        }
+        return searchTitles;
     }
 
     @NonNull
@@ -100,6 +142,12 @@ public class SongService implements ISongService
         return songDao.findByTopicId(id);
     }
 
+    @Override
+    public Song findContentsByTitle(String title)
+    {
+        return songDao.findContentsByTitle(title);
+    }
+
     List<String> getTitles(String searchTitle)
     {
         return Arrays.asList(searchTitle.split("@"));
@@ -121,7 +169,7 @@ public class SongService implements ISongService
             }
         }
 
-        public int nullSafeStringComparator(final String one, final String two)
+        private int nullSafeStringComparator(final String one, final String two)
         {
             if (StringUtils.isBlank(one) ^ StringUtils.isBlank(two)) {
                 return (StringUtils.isBlank(one)) ? -1 : 1;
@@ -134,7 +182,7 @@ public class SongService implements ISongService
 
     }
 
-   public String getTitle(boolean isTamil, ServiceSong serviceSong)
+    public String getTitle(boolean isTamil, ServiceSong serviceSong)
     {
         try {
             return (isTamil && StringUtils.isNotBlank(serviceSong.getSong().getTamilTitle())) ?

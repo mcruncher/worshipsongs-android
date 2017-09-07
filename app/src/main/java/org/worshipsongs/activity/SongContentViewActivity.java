@@ -5,25 +5,19 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.adapter.SongContentPortraitViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.fragment.ISongContentPortraitViewFragment;
-import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.worship.R;
 
 import java.util.ArrayList;
 
@@ -101,6 +95,7 @@ public class SongContentViewActivity extends AppCompatActivity
                 @Override
                 public void onPageScrollStateChanged(int state)
                 {
+                    //DO nothing when page scrolled
                 }
             });
         } else {

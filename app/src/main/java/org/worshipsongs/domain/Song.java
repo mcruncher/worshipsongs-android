@@ -15,7 +15,7 @@ import java.util.List;
  * @Version : 1.0
  */
 
-public class Song implements Parcelable
+public class Song
 {
     private int id;
     private int songBookId;
@@ -34,8 +34,6 @@ public class Song implements Parcelable
     private String createdDate;
     private String lastModified;
     private boolean temporary;
-    private List<Column> verseColumns;
-    private List<Column> contentColumns;
     private String urlKey;
     private List<String> contents;
     private String chord;
@@ -43,7 +41,12 @@ public class Song implements Parcelable
 
     public Song()
     {
+        //Do nothing
+    }
 
+    public Song(String title)
+    {
+        this.title = title;
     }
 
     public int getId()
@@ -221,26 +224,6 @@ public class Song implements Parcelable
         this.temporary = temporary;
     }
 
-    public List<Column> getVerseColumns()
-    {
-        return verseColumns;
-    }
-
-    public void setVerseColumns(List<Column> verseColumns)
-    {
-        this.verseColumns = verseColumns;
-    }
-
-    public List<Column> getContentColumns()
-    {
-        return contentColumns;
-    }
-
-    public void setContentColumns(List<Column> contentColumns)
-    {
-        this.contentColumns = contentColumns;
-    }
-
     public String getUrlKey()
     {
         return urlKey;
@@ -287,8 +270,6 @@ public class Song implements Parcelable
         ToStringBuilder stringBuilder = new ToStringBuilder(this);
         stringBuilder.append("title", getTitle());
         stringBuilder.append("verse order", getVerseOrder());
-        stringBuilder.append("verses", getVerseColumns());
-        stringBuilder.append("content", getContentColumns());
         return stringBuilder.toString();
     }
 
@@ -314,45 +295,4 @@ public class Song implements Parcelable
         hashCodeBuilder.append(getSearchTitle());
         return hashCodeBuilder.hashCode();
     }
-
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeString(this.title);
-        dest.writeString(this.verse_order);
-        dest.writeString(this.lyrics);
-        dest.writeTypedList(verseColumns);
-        dest.writeTypedList(contentColumns);
-    }
-
-    public static final Creator<Song> CREATOR = new Creator<Song>()
-    {
-        @Override
-        public Song[] newArray(int size)
-        {
-            return new Song[size];
-        }
-
-        @Override
-        public Song createFromParcel(Parcel parcel)
-        {
-            Song song = new Song();
-            song.title = parcel.readString();
-            song.verse_order = parcel.readString();
-            song.lyrics = parcel.readString();
-            ArrayList<Column> verses = new ArrayList<>();
-            parcel.readTypedList(verses, Column.CREATOR);
-            song.verseColumns = verses;
-            ArrayList<Column> contentList = new ArrayList<>();
-            parcel.readTypedList(contentList, Column.CREATOR);
-            song.contentColumns = contentList;
-            return song;
-        }
-    };
 }

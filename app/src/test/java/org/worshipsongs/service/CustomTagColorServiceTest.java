@@ -18,7 +18,8 @@ public class CustomTagColorServiceTest
     private CustomTagColorService customTagColorService = new CustomTagColorService();
 
     @Test
-    public void testGetFormattedLines() {
+    public void testGetFormattedLines()
+    {
         System.out.println("--getFormattedLines--");
         String content = "{y}ஆளுகை செய்யும் ஆவியானவரே {/y}\n" +
                 "                                Aalugai seiyyum aaviyaanavarae\n" +
@@ -32,14 +33,17 @@ public class CustomTagColorServiceTest
                 "                                Paliyaai thanthaen parisuththamaanavarae\n" +
                 "                                ஆவியானவரே - என் ஆற்றலானவரே\n" +
                 "                                Aaviyaanavarae - En aatralaanavarae\n";
-        CustomTagColorService customTagColorService = new CustomTagColorService(){
+        CustomTagColorService customTagColorService = new CustomTagColorService()
+        {
             @Override
-            protected boolean displayRomanisedLyrics() {
+            protected boolean displayRomanisedLyrics()
+            {
                 return true;
             }
 
             @Override
-            protected boolean displayTamilLyrics() {
+            protected boolean displayTamilLyrics()
+            {
                 return true;
             }
         };
@@ -66,22 +70,27 @@ public class CustomTagColorServiceTest
     }
 
     @Test
-    public void testRomanisedLyricsPreferences() {
+    public void testRomanisedLyricsPreferences()
+    {
         System.out.println("--romanisedLyricsPreferences--");
         final StringBuilder result = new StringBuilder();
-        CustomTagColorService customTagColorService = new CustomTagColorService(){
+        CustomTagColorService customTagColorService = new CustomTagColorService()
+        {
             @Override
-            protected boolean displayRomanisedLyrics() {
+            protected boolean displayRomanisedLyrics()
+            {
                 return true;
             }
 
             @Override
-            protected boolean displayTamilLyrics() {
+            protected boolean displayTamilLyrics()
+            {
                 return false;
             }
 
             @Override
-            protected void setColoredTextView(TextView textView, String content, int color) {
+            protected void setColoredTextView(TextView textView, String content, int color)
+            {
                 result.append(content);
                 result.append("\n");
             }
@@ -101,22 +110,27 @@ public class CustomTagColorServiceTest
     }
 
     @Test
-    public void testTamilLyricsPreferences() {
+    public void testTamilLyricsPreferences()
+    {
         System.out.println("--tamilLyricsPreferences--");
         final StringBuilder result = new StringBuilder();
-        CustomTagColorService customTagColorService = new CustomTagColorService(){
+        CustomTagColorService customTagColorService = new CustomTagColorService()
+        {
             @Override
-            protected boolean displayRomanisedLyrics() {
+            protected boolean displayRomanisedLyrics()
+            {
                 return false;
             }
 
             @Override
-            protected boolean displayTamilLyrics() {
+            protected boolean displayTamilLyrics()
+            {
                 return true;
             }
 
             @Override
-            protected void setColoredTextView(TextView textView, String content, int color) {
+            protected void setColoredTextView(TextView textView, String content, int color)
+            {
                 result.append(content);
                 result.append("\n");
             }
@@ -136,22 +150,27 @@ public class CustomTagColorServiceTest
     }
 
     @Test
-    public void testIfNoTamilLyrics() {
+    public void testIfNoTamilLyrics()
+    {
         System.out.println("--ifNoTamilLyrics--");
         final StringBuilder result = new StringBuilder();
-        CustomTagColorService customTagColorService = new CustomTagColorService(){
+        CustomTagColorService customTagColorService = new CustomTagColorService()
+        {
             @Override
-            protected boolean displayRomanisedLyrics() {
+            protected boolean displayRomanisedLyrics()
+            {
                 return false;
             }
 
             @Override
-            protected boolean displayTamilLyrics() {
+            protected boolean displayTamilLyrics()
+            {
                 return true;
             }
 
             @Override
-            protected void setColoredTextView(TextView textView, String content, int color) {
+            protected void setColoredTextView(TextView textView, String content, int color)
+            {
                 result.append(content);
                 result.append("\n");
             }

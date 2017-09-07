@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="false">
+
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/video_image_view"
+        android:layout_toStartOf="@+id/video_image_view"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:maxLines="1"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:text="TextView"
+        android:textSize="16dp"/>
+
+    <ImageView
+        android:id="@+id/video_image_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/title_text_view"
+        android:layout_alignTop="@+id/title_text_view"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/option_image_view"
+        android:layout_toStartOf="@+id/option_image_view"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="videoImage"
+        android:tint="@color/light_gray_header_color"
+        android:visibility="visible"
+        app:srcCompat="@android:drawable/presence_video_online"/>
+
+
+    <ImageView
+        android:id="@+id/option_image_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/title_text_view"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title_text_view"
+        android:layout_marginRight="15dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="optionImage"
+        android:tint="@color/light_gray_header_color"
+        app:srcCompat="@drawable/option_menu"/>
+
+</RelativeLayout>

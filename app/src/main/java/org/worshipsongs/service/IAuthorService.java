@@ -14,4 +14,6 @@ public interface IAuthorService
     List<Author> findAll();
 
     String findNameByTitle(String title);
+
+    List<Author> getAuthors(String text, List<Author> authorList);
 }

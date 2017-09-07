@@ -1,23 +1,11 @@
 package org.worshipsongs.preference;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import org.worshipsongs.activity.DatabaseSettingActivity;
-import org.worshipsongs.locator.IImportDatabaseLocator;
-import org.worshipsongs.locator.ImportDatabaseLocator;
-import org.worshipsongs.worship.R;
 
 /**
  * Author : Madasamy

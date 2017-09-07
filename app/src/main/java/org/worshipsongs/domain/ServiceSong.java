@@ -35,4 +35,13 @@ public class ServiceSong
     {
         this.song = song;
     }
+
+    @Override
+    public String toString()
+    {
+        return "ServiceSong{" +
+                "title='" + title + '\'' +
+                ", song=" + song +
+                '}';
+    }
 }

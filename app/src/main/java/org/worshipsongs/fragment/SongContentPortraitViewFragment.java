@@ -1,20 +1,16 @@
 package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,10 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -35,6 +28,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.youtube.player.YouTubePlayer;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
@@ -44,11 +38,13 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.IAuthorService;
+import org.worshipsongs.service.ISongService;
+import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.service.SongListAdapterService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
-import org.worshipsongs.utils.ImageUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.utils.CommonUtils;
+import org.worshipsongs.utils.PermissionUtils;
 
 import java.util.ArrayList;
 
@@ -65,9 +61,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private int millis;
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService;
-    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private ISongService songDao = new SongService(WorshipSongApplication.getContext());
     private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
-    private SongListAdapterService songListAdapterService;
+    private PopupMenuService popupMenuService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
     private ListView listView;
@@ -93,7 +89,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(CommonUtils.isPhone(getContext()));
     }
 
     @Override
@@ -126,19 +122,20 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         preferenceSettingService = new UserPreferenceSettingService();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     private void showStatusBar()
     {
-        if (Build.VERSION.SDK_INT < 16) {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            View decorView = getActivity().getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        if (CommonUtils.isPhone(getContext())) {
+            if (Build.VERSION.SDK_INT < 16) {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                View decorView = getActivity().getWindow().getDecorView();
+                decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
         }
     }
-
+    
     private void setListView(View view, final Song song)
     {
         listView = (ListView) view.findViewById(R.id.content_list);
@@ -265,7 +262,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(getActivity(), CustomYoutubeBoxActivity.class);
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
-        youTubeIntent.putExtra("title", title);
+        youTubeIntent.putExtra(CommonConstants.TITLE_KEY, title);
         getActivity().startActivity(youTubeIntent);
     }
 
@@ -469,8 +466,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         menu.clear();
-        Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "Menu options");
-        inflater.inflate(R.menu.action_bar_options, menu);
+        if (CommonUtils.isPhone(getContext())) {
+            inflater.inflate(R.menu.action_bar_options, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -485,8 +483,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
                 return true;
             case R.id.options:
                 Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "On tapped options");
-                songListAdapterService = new SongListAdapterService();
-                songListAdapterService.showPopupmenu(getActivity().findViewById(R.id.options), title, getFragmentManager(), false);
+                popupMenuService = new PopupMenuService();
+                PermissionUtils.isStoragePermissionGranted(getActivity());
+                popupMenuService.showPopupmenu((AppCompatActivity) getActivity(), getActivity().findViewById(R.id.options), title, false);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -512,7 +511,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     {
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         try {
-            if (preferenceSettingService != null && tilteList.size() > 0) {
+            if (preferenceSettingService != null && tilteList.size() > 0 && CommonUtils.isPhone(getContext())) {
                 String title;
                 if (tilteList.size() == 1) {
                     title = tilteList.get(0);

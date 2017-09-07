@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.worship.BuildConfig;
+import org.worshipsongs.BuildConfig;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

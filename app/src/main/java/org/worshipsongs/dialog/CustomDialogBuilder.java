@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.worshipsongs.domain.DialogConfiguration;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,8 @@ public class CustomDialogBuilder
         listView.setAdapter(radioButtonAdapter);
     }
 
-    public void setSingleChoices(List<String> items, int checked) {
+    public void setSingleChoices(List<String> items, int checked)
+    {
         listView.setVisibility(View.VISIBLE);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         radioButtonAdapter.clear();
@@ -99,7 +100,8 @@ public class CustomDialogBuilder
         radioButtonAdapter.notifyDataSetChanged();
     }
 
-    public void setSingleChoiceOnClickListener(AdapterView.OnItemClickListener choiceOnClickListener) {
+    public void setSingleChoiceOnClickListener(AdapterView.OnItemClickListener choiceOnClickListener)
+    {
         listView.setOnItemClickListener(choiceOnClickListener);
     }
 

@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 3.x
  */
 
 public class AbstractDomain
@@ -45,8 +45,8 @@ public class AbstractDomain
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof Topics) {
-            Topics otherObject = (Topics) object;
+        if (object instanceof AbstractDomain) {
+            AbstractDomain otherObject = (AbstractDomain) object;
             EqualsBuilder builder = new EqualsBuilder();
             builder.append(getName(), otherObject.getName());
             return builder.isEquals();

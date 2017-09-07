@@ -1,10 +1,11 @@
 package org.worshipsongs.service;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.TextView;
 
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class CustomTagColorService
     public String getFormattedLines(String content)
     {
         tagExists = pattern.matcher(content).find();
-        StringBuilder textView = new StringBuilder();
+        StringBuilder lyricsBuilder = new StringBuilder();
         List<String> lyricsListWithTag = getStringsByTag(content);
         String tagKey = null;
         for (int i = 0; i < lyricsListWithTag.size(); i++) {
@@ -67,17 +68,42 @@ public class CustomTagColorService
                 if (displayTamilLyrics() || !displayRomanisedLyrics()) {
                     String value = matcher.group(0).replace("{", "");
                     tagKey = value.replace("}", "");
-                    textView.append(removeTag(lyricsListWithTag.get(i), tagKey));
-                    textView.append("\n");
+                    lyricsBuilder.append(removeTag(lyricsListWithTag.get(i), tagKey));
+                    lyricsBuilder.append("\n");
                 }
             } else {
                 if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
-                    textView.append(lyricsListWithTag.get(i));
-                    textView.append("\n");
+                    lyricsBuilder.append(lyricsListWithTag.get(i));
+                    lyricsBuilder.append("\n");
                 }
             }
         }
-        return textView.toString();
+        return lyricsBuilder.toString();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public float getFormattedPage(String content, PdfDocument.Page page, float xPos, float yPos)
+    {
+        tagExists = pattern.matcher(content).find();
+        List<String> lyricsListWithTag = getStringsByTag(content);
+        String tagKey = null;
+        for (int i = 0; i < lyricsListWithTag.size(); i++) {
+            Matcher matcher = pattern.matcher(lyricsListWithTag.get(i));
+            if (matcher.find()) {
+                if (displayTamilLyrics() || !displayRomanisedLyrics()) {
+                    String value = matcher.group(0).replace("{", "");
+                    tagKey = value.replace("}", "");
+                    page.getCanvas().drawText(removeTag(lyricsListWithTag.get(i), tagKey) + "\n", xPos, yPos, new Paint());
+                    yPos = yPos + 20;
+                }
+            } else {
+                if (displayRomanisedLyrics() || !displayTamilLyrics() || !tagExists) {
+                    page.getCanvas().drawText(lyricsListWithTag.get(i) + "\n", xPos, yPos, new Paint());
+                    yPos = yPos + 20;
+                }
+            }
+        }
+        return yPos;
     }
 
     private List<String> getStringsByTag(String songContent)

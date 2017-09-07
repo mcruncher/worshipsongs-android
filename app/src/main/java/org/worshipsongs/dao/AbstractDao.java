@@ -20,6 +20,7 @@ public class AbstractDao
 
     public AbstractDao()
     {
+        //Do nothing
     }
 
     public AbstractDao(Context context)

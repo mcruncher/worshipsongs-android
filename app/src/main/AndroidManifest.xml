@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="org.worshipsongs.worship"
+<manifest package="org.worshipsongs"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- permissions to access remote url -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -10,13 +9,13 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:name="org.worshipsongs.WorshipSongApplication"
+        android:name=".WorshipSongApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Worship Songs"
         android:theme="@style/MainAppTheme">
         <activity
-            android:name="org.worshipsongs.activity.SplashScreenActivity"
+            android:name=".activity.SplashScreenActivity"
             android:theme="@style/MainAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -26,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="org.worshipsongs.activity.NavigationDrawerActivity"
+            android:name=".activity.NavigationDrawerActivity"
             android:theme="@style/MaterialAppTheme">
             <meta-data
                 android:name="android.app.searchable"
@@ -37,7 +36,7 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name="org.worshipsongs.activity.ServiceSongListActivity">
+            android:name="org.worshipsongs.activity.ServiceSongsActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
@@ -62,6 +61,13 @@
         <activity
             android:name="org.worshipsongs.activity.DatabaseSettingActivity"
             android:launchMode="singleTask">
+        </activity>
+        <activity
+            android:name="org.worshipsongs.activity.UpdateSongsDatabaseActivity"
+            android:theme="@style/NoActionBarDimTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.worshipsongs.activity.NavigationDrawerActivity"/>
         </activity>
     </application>
 

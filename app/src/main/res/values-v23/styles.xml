@@ -2,6 +2,6 @@
 <resources>
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
-        <item name="android:textColor">@color/cardview_dark_background</item>
+        <item name="android:textColor">@color/text_black_color</item>
     </style>
 </resources>

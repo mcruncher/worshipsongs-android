@@ -3,6 +3,7 @@ package org.worshipsongs.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,31 +13,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.w3c.dom.Text;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
+import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.utils.PropertyUtils;
-import org.worshipsongs.worship.R;
+import org.worshipsongs.utils.PermissionUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,14 +42,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 
-public class DatabaseSettingActivity extends AppCompatActivity
+public class DatabaseSettingActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
@@ -87,12 +83,15 @@ public class DatabaseSettingActivity extends AppCompatActivity
         importDatabaseButton.setOnClickListener(new ImportDatabaseOnClickListener());
     }
 
+
     private class ImportDatabaseOnClickListener implements View.OnClickListener
     {
         @Override
         public void onClick(View view)
         {
-            showDatabaseTypeDialog();
+            if (PermissionUtils.isStoragePermissionGranted(DatabaseSettingActivity.this)) {
+                showDatabaseTypeDialog();
+            }
         }
     }
 
@@ -136,36 +135,12 @@ public class DatabaseSettingActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            DialogConfiguration dialogConfiguration = new DialogConfiguration("",
-                    getString(R.string.message_database_confirmation));
-            CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-            customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    try {
-                        songDao.close();
-                        songDao.copyDatabase("", true);
-                        songDao.open();
-                        sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
-                        defaultDatabaseButton.setVisibility(View.GONE);
-                        updateResultTextview();
-                        dialog.cancel();
-                    } catch (IOException ex) {
-                        Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
-                    }
-                }
-            });
-            customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.cancel();
-                }
-            });
-            customDialogBuilder.getBuilder().show();
+            Bundle bundle = new Bundle();
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.reset_default_title));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_database_confirmation));
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            alertDialogFragment.setDialogListener(DatabaseSettingActivity.this);
+            alertDialogFragment.show(getFragmentManager(), "RevertDefaultDatabaseDialog");
         }
     }
 
@@ -182,6 +157,8 @@ public class DatabaseSettingActivity extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 break;
+            default:
+                break;
         }
         return true;
     }
@@ -195,6 +172,8 @@ public class DatabaseSettingActivity extends AppCompatActivity
                     Uri uri = intent.getData();
                     doCopyFile(uri, getFileName(uri));
                 }
+                break;
+            default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, intent);
@@ -216,29 +195,17 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     private void showConfirmationDialog(final Uri uri, String fileName)
     {
-        String formattedMessage = String.format(getString(R.string.message_choose_local_db_confirmation), fileName);
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.confirmation),
-                formattedMessage);
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                copyFile(uri);
-                dialog.cancel();
-            }
-        });
-        customDialogBuilder.getBuilder().setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.cancel();
-            }
-        });
-        customDialogBuilder.getBuilder().show();
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.confirmation));
+        bundle.putString(CommonConstants.MESSAGE_KEY, String.format(getString(R.string.message_choose_local_db_confirmation), fileName));
+        bundle.putString(CommonConstants.NAME_KEY, uri.toString());
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        alertDialogFragment.setVisiblePositiveButton(true);
+        alertDialogFragment.setVisibleNegativeButton(true);
+        alertDialogFragment.setDialogListener(this);
+        alertDialogFragment.show(getFragmentManager(), "DatabaseImportConfirmation");
     }
+
 
     private void copyFile(Uri uri)
     {
@@ -313,26 +280,71 @@ public class DatabaseSettingActivity extends AppCompatActivity
 
     private void showWarningDialog()
     {
-        DialogConfiguration dialogConfiguration = new DialogConfiguration(getString(R.string.warning),
-                getString(R.string.message_database_invalid));
-        CustomDialogBuilder customDialogBuilder = new CustomDialogBuilder(DatabaseSettingActivity.this, dialogConfiguration);
-        customDialogBuilder.getBuilder().setCancelable(false);
-        customDialogBuilder.getBuilder().setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                try {
-                    songDao.close();
-                    songDao.copyDatabase("", true);
-                    songDao.open();
-                    dialog.cancel();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
+        bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_database_invalid));
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        alertDialogFragment.setDialogListener(this);
+        alertDialogFragment.setVisibleNegativeButton(false);
+        alertDialogFragment.setCancelable(false);
+        alertDialogFragment.show(getFragmentManager(), "InvalidLocalDbWaringDialog");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode) {
+            case CommonConstants.STORAGE_PERMISSION_REQUEST_CODE:
+                onRequestPermissionsResult(grantResults);
+                return;
+            default:
+                break;
+        }
+    }
+
+    protected void onRequestPermissionsResult(@NonNull int[] grantResults)
+    {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showDatabaseTypeDialog();
+        } else {
+            Log.i(this.getClass().getSimpleName(), "Permission denied");
+        }
+    }
+
+    @Override
+    public void onClickPositiveButton(Bundle bundle, String tag)
+    {
+        if ("DatabaseImportConfirmation".equalsIgnoreCase(tag)) {
+            String uriString = bundle.getString(CommonConstants.NAME_KEY);
+            Uri uri = Uri.parse(uriString);
+            copyFile(uri);
+        } else if ("InvalidLocalDbWaringDialog".equalsIgnoreCase(tag)) {
+            try {
+                songDao.close();
+                songDao.copyDatabase("", true);
+                songDao.open();
+                updateResultTextview();
+            } catch (IOException e) {
+                Log.e(DatabaseSettingActivity.class.getSimpleName(), "Error", e);
             }
-        });
-        customDialogBuilder.getBuilder().show();
+        } else if ("RevertDefaultDatabaseDialog".equalsIgnoreCase(tag)) {
+            try {
+                songDao.close();
+                songDao.copyDatabase("", true);
+                songDao.open();
+                updateResultTextview();
+                sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
+                defaultDatabaseButton.setVisibility(View.GONE);
+            } catch (IOException ex) {
+                Log.e(DatabaseSettingActivity.this.getClass().getSimpleName(), "Error occurred while coping database " + ex);
+            }
+        }
+    }
+
+    @Override
+    public void onClickNegativeButton()
+    {
+        //Do nothing
     }
 
     public String getCountQueryResult()

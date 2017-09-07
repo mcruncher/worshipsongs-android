@@ -11,11 +11,11 @@ import android.widget.ListView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.PresentationScreenService;
-import org.worshipsongs.worship.R;
 
 /**
  * Author : Madasamy
@@ -119,6 +119,8 @@ public class PresentSongActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            default:
                 break;
         }
         return true;
