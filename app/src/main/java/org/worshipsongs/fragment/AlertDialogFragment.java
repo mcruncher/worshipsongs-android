@@ -3,10 +3,12 @@ package org.worshipsongs.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+
+import java.lang.reflect.Field;
 
 
 /**
@@ -104,5 +108,18 @@ public class AlertDialogFragment extends DialogFragment
     public void setVisibleNegativeButton(boolean visibleNegativeButton)
     {
         this.visibleNegativeButton = visibleNegativeButton;
+    }
+
+    //https://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (Exception ex) {
+            Log.e(AlertDialogFragment.class.getSimpleName(), "Error", ex);
+        }
     }
 }
