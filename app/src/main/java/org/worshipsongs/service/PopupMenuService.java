@@ -172,8 +172,8 @@ public class PopupMenuService
             getContext().startActivity(intent);
             Log.i("done", file.getAbsolutePath().toString());
 
-        } catch (IOException e) {
-            throw new RuntimeException("Error generating file", e);
+        } catch (Exception ex) {
+           Log.e(PopupMenuService.class.getSimpleName(), "Error occurred while exporting to PDF", ex);
         }
     }
 
