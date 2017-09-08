@@ -287,6 +287,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
             bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_delete_song));
             bundle.putString(CommonConstants.NAME_KEY, serviceSong.getTitle());
             AlertDialogFragment deleteAlertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            deleteAlertDialogFragment.setDialogListener(ServiceSongsFragment.this);
             deleteAlertDialogFragment.show(getActivity().getFragmentManager(), "DeleteDialogFragment");
             return true;
         }
