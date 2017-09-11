@@ -47,6 +47,7 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PermissionUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Madasamy, Vignesh Palanisamy
@@ -60,7 +61,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private ArrayList<String> tilteList = new ArrayList<>();
     private int millis;
     private YouTubePlayer youTubePlayer;
-    private UserPreferenceSettingService preferenceSettingService;
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private ISongService songDao = new SongService(WorshipSongApplication.getContext());
     private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private PopupMenuService popupMenuService;
@@ -117,9 +118,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
-        song = songDao.findContentsByTitle(title);
-        song.setAuthorName(authorService.findNameByTitle(title));
-        preferenceSettingService = new UserPreferenceSettingService();
+        setSong();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -135,7 +134,19 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             }
         }
     }
-    
+
+    private void setSong()
+    {
+        song = songDao.findContentsByTitle(title);
+        if (song == null) {
+            song = new Song(title);
+            List<String> contents = new ArrayList<>();
+            contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""));
+            song.setContents(contents);
+        }
+        song.setAuthorName(authorService.findNameByTitle(title));
+    }
+
     private void setListView(View view, final Song song)
     {
         listView = (ListView) view.findViewById(R.id.content_list);
