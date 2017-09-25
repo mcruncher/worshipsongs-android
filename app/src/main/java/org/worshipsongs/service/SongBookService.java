@@ -20,6 +20,11 @@ public class SongBookService implements ISongBookService
 {
     private ISongBookDao dao;
 
+    public SongBookService()
+    {
+
+    }
+
     public SongBookService(Context context)
     {
         dao = new SongBookDao(context);
