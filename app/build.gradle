@@ -22,7 +22,6 @@ android {
         targetSdkVersion 25
         versionCode versionCodeNumber
         versionName APP_VERSION
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     compileOptions.encoding = "UTF-8"
 
