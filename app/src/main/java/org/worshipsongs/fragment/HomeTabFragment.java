@@ -34,7 +34,7 @@ public class HomeTabFragment extends Fragment
     {
         View view = (View) inflater.inflate(R.layout.home_tab_layout, container, false);
         List<String> titles = Arrays.asList(getResources().getString(R.string.titles), getResources().getString(R.string.artists),
-                getResources().getString(R.string.categories), getResources().getString(R.string.playlists));
+                getResources().getString(R.string.categories), getString(R.string.song_books), getResources().getString(R.string.playlists));
         // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.ome
         Log.i(this.getClass().getSimpleName(), "Preparing to load home view fragment");
         HomeViewerPageAdapter adapter = new HomeViewerPageAdapter(getChildFragmentManager(), titles, songContentViewListener);

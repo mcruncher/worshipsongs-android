@@ -108,6 +108,8 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
                 songs = songService.findByAuthorId(id);
             } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
                 songs = songService.findByTopicId(id);
+            } else if (Type.SONG_BOOK.name().equalsIgnoreCase(type)) {
+                songs = songService.findBySongBookId(id);
             } else {
                 songs = songService.findAll();
             }

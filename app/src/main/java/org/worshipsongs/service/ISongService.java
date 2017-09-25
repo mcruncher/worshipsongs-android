@@ -29,6 +29,8 @@ public interface ISongService
 
     List<Song> findByTopicId(int id);
 
+    List<Song> findBySongBookId(int id);
+
     Song findContentsByTitle(String title);
 
     String getTitle(boolean tamilLanguage, ServiceSong serviceSong);

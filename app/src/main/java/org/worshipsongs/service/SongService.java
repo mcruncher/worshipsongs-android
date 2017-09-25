@@ -143,6 +143,12 @@ public class SongService implements ISongService
     }
 
     @Override
+    public List<Song> findBySongBookId(int id)
+    {
+        return songDao.findBySongBookId(id);
+    }
+
+    @Override
     public Song findContentsByTitle(String title)
     {
         return songDao.findContentsByTitle(title);

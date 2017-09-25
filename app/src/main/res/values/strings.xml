@@ -127,4 +127,5 @@
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
+    <string name="song_books">Song books</string>
 </resources>
