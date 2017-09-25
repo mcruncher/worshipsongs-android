@@ -31,7 +31,7 @@ public class SongBookServiceTest
     public void findAll() throws Exception
     {
         System.out.println("--findAll--");
-        assertEquals(4, songBookService.findAll().size());
+        assertEquals(2, songBookService.findAll().size());
     }
 
 }
