@@ -76,7 +76,7 @@ public class CommonUtilsTest
     public void testGetProjectVersion()
     {
         String version = CommonUtils.getProjectVersion();
-        assertTrue(version.contains("3."));
+        assertTrue(version.contains("4."));
     }
 
     @Test
