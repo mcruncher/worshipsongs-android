@@ -79,6 +79,34 @@ public class SongDao extends AbstractDao
         return songs;
     }
 
+    public List<Song> findBySongBookId(int songBookId)
+    {
+        List<Song> songs = new ArrayList<>();
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments, entry from " +
+                "songs as s inner join songs_songbooks as ssb on ssb.song_id = s.id inner join " +
+                "song_books as sb on ssb.songbook_id = sb.id where sb.id= ?";
+        Cursor cursor = getDatabase().rawQuery(query, new String[]{String.valueOf(songBookId)});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Song song = cursorToSong(cursor);
+            song.setSongBookNumber(getSongBookNo(cursor));
+            songs.add(song);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return songs;
+    }
+
+    private int getSongBookNo(Cursor cursor)
+    {
+        try {
+            String numberInString = cursor.getString(6);
+            return Integer.parseInt(numberInString);
+        } catch (Exception ex) {
+            return 0;
+        }
+    }
+
     public Song findContentsByTitle(String title)
     {
         Song song = findByTitle(title);

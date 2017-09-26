@@ -62,30 +62,6 @@ public class SongServiceTest
     }
 
     @Test
-    public void filterSongs() throws Exception
-    {
-        sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
-        List<Song> result = songService.filterSongs("foo", songs);
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    public void filterSongs_Contents() throws Exception
-    {
-        sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply();
-        List<Song> result = songService.filterSongs("foo", songs);
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    public void filterSongs_emptyquery() throws Exception
-    {
-        sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
-        List<Song> result = songService.filterSongs("", songs);
-        assertEquals(2, result.size());
-    }
-
-    @Test
     public void getTitles() throws Exception
     {
         System.out.println("--getTitles--");

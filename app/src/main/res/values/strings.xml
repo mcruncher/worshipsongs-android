@@ -127,4 +127,10 @@
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
+    <string name="song_books">Song books</string>
+
+    <string name="hint_title_or_number">Search by title or song book number</string>
+    <string name="search_title_or_content">Title or Song book number</string>
+    <string name="search_type_title">Title</string>
+    <string name="search_type_content">Content</string>
 </resources>

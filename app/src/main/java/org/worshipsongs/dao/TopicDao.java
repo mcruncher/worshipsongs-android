@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 3.x
  */
 
 public class TopicDao extends AbstractDao implements ITopicDao
