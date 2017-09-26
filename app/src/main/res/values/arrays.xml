@@ -4,9 +4,5 @@
         <item name="1">Remote URL</item>
         <item name="2">Local storage</item>
     </string-array>
-    <string-array name="searchTypes">
-        <item name="1">Title</item>
-        <item name="2">Content</item>
-    </string-array>
 
 </resources>

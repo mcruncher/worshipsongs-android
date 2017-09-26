@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.widget.ListView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.Type;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,28 +59,50 @@ public class SongService implements ISongService
     }
 
     @Override
-    public List<Song> filterSongs(String text, List<Song> songs)
+    public List<Song> filterSongs(String type, String query, List<Song> songs)
     {
         Set<Song> filteredSongSet = new HashSet<>();
-        if (StringUtils.isBlank(text)) {
+        if (StringUtils.isBlank(query)) {
             filteredSongSet.addAll(songs);
         } else {
             for (Song song : songs) {
-                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
-                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(text.toLowerCase())) {
+                if (isSearchBySongBookNumber(type, query)) {
+                    if (getSongBookNumber(query) == song.getSongBookNumber()) {
+                        filteredSongSet.add(song);
+                    }
+                } else if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
+                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(query.toLowerCase())) {
+                        filteredSongSet.add(song);
+                    }
+                    if (song.getComments() != null && song.getComments().toLowerCase().contains(query.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
                 } else {
-                    if (song.getSearchLyrics().toLowerCase().contains(text.toLowerCase())) {
+                    if (song.getSearchLyrics().toLowerCase().contains(query.toLowerCase())) {
+                        filteredSongSet.add(song);
+                    }
+                    if (song.getComments() != null && song.getComments().toLowerCase().contains(query.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
                 }
-                if (song.getComments() != null && song.getComments().toLowerCase().contains(text.toLowerCase())) {
-                    filteredSongSet.add(song);
-                }
             }
         }
-        return getSortedSongs(filteredSongSet);
+        return getSortedSongs(type, filteredSongSet);
+    }
+
+    boolean isSearchBySongBookNumber(String type, String query)
+    {
+        int songBookNumber = getSongBookNumber(query);
+        return Type.SONG_BOOK.name().equalsIgnoreCase(type) && songBookNumber >= 0 && sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
+    }
+
+    int getSongBookNumber(String query)
+    {
+        try {
+            return Integer.parseInt(query);
+        } catch (Exception ex) {
+            return -1;
+        }
     }
 
     @Override
@@ -108,6 +132,17 @@ public class SongService implements ISongService
             searchTitles.addAll(getTitles(serviceSong.getSong().getSearchTitle()));
         }
         return searchTitles;
+    }
+
+    List<Song> getSortedSongs(String type, Set<Song> filteredSongSet)
+    {
+        if (Type.SONG_BOOK.name().equalsIgnoreCase(type)) {
+            List<Song> songs = new ArrayList<>(filteredSongSet);
+            Collections.sort(songs, Song.SONG_BOOK_NUMBER_ASC);
+            return songs;
+        } else {
+            return getSortedSongs(filteredSongSet);
+        }
     }
 
     @NonNull
