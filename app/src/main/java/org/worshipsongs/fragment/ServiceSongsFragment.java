@@ -146,11 +146,11 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
 
     //Adapter listener methods
     @Override
-    public void setTitleTextView(TextView textView, ServiceSong serviceSong)
+    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, ServiceSong serviceSong)
     {
-        textView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
-        textView.setOnClickListener(new SongOnClickListener(serviceSong));
-        textView.setOnLongClickListener(new SongOnLongClickListener(serviceSong));
+        titleTextView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
+        titleTextView.setOnClickListener(new SongOnClickListener(serviceSong));
+        titleTextView.setOnLongClickListener(new SongOnLongClickListener(serviceSong));
     }
 
     @Override

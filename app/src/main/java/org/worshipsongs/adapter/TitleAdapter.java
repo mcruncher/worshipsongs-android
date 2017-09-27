@@ -45,11 +45,11 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
         return view;
     }
 
-
     private void setTitleTextView(View view, int position)
     {
         TextView titleTextView = (TextView) view.findViewById(R.id.title_text_view);
-        titleAdapterListener.setTitleTextView(titleTextView, getItem(position));
+        TextView subTitleTextView = (TextView) view.findViewById(R.id.subtitle_text_view);
+        titleAdapterListener.setTitleTextView(titleTextView, subTitleTextView, getItem(position));
     }
 
     private void setPlayImageView(final View rowView, int position)
@@ -78,8 +78,7 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
 
     public interface TitleAdapterListener<T>
     {
-
-        void setTitleTextView(TextView textView, T t);
+        void setTitleTextView(TextView titleTextView, TextView subTitleTextView, T t);
 
         void setPlayImageView(ImageView imageView, T t, int position);
 

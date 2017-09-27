@@ -180,10 +180,10 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     }
 
     @Override
-    public void setTitleTextView(TextView textView, final Author author)
+    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, Author author)
     {
-        textView.setText(getAuthorName(author));
-        textView.setOnClickListener(textViewOnClickListener(author));
+        titleTextView.setText(getAuthorName(author));
+        titleTextView.setOnClickListener(textViewOnClickListener(author));
     }
 
     @NonNull

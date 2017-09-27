@@ -110,11 +110,11 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     //Adapter listener methods
     @Override
-    public void setTitleTextView(TextView textView, final String text)
+    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, String text)
     {
-        textView.setText(text);
-        textView.setOnLongClickListener(new TextViewLongClickListener(text));
-        textView.setOnClickListener(new TextViewOnClickListener(text));
+        titleTextView.setText(text);
+        titleTextView.setOnLongClickListener(new TextViewLongClickListener(text));
+        titleTextView.setOnClickListener(new TextViewOnClickListener(text));
     }
 
     @Override
