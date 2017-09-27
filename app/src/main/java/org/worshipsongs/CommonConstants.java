@@ -39,6 +39,7 @@ public final class CommonConstants
     public static final String NO_OF_SONGS = "noOfSongs";
 
     public static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
+    public static final String SONG_BOOK_NUMBER_KEY = "songBookNumberKey";
 
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
 

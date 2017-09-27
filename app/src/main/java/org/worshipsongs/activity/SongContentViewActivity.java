@@ -50,8 +50,9 @@ public class SongContentViewActivity extends AppCompatActivity
 
         ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
+
             final SongContentPortraitViewerPageAdapter songContentPortraitViewPagerAdapter =
-                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), titleList, presentationScreenService);
+                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), getIntent().getExtras(), presentationScreenService);
             // Assigning ViewPager View and setting the adapter
             final ViewPager pager = (ViewPager) findViewById(R.id.pager);
             pager.setAdapter(songContentPortraitViewPagerAdapter);

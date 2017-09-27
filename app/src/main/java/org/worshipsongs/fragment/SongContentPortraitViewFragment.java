@@ -32,7 +32,6 @@ import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.AuthorService;
@@ -82,6 +81,13 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
         bundle.putString(CommonConstants.TITLE_KEY, title);
+        songContentPortraitViewFragment.setArguments(bundle);
+        return songContentPortraitViewFragment;
+    }
+
+    public static SongContentPortraitViewFragment newInstance(Bundle bundle)
+    {
+        SongContentPortraitViewFragment songContentPortraitViewFragment = new SongContentPortraitViewFragment();
         songContentPortraitViewFragment.setArguments(bundle);
         return songContentPortraitViewFragment;
     }
@@ -537,14 +543,28 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         }
     }
 
-    private String getTitle(Song song, String title)
+    private String getTitle(Song song, String defaultTitle)
     {
         try {
-            return (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+            String title = (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
                     song.getTamilTitle() : song.getTitle();
+            return getSongBookNumber() + title;
         } catch (Exception e) {
-            return title;
+            return getSongBookNumber() + defaultTitle;
         }
+    }
+
+    private String getSongBookNumber()
+    {
+        try {
+            if (getArguments().containsKey(CommonConstants.SONG_BOOK_NUMBER_KEY)) {
+                int songBookNumber = getArguments().getInt(CommonConstants.SONG_BOOK_NUMBER_KEY, 0);
+                return songBookNumber > 0 ? String.valueOf(songBookNumber) + ". " : "";
+            }
+        } catch (Exception ex) {
+            Log.e(SongContentPortraitViewFragment.class.getSimpleName(), "Error ", ex);
+        }
+        return "";
     }
 
 

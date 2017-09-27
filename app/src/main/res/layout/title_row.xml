@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
+
     android:clickable="false">
 
     <TextView
@@ -14,8 +14,7 @@
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/video_image_view"
         android:layout_toStartOf="@+id/video_image_view"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
+        android:clickable="false"
         android:maxLines="1"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
@@ -54,5 +53,21 @@
         android:contentDescription="optionImage"
         android:tint="@color/light_gray_header_color"
         app:srcCompat="@drawable/option_menu"/>
+
+    <TextView
+        android:id="@+id/subtitle_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:clickable="false"
+        android:textColor="@color/counter_text_color"
+        android:textSize="12sp"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:paddingRight="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title_text_view"/>
 
 </RelativeLayout>

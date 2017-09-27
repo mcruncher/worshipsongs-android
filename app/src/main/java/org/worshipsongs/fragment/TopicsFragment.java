@@ -153,13 +153,6 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
 
-    @Override
-    public void setTitleTextView(TextView textView, final Topics topics)
-    {
-        textView.setText(getTopicsName(topics));
-        textView.setOnClickListener(getOnClickListener(topics));
-    }
-
     @NonNull
     private View.OnClickListener getOnClickListener(final Topics topics)
     {
@@ -180,6 +173,13 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     private String getTopicsName(Topics topics)
     {
         return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
+    }
+
+    @Override
+    public void setTitleTextView(TextView textView, TextView subTitleTextView, Topics topics)
+    {
+        textView.setText(getTopicsName(topics));
+        textView.setOnClickListener(getOnClickListener(topics));
     }
 
     @Override

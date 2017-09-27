@@ -145,10 +145,10 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
     }
 
     @Override
-    public void setTitleTextView(TextView textView, SongBook songBook)
+    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, SongBook songBook)
     {
-        textView.setText(songBook.getName());
-        textView.setOnClickListener(getOnClickListener(songBook));
+        titleTextView.setText(songBook.getName());
+        titleTextView.setOnClickListener(getOnClickListener(songBook));
     }
 
     @NonNull

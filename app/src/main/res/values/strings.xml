@@ -133,4 +133,5 @@
     <string name="search_title_or_content">Title or Song book number</string>
     <string name="search_type_title">Title</string>
     <string name="search_type_content">Content</string>
+    <string name="song_book_no">Song no</string>
 </resources>

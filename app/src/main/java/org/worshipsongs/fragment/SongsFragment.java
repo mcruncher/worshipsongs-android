@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.SongBook;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.PopupMenuService;
@@ -152,6 +154,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         titleAdapter.setTitleAdapterListener(this);
         titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));
         songListView.setAdapter(titleAdapter);
+        songListView.setOnItemClickListener(onItemClickListener());
     }
 
     @Override
@@ -341,26 +344,28 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     }
 
     @Override
-    public void setTitleTextView(TextView textView, final Song song)
+    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, Song song)
     {
-        textView.setText(getTitle(song));
+        titleTextView.setText(getTitle(song));
         Song presentingSong = Setting.getInstance().getSong();
         if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
-            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+            titleTextView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
         } else {
-            textView.setTextColor(getResources().getColor(R.color.text_black_color));
+            titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
-        textView.setOnClickListener(textViewOnClickListener(song));
+        subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);
+        subTitleTextView.setText(getString(R.string.song_book_no) + " " + song.getSongBookNumber());
     }
 
     @NonNull
-    private View.OnClickListener textViewOnClickListener(final Song song)
+    private AdapterView.OnItemClickListener onItemClickListener()
     {
-        return new View.OnClickListener()
+        return new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                Song song = titleAdapter.getItem(position);
                 Setting.getInstance().setPosition(0);
                 ArrayList<String> titleList = new ArrayList<String>();
                 titleList.add(song.getTitle());
@@ -368,6 +373,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
                 bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
                 if (songContentViewListener == null) {
                     Intent intent = new Intent(getContext(), SongContentViewActivity.class);
+                    intent.putExtra(CommonConstants.SONG_BOOK_NUMBER_KEY, song.getSongBookNumber());
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getContext().startActivity(intent);
