@@ -354,7 +354,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
         subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);
-        subTitleTextView.setText(R.string.song_book_no + " " + song.getSongBookNumber());
+        subTitleTextView.setText(getString(R.string.song_book_no) + " " + song.getSongBookNumber());
     }
 
     @NonNull
