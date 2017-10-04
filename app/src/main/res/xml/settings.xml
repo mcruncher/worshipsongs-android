@@ -78,6 +78,14 @@
             android:title="@string/presentation_primary_color_title"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/home_view_category_title">
+        <org.worshipsongs.fragment.TabChoicePreference
+            android:summary="@string/tab_choice_summary"
+            android:title="@string/tab_choice_title">
+        </org.worshipsongs.fragment.TabChoicePreference>
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/miscellaneous">
         <SwitchPreference
             android:defaultValue="true"

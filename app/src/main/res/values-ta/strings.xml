@@ -62,6 +62,10 @@
     <string name="slide">Slide: </string>
     <string name="playlist_name_hint">Enter favourite name</string>
 
+    <string name="home_view_category_title">Home view settings</string>
+    <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
+    <string name="tab_choice_title">Change tab items</string>
+
     <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
     <string name="message_delete_song">Do you want to delete the song?</string>
     <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
