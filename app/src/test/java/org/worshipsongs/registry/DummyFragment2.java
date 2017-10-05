@@ -3,12 +3,11 @@ package org.worshipsongs.registry;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import org.worshipsongs.R;
 import org.worshipsongs.listener.SongContentViewListener;
 
 /**
  * Author : Madasamy
- * Version : x.x.x
+ * Version : 4.x.x
  */
 
 public class DummyFragment2 extends Fragment implements ITabFragment
@@ -20,9 +19,9 @@ public class DummyFragment2 extends Fragment implements ITabFragment
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.song_books;
+        return "song_books";
     }
 
     @Override

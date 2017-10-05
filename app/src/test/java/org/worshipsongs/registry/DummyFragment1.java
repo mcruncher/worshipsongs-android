@@ -20,9 +20,9 @@ public class DummyFragment1 extends Fragment implements ITabFragment
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.title;
+        return "title";
     }
 
     @Override

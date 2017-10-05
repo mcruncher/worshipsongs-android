@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.DragDrop;
 
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class FragmentRegistry
         }
         for (DragDrop configuredDragDrop : configuredDragDrops) {
             if (configuredDragDrop.isChecked()) {
-                titles.add(configuredDragDrop.getTitle());
+                int identifier = WorshipSongApplication.getContext().getResources().getIdentifier(configuredDragDrop.getTitle(),
+                        "string", WorshipSongApplication.getContext().getPackageName());
+                titles.add(activity.getString(identifier));
             }
         }
         return titles;
@@ -54,7 +57,7 @@ public class FragmentRegistry
     {
         ArrayList<DragDrop> dragDrops = new ArrayList<>();
         for (ITabFragment tabFragment : findAll(activity)) {
-            dragDrops.add(new DragDrop(tabFragment.defaultSortOrder(), activity.getString(tabFragment.getTitle()), tabFragment.checked()));
+            dragDrops.add(new DragDrop(tabFragment.defaultSortOrder(), tabFragment.getTitle(), tabFragment.checked()));
         }
         return dragDrops;
     }
@@ -63,7 +66,7 @@ public class FragmentRegistry
     {
         List<ITabFragment> fragments = findAll(activity);
         for (ITabFragment fragment : fragments) {
-            if (title.equalsIgnoreCase(activity.getString(fragment.getTitle()))) {
+            if (title.equalsIgnoreCase(fragment.getTitle())) {
                 return fragment;
             }
         }
@@ -73,7 +76,7 @@ public class FragmentRegistry
     public List<ITabFragment> findAll(Activity activity)
     {
         List<ITabFragment> sectionListeners = new ArrayList<>(findAllClasses(activity));
-        Collections.sort(sectionListeners, new TabFragmentComparator(activity));
+        Collections.sort(sectionListeners, new TabFragmentComparator());
         return sectionListeners;
     }
 
@@ -118,19 +121,13 @@ public class FragmentRegistry
 
     class TabFragmentComparator implements Comparator<ITabFragment>
     {
-        private Activity activity;
-
-        TabFragmentComparator(Activity activity)
-        {
-            this.activity = activity;
-        }
 
         @Override
         public int compare(ITabFragment tabFragment, ITabFragment tabFragment2)
         {
             int comparedValue = tabFragment.defaultSortOrder() - tabFragment2.defaultSortOrder();
             if (comparedValue == 0) {
-                return activity.getString(tabFragment2.getTitle()).compareTo(activity.getString(tabFragment2.getTitle()));
+                return tabFragment2.getTitle().compareTo(tabFragment2.getTitle());
             }
             return comparedValue;
         }

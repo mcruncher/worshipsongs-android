@@ -230,9 +230,9 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.artists;
+        return "artists";
     }
 
     @Override

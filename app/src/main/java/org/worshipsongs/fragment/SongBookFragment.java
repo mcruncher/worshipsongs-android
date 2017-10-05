@@ -189,9 +189,9 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.song_books;
+        return "song_books";
     }
 
     @Override

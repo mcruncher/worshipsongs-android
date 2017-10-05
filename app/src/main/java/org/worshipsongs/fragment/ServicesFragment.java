@@ -156,9 +156,9 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.playlists;
+        return "playlists";
     }
 
     @Override

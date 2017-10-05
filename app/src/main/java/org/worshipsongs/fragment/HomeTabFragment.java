@@ -10,18 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;
-import org.worshipsongs.registry.TabFragment;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * author:Seenivasan, Madasamy

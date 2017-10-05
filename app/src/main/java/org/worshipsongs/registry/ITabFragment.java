@@ -1,7 +1,6 @@
 package org.worshipsongs.registry;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 
 import org.worshipsongs.listener.SongContentViewListener;
 
@@ -14,8 +13,7 @@ public interface ITabFragment
 {
     int defaultSortOrder();
 
-    @StringRes
-    int getTitle();
+    String getTitle();
 
     boolean checked();
 

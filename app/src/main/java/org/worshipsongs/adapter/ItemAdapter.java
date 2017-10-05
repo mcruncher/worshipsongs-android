@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.woxthebox.draglistview.DragItemAdapter;
 
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.DragDrop;
 
 import java.util.ArrayList;
@@ -54,7 +55,9 @@ public class ItemAdapter extends DragItemAdapter<DragDrop, ItemAdapter.ViewHolde
     {
         super.onBindViewHolder(holder, position);
         String text = mItemList.get(position).getTitle();
-        holder.mText.setText(text);
+        int identifier = WorshipSongApplication.getContext().getResources().getIdentifier(text,
+                "string", WorshipSongApplication.getContext().getPackageName());
+        holder.mText.setText( WorshipSongApplication.getContext().getString(identifier));
         holder.checkbox.setChecked(mItemList.get(position).isChecked());
         holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {

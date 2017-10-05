@@ -34,7 +34,7 @@ class FragmentRegistryTest extends ElectricSpecification
         fragmentList.add(new DummyFragment1())
 
         when:
-        Collections.sort(fragmentList,  new FragmentRegistry.TabFragmentComparator(fragmentRegistry, activity))
+        Collections.sort(fragmentList,  new FragmentRegistry.TabFragmentComparator(fragmentRegistry))
 
         then:
         fragmentList[0].class.getSimpleName() == "DummyFragment1"

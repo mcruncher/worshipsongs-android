@@ -434,9 +434,9 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     }
 
     @Override
-    public @StringRes int getTitle()
+    public String getTitle()
     {
-        return R.string.titles;
+        return "titles";
     }
 
     @Override

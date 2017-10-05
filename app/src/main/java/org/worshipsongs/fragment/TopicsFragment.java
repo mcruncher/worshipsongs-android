@@ -203,9 +203,9 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
     @Override
-    public int getTitle()
+    public String getTitle()
     {
-        return R.string.categories;
+        return "categories";
     }
 
     @Override
