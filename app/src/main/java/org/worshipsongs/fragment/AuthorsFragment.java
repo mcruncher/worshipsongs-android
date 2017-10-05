@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,11 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Author;
@@ -35,10 +33,10 @@ import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -182,8 +180,9 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     }
 
     @Override
-    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, Author author)
+    public void setViews(Map<String, Object> objects, Author author)
     {
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(getAuthorName(author));
         titleTextView.setOnClickListener(textViewOnClickListener(author));
     }
@@ -211,17 +210,6 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         return userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getDefaultName();
     }
 
-    @Override
-    public void setPlayImageView(ImageView imageView, Author author, int position)
-    {
-        imageView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, Author author, int position)
-    {
-        imageView.setVisibility(View.GONE);
-    }
 
     @Override
     public int defaultSortOrder()
@@ -246,4 +234,6 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     {
         //DO nothing
     }
+
+
 }

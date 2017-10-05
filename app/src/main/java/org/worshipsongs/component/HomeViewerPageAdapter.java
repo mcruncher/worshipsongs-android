@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.fragment.SongsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
+    private static final String DEF_TYPE = "string";
     private Activity activity;
     private List<String> titles;
     private SongContentViewListener songContentViewListener;
@@ -46,7 +49,9 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
     @Override
     public CharSequence getPageTitle(int position)
     {
-        return titles.get(position);
+        int identifier = activity.getResources().getIdentifier(titles.get(position),
+                DEF_TYPE, WorshipSongApplication.getContext().getPackageName());
+        return activity.getString(identifier);
     }
 
     @Override
@@ -54,7 +59,6 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
     {
         return titles.size();
     }
-
 
 }
 

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.DragDrop;
 
 import java.util.ArrayList;
@@ -45,9 +44,7 @@ public class FragmentRegistry
         }
         for (DragDrop configuredDragDrop : configuredDragDrops) {
             if (configuredDragDrop.isChecked()) {
-                int identifier = WorshipSongApplication.getContext().getResources().getIdentifier(configuredDragDrop.getTitle(),
-                        "string", WorshipSongApplication.getContext().getPackageName());
-                titles.add(activity.getString(identifier));
+                titles.add(configuredDragDrop.getTitle());
             }
         }
         return titles;

@@ -40,6 +40,7 @@ import org.worshipsongs.utils.PropertyUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -146,18 +147,20 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
 
     //Adapter listener methods
     @Override
-    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, ServiceSong serviceSong)
+    public void setViews(Map<String, Object> objects, ServiceSong serviceSong)
     {
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
         titleTextView.setOnClickListener(new SongOnClickListener(serviceSong));
         titleTextView.setOnLongClickListener(new SongOnLongClickListener(serviceSong));
-    }
 
-    @Override
-    public void setPlayImageView(ImageView imageView, ServiceSong serviceSong, int position)
-    {
-        imageView.setVisibility(isShowPlayIcon(serviceSong.getSong()) ? View.VISIBLE : View.GONE);
-        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+        ImageView playImageView = (ImageView)objects.get(CommonConstants.PLAY_IMAGE_KEy);
+        playImageView.setVisibility(isShowPlayIcon(serviceSong.getSong()) ? View.VISIBLE : View.GONE);
+        playImageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+
+        ImageView optionsImageView = (ImageView)objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        optionsImageView.setVisibility(View.VISIBLE);
+        optionsImageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
     }
 
     boolean isShowPlayIcon(Song song)
@@ -168,12 +171,6 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         } catch (Exception e) {
             return false;
         }
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, ServiceSong serviceSong, int position)
-    {
-        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
     }
 
     private View.OnClickListener imageOnClickListener(final Song song, final String title)
@@ -233,6 +230,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
     {
         //Do nothing
     }
+
 
     private class SongOnClickListener implements View.OnClickListener
     {
