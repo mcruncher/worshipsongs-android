@@ -88,18 +88,6 @@ public class ItemAdapter extends DragItemAdapter<DragDrop, ItemAdapter.ViewHolde
             checkbox = (CheckBox) itemView.findViewById(R.id.checkBox);
         }
 
-        @Override
-        public void onItemClicked(View view)
-        {
-            Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public boolean onItemLongClicked(View view)
-        {
-            Toast.makeText(view.getContext(), "Item long clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        }
     }
 
     private boolean isEnable(List<DragDrop> dragDrops)
