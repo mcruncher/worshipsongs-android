@@ -67,7 +67,7 @@ public class SongListActivity extends AppCompatActivity implements SongContentVi
         bundle.putInt(CommonConstants.ID, intent.getIntExtra(CommonConstants.ID, 0));
         SongsFragment songsFragment = SongsFragment.newInstance(bundle);
         if (songContentFrameLayout != null) {
-            songsFragment.setSongContentViewListener(this);
+            songsFragment.setListenerAndBundle(this, null);
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.tabs_fragment, songsFragment);

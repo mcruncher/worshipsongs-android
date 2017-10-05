@@ -16,6 +16,8 @@ import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.FragmentRegistry;
+import org.worshipsongs.registry.TabFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,7 @@ public class HomeTabFragment extends Fragment
 {
     private SongContentViewListener songContentViewListener;
     private SharedPreferences preferences;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
     public static HomeTabFragment newInstance()
     {
@@ -42,7 +45,8 @@ public class HomeTabFragment extends Fragment
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.ome
         Log.i(this.getClass().getSimpleName(), "Preparing to load home view fragment");
-        HomeViewerPageAdapter adapter = new HomeViewerPageAdapter(getChildFragmentManager(), getTitles(), songContentViewListener);
+
+        HomeViewerPageAdapter adapter = new HomeViewerPageAdapter(getChildFragmentManager(), getActivity(), songContentViewListener);
         adapter.notifyDataSetChanged();
 
         // Assigning ViewPager View and setting the adapter
@@ -72,20 +76,5 @@ public class HomeTabFragment extends Fragment
         this.songContentViewListener = songContentViewListener;
     }
 
-    public List<String> getTitles()
-    {
-        List<DragDrop> mItemArray = DragDrop.toArrays(preferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
-        if (mItemArray == null || mItemArray.isEmpty()) {
-            return Arrays.asList(getResources().getString(R.string.titles), getResources().getString(R.string.artists),
-                    getResources().getString(R.string.categories), getString(R.string.song_books), getResources().getString(R.string.playlists));
-        } else {
-            List<String> list = new ArrayList<>();
-            for (DragDrop dragDrop : mItemArray) {
-                if (dragDrop.isChecked()) {
-                    list.add(dragDrop.getTitle());
-                }
-            }
-            return list;
-        }
-    }
+
 }

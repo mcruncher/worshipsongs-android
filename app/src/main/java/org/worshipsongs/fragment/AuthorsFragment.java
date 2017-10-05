@@ -30,6 +30,8 @@ import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.Type;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
@@ -43,7 +45,7 @@ import java.util.List;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>
+public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -219,5 +221,29 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     public void setOptionsImageView(ImageView imageView, Author author, int position)
     {
         imageView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getTitle()
+    {
+        return R.string.artists;
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        //DO nothing
     }
 }

@@ -1,17 +1,14 @@
 package org.worshipsongs.component;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.worshipsongs.R;
-import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.fragment.AuthorsFragment;
-import org.worshipsongs.fragment.ServicesFragment;
-import org.worshipsongs.fragment.SongBookFragment;
 import org.worshipsongs.fragment.SongsFragment;
-import org.worshipsongs.fragment.TopicsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.FragmentRegistry;
+import org.worshipsongs.registry.ITabFragment;
 
 import java.util.List;
 
@@ -21,20 +18,29 @@ import java.util.List;
  */
 public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
+    private Activity activity;
     private List<String> titles;
     private SongContentViewListener songContentViewListener;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
-    public HomeViewerPageAdapter(FragmentManager fragmentManager, List<String> titles, SongContentViewListener songContentViewListener)
+    public HomeViewerPageAdapter(FragmentManager fragmentManager, Activity activity, SongContentViewListener songContentViewListener)
     {
         super(fragmentManager);
-        this.titles = titles;
+        this.activity = activity;
+        this.titles = fragmentRegistry.getTitles(activity);
         this.songContentViewListener = songContentViewListener;
     }
 
     @Override
     public Fragment getItem(int position)
     {
-        return getFragment(position);
+        ITabFragment fragment = fragmentRegistry.findByTitle(activity, titles.get(position));
+        if (fragment != null) {
+            fragment.setListenerAndBundle(songContentViewListener, null);
+            return (Fragment) fragment;
+        } else {
+            return SongsFragment.newInstance(null);
+        }
     }
 
     @Override
@@ -49,23 +55,6 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
         return titles.size();
     }
 
-    private Fragment getFragment(int position)
-    {
-        String title = titles.get(position);
-        if (WorshipSongApplication.getContext().getString(R.string.titles).equalsIgnoreCase(title)) {
-            SongsFragment songsFragment = SongsFragment.newInstance(null);
-            songsFragment.setSongContentViewListener(songContentViewListener);
-            return songsFragment;
-        } else if ((WorshipSongApplication.getContext().getString(R.string.artists).equalsIgnoreCase(title))) {
-            return AuthorsFragment.newInstance();
-        } else if ((WorshipSongApplication.getContext().getString(R.string.categories).equalsIgnoreCase(title))) {
-            return new TopicsFragment();
-        } else if ((WorshipSongApplication.getContext().getString(R.string.song_books).equalsIgnoreCase(title))) {
-            return SongBookFragment.newInstance();
-        } else {
-            return ServicesFragment.newInstance();
-        }
 
-    }
 }
 

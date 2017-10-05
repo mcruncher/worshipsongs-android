@@ -27,6 +27,8 @@ import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.SongBook;
 import org.worshipsongs.domain.Type;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.SongBookService;
 
 import java.util.List;
@@ -36,7 +38,7 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdapterListener<SongBook>
+public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdapterListener<SongBook>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -178,5 +180,29 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
     public void setOptionsImageView(ImageView imageView, SongBook songBook, int position)
     {
         imageView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getTitle()
+    {
+        return R.string.song_books;
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        // Do nothing
     }
 }

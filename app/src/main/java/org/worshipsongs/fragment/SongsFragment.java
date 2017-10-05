@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,7 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongBook;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -57,7 +59,7 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>
+public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>, ITabFragment
 {
 
     private static final String STATE_KEY = "listViewState";
@@ -338,10 +340,10 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         super.onPause();
     }
 
-    public void setSongContentViewListener(SongContentViewListener songContentViewListener)
-    {
-        this.songContentViewListener = songContentViewListener;
-    }
+//    public void setSongContentViewListener(SongContentViewListener songContentViewListener)
+//    {
+//        this.songContentViewListener = songContentViewListener;
+//    }
 
     @Override
     public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, Song song)
@@ -424,4 +426,29 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             }
         };
     }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 0;
+    }
+
+    @Override
+    public @StringRes int getTitle()
+    {
+        return R.string.titles;
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        this.songContentViewListener = songContentViewListener;
+    }
+
 }

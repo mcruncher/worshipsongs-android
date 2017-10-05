@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,8 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
@@ -20,8 +19,8 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.adapter.ItemAdapter;
 import org.worshipsongs.domain.DragDrop;
+import org.worshipsongs.registry.FragmentRegistry;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -31,9 +30,10 @@ import java.util.ArrayList;
 
 public class TabChoicePreference extends DialogPreference implements ItemAdapter.Listener
 {
-    private ArrayList<DragDrop> mItemArray;
+    private ArrayList<DragDrop> configureDragDrops;
     private DragListView mDragListView;
     private SharedPreferences preferences;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
     public TabChoicePreference(Context context, AttributeSet attrs)
     {
@@ -63,43 +63,15 @@ public class TabChoicePreference extends DialogPreference implements ItemAdapter
 
     private void setItems()
     {
-        mItemArray = DragDrop.toArrays(preferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
-        if (mItemArray == null || mItemArray.isEmpty()) {
-            mItemArray = getDefaultList();
-            preferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(mItemArray)).apply();
+        configureDragDrops = DragDrop.toArrays(preferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
+        ArrayList<DragDrop> defaultList = fragmentRegistry.getDragDrops((Activity) getContext());
+        if (configureDragDrops == null || configureDragDrops.isEmpty()) {
+            configureDragDrops = defaultList;
+            preferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply();
+        } else if (defaultList.size() > configureDragDrops.size()) {
+            defaultList.removeAll(configureDragDrops);
+            configureDragDrops.addAll(defaultList);
         }
-    }
-
-    private ArrayList<DragDrop> getDefaultList()
-    {
-        ArrayList<DragDrop> list = new ArrayList<>();
-        list.add(new DragDrop(0, getContext().getString(R.string.titles), true));
-        list.add(new DragDrop(1, getContext().getString(R.string.artists), true));
-        list.add(new DragDrop(2, getContext().getString(R.string.categories), true));
-        list.add(new DragDrop(3, getContext().getString(R.string.song_books), true));
-        list.add(new DragDrop(4, getContext().getString(R.string.playlists), true));
-        return list;
-    }
-
-    private void save(Context context, ArrayList<DragDrop> items)
-    {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(items);
-        editor.putString("tag", json);
-        editor.apply();
-    }
-
-    private ArrayList<DragDrop> getList(Context context)
-    {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
-        String json = sharedPrefs.getString("tag", null);
-        Type type = new TypeToken<ArrayList<DragDrop>>()
-        {
-        }.getType();
-        return gson.fromJson(json, type);
     }
 
     private void setDragListView(View view)
@@ -107,7 +79,7 @@ public class TabChoicePreference extends DialogPreference implements ItemAdapter
         mDragListView = (DragListView) view.findViewById(R.id.drag_list_view);
         mDragListView.getRecyclerView().setVerticalScrollBarEnabled(true);
         mDragListView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemAdapter listAdapter = new ItemAdapter(mItemArray, R.layout.tab_choice_item, R.id.image, false);
+        ItemAdapter listAdapter = new ItemAdapter(configureDragDrops, R.layout.tab_choice_item, R.id.image, false);
         listAdapter.setListener(this);
         mDragListView.setAdapter(listAdapter, true);
         mDragListView.setCanDragHorizontally(false);

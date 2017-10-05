@@ -18,6 +18,8 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.ServiceSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
@@ -29,7 +31,7 @@ import java.util.List;
  * Version : 4.x
  */
 
-public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener
+public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment
 {
     private List<String> services = new ArrayList<>();
     private Parcelable state;
@@ -145,6 +147,30 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     public void onClickNegativeButton()
     {
         // Do nothing
+    }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 4;
+    }
+
+    @Override
+    public int getTitle()
+    {
+        return R.string.playlists;
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+
     }
 
     private class TextViewLongClickListener implements View.OnLongClickListener
