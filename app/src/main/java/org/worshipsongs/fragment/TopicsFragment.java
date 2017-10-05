@@ -28,6 +28,8 @@ import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.TopicsService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
@@ -39,7 +41,7 @@ import java.util.List;
  * Version : 3.x
  */
 
-public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>
+public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -192,5 +194,29 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     public void setOptionsImageView(ImageView imageView, Topics topics, int position)
     {
         imageView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 2;
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "categories";
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        // Do nothing
     }
 }

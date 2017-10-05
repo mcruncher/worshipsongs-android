@@ -1,15 +1,14 @@
 package org.worshipsongs.component;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.worshipsongs.fragment.AuthorsFragment;
-import org.worshipsongs.fragment.ServicesFragment;
-import org.worshipsongs.fragment.SongBookFragment;
 import org.worshipsongs.fragment.SongsFragment;
-import org.worshipsongs.fragment.TopicsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.FragmentRegistry;
+import org.worshipsongs.registry.ITabFragment;
 
 import java.util.List;
 
@@ -19,35 +18,28 @@ import java.util.List;
  */
 public class HomeViewerPageAdapter extends FragmentPagerAdapter
 {
+    private Activity activity;
     private List<String> titles;
     private SongContentViewListener songContentViewListener;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
-    public HomeViewerPageAdapter(FragmentManager fragmentManager, List<String> titles, SongContentViewListener songContentViewListener)
+    public HomeViewerPageAdapter(FragmentManager fragmentManager, Activity activity, SongContentViewListener songContentViewListener)
     {
         super(fragmentManager);
-        this.titles = titles;
+        this.activity = activity;
+        this.titles = fragmentRegistry.getTitles(activity);
         this.songContentViewListener = songContentViewListener;
     }
 
     @Override
     public Fragment getItem(int position)
     {
-
-        switch (position) {
-            case 0:
-                SongsFragment songsFragment = SongsFragment.newInstance(null);
-                songsFragment.setSongContentViewListener(songContentViewListener);
-                return songsFragment;
-            case 1:
-                return AuthorsFragment.newInstance();
-            case 2:
-                return new TopicsFragment();
-            case 3:
-                return SongBookFragment.newInstance();
-            case 4:
-                return ServicesFragment.newInstance();
-            default:
-                return null;
+        ITabFragment fragment = fragmentRegistry.findByTitle(activity, titles.get(position));
+        if (fragment != null) {
+            fragment.setListenerAndBundle(songContentViewListener, null);
+            return (Fragment) fragment;
+        } else {
+            return SongsFragment.newInstance(null);
         }
     }
 
@@ -62,5 +54,7 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
     {
         return titles.size();
     }
+
+
 }
 

@@ -41,6 +41,9 @@
     <string name="videoPlaySummary">Enable/Disable video playing</string>
     <!--<string name="pref_restore_default_settings">Restore Settings</string>-->
     <string name="advanced">Advanced</string>
+    <string name="home_view_category_title">Home view settings</string>
+    <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
+    <string name="tab_choice_title">Change tab items</string>
 
     <string name="Play">Play</string>
     <string name="remote_display_settings">Remote Display settings</string>
