@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +24,7 @@ import org.worshipsongs.utils.PropertyUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -112,23 +112,12 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     //Adapter listener methods
     @Override
-    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, String text)
+    public void setViews(Map<String, Object> objects, String text)
     {
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(text);
         titleTextView.setOnLongClickListener(new TextViewLongClickListener(text));
         titleTextView.setOnClickListener(new TextViewOnClickListener(text));
-    }
-
-    @Override
-    public void setPlayImageView(ImageView imageView, String text, int position)
-    {
-        imageView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, String text, int position)
-    {
-        imageView.setVisibility(View.GONE);
     }
 
     //Dialog Listener method
@@ -149,6 +138,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
         // Do nothing
     }
 
+    //Tab choices and reorder methods
     @Override
     public int defaultSortOrder()
     {

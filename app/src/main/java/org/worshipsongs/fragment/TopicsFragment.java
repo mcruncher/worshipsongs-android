@@ -35,6 +35,7 @@ import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -178,22 +179,11 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
     @Override
-    public void setTitleTextView(TextView textView, TextView subTitleTextView, Topics topics)
+    public void setViews(Map<String, Object> objects, Topics topics)
     {
+        TextView textView = (TextView)objects.get(CommonConstants.TITLE_KEY);
         textView.setText(getTopicsName(topics));
         textView.setOnClickListener(getOnClickListener(topics));
-    }
-
-    @Override
-    public void setPlayImageView(ImageView imageView, Topics topics, int position)
-    {
-        imageView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, Topics topics, int position)
-    {
-        imageView.setVisibility(View.GONE);
     }
 
     @Override
@@ -219,4 +209,5 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     {
         // Do nothing
     }
+
 }

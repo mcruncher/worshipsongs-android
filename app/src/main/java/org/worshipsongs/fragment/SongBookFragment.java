@@ -32,6 +32,7 @@ import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.SongBookService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -147,8 +148,9 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
     }
 
     @Override
-    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, SongBook songBook)
+    public void setViews(Map<String, Object> objects, SongBook songBook)
     {
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(songBook.getName());
         titleTextView.setOnClickListener(getOnClickListener(songBook));
     }
@@ -168,18 +170,6 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
                 startActivity(intent);
             }
         };
-    }
-
-    @Override
-    public void setPlayImageView(ImageView imageView, SongBook songBook, int position)
-    {
-        imageView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, SongBook songBook, int position)
-    {
-        imageView.setVisibility(View.GONE);
     }
 
     @Override
@@ -205,4 +195,6 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
     {
         // Do nothing
     }
+
+
 }

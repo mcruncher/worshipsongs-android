@@ -11,13 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 4.x.x
  */
 
 public class TitleAdapter<T> extends ArrayAdapter<T>
@@ -39,29 +42,39 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             view = layoutInflater.inflate(R.layout.title_row, null);
         }
-        setTitleTextView(view, position);
-        setPlayImageView(view, position);
-        setImageView(view, position);
+        setViews(view, position);
         return view;
     }
 
-    private void setTitleTextView(View view, int position)
+    private void setViews(View view, int position)
     {
-        TextView titleTextView = (TextView) view.findViewById(R.id.title_text_view);
-        TextView subTitleTextView = (TextView) view.findViewById(R.id.subtitle_text_view);
-        titleAdapterListener.setTitleTextView(titleTextView, subTitleTextView, getItem(position));
+        Map<String, Object> maps = new HashMap<String, Object>();
+        maps.put(CommonConstants.TITLE_KEY, getTitlesView(view));
+        maps.put(CommonConstants.SUBTITLE_KEY, getSubtitleTextView(view));
+        maps.put(CommonConstants.PLAY_IMAGE_KEy, getPlayImageView(view));
+        maps.put(CommonConstants.OPTIONS_IMAGE_KEY, getOptionsImageView(view));
+        maps.put(CommonConstants.POSITION_KEY, position);
+        titleAdapterListener.setViews(maps, getItem(position));
     }
 
-    private void setPlayImageView(final View rowView, int position)
+    private TextView getTitlesView(View view)
     {
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.video_image_view);
-        titleAdapterListener.setPlayImageView(imageView, getItem(position), position);
+        return (TextView) view.findViewById(R.id.title_text_view);
     }
 
-    private void setImageView(View rowView, int position)
+    private TextView getSubtitleTextView(View view)
     {
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.option_image_view);
-        titleAdapterListener.setOptionsImageView(imageView, getItem(position), position);
+        return (TextView) view.findViewById(R.id.subtitle_text_view);
+    }
+
+    private ImageView getPlayImageView(final View rowView)
+    {
+        return (ImageView) rowView.findViewById(R.id.video_image_view);
+    }
+
+    private ImageView getOptionsImageView(View rowView)
+    {
+        return (ImageView) rowView.findViewById(R.id.option_image_view);
     }
 
     public void addObjects(List<T> objects)
@@ -78,11 +91,6 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
 
     public interface TitleAdapterListener<T>
     {
-        void setTitleTextView(TextView titleTextView, TextView subTitleTextView, T t);
-
-        void setPlayImageView(ImageView imageView, T t, int position);
-
-        void setOptionsImageView(ImageView imageView, T t, int position);
-
+        void setViews(Map<String, Object> objects, T t);
     }
 }

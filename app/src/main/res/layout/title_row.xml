@@ -35,7 +35,7 @@
         android:clickable="true"
         android:contentDescription="videoImage"
         android:tint="@color/light_gray_header_color"
-        android:visibility="visible"
+        android:visibility="gone"
         app:srcCompat="@android:drawable/presence_video_online"/>
 
 
@@ -52,6 +52,7 @@
         android:clickable="true"
         android:contentDescription="optionImage"
         android:tint="@color/light_gray_header_color"
+        android:visibility="gone"
         app:srcCompat="@drawable/option_menu"/>
 
     <TextView

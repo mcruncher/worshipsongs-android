@@ -15,7 +15,6 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +38,6 @@ import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.domain.SongBook;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
@@ -49,10 +47,9 @@ import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ImageUtils;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
@@ -340,14 +337,10 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         super.onPause();
     }
 
-//    public void setSongContentViewListener(SongContentViewListener songContentViewListener)
-//    {
-//        this.songContentViewListener = songContentViewListener;
-//    }
-
     @Override
-    public void setTitleTextView(TextView titleTextView, TextView subTitleTextView, Song song)
+    public void setViews(Map<String, Object> objects, Song song)
     {
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(getTitle(song));
         Song presentingSong = Setting.getInstance().getSong();
         if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
@@ -355,8 +348,17 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         } else {
             titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
+        TextView subTitleTextView = (TextView)objects.get(CommonConstants.SUBTITLE_KEY);
         subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);
         subTitleTextView.setText(getString(R.string.song_book_no) + " " + song.getSongBookNumber());
+
+        ImageView playImageView = (ImageView)objects.get(CommonConstants.PLAY_IMAGE_KEy);
+        playImageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
+        playImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
+
+        ImageView optionsImageView = (ImageView)objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        optionsImageView.setVisibility(View.VISIBLE);
+        optionsImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
     }
 
     @NonNull
@@ -396,23 +398,10 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         }
     }
 
-    @Override
-    public void setPlayImageView(ImageView imageView, Song song, int position)
-    {
-        imageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
-        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
-    }
-
     boolean isShowPlayIcon(Song song)
     {
         String urlKey = song.getUrlKey();
         return urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo();
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, Song song, int position)
-    {
-        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
     }
 
     private View.OnClickListener imageOnClickListener(final String title)

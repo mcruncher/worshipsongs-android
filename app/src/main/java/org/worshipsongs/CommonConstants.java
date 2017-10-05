@@ -12,6 +12,9 @@ public final class CommonConstants
 
     public static final String TITLE_LIST_KEY = "titles";
     public static final String TITLE_KEY = "title";
+    public static final String SUBTITLE_KEY = "subTitle";
+    public static final String PLAY_IMAGE_KEy = "playImage";
+    public static final String OPTIONS_IMAGE_KEY = "optionsImage";
     public static final String MESSAGE_KEY = "message";
     public static final String POSITION_KEY = "position";
     public static final String VERSION_KEY = "version";
@@ -40,7 +43,7 @@ public final class CommonConstants
 
     public static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
     public static final String SONG_BOOK_NUMBER_KEY = "songBookNumberKey";
-    public  static final String TAB_CHOICE_KEY = "tabChoiceKey";
+    public static final String TAB_CHOICE_KEY = "tabChoiceKey";
 
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
 
