@@ -43,7 +43,7 @@ public final class CommonConstants
 
     public static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
     public static final String SONG_BOOK_NUMBER_KEY = "songBookNumberKey";
-    public static final String TAB_CHOICE_KEY = "tabChoiceKey";
+    public static final String TAB_CHOICE_KEY = "tabChoicesKey";
 
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
 
