@@ -1,15 +1,48 @@
 package org.worshipsongs.service
 
+import android.preference.PreferenceManager
+import hkhc.electricspock.ElectricSpecification
+import org.robolectric.RuntimeEnvironment
+import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.SongBook
-import spock.lang.Specification
 
 /**
  *  Author : Madasamy
  *  Version : 4.x
  */
-class SongBookServiceSpockTest extends Specification
+class SongBookServiceSpockTest extends ElectricSpecification
 {
-    def songBookService = new SongBookService()
+    def songBookService = new SongBookService(RuntimeEnvironment.application.getApplicationContext())
+    def sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+
+    void cleanup()
+    {
+        sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 0).apply()
+    }
+
+    def "Parse tamil Name"()
+    {
+        given:
+        sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 0).apply()
+
+        when:
+        def result = songBookService.parseName("Foo={இடைவிடா நன்றி உமக்குத்தான}")
+
+        then:
+        result == "இடைவிடா நன்றி உமக்குத்தான"
+    }
+
+    def "Parse default name"()
+    {
+        given:
+        sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply()
+
+        when:
+        def result = songBookService.parseName("Foo{இடைவிடா நன்றி உமக்குத்தான}")
+
+        then:
+        result == "Foo"
+    }
 
     def "Filtered song books"()
     {
@@ -36,4 +69,5 @@ class SongBookServiceSpockTest extends Specification
         then:
         result.size() == 0
     }
+
 }

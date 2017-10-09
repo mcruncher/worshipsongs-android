@@ -26,9 +26,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.SongDao;
-import org.worshipsongs.dialog.CustomDialogBuilder;
-import org.worshipsongs.domain.DialogConfiguration;
+import org.worshipsongs.service.DatabaseService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.fragment.AlertDialogFragment;
 import org.worshipsongs.locator.IImportDatabaseLocator;
 import org.worshipsongs.locator.ImportDatabaseLocator;
@@ -51,7 +50,8 @@ import java.util.Map;
 public class DatabaseSettingActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
-    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
+    private SongService songService = new SongService(WorshipSongApplication.getContext());
+    private DatabaseService databaseService = new DatabaseService(WorshipSongApplication.getContext());
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
     private PresentationScreenService presentationScreenService;
     private Button defaultDatabaseButton;
@@ -254,10 +254,10 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
     {
         try {
             resultTextView.setText("");
-            songDao.close();
-            songDao.copyDatabase(absolutePath, true);
-            songDao.open();
-            if (songDao.isValidDataBase()) {
+            databaseService.close();
+            databaseService.copyDatabase(absolutePath, true);
+            databaseService.open();
+            if (songService.isValidDataBase()) {
                 updateResultTextview();
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
                 defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY,
@@ -320,18 +320,18 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
             copyFile(uri);
         } else if ("InvalidLocalDbWaringDialog".equalsIgnoreCase(tag)) {
             try {
-                songDao.close();
-                songDao.copyDatabase("", true);
-                songDao.open();
+                databaseService.close();
+                databaseService.copyDatabase("", true);
+                databaseService.open();
                 updateResultTextview();
             } catch (IOException e) {
                 Log.e(DatabaseSettingActivity.class.getSimpleName(), "Error", e);
             }
         } else if ("RevertDefaultDatabaseDialog".equalsIgnoreCase(tag)) {
             try {
-                songDao.close();
-                songDao.copyDatabase("", true);
-                songDao.open();
+                databaseService.close();
+                databaseService.copyDatabase("", true);
+                databaseService.open();
                 updateResultTextview();
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false).apply();
                 defaultDatabaseButton.setVisibility(View.GONE);
@@ -351,7 +351,7 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
     {
         String count = null;
         try {
-            count = String.valueOf(songDao.count());
+            count = String.valueOf(songService.count());
         } catch (Exception e) {
             count = "";
         }

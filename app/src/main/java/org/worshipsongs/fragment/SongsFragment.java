@@ -41,6 +41,8 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
+
+import org.worshipsongs.service.DatabaseService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -72,6 +74,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private PopupMenuService popupMenuService = new PopupMenuService();
     private SongService songService;
+    private DatabaseService databaseService;
 
     public static SongsFragment newInstance(Bundle bundle)
     {
@@ -87,6 +90,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(STATE_KEY);
         }
+        databaseService = new DatabaseService(getActivity());
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
         initSetUp();
@@ -94,7 +98,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
 
     private void initSetUp()
     {
-        songService.open();
+        databaseService.open();
         loadSongs();
         if (!sharedPreferences.contains(CommonConstants.SEARCH_BY_TITLE_KEY)) {
             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
@@ -285,7 +289,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     {
         super.onResume();
         if (sharedPreferences.getBoolean(CommonConstants.UPDATED_SONGS_KEY, false)) {
-            songService.open();
+            databaseService.open();
             songs = songService.findAll();
             titleAdapter.clear();
             titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));

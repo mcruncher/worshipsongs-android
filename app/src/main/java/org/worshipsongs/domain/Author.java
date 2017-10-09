@@ -8,22 +8,29 @@ import java.io.Serializable;
  * @Author : Madasamy
  * @Version : 1.0
  */
-public class Author extends AbstractDomain
+public class Author
 {
-
+    private int id;
     private String firstName;
     private String lastName;
+    private String name;
     private String tamilName;
     private String defaultName;
+    private int noOfSongs;
 
     public Author()
     {
 
     }
 
-    public Author(String name)
+    public int getId()
     {
-        setName(name);
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public String getLastName()
@@ -46,6 +53,16 @@ public class Author extends AbstractDomain
         this.firstName = firstName;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     public String getTamilName()
     {
         return tamilName;
@@ -64,6 +81,16 @@ public class Author extends AbstractDomain
     public void setDefaultName(String defaultName)
     {
         this.defaultName = defaultName;
+    }
+
+    public int getNoOfSongs()
+    {
+        return noOfSongs;
+    }
+
+    public void setNoOfSongs(int noOfSongs)
+    {
+        this.noOfSongs = noOfSongs;
     }
 
     @Override

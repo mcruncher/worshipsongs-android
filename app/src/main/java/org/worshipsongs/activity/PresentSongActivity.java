@@ -13,7 +13,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.PresentationScreenService;
 
@@ -24,7 +24,7 @@ import org.worshipsongs.service.PresentationScreenService;
 
 public class PresentSongActivity extends AppCompatActivity
 {
-    private SongDao songDao;
+    private SongService songService;
     private Song song;
     private FloatingActionButton nextButton;
     private int currentPosition;
@@ -48,10 +48,10 @@ public class PresentSongActivity extends AppCompatActivity
 
     private void initSetUp()
     {
-        songDao = new SongDao(this);
+        songService = new SongService(this);
         Bundle bundle = getIntent().getExtras();
         String title = bundle.getString(CommonConstants.TITLE_KEY);
-        song = songDao.findContentsByTitle(title);
+        song = songService.findContentsByTitle(title);
         setActionBar();
     }
 

@@ -36,8 +36,6 @@ import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
-import org.worshipsongs.service.IAuthorService;
-import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
@@ -61,8 +59,8 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private int millis;
     private YouTubePlayer youTubePlayer;
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private ISongService songDao = new SongService(WorshipSongApplication.getContext());
-    private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
+    private SongService songDao = new SongService(WorshipSongApplication.getContext());
+    private AuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private PopupMenuService popupMenuService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
@@ -150,7 +148,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""));
             song.setContents(contents);
         }
-        song.setAuthorName(authorService.findNameByTitle(title));
+        song.setAuthorName(authorService.findAuthorNameByTitle(title));
     }
 
     private void setListView(View view, final Song song)

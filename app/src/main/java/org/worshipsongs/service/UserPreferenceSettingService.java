@@ -17,11 +17,16 @@ public class UserPreferenceSettingService
 {
 
     private Context context = WorshipSongApplication.getContext();
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    private SharedPreferences sharedPreferences;
 
     public UserPreferenceSettingService()
     {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
 
+    public UserPreferenceSettingService(Context context)
+    {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public float getPortraitFontSize()

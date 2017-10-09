@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -22,11 +21,10 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.R;
 
@@ -71,14 +69,14 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     private boolean isFullscreen;
     private int millis;
     private String mVideoId;
-    private SongDao songDao;
+    private SongService songService;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         initSetUp(bundle);
         super.onCreate(bundle);
-        songDao = new SongDao(this);
+        songService = new SongService(this);
         setContentView(R.layout.custom_youtube_box_activity);
         setRelativeLayout();
         setYouTubePlayerFragment();
@@ -187,7 +185,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
         Bundle extras = getIntent().getExtras();
         Song song = new Song();
         if (extras != null && extras.containsKey("title")) {
-            song = songDao.findContentsByTitle(extras.getString("title"));
+            song = songService.findContentsByTitle(extras.getString("title"));
         }
         return song;
     }

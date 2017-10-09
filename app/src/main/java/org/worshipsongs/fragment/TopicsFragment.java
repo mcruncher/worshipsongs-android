@@ -30,7 +30,7 @@ import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
-import org.worshipsongs.service.TopicsService;
+import org.worshipsongs.service.TopicService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 
@@ -46,7 +46,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
-    private TopicsService topicsService;
+    private TopicService topicsService;
     private List<Topics> topicsList;
     private ListView topicsListView;
     private TitleAdapter<Topics> titleAdapter;
@@ -65,7 +65,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
 
     private void initSetUp()
     {
-        topicsService = new TopicsService(getActivity());
+        topicsService = new TopicService(getActivity());
         topicsList = topicsService.findAll();
     }
 

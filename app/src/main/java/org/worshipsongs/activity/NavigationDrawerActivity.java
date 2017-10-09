@@ -5,21 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.utils.CommonUtils;
-
-import java.util.Locale;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
@@ -42,8 +38,8 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if(!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
-            SongDao songDao = new SongDao(WorshipSongApplication.getContext());
-            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songDao.count()).apply();
+            SongService songService = new SongService(WorshipSongApplication.getContext());
+            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply();
         }
         long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
         presentationScreenService = new PresentationScreenService(this);

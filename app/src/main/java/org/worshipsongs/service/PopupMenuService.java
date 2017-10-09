@@ -23,14 +23,12 @@ import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.activity.PresentSongActivity;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.FavouritesDialogFragment;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.utils.PermissionUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import static android.content.Context.PRINT_SERVICE;
@@ -46,7 +44,7 @@ public class PopupMenuService
 
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
-    private SongDao songDao = new SongDao(getContext());
+    private SongService songService = new SongService(getContext());
 
     public void showPopupmenu(final AppCompatActivity activity, final View view, final String songName, boolean hidePlay)
     {
@@ -58,7 +56,7 @@ public class PopupMenuService
             popupMenu = new PopupMenu(wrapper, view);
         }
         popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
-        final Song song = songDao.findContentsByTitle(songName);
+        final Song song = songService.findContentsByTitle(songName);
         final String urlKey = song.getUrlKey();
         MenuItem menuItem = popupMenu.getMenu().findItem(R.id.play_song);
         menuItem.setVisible(urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo() && hidePlay);
