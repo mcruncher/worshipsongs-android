@@ -37,7 +37,7 @@
         android:maxLines="1"
         android:visibility="gone"
         android:textSize="10sp"
-        android:text="100"/>
+        android:text=""/>
 
     <ImageView
         android:id="@+id/video_image_view"

@@ -44,8 +44,6 @@ public class AuthorService
                 "from songs as s inner join authors_songs as aus on aus.song_id = s.id inner join " +
                 "authors as t on aus.author_id = t.id group by t.first_name ORDER by t.display_name";
         Cursor cursor = databaseService.getDatabase().rawQuery(query, null);
-//        Cursor cursor = databaseService.getDatabase().query(true, TABLE_NAME_AUTHOR,
-//                allColumns, null, null, null, null, COLUMN_DISPLAY_NAME, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Author author = cursorToAuthor(cursor);

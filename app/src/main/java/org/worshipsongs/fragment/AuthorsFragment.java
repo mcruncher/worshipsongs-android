@@ -77,7 +77,6 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         authorService = new AuthorService(getContext());
         for (Author author : authorService.findAll()) {
             if (!author.getName().toLowerCase().contains("unknown") && author.getName() != null) {
-                Log.d("Author", "Count " + author.getNoOfSongs());
                 authorList.add(author);
             }
         }
