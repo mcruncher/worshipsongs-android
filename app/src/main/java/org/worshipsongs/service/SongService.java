@@ -196,24 +196,18 @@ public class SongService
             filteredSongSet.addAll(songs);
         } else {
             for (Song song : songs) {
-                if (isSearchBySongBookNumber(type, query)) {
-                    if (getSongBookNumber(query) == song.getSongBookNumber()) {
-                        filteredSongSet.add(song);
-                    }
-                } else if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
-                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(query.toLowerCase())) {
-                        filteredSongSet.add(song);
-                    }
-                    if (song.getComments() != null && song.getComments().toLowerCase().contains(query.toLowerCase())) {
+                if (sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true)) {
+                    if (getTitles(song.getSearchTitle()).toString().toLowerCase().contains(query.toLowerCase()) ||
+                            String.valueOf(song.getSongBookNumber()).equalsIgnoreCase(query)) {
                         filteredSongSet.add(song);
                     }
                 } else {
                     if (song.getSearchLyrics().toLowerCase().contains(query.toLowerCase())) {
                         filteredSongSet.add(song);
                     }
-                    if (song.getComments() != null && song.getComments().toLowerCase().contains(query.toLowerCase())) {
-                        filteredSongSet.add(song);
-                    }
+                }
+                if (song.getComments() != null && song.getComments().toLowerCase().contains(query.toLowerCase())) {
+                    filteredSongSet.add(song);
                 }
             }
         }
@@ -234,6 +228,7 @@ public class SongService
             return -1;
         }
     }
+
     public List<ServiceSong> filteredServiceSongs(String query, List<ServiceSong> serviceSongs)
     {
         List<ServiceSong> filteredServiceSongs = new ArrayList<>();
