@@ -68,6 +68,15 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Copy part of song
     </li>
     <li>
+        Easy update songs
+    </li>
+    <li>
+        Optimized view for tablets
+    </li>
+     <li>
+        Export song as PDF and share on Social media
+    </li>
+    <li>
         Professional design with no ads.
     </li>
  </ul>
