@@ -313,7 +313,9 @@ public class Song
         @Override
         public int compare(Song song1, Song song2)
         {
-            return song1.getSongBookNumber() - song2.getSongBookNumber();
+            int firstSongBookNumber = (song1.getSongBookNumber() == 0 ? 10000 : song1.getSongBookNumber());
+            int secondSongBookNumber = (song2.getSongBookNumber() == 0 ? 10001 : song2.getSongBookNumber());
+            return firstSongBookNumber - secondSongBookNumber;
         }
     };
 }
