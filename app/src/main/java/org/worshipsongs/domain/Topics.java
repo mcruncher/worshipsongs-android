@@ -86,4 +86,25 @@ public class Topics
                 ", defaultName='" + defaultName + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object instanceof Topics) {
+            Topics otherObject = (Topics) object;
+            EqualsBuilder equalsBuilder = new EqualsBuilder();
+            equalsBuilder.append(getName(), otherObject.getName());
+            return equalsBuilder.isEquals();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+        hashCodeBuilder.append(getName());
+        return hashCodeBuilder.hashCode();
+    }
+
 }
