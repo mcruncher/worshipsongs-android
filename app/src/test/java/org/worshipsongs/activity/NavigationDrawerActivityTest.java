@@ -53,7 +53,7 @@ public class NavigationDrawerActivityTest
     public void testProperties()
     {
         assertEquals("Settings", RuntimeEnvironment.application.getApplicationContext().getString(R.string.settings));
-        assertEquals("Song Book", RuntimeEnvironment.application.getApplicationContext().getString(R.string.home));
+        assertEquals("Worship songs", RuntimeEnvironment.application.getApplicationContext().getString(R.string.home));
         assertEquals("Rate us", RuntimeEnvironment.application.getApplicationContext().getString(R.string.rate_this_app));
         assertEquals("Send feedback", RuntimeEnvironment.application.getApplicationContext().getString(R.string.feedback));
         assertEquals("Version:", RuntimeEnvironment.application.getApplicationContext().getString(R.string.version));
