@@ -51,6 +51,7 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put(CommonConstants.TITLE_KEY, getTitlesView(view));
         maps.put(CommonConstants.SUBTITLE_KEY, getSubtitleTextView(view));
+        maps.put(CommonConstants.COUNT_KEY, getCountView(view));
         maps.put(CommonConstants.PLAY_IMAGE_KEy, getPlayImageView(view));
         maps.put(CommonConstants.OPTIONS_IMAGE_KEY, getOptionsImageView(view));
         maps.put(CommonConstants.POSITION_KEY, position);
@@ -60,6 +61,10 @@ public class TitleAdapter<T> extends ArrayAdapter<T>
     private TextView getTitlesView(View view)
     {
         return (TextView) view.findViewById(R.id.title_text_view);
+    }
+
+    private TextView getCountView(View view) {
+        return (TextView)view.findViewById(R.id.count_text_view);
     }
 
     private TextView getSubtitleTextView(View view)

@@ -18,8 +18,7 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.service.ISongService;
-import org.worshipsongs.service.SongService;
+import org.worshipsongs.service.DatabaseService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -33,8 +32,7 @@ import java.util.Locale;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-
-    private ISongService songService;
+    private DatabaseService databaseService;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -49,7 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     void initSetUp(Context context)
     {
-        songService = new SongService(context);
+        databaseService = new DatabaseService(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -80,8 +78,8 @@ public class SplashScreenActivity extends AppCompatActivity
             Log.i(SplashScreenActivity.class.getSimpleName(), "Version in property file " + versionInPropertyFile);
             if (CommonUtils.isNotImportedDatabase() && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion)) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
-                songService.copyDatabase("", true);
-                songService.open();
+                databaseService.copyDatabase("", true);
+                databaseService.open();
                 PropertyUtils.setProperty(CommonConstants.VERSION_KEY, currentVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
             }

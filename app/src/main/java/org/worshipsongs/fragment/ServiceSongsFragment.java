@@ -25,12 +25,10 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.listener.SongContentViewListener;
-import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -53,8 +51,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
     private ListView songListView;
     private TitleAdapter<ServiceSong> titleAdapter;
     private String serviceName;
-    private SongDao songDao;
-    private ISongService songService;
+    private SongService songService;
     private ArrayList<ServiceSong> serviceSongs;
     private ArrayList<String> titles = new ArrayList<>();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
@@ -84,10 +81,10 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         File serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
-        songDao = new SongDao(getActivity());
+        songService = new SongService(getActivity());
         serviceSongs = new ArrayList<ServiceSong>();
         for (String title : propertyValues) {
-            Song song = songDao.findContentsByTitle(title);
+            Song song = songService.findContentsByTitle(title);
             serviceSongs.add(new ServiceSong(title, song));
             titles.add(title);
         }

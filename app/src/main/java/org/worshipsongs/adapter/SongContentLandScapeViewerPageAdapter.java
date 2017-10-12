@@ -7,11 +7,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.SongContentLandscapeViewFragment;
 import org.worshipsongs.service.AuthorService;
-import org.worshipsongs.service.IAuthorService;
 
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
 {
     private String title;
 
-    private SongDao songDao = new SongDao(WorshipSongApplication.getContext());
-    private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
+    private SongService songService = new SongService(WorshipSongApplication.getContext());
+    private AuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private List<String> contents;
     private String authorName;
     private Song song;
@@ -39,9 +38,9 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
 
     public void initSetUp()
     {
-        song = songDao.findContentsByTitle(title);
+        song = songService.findContentsByTitle(title);
         contents = song.getContents();
-        authorName = authorService.findNameByTitle(title);
+        authorName = authorService.findAuthorNameByTitle(title);
     }
 
     @Override

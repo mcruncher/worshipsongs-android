@@ -21,7 +21,6 @@ import android.widget.Toast;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SplashScreenActivity;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.dialog.CustomDialogBuilder;
 import org.worshipsongs.domain.DialogConfiguration;
 
@@ -44,16 +43,20 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 {
 
     private Map<String, Object> objects;
-    private SongDao songDao;
+
     private AppCompatActivity appCompatActivity;
     private SharedPreferences sharedPreferences;
     private String remoteUrl;
+
+    private SongService songService;
+    private DatabaseService databaseService;
 
     @Override
     public void loadDb(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
         this.appCompatActivity = appCompatActivity;
-        songDao = new SongDao(appCompatActivity);
+        songService = new SongService(appCompatActivity);
+        databaseService = new DatabaseService(appCompatActivity);
         this.objects = objects;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appCompatActivity);
         setDefaultRemoteUrl();
@@ -213,10 +216,10 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private void validateDatabase(String absolutePath, TextView resultTextView)
     {
         try {
-            songDao.close();
-            songDao.copyDatabase(absolutePath, true);
-            songDao.open();
-            if (songDao.isValidDataBase()) {
+            databaseService.close();
+            databaseService.copyDatabase(absolutePath, true);
+            databaseService.open();
+            if (songService.isValidDataBase()) {
                 Button revertDatabaseButton = (Button) objects.get(CommonConstants.REVERT_DATABASE_BUTTON_KEY);
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
                 revertDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
@@ -243,9 +246,9 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
             public void onClick(DialogInterface dialog, int which)
             {
                 try {
-                    songDao.close();
-                    songDao.copyDatabase("", true);
-                    songDao.open();
+                    databaseService.close();
+                    databaseService.copyDatabase("", true);
+                    databaseService.open();
                     resultTextView.setText(getCountQueryResult());
                     dialog.cancel();
                 } catch (IOException e) {
@@ -258,7 +261,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
 
     public String getCountQueryResult()
     {
-        String count = String.valueOf(songDao.count());
+        String count = String.valueOf(songService.count());
         return String.format(appCompatActivity.getString(R.string.songs_count), count);
     }
 

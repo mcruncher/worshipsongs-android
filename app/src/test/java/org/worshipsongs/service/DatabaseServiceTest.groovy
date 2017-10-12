@@ -1,53 +1,53 @@
-package org.worshipsongs.dao
+package org.worshipsongs.service
 
-import org.worshipsongs.utils.RegexUtils
+import org.worshipsongs.service.DatabaseService
 import spock.lang.Specification
 
 /**
  *  Author : Madasamy
  *  Version : 4.x
  */
-class AuthorDaoTest extends Specification
+class DatabaseServiceTest extends Specification
 {
-    def authorDao = new AuthorDao();
+    def databaseService = new DatabaseService();
 
-    def "Parse tamil author name"()
+    def "Parse tamil topic name"()
     {
         given:
         def name = "Foo={இடைவிடா நன்றி உமக்குத்தான}"
 
         when:
-        def result = authorDao.parseTamilAuthorName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "இடைவிடா நன்றி உமக்குத்தான"
     }
 
-    def "Parse tamil author name from default"()
+    def "Parse tamil topic name from default"()
     {
         given:
         def name = "Foo"
 
         when:
-        def result = authorDao.parseTamilAuthorName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "Foo"
     }
 
-    def "Parse tamil author name from null"()
+    def "Parse tamil topic name from null"()
     {
         setup:
-        def result = authorDao.parseTamilAuthorName(null)
+        def result = databaseService.parseTamilName(null)
 
         expect:
         result == ""
     }
 
-    def "Parse tamil author name from empty"()
+    def "Parse tamil topic name from empty"()
     {
         setup:
-        def result = authorDao.parseTamilAuthorName("")
+        def result = databaseService.parseTamilName("")
 
         expect:
         result == ""
@@ -56,10 +56,10 @@ class AuthorDaoTest extends Specification
     def "Parse default name"()
     {
         given:
-        def name = "Foo{இடைவிடா நன்றி உமக்குத்தான}"
+        def name = "Foo"
 
         when:
-        def result = authorDao.parseDefaultName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "Foo"
@@ -71,28 +71,27 @@ class AuthorDaoTest extends Specification
         def name = "Foo bar "
 
         when:
-        def result = authorDao.parseDefaultName(name)
+        def result = databaseService.parseEnglishName(name)
 
         then:
         result == "Foo bar "
     }
 
-    def "Parse default author name from null"()
+    def "Parse default topic name from null"()
     {
         setup:
-        def result = authorDao.parseDefaultName(null)
+        def result = databaseService.parseEnglishName(null)
 
         expect:
         result == ""
     }
 
-    def "Parse default author name from empty"()
+    def "Parse default topic name from empty"()
     {
         setup:
-        def result = authorDao.parseDefaultName("")
+        def result = databaseService.parseEnglishName(null)
 
         expect:
         result == ""
     }
-
 }

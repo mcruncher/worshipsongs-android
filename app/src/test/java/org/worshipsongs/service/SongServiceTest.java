@@ -11,7 +11,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.worshipsongs.BuildConfig;
-import org.worshipsongs.CommonConstants;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Song;
 
@@ -30,14 +29,14 @@ import static org.junit.Assert.assertEquals;
 @Config(constants = BuildConfig.class, sdk = 22)
 public class SongServiceTest
 {
-    private SongService songService;
+    private SongService oldSongService;
     private List<Song> songs;
     private SharedPreferences sharedPreferences;
 
     @Before
     public void setUp() throws IOException
     {
-        songService = new SongService(RuntimeEnvironment.application.getApplicationContext());
+        oldSongService = new SongService(RuntimeEnvironment.application.getApplicationContext());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
         songs = new ArrayList<>();
         Song song = new Song();
@@ -66,7 +65,7 @@ public class SongServiceTest
     {
         System.out.println("--getTitles--");
         String searchTitle = "foo@foo @bar";
-        assertEquals(3, songService.getTitles(searchTitle).size());
+        assertEquals(3, oldSongService.getTitles(searchTitle).size());
     }
 
     @Test
@@ -75,7 +74,7 @@ public class SongServiceTest
         System.out.println("--getDefaultTitle--");
         Song song = new Song();
         ServiceSong serviceSong = new ServiceSong("foo", song);
-        String title = songService.getTitle(false, serviceSong);
+        String title = oldSongService.getTitle(false, serviceSong);
         assertEquals("foo", title);
     }
 
@@ -86,7 +85,7 @@ public class SongServiceTest
         Song song = new Song();
         song.setTamilTitle("தமிழ்");
         ServiceSong serviceSong = new ServiceSong("foo", song);
-        String title = songService.getTitle(true, serviceSong);
+        String title = oldSongService.getTitle(true, serviceSong);
         assertEquals("தமிழ்", title);
     }
 
@@ -95,7 +94,7 @@ public class SongServiceTest
     {
         System.out.println("--getDefaultTitle--");
         ServiceSong serviceSong = new ServiceSong("foo", null);
-        String title = songService.getTitle(true, serviceSong);
+        String title = oldSongService.getTitle(true, serviceSong);
         assertEquals("foo", title);
     }
 
@@ -104,7 +103,7 @@ public class SongServiceTest
     {
         System.out.println("--getDefaultTitle--");
         ServiceSong serviceSong = new ServiceSong("foo", new Song());
-        String title = songService.getTitle(true, serviceSong);
+        String title = oldSongService.getTitle(true, serviceSong);
         assertEquals("foo", title);
     }
 

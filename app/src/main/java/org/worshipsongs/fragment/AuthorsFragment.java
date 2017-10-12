@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,8 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
@@ -77,6 +80,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
                 authorList.add(author);
             }
         }
+
     }
 
     @Nullable
@@ -185,6 +189,24 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(getAuthorName(author));
         titleTextView.setOnClickListener(textViewOnClickListener(author));
+        TextView countTextView = (TextView) objects.get(CommonConstants.COUNT_KEY);
+        String count = String.valueOf(author.getNoOfSongs());
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) countTextView.getLayoutParams();
+        if (count.toCharArray().length == 3) {
+            params.width = 130;
+            countTextView.setLayoutParams(params);
+        } else if (count.toCharArray().length == 2) {
+            params.width = 100;
+            countTextView.setLayoutParams(params);
+        } else if (count.toCharArray().length == 1) {
+            params.width = 70;
+            countTextView.setLayoutParams(params);
+        } else {
+            params.width = 200;
+            countTextView.setLayoutParams(params);
+        }
+        countTextView.setText(count);
+        countTextView.setVisibility(StringUtils.isNotBlank(countTextView.getText()) ? View.VISIBLE : View.GONE);
     }
 
     @NonNull

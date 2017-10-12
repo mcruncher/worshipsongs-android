@@ -2,11 +2,9 @@ package org.worshipsongs.service;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.worshipsongs.dao.SongDao;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.*;
@@ -19,7 +17,7 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SongBookServiceTest
 {
-    private ISongBookService songBookService;
+    private SongBookService songBookService;
 
     @Before
     public void setUp() throws Exception
