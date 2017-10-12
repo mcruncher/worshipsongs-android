@@ -61,7 +61,7 @@
     <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
     <string name="message_delete_song">Do you want to delete the song?</string>
     <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
-    <string name="home">Song Book</string>
+    <string name="home">Worship songs</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
 
