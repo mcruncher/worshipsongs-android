@@ -79,10 +79,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/home_view_category_title">
-        <org.worshipsongs.fragment.TabChoicePreference
+        <org.worshipsongs.preference.TabChoicePreference
             android:summary="@string/tab_choice_summary"
             android:title="@string/tab_choice_title">
-        </org.worshipsongs.fragment.TabChoicePreference>
+        </org.worshipsongs.preference.TabChoicePreference>
     </PreferenceCategory>
 
 

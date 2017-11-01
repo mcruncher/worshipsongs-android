@@ -75,6 +75,7 @@ public class LanguagePreference extends Preference
                     setLocaleAndSelectListener("en");
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply();
                 }
+                sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply();
             }
         });
     }
