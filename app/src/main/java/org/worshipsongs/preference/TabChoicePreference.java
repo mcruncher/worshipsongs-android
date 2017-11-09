@@ -1,4 +1,4 @@
-package org.worshipsongs.fragment;
+package org.worshipsongs.preference;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,13 +32,13 @@ public class TabChoicePreference extends DialogPreference implements ItemAdapter
 {
     private ArrayList<DragDrop> configureDragDrops;
     private DragListView mDragListView;
-    private SharedPreferences preferences;
+    private SharedPreferences sharedPreferences;
     private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
     public TabChoicePreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         setItems();
         setDialogLayoutResource(R.layout.tab_choice_layout);
     }
@@ -56,18 +56,19 @@ public class TabChoicePreference extends DialogPreference implements ItemAdapter
         Log.i(TabChoicePreference.class.getSimpleName(), "Tab choice preference " + positiveResult);
         if (positiveResult) {
             ArrayList<DragDrop> itemList = (ArrayList<DragDrop>) mDragListView.getAdapter().getItemList();
-            preferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(itemList)).apply();
+            sharedPreferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(itemList)).apply();
+            sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply();
         }
         super.onDialogClosed(positiveResult);
     }
 
     private void setItems()
     {
-        configureDragDrops = DragDrop.toArrays(preferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
+        configureDragDrops = DragDrop.toArrays(sharedPreferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
         ArrayList<DragDrop> defaultList = fragmentRegistry.getDragDrops((Activity) getContext());
         if (configureDragDrops == null || configureDragDrops.isEmpty()) {
             configureDragDrops = defaultList;
-            preferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply();
+            sharedPreferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply();
         } else if (defaultList.size() > configureDragDrops.size()) {
             defaultList.removeAll(configureDragDrops);
             configureDragDrops.addAll(defaultList);

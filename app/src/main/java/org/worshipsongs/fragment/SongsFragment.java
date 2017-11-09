@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment;
 
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -19,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,6 +64,7 @@ import java.util.Map;
 public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>, ITabFragment
 {
 
+    private static final String CLASS_NAME = SongsFragment.class.getSimpleName();
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
     private SearchView searchView;
@@ -155,7 +159,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         songListView = (ListView) view.findViewById(R.id.song_list_view);
         titleAdapter = new TitleAdapter<Song>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
-        titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));
+        updateObjects("");
         songListView.setAdapter(titleAdapter);
         songListView.setOnItemClickListener(onItemClickListener());
     }
@@ -220,14 +224,14 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                titleAdapter.addObjects(songService.filterSongs(getType(), query, songs));
+                updateObjects(query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText)
+            public boolean onQueryTextChange(String query)
             {
-                titleAdapter.addObjects(songService.filterSongs(getType(), newText, songs));
+                updateObjects(query);
                 return true;
             }
         };
@@ -289,14 +293,12 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     {
         super.onResume();
         if (sharedPreferences.getBoolean(CommonConstants.UPDATED_SONGS_KEY, false)) {
-            databaseService.open();
-            songs = songService.findAll();
-            titleAdapter.clear();
-            titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));
+            updateObjects("");
             sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, false).apply();
         } else if (state != null) {
             songListView.onRestoreInstanceState(state);
         } else {
+            updateObjects("");
             titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));
         }
 
@@ -317,6 +319,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
+
         }
     }
 
@@ -352,15 +355,15 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         } else {
             titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
-        TextView subTitleTextView = (TextView)objects.get(CommonConstants.SUBTITLE_KEY);
+        TextView subTitleTextView = (TextView) objects.get(CommonConstants.SUBTITLE_KEY);
         subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);
         subTitleTextView.setText(getString(R.string.song_book_no) + " " + song.getSongBookNumber());
 
-        ImageView playImageView = (ImageView)objects.get(CommonConstants.PLAY_IMAGE_KEy);
+        ImageView playImageView = (ImageView) objects.get(CommonConstants.PLAY_IMAGE_KEy);
         playImageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
         playImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
 
-        ImageView optionsImageView = (ImageView)objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        ImageView optionsImageView = (ImageView) objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
         optionsImageView.setVisibility(View.VISIBLE);
         optionsImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
     }
@@ -442,6 +445,20 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
     {
         this.songContentViewListener = songContentViewListener;
+    }
+
+    private void updateObjects(final String query)
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (titleAdapter != null) {
+                    titleAdapter.addObjects(songService.filterSongs(getType(), query, songs));
+                }
+            }
+        });
     }
 
 }

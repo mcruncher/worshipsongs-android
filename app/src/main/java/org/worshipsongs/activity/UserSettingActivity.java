@@ -1,7 +1,9 @@
 package org.worshipsongs.activity;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.fragment.SettingsPreferenceFragment;
 import org.worshipsongs.service.PresentationScreenService;
@@ -21,6 +24,7 @@ public class UserSettingActivity extends AppCompatActivity
 {
     private ActionBar actionBar;
     private PresentationScreenService presentationScreenService;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -34,11 +38,7 @@ public class UserSettingActivity extends AppCompatActivity
         settingsPreferenceFragment.setUserSettingActivity(this);
         getFragmentManager().beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit();
         presentationScreenService = new PresentationScreenService(this);
-    }
-
-    public void activityFinish()
-    {
-        finish();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -50,20 +50,11 @@ public class UserSettingActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        finish();
-        NavUtils.navigateUpFromSameTask(this);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 break;
             default:
                 break;
@@ -72,12 +63,26 @@ public class UserSettingActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed()
+    {
+        activityFinish();
+        if (sharedPreferences.getBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, false)) {
+            NavUtils.navigateUpFromSameTask(this);
+            sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, false).apply();
+        }
+    }
+
+    public void activityFinish()
+    {
+        finish();
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
         presentationScreenService.onResume();
     }
-
 
     @Override
     protected void onPause()
