@@ -20,7 +20,7 @@ import dalvik.system.DexFile;
 
 /**
  * Author : Madasamy
- * Version : 4.x.x
+ * Version : 3.x.x
  */
 
 public class FragmentRegistry

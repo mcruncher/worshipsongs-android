@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
 public class TabChoicePreference extends DialogPreference implements ItemAdapter.Listener

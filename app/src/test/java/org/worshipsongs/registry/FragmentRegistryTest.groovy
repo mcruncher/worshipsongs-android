@@ -6,7 +6,7 @@ import org.robolectric.Robolectric
 
 /**
  *  Author : Madasamy
- *  Version : 4.x.x
+ *  Version : 3.x.x
  */
 class FragmentRegistryTest extends ElectricSpecification
 {

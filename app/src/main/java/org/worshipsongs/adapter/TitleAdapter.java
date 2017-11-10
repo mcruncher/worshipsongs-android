@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Author : Madasamy
- * Version : 4.x.x
+ * Version : 3.x.x
  */
 
 public class TitleAdapter<T> extends ArrayAdapter<T>

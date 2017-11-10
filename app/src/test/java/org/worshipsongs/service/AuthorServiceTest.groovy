@@ -7,7 +7,7 @@ import org.worshipsongs.utils.RegexUtils
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
 class AuthorServiceTest extends ElectricSpecification
 {
