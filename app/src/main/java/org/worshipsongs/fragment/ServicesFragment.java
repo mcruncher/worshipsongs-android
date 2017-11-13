@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
 public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment

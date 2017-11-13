@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
 @RunWith(AndroidJUnit4.class)

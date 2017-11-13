@@ -8,7 +8,7 @@ import org.worshipsongs.domain.SongBook
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
 class SongBookServiceSpockTest extends ElectricSpecification
 {

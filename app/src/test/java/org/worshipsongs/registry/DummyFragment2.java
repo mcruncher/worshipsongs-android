@@ -7,7 +7,7 @@ import org.worshipsongs.listener.SongContentViewListener;
 
 /**
  * Author : Madasamy
- * Version : 4.x.x
+ * Version : 3.x.x
  */
 
 public class DummyFragment2 extends Fragment implements ITabFragment
