@@ -245,9 +245,11 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
                 if (CommonUtils.isPhone(getContext())) {
                     Intent intent = new Intent(getActivity(), SongContentViewActivity.class);
                     Bundle bundle = new Bundle();
+                    ArrayList<String> titles = new ArrayList<>();
+                    titles.add(serviceSong.getTitle());
                     bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
-                    bundle.putInt(CommonConstants.POSITION_KEY, titleAdapter.getPosition(serviceSong));
-                    Setting.getInstance().setPosition(titleAdapter.getPosition(serviceSong));
+                    bundle.putInt(CommonConstants.POSITION_KEY, 0);
+                    Setting.getInstance().setPosition(0);
                     intent.putExtras(bundle);
                     getActivity().startActivity(intent);
                 } else {

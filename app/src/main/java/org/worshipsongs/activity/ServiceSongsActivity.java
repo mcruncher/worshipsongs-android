@@ -73,7 +73,9 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
     public void displayContent(String title, List<String> titleList, int position)
     {
         if (songContentFrameLayout != null) {
-            SongContentPortraitViewFragment songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, new ArrayList<String>(titleList));
+            ArrayList<String> titles = new ArrayList<>();
+            titles.add(title);
+            SongContentPortraitViewFragment songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, titles);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.song_content_fragment, songContentPortraitViewFragment);
             transaction.addToBackStack(null);
