@@ -61,7 +61,7 @@
     <string name="delete">Delete</string>
     <string name="remove_favourite_song_title">Remove from favourite list</string>
     <string name="remove_favourite_song_message">Do you want to remove the song from this favourite list?</string>
-    <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
+    <string name="message_delete_playlist">Do you want to remove %1$s playlist ?</string>
 
     <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
     <string name="home">Worship songs</string>
