@@ -58,8 +58,11 @@
     <string name="slide">Slide: </string>
     <string name="playlist_name_hint">Enter favourite name</string>
 
-    <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
-    <string name="message_delete_song">Do you want to delete the song?</string>
+    <string name="delete">Remove</string>
+    <string name="remove_favourite_song_title">Remove from favourite list</string>
+    <string name="remove_favourite_song_message">Do you want to remove the song from this favourite list?</string>
+    <string name="message_delete_playlist">Do you want to remove %1$s playlist ?</string>
+
     <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
     <string name="home">Worship songs</string>
     <string name="settings">Settings</string>
@@ -122,7 +125,7 @@
     <string name="message_warning_internet_connection">Internet connection is needed to update the songs</string>
     <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
     <string name="message_update_song_successfull">Updated songs successfully</string>
-    <string name="delete">Delete</string>
+
     <string name="favourite_info_message_">You haven\'t created any Favourite yet! Favourites are a great way to organize selected songs for events.To add a song to a Favourites, tap the : icon near a song and select the Add to Favourite action.</string>
     <string name="check_update_message">Checking for song updates...</string>
     <string name="permission">Permission</string>

@@ -280,8 +280,8 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         public boolean onLongClick(View view)
         {
             Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.delete));
-            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_delete_song));
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.remove_favourite_song_title));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.remove_favourite_song_message));
             bundle.putString(CommonConstants.NAME_KEY, serviceSong.getTitle());
             AlertDialogFragment deleteAlertDialogFragment = AlertDialogFragment.newInstance(bundle);
             deleteAlertDialogFragment.setDialogListener(ServiceSongsFragment.this);
