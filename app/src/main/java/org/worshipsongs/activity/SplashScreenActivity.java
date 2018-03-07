@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.service.DatabaseService;
+import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -34,6 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     private DatabaseService databaseService;
     private SharedPreferences sharedPreferences;
+    private FavouriteService favouriteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity
         setContentView(R.layout.splash_screen);
         initSetUp(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        migrateFavourites();
         loadDatabase();
     }
 
@@ -49,6 +52,15 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         databaseService = new DatabaseService(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        favouriteService = new FavouriteService();
+    }
+
+    private void migrateFavourites()
+    {
+        if (sharedPreferences.getBoolean(CommonConstants.MIGRATION_KEY, true)) {
+            favouriteService.migration(this);
+            sharedPreferences.edit().putBoolean(CommonConstants.MIGRATION_KEY, false).apply();
+        }
     }
 
     private void loadDatabase()
