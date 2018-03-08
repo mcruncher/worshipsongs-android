@@ -57,8 +57,8 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
     private void setTabsFragment()
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
-       // ServiceSongsFragment exisitingServiceSongsFragment = (ServiceSongsFragment) fragmentManager.findFragmentByTag(ServiceSongsFragment.class.getSimpleName());
-        FavouriteSongsFragment existingServiceSongsFragment = (FavouriteSongsFragment)fragmentManager.findFragmentByTag(FavouriteSongsFragment.class.getSimpleName());
+        FavouriteSongsFragment existingServiceSongsFragment = (FavouriteSongsFragment)
+                fragmentManager.findFragmentByTag(FavouriteSongsFragment.class.getSimpleName());
         if (existingServiceSongsFragment == null) {
             Bundle bundle = new Bundle();
             bundle.putString(CommonConstants.SERVICE_NAME_KEY, getIntent().getStringExtra(CommonConstants.SERVICE_NAME_KEY));
