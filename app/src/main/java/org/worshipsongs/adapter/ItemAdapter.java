@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * author:  Madasamy
- * version: 4.x.x
+ * version: 3.x.x
  */
 
 public class ItemAdapter extends DragItemAdapter<DragDrop, ItemAdapter.ViewHolder>

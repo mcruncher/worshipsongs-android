@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author : Madasamy
@@ -87,7 +88,7 @@ public class DragDrop
         return hashCodeBuilder.hashCode();
     }
 
-    public static String toJson(ArrayList<DragDrop> items)
+    public static String toJson(List<DragDrop> items)
     {
         Gson gson = new Gson();
         return gson.toJson(items);

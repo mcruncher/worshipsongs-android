@@ -19,6 +19,7 @@ import org.worshipsongs.activity.ServiceSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
+import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment
 {
+    private FavouriteService favouriteService;
     private List<String> services = new ArrayList<>();
     private Parcelable state;
     private ListView serviceListView;
@@ -48,6 +50,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        favouriteService = new FavouriteService();
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY);
         }
@@ -57,8 +60,8 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     private void initSetUp()
     {
-        File serviceFileName = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-        services = PropertyUtils.getServices(serviceFileName);
+        //File serviceFileName = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
+        services = favouriteService.findNames();
     }
 
     @Nullable
@@ -124,8 +127,8 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     @Override
     public void onClickPositiveButton(Bundle bundle, String tag)
     {
-        File serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
-        PropertyUtils.removeProperty(bundle.getString(CommonConstants.NAME_KEY), serviceFile);
+        String favouriteName = bundle.getString(CommonConstants.NAME_KEY, "");
+        favouriteService.remove(favouriteName);
         services.clear();
         initSetUp();
         titleAdapter.addObjects(services);

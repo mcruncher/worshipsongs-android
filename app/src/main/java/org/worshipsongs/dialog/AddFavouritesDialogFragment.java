@@ -3,7 +3,9 @@ package org.worshipsongs.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -15,8 +17,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.service.CommonService;
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.domain.DragDrop;
+import org.worshipsongs.domain.SongDragDrop;
+import org.worshipsongs.service.FavouriteService;
 
 /**
  * Author: Seenivasan, Madasamy
@@ -24,14 +29,13 @@ import org.worshipsongs.R;
  */
 public class AddFavouritesDialogFragment extends DialogFragment
 {
-    private CommonService commonService = new CommonService();
+    private FavouriteService favouriteService = new FavouriteService();
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
 
-    public static AddFavouritesDialogFragment newInstance(String songName)
+    public static AddFavouritesDialogFragment newInstance(Bundle bundle)
     {
         AddFavouritesDialogFragment addFavouritesDialogFragment = new AddFavouritesDialogFragment();
-        Bundle bundleArgs = new Bundle();
-        bundleArgs.putString(CommonConstants.TITLE_KEY, songName);
-        addFavouritesDialogFragment.setArguments(bundleArgs);
+        addFavouritesDialogFragment.setArguments(bundle);
         return addFavouritesDialogFragment;
     }
 
@@ -56,21 +60,19 @@ public class AddFavouritesDialogFragment extends DialogFragment
     @NonNull
     private DialogInterface.OnClickListener getPositiveOnClickListener(final EditText serviceName)
     {
-        return new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                Bundle args = getArguments();
-                String songName = args.getString(CommonConstants.TITLE_KEY);
-                String service_name;
-                if (serviceName.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
-                } else {
-                    service_name = serviceName.getText().toString();
-                    commonService.saveIntoFile(service_name, songName);
-                    Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
+        return (dialog, id) -> {
+            Bundle args = getArguments();
+            String songName = args.getString(CommonConstants.TITLE_KEY);
+            String localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY);
+            if (serviceName.getText().toString().equals("")) {
+                Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
+            } else {
+                String favouriteName = serviceName.getText().toString();
+                SongDragDrop songDragDrop = new SongDragDrop(0, songName,false);
+                songDragDrop.setTamilTitle(localisedName);
+                favouriteService.save(favouriteName, songDragDrop);
+                Toast.makeText(getActivity(), "Song added to favourite......!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         };
     }
@@ -78,13 +80,7 @@ public class AddFavouritesDialogFragment extends DialogFragment
     @NonNull
     private DialogInterface.OnClickListener getNegativeOnClickListener()
     {
-        return new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        };
+        return (dialog, id) -> dialog.cancel();
     }
 
 

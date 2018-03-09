@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
@@ -70,7 +71,10 @@ public class PopupMenuService
             {
                 switch (item.getItemId()) {
                     case R.id.addToList:
-                        FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.newInstance(songName);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(CommonConstants.TITLE_KEY, songName);
+                        bundle.putString(CommonConstants.LOCALISED_TITLE_KEY, song.getTamilTitle());
+                        FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.newInstance(bundle);
                         favouritesDialogFragment.show(activity.getSupportFragmentManager(), "FavouritesDialogFragment");
                         return true;
                     case R.id.share_whatsapp:

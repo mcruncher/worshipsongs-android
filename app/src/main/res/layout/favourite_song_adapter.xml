@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.woxthebox.draglistview.swipe.ListSwipeItem
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:leftViewId="@+id/item_left"
+    app:rightViewId="@+id/item_right"
+    app:swipeViewId="@+id/item_layout">
+
+    <!--@drawable/list_item_selector-->
+    <RelativeLayout
+        android:id="@id/item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription=""
+            android:src="@drawable/ic_drag_vertical"/>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/image"
+            android:layout_toRightOf="@+id/image"
+            android:layout_marginLeft="5dp"
+            android:text="foo"
+            android:maxLines="1"
+            android:textSize="16dp"/>
+
+    </RelativeLayout>
+</com.woxthebox.draglistview.swipe.ListSwipeItem>
