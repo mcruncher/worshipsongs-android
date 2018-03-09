@@ -8,7 +8,6 @@ import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.Favourite;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.utils.PropertyUtils;
@@ -27,7 +26,17 @@ import java.util.Set;
 public class FavouriteService
 {
 
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+    private SharedPreferences sharedPreferences;
+
+    public FavouriteService()
+    {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+    }
+
+    public FavouriteService(Context context)
+    {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context == null ? WorshipSongApplication.getContext() : context);
+    }
 
     public void migration(Context context)
     {
@@ -84,8 +93,10 @@ public class FavouriteService
         favouriteSet.addAll(favourites);
         if (StringUtils.isNotBlank(existingFavourite.getName())) {
             existingFavourite.setDragDrops(dragDrops);
-            favouriteSet.add(existingFavourite);
+        } else {
+            existingFavourite = new Favourite(name, dragDrops);
         }
+        favouriteSet.add(existingFavourite);
         List<Favourite> uniqueFavourites = new ArrayList<>(favouriteSet);
         sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(uniqueFavourites)).apply();
     }
