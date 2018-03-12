@@ -91,19 +91,29 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     }
 
     @Override
-    public void onRemove(SongDragDrop dragDrop)
+    public void onRemove(final SongDragDrop dragDrop)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getString(R.string.remove_favourite_song_title));
         builder.setMessage(getString(R.string.remove_favourite_song_message));
-        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-            favouriteService.removeSong(getArguments().getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.getTitle());
-            configureDragDrops.remove(dragDrop);
-            favouriteSongAdapter.notifyDataSetChanged();
-            dialog.dismiss();
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                favouriteService.removeSong(getArguments().getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.getTitle());
+                configureDragDrops.remove(dragDrop);
+                favouriteSongAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
         });
-        builder.setNegativeButton(R.string.no, (dialog, which) -> {
-            dialog.dismiss();
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
         });
         builder.show();
     }

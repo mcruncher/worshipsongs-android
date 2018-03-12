@@ -64,7 +64,7 @@ class FavouriteTest extends ElectricSpecification
         def result = Favourite.toJson(list)
 
         then:
-        result == "[{\"name\":\"foo\",\"dragDrops\":[]}]"
+        result == "[{\"orderId\":0,\"name\":\"foo\",\"dragDrops\":[]}]"
     }
 
     def "To arrays"()
