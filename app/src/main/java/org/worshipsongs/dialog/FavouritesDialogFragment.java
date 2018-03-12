@@ -2,6 +2,7 @@ package org.worshipsongs.dialog;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -36,12 +37,17 @@ public class FavouritesDialogFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        List<String> names = favouriteService.findNames();
+        final List<String> names = favouriteService.findNames();
         names.add(0, "New favourite...");
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.addToPlayList));
-        builder.setItems(names.toArray(new String[names.size()]), (dialog, which) -> {
-            FavouritesDialogFragment.this.onClick(which, names);
+        builder.setItems(names.toArray(new String[names.size()]), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                FavouritesDialogFragment.this.onClick(which, names);
+            }
         });
         return builder.create();
     }
