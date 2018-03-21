@@ -1,16 +1,17 @@
 package org.worshipsongs.service
 
 import hkhc.electricspock.ElectricSpecification
+import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.domain.Author
 import org.worshipsongs.utils.RegexUtils
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
 class AuthorServiceTest extends ElectricSpecification
 {
-    def authorService = new AuthorService()
+    def authorService = new AuthorService(RuntimeEnvironment.application.applicationContext)
 
     def "Get authors when search by null"()
     {

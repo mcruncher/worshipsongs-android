@@ -2,10 +2,10 @@ package org.worshipsongs.domain;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
 public enum Type
 {
-    SONG, AUTHOR, TOPICS
+    SONG, AUTHOR, TOPICS, SONG_BOOK
 }

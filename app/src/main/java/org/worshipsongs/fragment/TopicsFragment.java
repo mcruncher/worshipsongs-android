@@ -28,22 +28,25 @@ import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Topics;
 import org.worshipsongs.domain.Type;
-import org.worshipsongs.service.TopicsService;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
+import org.worshipsongs.service.TopicService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 
-public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>
+public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
-    private TopicsService topicsService;
+    private TopicService topicsService;
     private List<Topics> topicsList;
     private ListView topicsListView;
     private TitleAdapter<Topics> titleAdapter;
@@ -62,7 +65,7 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
 
     private void initSetUp()
     {
-        topicsService = new TopicsService(getActivity());
+        topicsService = new TopicService(getActivity());
         topicsList = topicsService.findAll();
     }
 
@@ -153,13 +156,6 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
 
-    @Override
-    public void setTitleTextView(TextView textView, final Topics topics)
-    {
-        textView.setText(getTopicsName(topics));
-        textView.setOnClickListener(getOnClickListener(topics));
-    }
-
     @NonNull
     private View.OnClickListener getOnClickListener(final Topics topics)
     {
@@ -183,14 +179,35 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
     @Override
-    public void setPlayImageView(ImageView imageView, Topics topics, int position)
+    public void setViews(Map<String, Object> objects, Topics topics)
     {
-        imageView.setVisibility(View.GONE);
+        TextView textView = (TextView)objects.get(CommonConstants.TITLE_KEY);
+        textView.setText(getTopicsName(topics));
+        textView.setOnClickListener(getOnClickListener(topics));
     }
 
     @Override
-    public void setOptionsImageView(ImageView imageView, Topics topics, int position)
+    public int defaultSortOrder()
     {
-        imageView.setVisibility(View.GONE);
+        return 2;
     }
+
+    @Override
+    public String getTitle()
+    {
+        return "categories";
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        // Do nothing
+    }
+
 }

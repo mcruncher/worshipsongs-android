@@ -17,7 +17,9 @@ import android.widget.Toast;
 import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.dao.SongDao;
+import org.worshipsongs.service.DatabaseService;
+import org.worshipsongs.service.SongBookService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.fragment.AlertDialogFragment;
 
 import java.io.BufferedInputStream;
@@ -38,7 +40,8 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
     private ProgressBar progressBar;
     private AppCompatActivity context;
     private File destinationFile = null;
-    private SongDao songDao;
+    private DatabaseService databaseService;
+    private SongService songService;
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
     private TextView progressTextView;
@@ -47,7 +50,8 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
     public AsyncDownloadTask(AppCompatActivity context)
     {
         this.context = context;
-        songDao = new SongDao(context);
+        databaseService = new DatabaseService(context);
+        songService = new SongService(context);
         setDialogBuilder(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -144,13 +148,13 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
     private void validateDatabase(String absolutePath)
     {
         try {
-            songDao.close();
-            songDao.copyDatabase(absolutePath, true);
-            songDao.open();
-            if (songDao.isValidDataBase()) {
+            databaseService.close();
+            databaseService.copyDatabase(absolutePath, true);
+            databaseService.open();
+            if (songService.isValidDataBase()) {
                 Toast.makeText(context, R.string.message_update_song_successfull, Toast.LENGTH_SHORT).show();
                 sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, true).apply();
-                sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songDao.count()).apply();
+                sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply();
             } else {
                 showWarningDialog();
             }

@@ -8,10 +8,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * Version : 3.x
  */
 
-public class AbstractDomain
+public class SongBook
 {
     private int id;
     private String name;
+    private String publisher;
+
+    public SongBook()
+    {
+        this("");
+    }
+
+    public SongBook(String name)
+    {
+        this.name = name;
+    }
 
     public int getId()
     {
@@ -33,23 +44,34 @@ public class AbstractDomain
         this.name = name;
     }
 
+    public String getPublisher()
+    {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher)
+    {
+        this.publisher = publisher;
+    }
+
     @Override
     public String toString()
     {
-        return "Topics{" +
+        return "SongBook{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", publisher='" + publisher + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof AbstractDomain) {
-            AbstractDomain otherObject = (AbstractDomain) object;
-            EqualsBuilder builder = new EqualsBuilder();
-            builder.append(getName(), otherObject.getName());
-            return builder.isEquals();
+        if (object instanceof SongBook) {
+            SongBook otherObject = (SongBook) object;
+            EqualsBuilder equalsBuilder = new EqualsBuilder();
+            equalsBuilder.append(getName(), otherObject.getName());
+            return equalsBuilder.isEquals();
         }
         return false;
 

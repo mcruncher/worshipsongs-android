@@ -1,17 +1,151 @@
 package org.worshipsongs.service
 
+import android.preference.PreferenceManager
 import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
+import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.ServiceSong
 import org.worshipsongs.domain.Song
+import org.worshipsongs.domain.Type
 
 /**
  *  Author : Madasamy
- *  Version : 3.x
+ *  Version : 3.x.x
  */
 class SongServiceSpockTest extends ElectricSpecification
 {
     def songService = new SongService(RuntimeEnvironment.application.getApplicationContext())
+    def songs = null
+    def preferences = null
+
+    void setup()
+    {
+        preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext())
+        songs = new ArrayList()
+        def song = new Song();
+        song.title = "foo";
+        song.searchTitle = "foo @";
+        song.searchLyrics = "foo foo";
+        song.songBookNumber = 2
+        songs.add(song);
+
+        def song1 = new Song();
+        song1.title = "bar"
+        song1.searchTitle = "bar @"
+        song1.searchLyrics = "foo bar"
+        song1.songBookNumber = 34
+        songs.add(song1);
+    }
+
+    void cleanup()
+    {
+        preferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply()
+
+    }
+
+    def "Filter songs by song book number"()
+    {
+        setup:
+        def result = songService.filterSongs(Type.SONG_BOOK.name(), "2", songs)
+
+        expect:
+        result.size() == 1
+    }
+
+    def "Filter songs by title"()
+    {
+        setup:
+        def result = songService.filterSongs(Type.SONG.name(), "foo", songs)
+
+        expect:
+        result.size() == 1
+    }
+
+    def "Filter songs by null"()
+    {
+        setup:
+        def result = songService.filterSongs(Type.SONG.name(), "", songs)
+
+        expect:
+        result.size() == 2
+    }
+
+    def "Filter songs by contents"()
+    {
+        given:
+        preferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply()
+
+        when:
+        def result = songService.filterSongs(Type.SONG.name(), "foo", songs)
+
+        then:
+        result.size() == 2
+    }
+
+    def "Is search by song book number"()
+    {
+        setup:
+        preferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply()
+
+        expect:
+        songService.isSearchBySongBookNumber(Type.SONG_BOOK.name(), "2")
+    }
+
+    def "It Is search by song book number when string query"()
+    {
+        setup:
+        preferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply()
+
+        expect:
+        !songService.isSearchBySongBookNumber(Type.SONG_BOOK.name(), "que")
+    }
+
+    def "It Is search by song book number when search by content"()
+    {
+        setup:
+        preferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply()
+
+        expect:
+        !songService.isSearchBySongBookNumber(Type.SONG_BOOK.name(), "2")
+    }
+
+    def "Get song book number"()
+    {
+        setup:
+        def result = songService.getSongBookNumber("98")
+
+        expect:
+        result == 98
+    }
+
+    def "Get default song book number"()
+    {
+        setup:
+        def result = songService.getSongBookNumber("quer")
+
+        expect:
+        result == -1
+    }
+
+    def "Songs sort by song book number"()
+    {
+        setup:
+        def result = songService.getSortedSongs(Type.SONG_BOOK.name(), new HashSet<Song>(songs))
+
+        expect:
+        result[0].songBookNumber == 2
+        result[1].songBookNumber == 34
+    }
+
+    def "Songs sort by title"()
+    {
+        setup:
+        def result = songService.getSortedSongs(Type.SONG.name(), new HashSet<Song>(songs))
+
+        expect:
+        result[0].title == "bar"
+        result[1].title == "foo"
+    }
 
     def "Filter service songs by null"()
     {

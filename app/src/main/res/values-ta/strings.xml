@@ -6,7 +6,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="home">Song book</string>
+    <string name="home">Worship songs</string>
     <string name="settings">Settings</string>
     <string name="rate_this_app">Rate us</string>
     <string name="feedback">Feedback</string>
@@ -62,8 +62,14 @@
     <string name="slide">Slide: </string>
     <string name="playlist_name_hint">Enter favourite name</string>
 
-    <string name="message_delete_playlist">Do you want to delete %1$s playlist ?</string>
-    <string name="message_delete_song">Do you want to delete the song?</string>
+    <string name="home_view_category_title">Home view settings</string>
+    <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
+    <string name="tab_choice_title">Change tab items</string>
+
+    <string name="delete">Delete</string>
+    <string name="remove_favourite_song_title">Remove from favourite list</string>
+    <string name="remove_favourite_song_message">Do you want to remove the song from this favourite list?</string>
+    <string name="message_delete_playlist">Do you want to delete the favourite list  %1$s?</string>
     <string name="message_song_not_available">%1$s is not in this database or its title may have changed</string>
 
     <string name="share.info">Content shared from:
@@ -114,7 +120,6 @@
     <string name="message_warning_internet_connection">Internet connection is needed to update the songs</string>
     <string name="message_configure_invalid_url">You have configured an invalid URL in Settings! Please configured a valid URL.</string>
     <string name="message_update_song_successfull">Updated songs successfully</string>
-    <string name="delete">Delete</string>
     <string name="favourite_info_message_">You haven\'t created any Favourite yet! Favourites are a great way to organize selected songs for events.To add a song to a Favourites, tap the : icon near a song and select the Add to Favourite action.</string>
     <string name="check_update_message">Checking for song updates...</string>
     <string name="permission">Permission</string>
@@ -122,4 +127,11 @@
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
+    <string name="song_books">பாடல் புத்தகங்கள்</string>
+
+    <string name="hint_title_or_number">Search by title or song book number</string>
+    <string name="search_title_or_content">Title or Song book number</string>
+    <string name="search_type_title">Title</string>
+    <string name="search_type_content">Content</string>
+    <string name="song_book_no">பாடல் எண்</string>
 </resources>

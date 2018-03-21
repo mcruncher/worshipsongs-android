@@ -32,13 +32,10 @@ import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.CustomTagColorService;
-import org.worshipsongs.service.IAuthorService;
-import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
@@ -47,6 +44,7 @@ import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PermissionUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Madasamy, Vignesh Palanisamy
@@ -60,9 +58,9 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     private ArrayList<String> tilteList = new ArrayList<>();
     private int millis;
     private YouTubePlayer youTubePlayer;
-    private UserPreferenceSettingService preferenceSettingService;
-    private ISongService songDao = new SongService(WorshipSongApplication.getContext());
-    private IAuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
+    private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    private SongService songDao = new SongService(WorshipSongApplication.getContext());
+    private AuthorService authorService = new AuthorService(WorshipSongApplication.getContext());
     private PopupMenuService popupMenuService;
     private FloatingActionsMenu floatingActionMenu;
     private Song song;
@@ -81,6 +79,13 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
         bundle.putString(CommonConstants.TITLE_KEY, title);
+        songContentPortraitViewFragment.setArguments(bundle);
+        return songContentPortraitViewFragment;
+    }
+
+    public static SongContentPortraitViewFragment newInstance(Bundle bundle)
+    {
+        SongContentPortraitViewFragment songContentPortraitViewFragment = new SongContentPortraitViewFragment();
         songContentPortraitViewFragment.setArguments(bundle);
         return songContentPortraitViewFragment;
     }
@@ -117,9 +122,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
-        song = songDao.findContentsByTitle(title);
-        song.setAuthorName(authorService.findNameByTitle(title));
-        preferenceSettingService = new UserPreferenceSettingService();
+        setSong();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -135,7 +138,19 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             }
         }
     }
-    
+
+    private void setSong()
+    {
+        song = songDao.findContentsByTitle(title);
+        if (song == null) {
+            song = new Song(title);
+            List<String> contents = new ArrayList<>();
+            contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""));
+            song.setContents(contents);
+        }
+        song.setAuthorName(authorService.findAuthorNameByTitle(title));
+    }
+
     private void setListView(View view, final Song song)
     {
         listView = (ListView) view.findViewById(R.id.content_list);
@@ -526,14 +541,28 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         }
     }
 
-    private String getTitle(Song song, String title)
+    private String getTitle(Song song, String defaultTitle)
     {
         try {
-            return (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
+            String title = (preferenceSettingService.isTamil() && song.getTamilTitle().length() > 0) ?
                     song.getTamilTitle() : song.getTitle();
+            return getSongBookNumber() + title;
         } catch (Exception e) {
-            return title;
+            return getSongBookNumber() + defaultTitle;
         }
+    }
+
+    private String getSongBookNumber()
+    {
+        try {
+            if (getArguments().containsKey(CommonConstants.SONG_BOOK_NUMBER_KEY)) {
+                int songBookNumber = getArguments().getInt(CommonConstants.SONG_BOOK_NUMBER_KEY, 0);
+                return songBookNumber > 0 ? String.valueOf(songBookNumber) + ". " : "";
+            }
+        } catch (Exception ex) {
+            Log.e(SongContentPortraitViewFragment.class.getSimpleName(), "Error ", ex);
+        }
+        return "";
     }
 
 

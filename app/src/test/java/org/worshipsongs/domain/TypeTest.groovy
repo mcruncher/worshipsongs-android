@@ -4,14 +4,14 @@ import spock.lang.Specification
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
 class TypeTest extends Specification
 {
     def "enums"()
     {
         expect:
-        Type.values().size() == 3
+        Type.values().size() == 4
         Type.valueOf("SONG") == Type.SONG
     }
 }

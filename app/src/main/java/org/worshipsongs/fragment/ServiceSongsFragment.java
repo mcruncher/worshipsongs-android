@@ -25,12 +25,10 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.TitleAdapter;
-import org.worshipsongs.dao.SongDao;
 import org.worshipsongs.domain.ServiceSong;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.listener.SongContentViewListener;
-import org.worshipsongs.service.ISongService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -40,10 +38,11 @@ import org.worshipsongs.utils.PropertyUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
 public class ServiceSongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<ServiceSong>, AlertDialogFragment.DialogListener
@@ -52,8 +51,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
     private ListView songListView;
     private TitleAdapter<ServiceSong> titleAdapter;
     private String serviceName;
-    private SongDao songDao;
-    private ISongService songService;
+    private SongService songService;
     private ArrayList<ServiceSong> serviceSongs;
     private ArrayList<String> titles = new ArrayList<>();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
@@ -83,10 +81,10 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         File serviceFile = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         String property = PropertyUtils.getProperty(serviceName, serviceFile);
         String propertyValues[] = property.split(";");
-        songDao = new SongDao(getActivity());
+        songService = new SongService(getActivity());
         serviceSongs = new ArrayList<ServiceSong>();
         for (String title : propertyValues) {
-            Song song = songDao.findContentsByTitle(title);
+            Song song = songService.findContentsByTitle(title);
             serviceSongs.add(new ServiceSong(title, song));
             titles.add(title);
         }
@@ -146,18 +144,20 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
 
     //Adapter listener methods
     @Override
-    public void setTitleTextView(TextView textView, ServiceSong serviceSong)
+    public void setViews(Map<String, Object> objects, ServiceSong serviceSong)
     {
-        textView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
-        textView.setOnClickListener(new SongOnClickListener(serviceSong));
-        textView.setOnLongClickListener(new SongOnLongClickListener(serviceSong));
-    }
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
+        titleTextView.setText(songService.getTitle(preferenceSettingService.isTamil(), serviceSong));
+        titleTextView.setOnClickListener(new SongOnClickListener(serviceSong));
+        titleTextView.setOnLongClickListener(new SongOnLongClickListener(serviceSong));
 
-    @Override
-    public void setPlayImageView(ImageView imageView, ServiceSong serviceSong, int position)
-    {
-        imageView.setVisibility(isShowPlayIcon(serviceSong.getSong()) ? View.VISIBLE : View.GONE);
-        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+        ImageView playImageView = (ImageView)objects.get(CommonConstants.PLAY_IMAGE_KEy);
+        playImageView.setVisibility(isShowPlayIcon(serviceSong.getSong()) ? View.VISIBLE : View.GONE);
+        playImageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
+
+        ImageView optionsImageView = (ImageView)objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        optionsImageView.setVisibility(View.VISIBLE);
+        optionsImageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
     }
 
     boolean isShowPlayIcon(Song song)
@@ -168,12 +168,6 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         } catch (Exception e) {
             return false;
         }
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, ServiceSong serviceSong, int position)
-    {
-        imageView.setOnClickListener(imageOnClickListener(serviceSong.getSong(), serviceSong.getTitle()));
     }
 
     private View.OnClickListener imageOnClickListener(final Song song, final String title)
@@ -234,6 +228,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         //Do nothing
     }
 
+
     private class SongOnClickListener implements View.OnClickListener
     {
         private ServiceSong serviceSong;
@@ -250,9 +245,11 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
                 if (CommonUtils.isPhone(getContext())) {
                     Intent intent = new Intent(getActivity(), SongContentViewActivity.class);
                     Bundle bundle = new Bundle();
+                    ArrayList<String> titles = new ArrayList<>();
+                    titles.add(serviceSong.getTitle());
                     bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles);
-                    bundle.putInt(CommonConstants.POSITION_KEY, titleAdapter.getPosition(serviceSong));
-                    Setting.getInstance().setPosition(titleAdapter.getPosition(serviceSong));
+                    bundle.putInt(CommonConstants.POSITION_KEY, 0);
+                    Setting.getInstance().setPosition(0);
                     intent.putExtras(bundle);
                     getActivity().startActivity(intent);
                 } else {
@@ -283,8 +280,8 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
         public boolean onLongClick(View view)
         {
             Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.delete));
-            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_delete_song));
+            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.remove_favourite_song_title));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.remove_favourite_song_message));
             bundle.putString(CommonConstants.NAME_KEY, serviceSong.getTitle());
             AlertDialogFragment deleteAlertDialogFragment = AlertDialogFragment.newInstance(bundle);
             deleteAlertDialogFragment.setDialogListener(ServiceSongsFragment.this);

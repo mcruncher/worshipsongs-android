@@ -26,24 +26,27 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.domain.Author;
 import org.worshipsongs.domain.Type;
+import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.AuthorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
-import org.worshipsongs.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>
+public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -77,6 +80,7 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
                 authorList.add(author);
             }
         }
+
     }
 
     @Nullable
@@ -180,10 +184,29 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
     }
 
     @Override
-    public void setTitleTextView(TextView textView, final Author author)
+    public void setViews(Map<String, Object> objects, Author author)
     {
-        textView.setText(getAuthorName(author));
-        textView.setOnClickListener(textViewOnClickListener(author));
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
+        titleTextView.setText(getAuthorName(author));
+        titleTextView.setOnClickListener(textViewOnClickListener(author));
+        TextView countTextView = (TextView) objects.get(CommonConstants.COUNT_KEY);
+        String count = String.valueOf(author.getNoOfSongs());
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) countTextView.getLayoutParams();
+        if (count.toCharArray().length == 3) {
+            params.width = 130;
+            countTextView.setLayoutParams(params);
+        } else if (count.toCharArray().length == 2) {
+            params.width = 100;
+            countTextView.setLayoutParams(params);
+        } else if (count.toCharArray().length == 1) {
+            params.width = 70;
+            countTextView.setLayoutParams(params);
+        } else {
+            params.width = 200;
+            countTextView.setLayoutParams(params);
+        }
+        countTextView.setText(count);
+        countTextView.setVisibility(StringUtils.isNotBlank(countTextView.getText()) ? View.VISIBLE : View.GONE);
     }
 
     @NonNull
@@ -209,15 +232,30 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         return userPreferenceSettingService.isTamil() ? author.getTamilName() : author.getDefaultName();
     }
 
+
     @Override
-    public void setPlayImageView(ImageView imageView, Author author, int position)
+    public int defaultSortOrder()
     {
-        imageView.setVisibility(View.GONE);
+        return 1;
     }
 
     @Override
-    public void setOptionsImageView(ImageView imageView, Author author, int position)
+    public String getTitle()
     {
-        imageView.setVisibility(View.GONE);
+        return "artists";
     }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        //DO nothing
+    }
+
+
 }

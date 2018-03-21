@@ -1,6 +1,8 @@
 package org.worshipsongs;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Author: Seenivasan
  * Version: 2.1.0
@@ -12,6 +14,11 @@ public final class CommonConstants
 
     public static final String TITLE_LIST_KEY = "titles";
     public static final String TITLE_KEY = "title";
+    public static final String LOCALISED_TITLE_KEY = "localisedTitle";
+    public static final String SUBTITLE_KEY = "subTitle";
+    public static final String PLAY_IMAGE_KEy = "playImage";
+    public static final String OPTIONS_IMAGE_KEY = "optionsImage";
+    public static final String COUNT_KEY = "count";
     public static final String MESSAGE_KEY = "message";
     public static final String POSITION_KEY = "position";
     public static final String VERSION_KEY = "version";
@@ -39,8 +46,15 @@ public final class CommonConstants
     public static final String NO_OF_SONGS = "noOfSongs";
 
     public static final String LANGUAGE_CHOOSED_KEY = "languageChoosedKey";
+    public static final String SONG_BOOK_NUMBER_KEY = "songBookNumberKey";
+    public static final String TAB_CHOICE_KEY = "tabChoicesKey";
+    public static final String UPDATE_NAV_ACTIVITY_KEY = "updateNavActivityKey";
 
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
+
+    //Favourites
+    public static final String FAVOURITES_KEY = "favouritesKey";
+    public static final String MIGRATION_KEY = "migrationKey";
 
 
     private CommonConstants()

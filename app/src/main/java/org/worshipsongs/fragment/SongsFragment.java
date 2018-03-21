@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment;
 
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -19,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,6 +43,9 @@ import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.registry.ITabFragment;
+
+import org.worshipsongs.service.DatabaseService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -47,15 +54,17 @@ import org.worshipsongs.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author : Madasamy
- * Version : 4.x
+ * Version : 3.x
  */
 
-public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>
+public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Song>, ITabFragment
 {
 
+    private static final String CLASS_NAME = SongsFragment.class.getSimpleName();
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
     private SearchView searchView;
@@ -69,6 +78,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
     private PopupMenuService popupMenuService = new PopupMenuService();
     private SongService songService;
+    private DatabaseService databaseService;
 
     public static SongsFragment newInstance(Bundle bundle)
     {
@@ -84,6 +94,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(STATE_KEY);
         }
+        databaseService = new DatabaseService(getActivity());
         songService = new SongService(getActivity());
         setHasOptionsMenu(true);
         initSetUp();
@@ -91,7 +102,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
 
     private void initSetUp()
     {
-        songService.open();
+        databaseService.open();
         loadSongs();
         if (!sharedPreferences.contains(CommonConstants.SEARCH_BY_TITLE_KEY)) {
             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
@@ -100,19 +111,36 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
 
     private void loadSongs()
     {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String type = bundle.getString(CommonConstants.TYPE);
-            int id = bundle.getInt(CommonConstants.ID);
-            if (Type.AUTHOR.name().equalsIgnoreCase(type)) {
-                songs = songService.findByAuthorId(id);
-            } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
-                songs = songService.findByTopicId(id);
-            } else {
-                songs = songService.findAll();
-            }
+        String type = getType();
+        int id = getObjectId();
+        if (Type.AUTHOR.name().equalsIgnoreCase(type)) {
+            songs = songService.findByAuthorId(id);
+        } else if (Type.TOPICS.name().equalsIgnoreCase(type)) {
+            songs = songService.findByTopicId(id);
+        } else if (Type.SONG_BOOK.name().equalsIgnoreCase(type)) {
+            songs = songService.findBySongBookId(id);
         } else {
             songs = songService.findAll();
+        }
+    }
+
+    private String getType()
+    {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            return bundle.getString(CommonConstants.TYPE, Type.SONG.name());
+        } else {
+            return Type.SONG.name();
+        }
+    }
+
+    private int getObjectId()
+    {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            return bundle.getInt(CommonConstants.ID);
+        } else {
+            return 0;
         }
     }
 
@@ -131,8 +159,9 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         songListView = (ListView) view.findViewById(R.id.song_list_view);
         titleAdapter = new TitleAdapter<Song>((AppCompatActivity) getActivity(), R.layout.songs_layout);
         titleAdapter.setTitleAdapterListener(this);
-        titleAdapter.addObjects(songService.filterSongs("", songs));
+        updateObjects("");
         songListView.setAdapter(titleAdapter);
+        songListView.setOnItemClickListener(onItemClickListener());
     }
 
     @Override
@@ -154,7 +183,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         searchView.setOnQueryTextListener(getQueryTextListener());
 
         boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
-        searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
+        searchView.setQueryHint(searchByText ? getSearchByTitleOrNumberPlaceholder(getType()) : getString(R.string.hint_content));
         filterMenuItem = menu.getItem(0).setVisible(false);
         filterMenuItem.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(searchByText)), 35));
         super.onCreateOptionsMenu(menu, inflater);
@@ -195,15 +224,14 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-
-                titleAdapter.addObjects(songService.filterSongs(query, songs));
+                updateObjects(query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText)
+            public boolean onQueryTextChange(String query)
             {
-                titleAdapter.addObjects(songService.filterSongs(newText, songs));
+                updateObjects(query);
                 return true;
             }
         };
@@ -220,16 +248,16 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
                 builder.setTitle(getString(R.string.search_title));
                 builder.setCancelable(true);
-                builder.setItems(R.array.searchTypes, new DialogInterface.OnClickListener()
+                String title = Type.SONG_BOOK.name().equalsIgnoreCase(getType()) ? getString(R.string.search_title_or_content) : getString(R.string.search_type_title);
+                builder.setItems(new String[]{title, getString(R.string.search_type_content)}, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
                         if (which == 0) {
-                            searchView.setQueryHint(getString(R.string.hint_title));
+                            searchView.setQueryHint(getSearchByTitleOrNumberPlaceholder(getType()));
                             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true).apply();
                             item.setIcon(ImageUtils.resizeBitmapImageFn(getResources(), BitmapFactory.decodeResource(getResources(), getResourceId(true)), 35));
-
                         } else {
                             searchView.setQueryHint(getString(R.string.hint_content));
                             sharedPreferences.edit().putBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, false).apply();
@@ -245,6 +273,15 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         }
     }
 
+    private String getSearchByTitleOrNumberPlaceholder(String type)
+    {
+        if (type.equalsIgnoreCase(Type.SONG_BOOK.name())) {
+            return getString(R.string.hint_title_or_number);
+        } else {
+            return getString(R.string.hint_title);
+        }
+    }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
@@ -256,15 +293,13 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     {
         super.onResume();
         if (sharedPreferences.getBoolean(CommonConstants.UPDATED_SONGS_KEY, false)) {
-            songService.open();
-            songs = songService.findAll();
-            titleAdapter.clear();
-            titleAdapter.addObjects(songService.filterSongs("", songs));
+            updateObjects("");
             sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, false).apply();
         } else if (state != null) {
             songListView.onRestoreInstanceState(state);
         } else {
-            titleAdapter.addObjects(songService.filterSongs("", songs));
+            updateObjects("");
+            titleAdapter.addObjects(songService.filterSongs(getType(), "", songs));
         }
 
     }
@@ -279,11 +314,12 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             }
             if (searchView != null) {
                 boolean searchByText = sharedPreferences.getBoolean(CommonConstants.SEARCH_BY_TITLE_KEY, true);
-                searchView.setQueryHint(searchByText ? getString(R.string.hint_title) : getString(R.string.hint_content));
+                searchView.setQueryHint(searchByText ? getSearchByTitleOrNumberPlaceholder(getType()) : getString(R.string.hint_content));
             }
             if (filterMenuItem != null) {
                 filterMenuItem.setVisible(false);
             }
+
         }
     }
 
@@ -308,32 +344,39 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         super.onPause();
     }
 
-    public void setSongContentViewListener(SongContentViewListener songContentViewListener)
-    {
-        this.songContentViewListener = songContentViewListener;
-    }
-
     @Override
-    public void setTitleTextView(TextView textView, final Song song)
+    public void setViews(Map<String, Object> objects, Song song)
     {
-        textView.setText(getTitle(song));
+        TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
+        titleTextView.setText(getTitle(song));
         Song presentingSong = Setting.getInstance().getSong();
         if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
-            textView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
+            titleTextView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
         } else {
-            textView.setTextColor(getResources().getColor(R.color.text_black_color));
+            titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
         }
-        textView.setOnClickListener(textViewOnClickListener(song));
+        TextView subTitleTextView = (TextView) objects.get(CommonConstants.SUBTITLE_KEY);
+        subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);
+        subTitleTextView.setText(getString(R.string.song_book_no) + " " + song.getSongBookNumber());
+
+        ImageView playImageView = (ImageView) objects.get(CommonConstants.PLAY_IMAGE_KEy);
+        playImageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
+        playImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
+
+        ImageView optionsImageView = (ImageView) objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        optionsImageView.setVisibility(View.VISIBLE);
+        optionsImageView.setOnClickListener(imageOnClickListener(song.getTitle()));
     }
 
     @NonNull
-    private View.OnClickListener textViewOnClickListener(final Song song)
+    private AdapterView.OnItemClickListener onItemClickListener()
     {
-        return new View.OnClickListener()
+        return new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                Song song = titleAdapter.getItem(position);
                 Setting.getInstance().setPosition(0);
                 ArrayList<String> titleList = new ArrayList<String>();
                 titleList.add(song.getTitle());
@@ -341,6 +384,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
                 bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList);
                 if (songContentViewListener == null) {
                     Intent intent = new Intent(getContext(), SongContentViewActivity.class);
+                    intent.putExtra(CommonConstants.SONG_BOOK_NUMBER_KEY, song.getSongBookNumber());
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getContext().startActivity(intent);
@@ -361,23 +405,10 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         }
     }
 
-    @Override
-    public void setPlayImageView(ImageView imageView, Song song, int position)
-    {
-        imageView.setVisibility(isShowPlayIcon(song) ? View.VISIBLE : View.GONE);
-        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
-    }
-
     boolean isShowPlayIcon(Song song)
     {
         String urlKey = song.getUrlKey();
         return urlKey != null && urlKey.length() > 0 && preferenceSettingService.isPlayVideo();
-    }
-
-    @Override
-    public void setOptionsImageView(ImageView imageView, Song song, int position)
-    {
-        imageView.setOnClickListener(imageOnClickListener(song.getTitle()));
     }
 
     private View.OnClickListener imageOnClickListener(final String title)
@@ -391,4 +422,43 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
             }
         };
     }
+
+    @Override
+    public int defaultSortOrder()
+    {
+        return 0;
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "titles";
+    }
+
+    @Override
+    public boolean checked()
+    {
+        return true;
+    }
+
+    @Override
+    public void setListenerAndBundle(SongContentViewListener songContentViewListener, Bundle bundle)
+    {
+        this.songContentViewListener = songContentViewListener;
+    }
+
+    private void updateObjects(final String query)
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (titleAdapter != null) {
+                    titleAdapter.addObjects(songService.filterSongs(getType(), query, songs));
+                }
+            }
+        });
+    }
+
 }

@@ -6,7 +6,7 @@ import org.robolectric.Robolectric
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
 class UpdateSongsDatabaseActivityTest extends ElectricSpecification
 {

@@ -1,6 +1,8 @@
 package org.worshipsongs.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,9 +14,7 @@ import org.worshipsongs.R;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
-
-import java.util.Arrays;
-import java.util.List;
+import org.worshipsongs.registry.FragmentRegistry;
 
 /**
  * author:Seenivasan, Madasamy
@@ -23,6 +23,8 @@ import java.util.List;
 public class HomeTabFragment extends Fragment
 {
     private SongContentViewListener songContentViewListener;
+    private SharedPreferences preferences;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
     public static HomeTabFragment newInstance()
     {
@@ -33,11 +35,11 @@ public class HomeTabFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = (View) inflater.inflate(R.layout.home_tab_layout, container, false);
-        List<String> titles = Arrays.asList(getResources().getString(R.string.titles), getResources().getString(R.string.artists),
-                getResources().getString(R.string.categories), getResources().getString(R.string.playlists));
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         // Creating The HomeViewerPageAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.ome
         Log.i(this.getClass().getSimpleName(), "Preparing to load home view fragment");
-        HomeViewerPageAdapter adapter = new HomeViewerPageAdapter(getChildFragmentManager(), titles, songContentViewListener);
+
+        HomeViewerPageAdapter adapter = new HomeViewerPageAdapter(getChildFragmentManager(), getActivity(), songContentViewListener);
         adapter.notifyDataSetChanged();
 
         // Assigning ViewPager View and setting the adapter
@@ -66,4 +68,6 @@ public class HomeTabFragment extends Fragment
     {
         this.songContentViewListener = songContentViewListener;
     }
+
+
 }

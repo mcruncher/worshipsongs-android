@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,6 +39,7 @@ public class Song
     private List<String> contents;
     private String chord;
     private String authorName;
+    private int songBookNumber;
 
     public Song()
     {
@@ -264,6 +266,16 @@ public class Song
         this.authorName = authorName;
     }
 
+    public int getSongBookNumber()
+    {
+        return songBookNumber;
+    }
+
+    public void setSongBookNumber(int songBookNumber)
+    {
+        this.songBookNumber = songBookNumber;
+    }
+
     @Override
     public String toString()
     {
@@ -295,4 +307,15 @@ public class Song
         hashCodeBuilder.append(getSearchTitle());
         return hashCodeBuilder.hashCode();
     }
+
+    public static final Comparator<Song> SONG_BOOK_NUMBER_ASC = new Comparator<Song>()
+    {
+        @Override
+        public int compare(Song song1, Song song2)
+        {
+            int firstSongBookNumber = (song1.getSongBookNumber() == 0 ? 10000 : song1.getSongBookNumber());
+            int secondSongBookNumber = (song2.getSongBookNumber() == 0 ? 10001 : song2.getSongBookNumber());
+            return firstSongBookNumber - secondSongBookNumber;
+        }
+    };
 }

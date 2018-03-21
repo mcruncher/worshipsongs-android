@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.fragment.FavouriteSongsFragment;
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.fragment.ServiceSongsFragment;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
@@ -56,11 +57,12 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
     private void setTabsFragment()
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ServiceSongsFragment exisitingServiceSongsFragment = (ServiceSongsFragment) fragmentManager.findFragmentByTag(ServiceSongsFragment.class.getSimpleName());
-        if (exisitingServiceSongsFragment == null) {
+        FavouriteSongsFragment existingServiceSongsFragment = (FavouriteSongsFragment)
+                fragmentManager.findFragmentByTag(FavouriteSongsFragment.class.getSimpleName());
+        if (existingServiceSongsFragment == null) {
             Bundle bundle = new Bundle();
             bundle.putString(CommonConstants.SERVICE_NAME_KEY, getIntent().getStringExtra(CommonConstants.SERVICE_NAME_KEY));
-            ServiceSongsFragment serviceSongsFragment = ServiceSongsFragment.newInstance(bundle);
+            FavouriteSongsFragment serviceSongsFragment = FavouriteSongsFragment.newInstance(bundle);
             serviceSongsFragment.setSongContentViewListener(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.tabs_fragment, serviceSongsFragment, HomeTabFragment.class.getSimpleName());
@@ -73,7 +75,9 @@ public class ServiceSongsActivity extends AppCompatActivity implements SongConte
     public void displayContent(String title, List<String> titleList, int position)
     {
         if (songContentFrameLayout != null) {
-            SongContentPortraitViewFragment songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, new ArrayList<String>(titleList));
+            ArrayList<String> titles = new ArrayList<>();
+            titles.add(title);
+            SongContentPortraitViewFragment songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, titles);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.song_content_fragment, songContentPortraitViewFragment);
             transaction.addToBackStack(null);

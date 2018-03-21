@@ -18,8 +18,8 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.service.ISongService;
-import org.worshipsongs.service.SongService;
+import org.worshipsongs.service.DatabaseService;
+import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -33,9 +33,9 @@ import java.util.Locale;
 public class SplashScreenActivity extends AppCompatActivity
 {
 
-
-    private ISongService songService;
+    private DatabaseService databaseService;
     private SharedPreferences sharedPreferences;
+    private FavouriteService favouriteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,13 +44,23 @@ public class SplashScreenActivity extends AppCompatActivity
         setContentView(R.layout.splash_screen);
         initSetUp(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        migrateFavourites();
         loadDatabase();
     }
 
     void initSetUp(Context context)
     {
-        songService = new SongService(context);
+        databaseService = new DatabaseService(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        favouriteService = new FavouriteService();
+    }
+
+    private void migrateFavourites()
+    {
+        if (sharedPreferences.getBoolean(CommonConstants.MIGRATION_KEY, true)) {
+            favouriteService.migration(this);
+            sharedPreferences.edit().putBoolean(CommonConstants.MIGRATION_KEY, false).apply();
+        }
     }
 
     private void loadDatabase()
@@ -80,8 +90,8 @@ public class SplashScreenActivity extends AppCompatActivity
             Log.i(SplashScreenActivity.class.getSimpleName(), "Version in property file " + versionInPropertyFile);
             if (CommonUtils.isNotImportedDatabase() && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion)) {
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Preparing to copy bundle database.");
-                songService.copyDatabase("", true);
-                songService.open();
+                databaseService.copyDatabase("", true);
+                databaseService.open();
                 PropertyUtils.setProperty(CommonConstants.VERSION_KEY, currentVersion, commonPropertyFile);
                 Log.i(SplashScreenActivity.class.getSimpleName(), "Bundle database copied successfully.");
             }

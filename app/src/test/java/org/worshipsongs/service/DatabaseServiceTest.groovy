@@ -1,14 +1,15 @@
-package org.worshipsongs.dao
+package org.worshipsongs.service
 
+import org.worshipsongs.service.DatabaseService
 import spock.lang.Specification
 
 /**
  *  Author : Madasamy
- *  Version : 4.x
+ *  Version : 3.x
  */
-class TopicDaoTest extends Specification
+class DatabaseServiceTest extends Specification
 {
-    def topicDao = new TopicDao();
+    def databaseService = new DatabaseService();
 
     def "Parse tamil topic name"()
     {
@@ -16,7 +17,7 @@ class TopicDaoTest extends Specification
         def name = "Foo={இடைவிடா நன்றி உமக்குத்தான}"
 
         when:
-        def result = topicDao.parseTamilTopicName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "இடைவிடா நன்றி உமக்குத்தான"
@@ -28,7 +29,7 @@ class TopicDaoTest extends Specification
         def name = "Foo"
 
         when:
-        def result = topicDao.parseTamilTopicName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "Foo"
@@ -37,7 +38,7 @@ class TopicDaoTest extends Specification
     def "Parse tamil topic name from null"()
     {
         setup:
-        def result = topicDao.parseTamilTopicName(null)
+        def result = databaseService.parseTamilName(null)
 
         expect:
         result == ""
@@ -46,7 +47,7 @@ class TopicDaoTest extends Specification
     def "Parse tamil topic name from empty"()
     {
         setup:
-        def result = topicDao.parseTamilTopicName("")
+        def result = databaseService.parseTamilName("")
 
         expect:
         result == ""
@@ -58,7 +59,7 @@ class TopicDaoTest extends Specification
         def name = "Foo"
 
         when:
-        def result = topicDao.parseTamilTopicName(name)
+        def result = databaseService.parseTamilName(name)
 
         then:
         result == "Foo"
@@ -70,7 +71,7 @@ class TopicDaoTest extends Specification
         def name = "Foo bar "
 
         when:
-        def result = topicDao.parseDefaultName(name)
+        def result = databaseService.parseEnglishName(name)
 
         then:
         result == "Foo bar "
@@ -79,7 +80,7 @@ class TopicDaoTest extends Specification
     def "Parse default topic name from null"()
     {
         setup:
-        def result = topicDao.parseDefaultName(null)
+        def result = databaseService.parseEnglishName(null)
 
         expect:
         result == ""
@@ -88,7 +89,7 @@ class TopicDaoTest extends Specification
     def "Parse default topic name from empty"()
     {
         setup:
-        def result = topicDao.parseDefaultName(null)
+        def result = databaseService.parseEnglishName(null)
 
         expect:
         result == ""

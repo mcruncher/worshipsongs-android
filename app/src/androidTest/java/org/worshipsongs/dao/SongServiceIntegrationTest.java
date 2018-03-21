@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.worshipsongs.domain.Song;
+import org.worshipsongs.service.SongService;
 
 import java.util.List;
 
@@ -21,27 +22,27 @@ import static org.junit.Assert.assertNull;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class SongDaoIntegrationTest
+public class SongServiceIntegrationTest
 {
-    private SongDao songDao;
+    private SongService songService;
 
     @Before
     public void setUp() throws Exception
     {
-        songDao = new SongDao(getTargetContext());
+        songService = new SongService(getTargetContext());
     }
 
     @After
     public void tearDown() throws Exception
     {
-        songDao.close();
+       // songService.close();
     }
 
     @Test
     public void testFinAll()
     {
         System.out.println("--findAll--");
-        List<Song> songs = songDao.findAll();
+        List<Song> songs = songService.findAll();
         assertFalse(songs.isEmpty());
     }
 
@@ -49,7 +50,7 @@ public class SongDaoIntegrationTest
     public void testFindByTitle()
     {
         System.out.println("--findByTitle--");
-        Song song = songDao.findContentsByTitle("Allelooyaa Karththaraiyae");
+        Song song = songService.findContentsByTitle("Allelooyaa Karththaraiyae");
         System.out.print("Song" + song.getContents());
         assertEquals("Allelooyaa Karththaraiyae", song.getTitle());
     }
@@ -58,7 +59,7 @@ public class SongDaoIntegrationTest
     public void testFindByWrongTitle()
     {
         System.out.println("--findByTitle--");
-        Song song = songDao.findContentsByTitle("foobar");
+        Song song = songService.findContentsByTitle("foobar");
         assertNull(song);
     }
 
@@ -66,7 +67,7 @@ public class SongDaoIntegrationTest
     public void testCount()
     {
         System.out.println("--count--");
-        assertEquals(733, songDao.count());
+        assertEquals(733, songService.count());
     }
 
 }
