@@ -78,9 +78,9 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
 
     private void displayHelpActivity()
     {
-       // if (!preferences.getBoolean(CommonConstants.DISPLAY_FAVOURITE_HELP_ACTIVITY, false)) {
+        if (!preferences.getBoolean(CommonConstants.DISPLAY_FAVOURITE_HELP_ACTIVITY, false)) {
             startActivity(new Intent(this, FavouriteSongsHelpActivity.class));
-       // }
+        }
     }
 
     @Override
