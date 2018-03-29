@@ -134,4 +134,5 @@
     <string name="search_type_title">Title</string>
     <string name="search_type_content">Content</string>
     <string name="song_book_no">பாடல் எண்</string>
+    <string name="rearrange_song_order">Do you know that you can rearrange the songs by dragging this icon up or down?</string>
 </resources>
