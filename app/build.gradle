@@ -22,6 +22,7 @@ android {
         targetSdkVersion 25
         versionCode versionCodeNumber
         versionName APP_VERSION
+
     }
     compileOptions.encoding = "UTF-8"
 
@@ -82,32 +83,30 @@ android {
             }
         }
     }
-
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
 }
 
 def getCurrentVersionName(versionCodeNumber)
 {
-    def gradlePropertyFile = file('../version.properties')
+    def versionPropertyFile = file('../version.properties')
     def majorVersion
-    def minorVersion = versionCodeNumber
+    def minorVersion
+    def batchVersion = versionCodeNumber
     def currentVersionName = "2.91"
-    if (gradlePropertyFile.canRead()) {
-        def Properties versionProps = new Properties()
-        versionProps.load(new FileInputStream(gradlePropertyFile))
+    if (versionPropertyFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
+        minorVersion = versionProps['MINOR_VERSION'] ?: "0"
         def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
             currentVersionName = majorVersion + "." + minorVersion.toString()
             versionProps['MAJOR_VERSION'] = majorVersion
-            versionProps["MINOR_VERSION"] = minorVersion.toString()
-            versionProps["VERSION_CODE"] = minorVersion.toString()
-            versionProps.store(gradlePropertyFile.newWriter(), null)
+            versionProps["MINOR_VERSION"] = minorVersion
+            versionProps["BATCH_VERSION"] = batchVersion.toString()
+            versionProps["VERSION_CODE"] = batchVersion.toString()
+            versionProps.store(versionPropertyFile.newWriter(), null)
         } else {
-            currentVersionName = majorVersion + "." + minorVersion.toString()
+            currentVersionName = majorVersion + "." + minorVersion + "." + batchVersion.toString()
         }
     }
     return currentVersionName

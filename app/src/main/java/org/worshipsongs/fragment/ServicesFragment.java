@@ -15,14 +15,12 @@ import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.activity.ServiceSongsActivity;
+import org.worshipsongs.activity.FavouriteSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.FavouriteService;
-import org.worshipsongs.utils.PropertyUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -201,7 +199,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
         @Override
         public void onClick(View v)
         {
-            Intent intent = new Intent(getActivity(), ServiceSongsActivity.class);
+            Intent intent = new Intent(getActivity(), FavouriteSongsActivity.class);
             intent.putExtra(CommonConstants.SERVICE_NAME_KEY, serviceName);
             startActivity(intent);
         }
