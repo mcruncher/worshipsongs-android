@@ -32,7 +32,7 @@ android {
             storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
             keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
             keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
-            
+
         }
     }
 
@@ -99,7 +99,7 @@ def getCurrentVersionName(versionCodeNumber)
         minorVersion = versionProps['MINOR_VERSION'] ?: "0"
         def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
         if (currentBranch.toLowerCase().contains("development")) {
-            currentVersionName = majorVersion + "." + minorVersion.toString()
+            currentVersionName = majorVersion + "." + minorVersion.toString() + "." + batchVersion.toString()
             versionProps['MAJOR_VERSION'] = majorVersion
             versionProps["MINOR_VERSION"] = minorVersion
             versionProps["BATCH_VERSION"] = batchVersion.toString()
