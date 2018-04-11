@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.worshipsongs.R;
+import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
@@ -60,7 +62,6 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-        Log.i(this.getClass().getSimpleName(), "Finished loading home fragment");
         return view;
     }
 

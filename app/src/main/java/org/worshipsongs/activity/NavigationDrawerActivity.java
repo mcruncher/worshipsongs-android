@@ -12,9 +12,9 @@ import android.preference.PreferenceManager;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.service.SongService;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -37,13 +37,13 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     public void init(Bundle bundle)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
+        if (!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
             SongService songService = new SongService(WorshipSongApplication.getContext());
             sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply();
         }
         long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
         presentationScreenService = new PresentationScreenService(this);
-        this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs +" Songs are available", null, R.drawable.worshipsongs));
+        this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs + " Songs are available", null, R.drawable.worshipsongs));
         this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, HomeFragment.newInstance()));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
@@ -72,7 +72,7 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         switch (requestCode) {
             case UPDATE_DB_REQUEST_CODE:
                 long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-                if(this.getAccountList().size() > 0) {
+                if (this.getAccountList().size() > 0) {
                     this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
                     this.notifyAccountDataChanged();
                 }

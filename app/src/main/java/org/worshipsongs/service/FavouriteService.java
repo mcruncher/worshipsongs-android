@@ -3,6 +3,7 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +77,7 @@ public class FavouriteService
             favouriteSet.add(existingFavourite);
         } else {
             List<SongDragDrop> dragDrops = new ArrayList<>();
-            songDragDrop.setId(0);
+            songDragDrop.setId(1);
             dragDrops.add(songDragDrop);
             favouriteSet.add(new Favourite(favourites.size() + 1, serviceName, dragDrops));
         }
@@ -125,6 +126,21 @@ public class FavouriteService
             names.add(favourite.getName());
         }
         return names;
+    }
+
+    public String buildShareFavouriteFormat(String name)
+    {
+        Favourite favourite = find(name);
+        StringBuilder builder = new StringBuilder();
+        builder.append(name).append("\n\n");
+        for (SongDragDrop songDragDrop : favourite.getDragDrops()) {
+            builder.append(songDragDrop.getId())
+                    .append(". ")
+                    .append(StringUtils.isNotBlank(songDragDrop.getTamilTitle()) ? songDragDrop.getTamilTitle() + "\n" : "")
+                    .append(songDragDrop.getTitle())
+                    .append("\n\n");
+        }
+        return builder.toString();
     }
 
     public void remove(String name)
