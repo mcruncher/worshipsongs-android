@@ -106,6 +106,32 @@ class FavouriteServiceTest extends ElectricSpecification
         result.get(0) == "service1"
     }
 
+    def "Build share favourite format"()
+    {
+        given: "favourite \"service1\" exists with two songs"
+        def songDragDropList = new ArrayList<SongDragDrop>()
+        def songDragDrop = new SongDragDrop(1, "foo", false)
+        songDragDrop.setTamilTitle("bar")
+        songDragDropList.add(songDragDrop)
+
+        def songDragDrop2 = new SongDragDrop(2, "foo1", false)
+        songDragDropList.add(songDragDrop2)
+        favouriteService.save("service1", songDragDropList)
+
+        when: "build share favourite format "
+        def result = favouriteService.buildShareFavouriteFormat("service1")
+
+        then:
+        result == "service1\n" +
+                "\n" +
+                "1. bar\n" +
+                "foo\n" +
+                "\n" +
+                "2. foo1\n" +
+                "\n" +
+                ""
+    }
+
     def "Remove"()
     {
         given:

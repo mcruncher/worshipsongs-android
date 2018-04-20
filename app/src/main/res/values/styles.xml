@@ -99,6 +99,15 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="TransparentCompact" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/black_semi_transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>

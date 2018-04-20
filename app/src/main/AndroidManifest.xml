@@ -36,7 +36,7 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name="org.worshipsongs.activity.ServiceSongsActivity">
+            android:name="org.worshipsongs.activity.FavouriteSongsActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
@@ -68,6 +68,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.worshipsongs.activity.NavigationDrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.FavouriteSongsHelpActivity"
+            android:theme="@style/TransparentCompact">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.worshipsongs.activity.FavouriteSongsActivity"/>
         </activity>
     </application>
 

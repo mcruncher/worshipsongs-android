@@ -10,19 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.activity.ServiceSongsActivity;
+import org.worshipsongs.activity.FavouriteSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.FavouriteService;
-import org.worshipsongs.utils.PropertyUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -115,12 +114,29 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     //Adapter listener methods
     @Override
-    public void setViews(Map<String, Object> objects, String text)
+    public void setViews(Map<String, Object> objects, final String text)
     {
         TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(text);
         titleTextView.setOnLongClickListener(new TextViewLongClickListener(text));
         titleTextView.setOnClickListener(new TextViewOnClickListener(text));
+
+        ImageView optionsImageView = (ImageView) objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
+        optionsImageView.setVisibility(View.VISIBLE);
+        optionsImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_share));
+        optionsImageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+                textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
+                textShareIntent.setType("text/plain");
+                Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     //Dialog Listener method
@@ -201,7 +217,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
         @Override
         public void onClick(View v)
         {
-            Intent intent = new Intent(getActivity(), ServiceSongsActivity.class);
+            Intent intent = new Intent(getActivity(), FavouriteSongsActivity.class);
             intent.putExtra(CommonConstants.SERVICE_NAME_KEY, serviceName);
             startActivity(intent);
         }
