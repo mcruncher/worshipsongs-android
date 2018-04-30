@@ -1,30 +1,40 @@
 package org.worshipsongs.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.FavouriteSongsActivity;
 import org.worshipsongs.adapter.TitleAdapter;
+import org.worshipsongs.dialog.FavouritesDialogFragment;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.FavouriteService;
+import org.worshipsongs.utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.worshipsongs.WorshipSongApplication.getContext;
 
 /**
  * Author : Madasamy
@@ -123,20 +133,60 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
         ImageView optionsImageView = (ImageView) objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
         optionsImageView.setVisibility(View.VISIBLE);
-        optionsImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_share));
         optionsImageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
-                Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-                textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
-                textShareIntent.setType("text/plain");
-                Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                showPopupMenu(view, text);
             }
         });
+    }
+
+    private void showPopupMenu(View view, final String text)
+    {
+        Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
+        final PopupMenu popupMenu;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            popupMenu = new PopupMenu(wrapper, view, Gravity.RIGHT);
+        } else {
+            popupMenu = new PopupMenu(wrapper, view);
+        }
+        popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
+        popupMenu.getMenu().findItem(R.id.play_song).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.export_pdf).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.present_song).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.addToList).setVisible(false);
+        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(text));
+        popupMenu.show();
+    }
+
+    @NonNull
+    private PopupMenu.OnMenuItemClickListener getPopupMenuItemListener(final String text)
+    {
+        return new PopupMenu.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(final MenuItem item)
+            {
+                switch (item.getItemId()) {
+                    case R.id.share_whatsapp:
+                        shareFavouritesInSocialMedia(text);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        };
+    }
+
+    private void shareFavouritesInSocialMedia(String text)
+    {
+        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+        textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
+        textShareIntent.setType("text/plain");
+        Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
     }
 
     //Dialog Listener method
