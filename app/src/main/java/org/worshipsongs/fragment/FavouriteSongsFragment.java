@@ -103,6 +103,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
             {
                 favouriteService.removeSong(getArguments().getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.getTitle());
                 configureDragDrops.remove(dragDrop);
+                favouriteSongAdapter.setItemList(configureDragDrops);
                 favouriteSongAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }

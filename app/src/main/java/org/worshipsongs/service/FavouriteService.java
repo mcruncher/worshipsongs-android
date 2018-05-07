@@ -133,8 +133,10 @@ public class FavouriteService
         Favourite favourite = find(name);
         StringBuilder builder = new StringBuilder();
         builder.append(name).append("\n\n");
-        for (SongDragDrop songDragDrop : favourite.getDragDrops()) {
-            builder.append(songDragDrop.getId())
+        List<SongDragDrop> dragDrops = favourite.getDragDrops();
+        for (int i = 0; i < dragDrops.size(); i++) {
+            SongDragDrop songDragDrop = dragDrops.get(i);
+            builder.append(i + 1)
                     .append(". ")
                     .append(StringUtils.isNotBlank(songDragDrop.getTamilTitle()) ? songDragDrop.getTamilTitle() + "\n" : "")
                     .append(songDragDrop.getTitle())

@@ -21,6 +21,11 @@ public class DragDrop
     private String title;
     private boolean checked;
 
+    public DragDrop()
+    {
+
+    }
+
     public DragDrop(long id, String title, boolean checked)
     {
         this.id = id;
