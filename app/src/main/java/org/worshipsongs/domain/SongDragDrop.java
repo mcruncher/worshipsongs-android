@@ -18,6 +18,10 @@ public class SongDragDrop extends DragDrop
 
     private String tamilTitle;
 
+    public SongDragDrop() {
+
+    }
+
     public SongDragDrop(long id, String title, boolean checked)
     {
         super(id, title, checked);
@@ -41,6 +45,7 @@ public class SongDragDrop extends DragDrop
                 "tamilTitle='" + tamilTitle + '\'' +
                 '}';
     }
+
 
     public static String toJsons(List<SongDragDrop> items)
     {
