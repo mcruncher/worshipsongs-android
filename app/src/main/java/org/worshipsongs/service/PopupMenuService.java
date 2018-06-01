@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -45,6 +46,7 @@ public class PopupMenuService
 
     private CustomTagColorService customTagColorService = new CustomTagColorService();
     private UserPreferenceSettingService preferenceSettingService = new UserPreferenceSettingService();
+    private FavouriteService favouriteService = new FavouriteService();
     private SongService songService = new SongService(getContext());
 
     public void showPopupmenu(final AppCompatActivity activity, final View view, final String songName, boolean hidePlay)
@@ -175,7 +177,7 @@ public class PopupMenuService
             Log.i("done", file.getAbsolutePath().toString());
 
         } catch (Exception ex) {
-           Log.e(PopupMenuService.class.getSimpleName(), "Error occurred while exporting to PDF", ex);
+            Log.e(PopupMenuService.class.getSimpleName(), "Error occurred while exporting to PDF", ex);
         }
     }
 
@@ -196,4 +198,51 @@ public class PopupMenuService
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }
+
+    public void shareFavouritesInSocialMedia(View view, final String favouriteName)
+    {
+        Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
+        final PopupMenu popupMenu;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            popupMenu = new PopupMenu(wrapper, view, Gravity.RIGHT);
+        } else {
+            popupMenu = new PopupMenu(wrapper, view);
+        }
+        popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
+        popupMenu.getMenu().findItem(R.id.play_song).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.export_pdf).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.present_song).setVisible(false);
+        popupMenu.getMenu().findItem(R.id.addToList).setVisible(false);
+        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(favouriteName));
+        popupMenu.show();
+    }
+
+    @NonNull
+    private PopupMenu.OnMenuItemClickListener getPopupMenuItemListener(final String text)
+    {
+        return new PopupMenu.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(final MenuItem item)
+            {
+                switch (item.getItemId()) {
+                    case R.id.share_whatsapp:
+                        shareFavouritesInSocialMedia(text);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        };
+    }
+
+    private void shareFavouritesInSocialMedia(String text)
+    {
+        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+        textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
+        textShareIntent.setType("text/plain");
+        Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
+    }
+
 }

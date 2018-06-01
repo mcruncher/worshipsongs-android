@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import org.worshipsongs.CommonConstants;
@@ -97,19 +96,6 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
-
     public void onResume()
     {
         super.onResume();
@@ -136,6 +122,4 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
         super.onBackPressed();
         finish();
     }
-
-
 }
