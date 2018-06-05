@@ -8,13 +8,13 @@ import hkhc.electricspock.ElectricSpecification
  */
 class FavouriteTest extends ElectricSpecification
 {
-    def favourite1 = new Favourite()
-    def favourite2 = new Favourite()
+    def favourite1
+    def favourite2
 
     def setup()
     {
-        favourite1.setName("foo")
-        favourite2.setName(favourite1.getName())
+        favourite1 = new Favourite(name: "foo", orderId: 1)
+        favourite2 = new Favourite(name: favourite1.getName(), orderId: 2)
     }
 
     def "ToString"()
@@ -81,4 +81,18 @@ class FavouriteTest extends ElectricSpecification
         expected.add(new Favourite("foo", new ArrayList<DragDrop>()))
         result == expected
     }
+
+    def "To sort order"()
+    {
+        setup:
+        List<Favourite> favorites = new ArrayList<>()
+        favorites.add(favourite1)
+        favorites.add(favourite2)
+        favorites.add(new Favourite(orderId: 3, name: "latest favourite"))
+        Collections.sort(favorites)
+
+        expect:
+        favorites.get(0).getName() == "latest favourite"
+    }
+
 }
