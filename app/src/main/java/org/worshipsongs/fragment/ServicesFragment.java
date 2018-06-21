@@ -22,6 +22,7 @@ import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.service.PopupMenuService;
+import org.worshipsongs.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment
 {
-    private FavouriteService favouriteService;
+    private FavouriteService favouriteService = new FavouriteService();
     private List<String> services = new ArrayList<>();
     private Parcelable state;
     private ListView serviceListView;
@@ -51,7 +52,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        favouriteService = new FavouriteService();
+//        favouriteService = new FavouriteService();
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY);
         }
@@ -61,7 +62,6 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     private void initSetUp()
     {
-        //File serviceFileName = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         services = favouriteService.findNames();
     }
 
@@ -106,12 +106,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     {
         super.onResume();
         initSetUp();
-        if (state != null) {
-            serviceListView.onRestoreInstanceState(state);
-        } else {
-            titleAdapter.addObjects(services);
-            infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
-        }
+        refreshListView();
     }
 
     //Adapter listener methods
@@ -217,6 +212,29 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
             Intent intent = new Intent(getActivity(), FavouriteSongsActivity.class);
             intent.putExtra(CommonConstants.SERVICE_NAME_KEY, serviceName);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (getActivity() != null) {
+                CommonUtils.hideKeyboard(getActivity());
+            }
+            initSetUp();
+            refreshListView();
+        }
+    }
+
+    private void refreshListView()
+    {
+        if (state != null) {
+            serviceListView.onRestoreInstanceState(state);
+        } else if (titleAdapter != null) {
+            titleAdapter.addObjects(services);
+            infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 }
