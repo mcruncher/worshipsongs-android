@@ -52,7 +52,6 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//        favouriteService = new FavouriteService();
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY);
         }
