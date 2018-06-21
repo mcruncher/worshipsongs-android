@@ -220,11 +220,16 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (getActivity() != null) {
-                CommonUtils.hideKeyboard(getActivity());
-            }
+            hideKeyboard();
             initSetUp();
             refreshListView();
+        }
+    }
+
+    private void hideKeyboard()
+    {
+        if (getActivity() != null) {
+            CommonUtils.hideKeyboard(getActivity());
         }
     }
 
