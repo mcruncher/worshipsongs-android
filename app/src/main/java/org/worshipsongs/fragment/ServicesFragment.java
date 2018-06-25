@@ -21,6 +21,8 @@ import org.worshipsongs.adapter.TitleAdapter;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
 import org.worshipsongs.service.FavouriteService;
+import org.worshipsongs.service.PopupMenuService;
+import org.worshipsongs.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,13 @@ import java.util.Map;
 
 public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment
 {
-    private FavouriteService favouriteService;
+    private FavouriteService favouriteService = new FavouriteService();
     private List<String> services = new ArrayList<>();
     private Parcelable state;
     private ListView serviceListView;
     private TitleAdapter<String> titleAdapter;
     private TextView infoTextView;
+    private PopupMenuService popupMenuService = new PopupMenuService();
 
     public static ServicesFragment newInstance()
     {
@@ -49,7 +52,6 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        favouriteService = new FavouriteService();
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY);
         }
@@ -59,7 +61,6 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
     private void initSetUp()
     {
-        //File serviceFileName = PropertyUtils.getPropertyFile(getActivity(), CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME);
         services = favouriteService.findNames();
     }
 
@@ -104,12 +105,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
     {
         super.onResume();
         initSetUp();
-        if (state != null) {
-            serviceListView.onRestoreInstanceState(state);
-        } else {
-            titleAdapter.addObjects(services);
-            infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
-        }
+        refreshListView();
     }
 
     //Adapter listener methods
@@ -123,21 +119,16 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
 
         ImageView optionsImageView = (ImageView) objects.get(CommonConstants.OPTIONS_IMAGE_KEY);
         optionsImageView.setVisibility(View.VISIBLE);
-        optionsImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_share));
         optionsImageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
-                Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-                textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
-                textShareIntent.setType("text/plain");
-                Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                popupMenuService.shareFavouritesInSocialMedia(view, text);
             }
         });
     }
+
 
     //Dialog Listener method
     @Override
@@ -220,6 +211,34 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
             Intent intent = new Intent(getActivity(), FavouriteSongsActivity.class);
             intent.putExtra(CommonConstants.SERVICE_NAME_KEY, serviceName);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            hideKeyboard();
+            initSetUp();
+            refreshListView();
+        }
+    }
+
+    private void hideKeyboard()
+    {
+        if (getActivity() != null) {
+            CommonUtils.hideKeyboard(getActivity());
+        }
+    }
+
+    private void refreshListView()
+    {
+        if (state != null) {
+            serviceListView.onRestoreInstanceState(state);
+        } else if (titleAdapter != null) {
+            titleAdapter.addObjects(services);
+            infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 }

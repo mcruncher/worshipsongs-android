@@ -1,5 +1,7 @@
 package org.worshipsongs.domain;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * Version : 3.x.x
  */
 
-public class Favourite
+public class Favourite implements Comparable
 {
     private int orderId;
     private String name;
@@ -113,5 +115,15 @@ public class Favourite
             return gson.fromJson(jsonString, type);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public int compareTo(@NonNull Object object)
+    {
+        if (object instanceof Favourite) {
+            Favourite rhs = (Favourite) object;
+            return rhs.getOrderId() < getOrderId() ? -1 : getOrderId() == rhs.getOrderId() ? 0 : 1;
+        }
+        return 0;
     }
 }

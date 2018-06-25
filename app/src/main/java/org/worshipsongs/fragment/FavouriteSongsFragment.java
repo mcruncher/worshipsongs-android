@@ -4,15 +4,16 @@ package org.worshipsongs.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,13 +25,13 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.FavouriteSongAdapter;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.Favourite;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.FavouriteService;
+import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 
@@ -50,6 +51,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     private SongContentViewListener songContentViewListener;
     private FavouriteService favouriteService;
     private SongService songService;
+    private PopupMenuService popupMenuService = new PopupMenuService();
 
     public static FavouriteSongsFragment newInstance(Bundle bundle)
     {
@@ -103,6 +105,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
             {
                 favouriteService.removeSong(getArguments().getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.getTitle());
                 configureDragDrops.remove(dragDrop);
+                favouriteSongAdapter.setItemList(configureDragDrops);
                 favouriteSongAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -187,6 +190,34 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     public void setSongContentViewListener(SongContentViewListener songContentViewListener)
     {
         this.songContentViewListener = songContentViewListener;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        menu.clear();
+        if (CommonUtils.isPhone(getContext())) {
+            inflater.inflate(R.menu.action_bar_options, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        Log.i(FavouriteSongsFragment.class.getSimpleName(), "Menu item " +
+                item.getItemId() + " " + R.id.options);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+               return true;
+            case R.id.options:
+                popupMenuService.shareFavouritesInSocialMedia(getActivity().findViewById(R.id.options),
+                        getArguments().getString(CommonConstants.SERVICE_NAME_KEY));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

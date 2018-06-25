@@ -29,6 +29,33 @@ class SongDragDropTest extends Specification
         !result.contains("bar")
     }
 
+    def "Equals"()
+    {
+        expect:
+        songDragDrop1.equals(songDragDrop2)
+    }
+
+    def "Not equals"()
+    {
+        setup:
+        songDragDrop1.title = "bar1"
+
+        expect:
+        !songDragDrop1.equals(songDragDrop2)
+    }
+
+    def "Hashcode"()
+    {
+        setup:
+        def songDragDropSet = new HashSet<SongDragDrop>()
+        songDragDropSet.add(songDragDrop1)
+        songDragDropSet.add(songDragDrop2)
+        songDragDropSet.add(new SongDragDrop())
+
+        expect:
+        songDragDropSet.size() == 2
+    }
+
     def "To json"()
     {
         given:

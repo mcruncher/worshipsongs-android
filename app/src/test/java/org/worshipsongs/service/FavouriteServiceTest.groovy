@@ -5,6 +5,7 @@ import android.preference.PreferenceManager
 import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
+import org.worshipsongs.domain.Favourite
 import org.worshipsongs.domain.SongDragDrop
 
 /**
@@ -167,5 +168,17 @@ class FavouriteServiceTest extends ElectricSpecification
         result.getDragDrops().size() == 1
         result.getDragDrops().get(0).title == "foo1"
 
+    }
+
+    def "Get new order number"()
+    {
+        setup:
+        List<Favourite> favorites = new ArrayList<>()
+        favorites.add(new Favourite(orderId: 1, name: "first favourite"))
+        favorites.add(new Favourite(orderId: 3, name: "latest favourite"))
+        favorites.add(new Favourite(orderId: 2, name: "second favourite"))
+        
+        expect:
+        favouriteService.getFavouritesNewOrderNumber(favorites) == 4
     }
 }

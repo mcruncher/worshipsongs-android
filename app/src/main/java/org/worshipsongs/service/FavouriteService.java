@@ -3,7 +3,6 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Base64;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,7 @@ import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,10 +79,20 @@ public class FavouriteService
             List<SongDragDrop> dragDrops = new ArrayList<>();
             songDragDrop.setId(1);
             dragDrops.add(songDragDrop);
-            favouriteSet.add(new Favourite(favourites.size() + 1, serviceName, dragDrops));
+            favouriteSet.add(new Favourite(getFavouritesNewOrderNumber(favourites), serviceName, dragDrops));
         }
         List<Favourite> uniqueFavourites = new ArrayList<>(favouriteSet);
         sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(uniqueFavourites)).apply();
+    }
+
+    public int getFavouritesNewOrderNumber(List<Favourite> favourites)
+    {
+        if (favourites.isEmpty()) {
+            return 0;
+        } else {
+            Collections.sort(favourites);
+            return favourites.get(0).getOrderId() + 1;
+        }
     }
 
     public void save(String name, List<SongDragDrop> dragDrops)
@@ -121,6 +131,7 @@ public class FavouriteService
     public List<String> findNames()
     {
         List<Favourite> favourites = Favourite.toArrays(sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, ""));
+        Collections.sort(favourites);
         List<String> names = new ArrayList<>();
         for (Favourite favourite : favourites) {
             names.add(favourite.getName());
@@ -133,8 +144,10 @@ public class FavouriteService
         Favourite favourite = find(name);
         StringBuilder builder = new StringBuilder();
         builder.append(name).append("\n\n");
-        for (SongDragDrop songDragDrop : favourite.getDragDrops()) {
-            builder.append(songDragDrop.getId())
+        List<SongDragDrop> dragDrops = favourite.getDragDrops();
+        for (int i = 0; i < dragDrops.size(); i++) {
+            SongDragDrop songDragDrop = dragDrops.get(i);
+            builder.append(i + 1)
                     .append(". ")
                     .append(StringUtils.isNotBlank(songDragDrop.getTamilTitle()) ? songDragDrop.getTamilTitle() + "\n" : "")
                     .append(songDragDrop.getTitle())
