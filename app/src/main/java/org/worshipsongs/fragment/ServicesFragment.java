@@ -33,7 +33,8 @@ import java.util.Map;
  * Version : 3.x
  */
 
-public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment
+public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdapterListener<String>,
+        AlertDialogFragment.DialogListener, ITabFragment
 {
     private FavouriteService favouriteService = new FavouriteService();
     private List<String> services = new ArrayList<>();

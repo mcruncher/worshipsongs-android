@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
@@ -39,7 +40,7 @@ import java.util.Map;
  * Version : 3.x
  */
 
-public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdapterListener<SongBook>, ITabFragment
+public class SongBookFragment extends AbstractTabFragment implements TitleAdapter.TitleAdapterListener<SongBook>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -153,6 +154,8 @@ public class SongBookFragment extends Fragment implements TitleAdapter.TitleAdap
         TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(songBook.getName());
         titleTextView.setOnClickListener(getOnClickListener(songBook));
+        setCountView((TextView) objects.get(CommonConstants.COUNT_KEY),
+                String.valueOf(songBook.getNoOfSongs()));
     }
 
     @NonNull

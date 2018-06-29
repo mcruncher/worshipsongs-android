@@ -16,8 +16,6 @@ import java.util.List;
 
 public class TopicService
 {
-    public static final String TABLE_NAME = "topics";
-    private String[] allColumns = {"id", "name"};
     private DatabaseService databaseService;
 
     public TopicService()
@@ -33,8 +31,10 @@ public class TopicService
     public List<Topics> findAll()
     {
         List<Topics> topicsList = new ArrayList<Topics>();
-        Cursor cursor = databaseService.getDatabase().query(true, TABLE_NAME,
-                allColumns, null, null, null, null, allColumns[1], null);
+        String query ="select  topic.id, topic.name, count(topic.id) from songs as song " +
+                "inner join songs_topics as songtopics on songtopics.song_id=song.id " +
+                "inner join topics as topic on topic.id=songtopics.topic_id group by name";
+        Cursor cursor = databaseService.getDatabase().rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Topics topics = cursorToTopics(cursor);
@@ -50,6 +50,7 @@ public class TopicService
         Topics topics = new Topics();
         topics.setId(cursor.getInt(0));
         topics.setName(cursor.getString(1));
+        topics.setNoOfSongs(cursor.getInt(2));
         topics.setTamilName(databaseService.parseTamilName(topics.getName()));
         topics.setDefaultName(databaseService.parseEnglishName(topics.getName()));
         return topics;
