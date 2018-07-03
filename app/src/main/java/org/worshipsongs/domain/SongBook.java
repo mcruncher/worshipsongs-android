@@ -13,6 +13,7 @@ public class SongBook
     private int id;
     private String name;
     private String publisher;
+    private int noOfSongs;
 
     public SongBook()
     {
@@ -52,6 +53,16 @@ public class SongBook
     public void setPublisher(String publisher)
     {
         this.publisher = publisher;
+    }
+
+    public int getNoOfSongs()
+    {
+        return noOfSongs;
+    }
+
+    public void setNoOfSongs(int noOfSongs)
+    {
+        this.noOfSongs = noOfSongs;
     }
 
     @Override

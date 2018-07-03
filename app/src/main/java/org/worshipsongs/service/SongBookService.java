@@ -30,8 +30,12 @@ public class SongBookService
     public List<SongBook> findAll()
     {
         List<SongBook> songBooks = new ArrayList<SongBook>();
-        Cursor cursor = databaseService.getDatabase().query(true, TABLE_NAME,
-                allColumns, null, null, null, null, allColumns[1], null);
+
+        String query = "select songbook.id, songbook.name, songbook.publisher, count(songbook.id) " +
+                "from songs as song inner join songs_songbooks as songsongbooks on " +
+                "songsongbooks.song_id=song.id inner join song_books as songbook on " +
+                "songbook.id=songsongbooks.songbook_id group by songbook.name";
+        Cursor cursor = databaseService.getDatabase().rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             SongBook songBook = cursorToSongBook(cursor);
@@ -48,6 +52,7 @@ public class SongBookService
         songBook.setId(cursor.getInt(0));
         songBook.setName(parseName(cursor.getString(1)));
         songBook.setPublisher(cursor.getString(2));
+        songBook.setNoOfSongs(cursor.getInt(3));
         return songBook;
     }
 
