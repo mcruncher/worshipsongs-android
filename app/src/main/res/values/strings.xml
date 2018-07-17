@@ -141,4 +141,5 @@
     <string name="search_type_content">Content</string>
     <string name="song_book_no">Song no</string>
     <string name="rearrange_song_order">Do you know that you can rearrange the songs by dragging this icon up or down?</string>
+    <string name="no_of_songs">No. of songs: %1$s</string>
 </resources>

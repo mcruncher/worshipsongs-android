@@ -46,7 +46,7 @@ import java.util.Map;
  * @Author : Seenivasan,Madasamy
  * @Version : 1.0
  */
-public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Author>, ITabFragment
+public class AuthorsFragment extends AbstractTabFragment implements TitleAdapter.TitleAdapterListener<Author>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -189,24 +189,8 @@ public class AuthorsFragment extends Fragment implements TitleAdapter.TitleAdapt
         TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(getAuthorName(author));
         titleTextView.setOnClickListener(textViewOnClickListener(author));
-        TextView countTextView = (TextView) objects.get(CommonConstants.COUNT_KEY);
-        String count = String.valueOf(author.getNoOfSongs());
-        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) countTextView.getLayoutParams();
-        if (count.toCharArray().length == 3) {
-            params.width = 130;
-            countTextView.setLayoutParams(params);
-        } else if (count.toCharArray().length == 2) {
-            params.width = 100;
-            countTextView.setLayoutParams(params);
-        } else if (count.toCharArray().length == 1) {
-            params.width = 70;
-            countTextView.setLayoutParams(params);
-        } else {
-            params.width = 200;
-            countTextView.setLayoutParams(params);
-        }
-        countTextView.setText(count);
-        countTextView.setVisibility(StringUtils.isNotBlank(countTextView.getText()) ? View.VISIBLE : View.GONE);
+        TextView countTextView = (TextView) objects.get(CommonConstants.SUBTITLE_KEY);
+        setCountView(countTextView, String.valueOf(author.getNoOfSongs()));
     }
 
     @NonNull
