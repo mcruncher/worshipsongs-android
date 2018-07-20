@@ -157,6 +157,20 @@ public class TopicsFragment extends AbstractTabFragment implements TitleAdapter.
     }
 
 
+    private String getTopicsName(Topics topics)
+    {
+        return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
+    }
+
+    @Override
+    public void setViews(Map<String, Object> objects, Topics topics)
+    {
+        TextView textView = (TextView) objects.get(CommonConstants.TITLE_KEY);
+        textView.setText(getTopicsName(topics));
+        textView.setOnClickListener(getOnClickListener(topics));
+        setCountView((TextView) objects.get(CommonConstants.SUBTITLE_KEY), String.valueOf(topics.getNoOfSongs()));
+    }
+
     @NonNull
     private View.OnClickListener getOnClickListener(final Topics topics)
     {
@@ -172,20 +186,6 @@ public class TopicsFragment extends AbstractTabFragment implements TitleAdapter.
                 startActivity(intent);
             }
         };
-    }
-
-    private String getTopicsName(Topics topics)
-    {
-        return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
-    }
-
-    @Override
-    public void setViews(Map<String, Object> objects, Topics topics)
-    {
-        TextView textView = (TextView) objects.get(CommonConstants.TITLE_KEY);
-        textView.setText(getTopicsName(topics));
-        textView.setOnClickListener(getOnClickListener(topics));
-        setCountView((TextView) objects.get(CommonConstants.COUNT_KEY), String.valueOf(topics.getNoOfSongs()));
     }
 
     @Override

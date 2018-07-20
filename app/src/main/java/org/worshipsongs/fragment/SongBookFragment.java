@@ -154,7 +154,7 @@ public class SongBookFragment extends AbstractTabFragment implements TitleAdapte
         TextView titleTextView = (TextView) objects.get(CommonConstants.TITLE_KEY);
         titleTextView.setText(songBook.getName());
         titleTextView.setOnClickListener(getOnClickListener(songBook));
-        setCountView((TextView) objects.get(CommonConstants.COUNT_KEY),
+        setCountView((TextView) objects.get(CommonConstants.SUBTITLE_KEY),
                 String.valueOf(songBook.getNoOfSongs()));
     }
 
