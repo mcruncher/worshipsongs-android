@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongListActivity;
@@ -42,7 +43,7 @@ import java.util.Map;
  * Version : 3.x
  */
 
-public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapterListener<Topics>, ITabFragment
+public class TopicsFragment extends AbstractTabFragment implements TitleAdapter.TitleAdapterListener<Topics>, ITabFragment
 {
     private static final String STATE_KEY = "listViewState";
     private Parcelable state;
@@ -156,6 +157,20 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
     }
 
 
+    private String getTopicsName(Topics topics)
+    {
+        return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
+    }
+
+    @Override
+    public void setViews(Map<String, Object> objects, Topics topics)
+    {
+        TextView textView = (TextView) objects.get(CommonConstants.TITLE_KEY);
+        textView.setText(getTopicsName(topics));
+        textView.setOnClickListener(getOnClickListener(topics));
+        setCountView((TextView) objects.get(CommonConstants.SUBTITLE_KEY), String.valueOf(topics.getNoOfSongs()));
+    }
+
     @NonNull
     private View.OnClickListener getOnClickListener(final Topics topics)
     {
@@ -171,19 +186,6 @@ public class TopicsFragment extends Fragment implements TitleAdapter.TitleAdapte
                 startActivity(intent);
             }
         };
-    }
-
-    private String getTopicsName(Topics topics)
-    {
-        return userPreferenceSettingService.isTamil() ? topics.getTamilName() : topics.getDefaultName();
-    }
-
-    @Override
-    public void setViews(Map<String, Object> objects, Topics topics)
-    {
-        TextView textView = (TextView)objects.get(CommonConstants.TITLE_KEY);
-        textView.setText(getTopicsName(topics));
-        textView.setOnClickListener(getOnClickListener(topics));
     }
 
     @Override

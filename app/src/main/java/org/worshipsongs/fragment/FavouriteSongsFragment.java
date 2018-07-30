@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.SongContentViewActivity;
@@ -33,6 +34,7 @@ import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
+import org.worshipsongs.service.UserPreferenceSettingService;
 import org.worshipsongs.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     private FavouriteService favouriteService;
     private SongService songService;
     private PopupMenuService popupMenuService = new PopupMenuService();
+    private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
 
     public static FavouriteSongsFragment newInstance(Bundle bundle)
     {
@@ -138,16 +141,24 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
                 getActivity().startActivity(intent);
             } else {
                 Setting.getInstance().setPosition(favouriteSongAdapter.getPositionForItem(dragDrop));
-                songContentViewListener.displayContent(dragDrop.getTitle(), titles, favouriteSongAdapter.getPositionForItem(dragDrop));
+                songContentViewListener.displayContent(dragDrop.getTitle(), titles,
+                        favouriteSongAdapter.getPositionForItem(dragDrop));
             }
         } else {
             Bundle bundle = new Bundle();
             bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.warning));
-            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_song_not_available, "\"" + song.getTitle() + "\""));
+            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_song_not_available,
+                    "\"" + getTitle(dragDrop) + "\""));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.show(getActivity().getFragmentManager(), "WarningDialogFragment");
         }
+    }
+
+    private String getTitle(SongDragDrop dragDrop)
+    {
+        return userPreferenceSettingService.isTamil() && StringUtils.isNotBlank(dragDrop.getTamilTitle())
+                ? dragDrop.getTamilTitle() : dragDrop.getTitle();
     }
 
     private static class MyDragItem extends DragItem
