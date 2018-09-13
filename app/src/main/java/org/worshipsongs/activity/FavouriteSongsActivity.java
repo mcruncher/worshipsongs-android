@@ -50,36 +50,11 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
         preferences = PreferenceManager.getDefaultSharedPreferences(FavouriteSongsActivity.this);
         favouriteService = new FavouriteService();
         songService = new SongService(FavouriteSongsActivity.this);
-       // importFavourites();
         setActionBar();
         setContentViewFragment();
         setTabsFragment();
         displayHelpActivity();
     }
-
-//    private void importFavourites()
-//    {
-//        Uri data = getIntent().getData();
-//        if (data != null) {
-//            String dataPath = data.getPath();
-//            String encodedString = dataPath.substring(1, dataPath.length());
-//            String decodedString = new String(Base64.decode(encodedString, 0));
-//            String[] favouriteIdArray = decodedString.split(";");
-//            if (favouriteIdArray != null && favouriteIdArray.length > 0) {
-//                favouriteName = favouriteIdArray[0];
-//                List<SongDragDrop> songDragDrops = new ArrayList<>();
-//                for (int i = 1; i < favouriteIdArray.length; i++) {
-//                    Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
-//                    SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(), false);
-//                    songDragDrop.setTamilTitle(song.getTamilTitle());
-//                    songDragDrops.add(songDragDrop);
-//                }
-//                favouriteService.save(favouriteName, songDragDrops);
-//                Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
-//                        " successfully imported with " + songDragDrops.size() + " songs");
-//            }
-//        }
-//    }
 
     private void setActionBar()
     {
