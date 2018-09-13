@@ -2,21 +2,28 @@ package org.worshipsongs.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.fragment.FavouriteSongsFragment;
 import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.fragment.SongContentPortraitViewFragment;
 import org.worshipsongs.listener.SongContentViewListener;
+import org.worshipsongs.service.FavouriteService;
 import org.worshipsongs.service.PresentationScreenService;
+import org.worshipsongs.service.SongService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +37,9 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
     private FrameLayout songContentFrameLayout;
     private PresentationScreenService presentationScreenService;
     private SharedPreferences preferences;
+    private FavouriteService favouriteService;
+    private SongService songService;
+    private String favouriteName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,11 +48,38 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
         setContentView(R.layout.home_layout);
         presentationScreenService = new PresentationScreenService(FavouriteSongsActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(FavouriteSongsActivity.this);
+        favouriteService = new FavouriteService();
+        songService = new SongService(FavouriteSongsActivity.this);
+       // importFavourites();
         setActionBar();
         setContentViewFragment();
         setTabsFragment();
         displayHelpActivity();
     }
+
+//    private void importFavourites()
+//    {
+//        Uri data = getIntent().getData();
+//        if (data != null) {
+//            String dataPath = data.getPath();
+//            String encodedString = dataPath.substring(1, dataPath.length());
+//            String decodedString = new String(Base64.decode(encodedString, 0));
+//            String[] favouriteIdArray = decodedString.split(";");
+//            if (favouriteIdArray != null && favouriteIdArray.length > 0) {
+//                favouriteName = favouriteIdArray[0];
+//                List<SongDragDrop> songDragDrops = new ArrayList<>();
+//                for (int i = 1; i < favouriteIdArray.length; i++) {
+//                    Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
+//                    SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(), false);
+//                    songDragDrop.setTamilTitle(song.getTamilTitle());
+//                    songDragDrops.add(songDragDrop);
+//                }
+//                favouriteService.save(favouriteName, songDragDrops);
+//                Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
+//                        " successfully imported with " + songDragDrops.size() + " songs");
+//            }
+//        }
+//    }
 
     private void setActionBar()
     {
@@ -50,7 +87,7 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getIntent().getStringExtra(CommonConstants.SERVICE_NAME_KEY));
+        actionBar.setTitle(getFavouriteName());
     }
 
     private void setContentViewFragment()
@@ -65,7 +102,7 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
                 fragmentManager.findFragmentByTag(FavouriteSongsFragment.class.getSimpleName());
         if (existingServiceSongsFragment == null) {
             Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.SERVICE_NAME_KEY, getIntent().getStringExtra(CommonConstants.SERVICE_NAME_KEY));
+            bundle.putString(CommonConstants.SERVICE_NAME_KEY, getFavouriteName());
             FavouriteSongsFragment serviceSongsFragment = FavouriteSongsFragment.newInstance(bundle);
             serviceSongsFragment.setSongContentViewListener(this);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -73,6 +110,11 @@ public class FavouriteSongsActivity extends AppCompatActivity implements SongCon
             transaction.addToBackStack(null);
             transaction.commit();
         }
+    }
+
+    private String getFavouriteName()
+    {
+        return favouriteName != null ? favouriteName : getIntent().getStringExtra(CommonConstants.SERVICE_NAME_KEY);
     }
 
     private void displayHelpActivity()

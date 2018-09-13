@@ -3,12 +3,14 @@ package org.worshipsongs.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.Favourite;
+import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.utils.PropertyUtils;
 
@@ -28,10 +30,12 @@ public class FavouriteService
 {
 
     private SharedPreferences sharedPreferences;
+    private SongService songService;
 
     public FavouriteService()
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
+        songService = new SongService(WorshipSongApplication.getContext());
     }
 
     public FavouriteService(Context context)
@@ -71,13 +75,11 @@ public class FavouriteService
         favouriteSet.addAll(favourites);
         if (StringUtils.isNotBlank(existingFavourite.getName())) {
             List<SongDragDrop> dragDrops = existingFavourite.getDragDrops();
-            songDragDrop.setId(dragDrops.size() + 1);
             dragDrops.add(songDragDrop);
             existingFavourite.setDragDrops(dragDrops);
             favouriteSet.add(existingFavourite);
         } else {
             List<SongDragDrop> dragDrops = new ArrayList<>();
-            songDragDrop.setId(1);
             dragDrops.add(songDragDrop);
             favouriteSet.add(new Favourite(getFavouritesNewOrderNumber(favourites), serviceName, dragDrops));
         }
@@ -142,6 +144,8 @@ public class FavouriteService
     public String buildShareFavouriteFormat(String name)
     {
         Favourite favourite = find(name);
+        StringBuilder linkBuilder = new StringBuilder();
+        linkBuilder.append(name).append(";");
         StringBuilder builder = new StringBuilder();
         builder.append(name).append("\n\n");
         List<SongDragDrop> dragDrops = favourite.getDragDrops();
@@ -149,10 +153,19 @@ public class FavouriteService
             SongDragDrop songDragDrop = dragDrops.get(i);
             builder.append(i + 1)
                     .append(". ")
-                    .append(StringUtils.isNotBlank(songDragDrop.getTamilTitle()) ? songDragDrop.getTamilTitle() + "\n" : "")
+                    .append(StringUtils.isNotBlank(songDragDrop.getTamilTitle()) ?
+                            songDragDrop.getTamilTitle() + "\n" : "")
                     .append(songDragDrop.getTitle())
                     .append("\n\n");
+            if (songDragDrop.getId() > 0) {
+                linkBuilder.append(songDragDrop.getId()).append(";");
+            } else {
+                Song song = songService.findByTitle(songDragDrop.getTitle());
+                linkBuilder.append(song.getId()).append(";");
+            }
         }
+        String base64String = Base64.encodeToString(linkBuilder.toString().getBytes(),0);
+        builder.append("\n").append("https://worshipsongs.org/").append(base64String);
         return builder.toString();
     }
 
@@ -183,4 +196,13 @@ public class FavouriteService
         sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(new ArrayList<>(favouriteSet))).apply();
     }
 
+    public void setSharedPreferences(SharedPreferences sharedPreferences)
+    {
+        this.sharedPreferences = sharedPreferences;
+    }
+
+    public void setSongService(SongService songService)
+    {
+        this.songService = songService;
+    }
 }

@@ -13,6 +13,7 @@ import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -76,6 +77,7 @@ public class PopupMenuService
                         Bundle bundle = new Bundle();
                         bundle.putString(CommonConstants.TITLE_KEY, songName);
                         bundle.putString(CommonConstants.LOCALISED_TITLE_KEY, song.getTamilTitle());
+                        bundle.putInt(CommonConstants.ID, song.getId());
                         FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.newInstance(bundle);
                         favouritesDialogFragment.show(activity.getSupportFragmentManager(), "FavouritesDialogFragment");
                         return true;
@@ -240,7 +242,7 @@ public class PopupMenuService
         Intent textShareIntent = new Intent(Intent.ACTION_SEND);
         textShareIntent.putExtra(Intent.EXTRA_TEXT, favouriteService.buildShareFavouriteFormat(text));
         textShareIntent.setType("text/plain");
-        Intent intent = Intent.createChooser(textShareIntent, "Share " + text + " with...");
+        Intent intent = Intent.createChooser(textShareIntent, "Share with...");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }

@@ -11,12 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;
+import org.worshipsongs.registry.ITabFragment;
+
+import java.util.List;
 
 /**
  * author:Seenivasan, Madasamy
@@ -46,6 +50,8 @@ public class HomeTabFragment extends Fragment
 
         // Assigning ViewPager View and setting the adapter
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
+
+
         pager.setAdapter(adapter);
         // Assiging the Sliding Tab Layout View
         SlidingTabLayout tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
@@ -62,6 +68,12 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+        if (getArguments() != null && getArguments().getString(CommonConstants.FAVOURITES_KEY) != null) {
+            ITabFragment playlists = fragmentRegistry.findByTitle(getActivity(), "playlists");
+            if (playlists != null) {
+                pager.setCurrentItem(playlists.defaultSortOrder());
+            }
+        }
         return view;
     }
 
@@ -69,6 +81,4 @@ public class HomeTabFragment extends Fragment
     {
         this.songContentViewListener = songContentViewListener;
     }
-
-
 }

@@ -48,7 +48,8 @@ public class SongService
     {
         List<Song> songs = new ArrayList<Song>();
         Cursor cursor = databaseService.getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, null, null, null, null, "title");
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"},
+                null, null, null, null, "title");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Song song = cursorToSong(cursor);
@@ -96,7 +97,7 @@ public class SongService
     public List<Song> findBySongBookId(int songBookId)
     {
         List<Song> songs = new ArrayList<>();
-        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments, entry from " +
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments,s.id, entry  from " +
                 "songs as s inner join songs_songbooks as ssb on ssb.song_id = s.id inner join " +
                 "song_books as sb on ssb.songbook_id = sb.id where sb.id= ?";
         Cursor cursor = databaseService.getDatabase().rawQuery(query, new String[]{String.valueOf(songBookId)});
@@ -114,7 +115,7 @@ public class SongService
     private int getSongBookNo(Cursor cursor)
     {
         try {
-            String numberInString = cursor.getString(6);
+            String numberInString = cursor.getString(7);
             return Integer.parseInt(numberInString);
         } catch (Exception ex) {
             return 0;
@@ -146,7 +147,24 @@ public class SongService
         Song song = null;
         String whereClause = " title" + "=\"" + title + "\"";
         Cursor cursor = databaseService.getDatabase().query(TABLE_NAME,
-                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments"}, whereClause, null, null, null, "title");
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"},
+                whereClause, null, null, null, "title");
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            song = cursorToSong(cursor);
+            cursor.close();
+        }
+        return song;
+    }
+
+
+    public Song findById(int id)
+    {
+        Song song = null;
+        String whereClause = " id" + "=" + id + "";
+        Cursor cursor = databaseService.getDatabase().query(TABLE_NAME,
+                new String[]{"title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"},
+                whereClause, null, null, null, "title");
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             song = cursorToSong(cursor);
@@ -164,6 +182,7 @@ public class SongService
         song.setSearchTitle(cursor.getString(3));
         song.setSearchLyrics(cursor.getString(4));
         song.setComments(cursor.getString(5));
+        song.setId(cursor.getInt(6));
         song.setUrlKey(songParser.parseMediaUrlKey(song.getComments()));
         song.setChord(songParser.parseChord(song.getComments()));
         song.setTamilTitle(songParser.parseTamilTitle(song.getComments()));
@@ -172,7 +191,8 @@ public class SongService
 
     public long count()
     {
-        Cursor c = databaseService.getDatabase().query(TABLE_NAME, null, null, null, null, null, null);
+        Cursor c = databaseService.getDatabase().query(TABLE_NAME, null, null,
+                null, null, null, null);
         int result = c.getCount();
         c.close();
         return result;

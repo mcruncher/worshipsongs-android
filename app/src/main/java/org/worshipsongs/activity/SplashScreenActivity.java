@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -18,12 +20,18 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.domain.DragDrop;
+import org.worshipsongs.domain.Song;
+import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.service.DatabaseService;
 import org.worshipsongs.service.FavouriteService;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -36,6 +44,8 @@ public class SplashScreenActivity extends AppCompatActivity
     private DatabaseService databaseService;
     private SharedPreferences sharedPreferences;
     private FavouriteService favouriteService;
+    private SongService songService;
+    private String favouriteName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,7 +55,33 @@ public class SplashScreenActivity extends AppCompatActivity
         initSetUp(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         migrateFavourites();
+        importFavourites();
         loadDatabase();
+    }
+
+    private void importFavourites()
+    {
+        Uri data = getIntent().getData();
+
+        if (data != null) {
+            String dataPath = data.getPath();
+            String encodedString = dataPath.substring(1, dataPath.length());
+            String decodedString = new String(Base64.decode(encodedString, 0));
+            String[] favouriteIdArray = decodedString.split(";");
+            if (favouriteIdArray != null && favouriteIdArray.length > 0) {
+                favouriteName = favouriteIdArray[0];
+                List<SongDragDrop> songDragDrops = new ArrayList<>();
+                for (int i = 1; i < favouriteIdArray.length; i++) {
+                    Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
+                    SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(), false);
+                    songDragDrop.setTamilTitle(song.getTamilTitle());
+                    songDragDrops.add(songDragDrop);
+                }
+                favouriteService.save(favouriteName, songDragDrops);
+                Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
+                        " successfully imported with " + songDragDrops.size() + " songs");
+            }
+        }
     }
 
     void initSetUp(Context context)
@@ -53,6 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity
         databaseService = new DatabaseService(context);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         favouriteService = new FavouriteService();
+        songService = new SongService(context);
     }
 
     private void migrateFavourites()
@@ -153,6 +190,7 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
+        intent.putExtra(CommonConstants.FAVOURITES_KEY, favouriteName);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();

@@ -44,7 +44,9 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
         presentationScreenService = new PresentationScreenService(this);
         this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs + " Songs are available", null, R.drawable.worshipsongs));
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, HomeFragment.newInstance()));
+        HomeFragment homeFragment = HomeFragment.newInstance();
+        homeFragment.setArguments(getIntent().getExtras());
+        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, homeFragment));
         this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
         this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
         this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));

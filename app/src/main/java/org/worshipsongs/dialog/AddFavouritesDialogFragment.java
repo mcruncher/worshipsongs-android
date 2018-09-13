@@ -80,11 +80,12 @@ public class AddFavouritesDialogFragment extends DialogFragment
                 Bundle args = getArguments();
                 String songName = args.getString(CommonConstants.TITLE_KEY);
                 String localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY);
+                int id = args.getInt(CommonConstants.ID);
                 if (serviceName.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
                 } else {
                     String favouriteName = serviceName.getText().toString();
-                    SongDragDrop songDragDrop = new SongDragDrop(0, songName, false);
+                    SongDragDrop songDragDrop = new SongDragDrop(id, songName, false);
                     songDragDrop.setTamilTitle(localisedName);
                     favouriteService.save(favouriteName, songDragDrop);
                     Toast.makeText(getActivity(), "Song added to favourite......!", Toast.LENGTH_SHORT).show();
