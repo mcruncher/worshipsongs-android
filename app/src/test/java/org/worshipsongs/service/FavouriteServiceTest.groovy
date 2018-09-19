@@ -15,11 +15,8 @@ import org.worshipsongs.domain.SongDragDrop
  */
 class FavouriteServiceTest extends ElectricSpecification
 {
-    //def favouriteService = new FavouriteService(RuntimeEnvironment.application.getApplicationContext());
-    def favouriteService = Spy(FavouriteService)
+    def favouriteService = new FavouriteService(RuntimeEnvironment.application.getApplicationContext());
     def songService =  new SongService(RuntimeEnvironment.application.getApplicationContext())
-    // Mock(SongService)
-    // def  preferences = Mock(SharedPreferences)
 
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext())
 
@@ -123,27 +120,21 @@ class FavouriteServiceTest extends ElectricSpecification
     {
         given: "favourite \"service1\" exists with two songs"
         def songDragDropList = new ArrayList<SongDragDrop>()
-        def songDragDrop = new SongDragDrop(0, "foo", false)
+        def songDragDrop = new SongDragDrop(1, "foo", false)
         songDragDrop.setTamilTitle("bar")
         songDragDropList.add(songDragDrop)
 
         def songDragDrop2 = new SongDragDrop(2, "foo1", false)
         songDragDropList.add(songDragDrop2)
         favouriteService.save("service1", songDragDropList)
-        songService.findByTitle("bar") >> new Song(id: 1)
 
         when: "build share favourite format "
         def result = favouriteService.buildShareFavouriteFormat("service1")
 
         then:
-        result == "service1\n" +
-                "\n" +
-                "1. bar\n" +
-                "foo\n" +
-                "\n" +
-                "2. foo1\n" +
-                "\n" +
-                ""
+        result.contains("foo")
+        result.contains("bar")
+        result.contains("https://worshipsongs.org/c2VydmljZTE7MTsyOw==")
     }
 
     def "Remove"()
