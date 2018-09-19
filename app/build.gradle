@@ -45,7 +45,6 @@ android {
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.releaseConfig
             testCoverageEnabled true
         }
     }
