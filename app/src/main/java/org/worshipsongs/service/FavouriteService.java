@@ -165,7 +165,7 @@ public class FavouriteService
             }
         }
         String base64String = Base64.encodeToString(linkBuilder.toString().getBytes(),0);
-        builder.append("\n").append("https://mcruncher.github.io/").append(base64String);
+        builder.append("\n").append("https://mcruncher.github.io/worshipsongs/?").append(base64String);
         return builder.toString();
     }
 

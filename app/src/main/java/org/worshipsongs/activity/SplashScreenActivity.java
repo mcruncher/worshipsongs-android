@@ -64,8 +64,7 @@ public class SplashScreenActivity extends AppCompatActivity
         Uri data = getIntent().getData();
 
         if (data != null) {
-            String dataPath = data.getPath();
-            String encodedString = dataPath.substring(1, dataPath.length());
+            String encodedString = data.getQuery();
             String decodedString = new String(Base64.decode(encodedString, 0));
             String[] favouriteIdArray = decodedString.split(";");
             if (favouriteIdArray != null && favouriteIdArray.length > 0) {
