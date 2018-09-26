@@ -69,9 +69,9 @@ public class HomeTabFragment extends Fragment
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
         if (getArguments() != null && getArguments().getString(CommonConstants.FAVOURITES_KEY) != null) {
-            ITabFragment playlists = fragmentRegistry.findByTitle(getActivity(), "playlists");
-            if (playlists != null) {
-                pager.setCurrentItem(playlists.defaultSortOrder());
+            List<String> titles = fragmentRegistry.getTitles(getActivity());
+            if (titles.contains("playlists")) {
+                pager.setCurrentItem(titles.indexOf("playlists"));
             }
         }
         return view;

@@ -21,10 +21,10 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <data
-                    android:host="worshipsongs.org"
-                    android:pathPrefix="/"
+                    android:host="mcruncher.github.io"
+                    android:pathPrefix="/worshipsongs"
                     android:scheme="https"/>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

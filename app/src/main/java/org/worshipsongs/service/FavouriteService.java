@@ -107,7 +107,7 @@ public class FavouriteService
         if (StringUtils.isNotBlank(existingFavourite.getName())) {
             existingFavourite.setDragDrops(dragDrops);
         } else {
-            existingFavourite = new Favourite(name, dragDrops);
+            existingFavourite = new Favourite(getFavouritesNewOrderNumber(favourites), name, dragDrops);
         }
         favouriteSet.add(existingFavourite);
         List<Favourite> uniqueFavourites = new ArrayList<>(favouriteSet);
@@ -164,8 +164,8 @@ public class FavouriteService
                 linkBuilder.append(song.getId()).append(";");
             }
         }
-        String base64String = Base64.encodeToString(linkBuilder.toString().getBytes(),0);
-        builder.append("\n").append("https://worshipsongs.org/").append(base64String);
+        String base64String = Base64.encodeToString(linkBuilder.toString().getBytes(), 0);
+        builder.append("\n").append("https://mcruncher.github.io/worshipsongs/?").append(base64String);
         return builder.toString();
     }
 
