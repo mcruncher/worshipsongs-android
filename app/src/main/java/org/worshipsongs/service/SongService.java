@@ -63,7 +63,7 @@ public class SongService
     public List<Song> findByTopicId(int topicId)
     {
         List<Song> songs = new ArrayList<Song>();
-        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments " +
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments, s.id " +
                 "from songs as s inner join songs_topics as st on st.song_id = s.id inner join " +
                 "topics as t on st.topic_id = t.id where t.id= ?";
         Cursor cursor = databaseService.getDatabase().rawQuery(query, new String[]{String.valueOf(topicId)});
@@ -80,7 +80,7 @@ public class SongService
     public List<Song> findByAuthorId(int authorId)
     {
         List<Song> songs = new ArrayList<Song>();
-        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments " +
+        String query = "select title,lyrics,verse_order,search_title,search_lyrics,comments,s.id " +
                 "from songs as s inner join authors_songs as aus on aus.song_id = s.id inner join" +
                 " authors as t on aus.author_id = t.id where t.id= ?";
         Cursor cursor = databaseService.getDatabase().rawQuery(query, new String[]{String.valueOf(authorId)});
