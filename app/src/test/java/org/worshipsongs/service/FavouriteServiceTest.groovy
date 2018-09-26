@@ -6,6 +6,7 @@ import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.Favourite
+import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 
 /**
@@ -15,7 +16,15 @@ import org.worshipsongs.domain.SongDragDrop
 class FavouriteServiceTest extends ElectricSpecification
 {
     def favouriteService = new FavouriteService(RuntimeEnvironment.application.getApplicationContext());
+    def songService =  new SongService(RuntimeEnvironment.application.getApplicationContext())
+
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext())
+
+    def setup()
+    {
+       favouriteService.setSongService(songService)
+       favouriteService.setSharedPreferences(preferences)
+    }
 
     def cleanup()
     {
@@ -123,20 +132,15 @@ class FavouriteServiceTest extends ElectricSpecification
         def result = favouriteService.buildShareFavouriteFormat("service1")
 
         then:
-        result == "service1\n" +
-                "\n" +
-                "1. bar\n" +
-                "foo\n" +
-                "\n" +
-                "2. foo1\n" +
-                "\n" +
-                ""
+        result.contains("foo")
+        result.contains("bar")
+        result.contains("https://worshipsongs.org/c2VydmljZTE7MTsyOw==")
     }
 
     def "Remove"()
     {
         given:
-        def songDragDrop = new SongDragDrop(0, "foo", false)
+        def songDragDrop = new SongDragDrop(1, "foo", false)
         songDragDrop.setTamilTitle("bar")
         favouriteService.save("service1", songDragDrop)
 
@@ -177,7 +181,7 @@ class FavouriteServiceTest extends ElectricSpecification
         favorites.add(new Favourite(orderId: 1, name: "first favourite"))
         favorites.add(new Favourite(orderId: 3, name: "latest favourite"))
         favorites.add(new Favourite(orderId: 2, name: "second favourite"))
-        
+
         expect:
         favouriteService.getFavouritesNewOrderNumber(favorites) == 4
     }

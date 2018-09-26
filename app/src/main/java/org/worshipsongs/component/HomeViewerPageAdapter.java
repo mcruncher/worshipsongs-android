@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.fragment.SongsFragment;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;

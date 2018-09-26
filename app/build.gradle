@@ -22,6 +22,7 @@ android {
         targetSdkVersion 25
         versionCode versionCodeNumber
         versionName APP_VERSION
+        setProperty("archivesBaseName",  "worshipsongs-" + defaultConfig.versionName + ".apk")
 
     }
     compileOptions.encoding = "UTF-8"
@@ -41,20 +42,10 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.releaseConfig
             testCoverageEnabled false
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
-                }
-            }
         }
         debug {
             minifyEnabled false
             testCoverageEnabled true
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    output.outputFile = new File(output.outputFile.parent, "worshipsongs-" + defaultConfig.versionName + ".apk")
-                }
-            }
         }
     }
     packagingOptions {

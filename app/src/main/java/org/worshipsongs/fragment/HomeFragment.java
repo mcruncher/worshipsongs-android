@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment implements SongContentViewListener
         HomeTabFragment existingHomeTabFragment = (HomeTabFragment) fragmentManager.findFragmentByTag(HomeTabFragment.class.getSimpleName());
         if (existingHomeTabFragment == null) {
             HomeTabFragment homeTabFragment = HomeTabFragment.newInstance();
+            homeTabFragment.setArguments(getArguments());
             if (songContentFrameLayout != null) {
                 homeTabFragment.setSongContentViewListener(this);
             }

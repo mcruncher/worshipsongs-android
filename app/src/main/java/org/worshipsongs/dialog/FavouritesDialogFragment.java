@@ -57,11 +57,12 @@ public class FavouritesDialogFragment extends DialogFragment
         Bundle args = getArguments();
         String songName = args.getString(CommonConstants.TITLE_KEY);
         String localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY);
+        int id = args.getInt(CommonConstants.ID);
         if (which == 0) {
             AddFavouritesDialogFragment addFavouritesDialogFragment = AddFavouritesDialogFragment.newInstance(args);
             addFavouritesDialogFragment.show(getActivity().getSupportFragmentManager(), AddFavouritesDialogFragment.class.getSimpleName());
         } else {
-            SongDragDrop songDragDrop = new SongDragDrop(0, songName,false);
+            SongDragDrop songDragDrop = new SongDragDrop(id, songName,false);
             songDragDrop.setTamilTitle(localisedName);
             favouriteService.save(names.get(which), songDragDrop);
             Toast.makeText(getActivity(), "Song added to favourite...!", Toast.LENGTH_LONG).show();
