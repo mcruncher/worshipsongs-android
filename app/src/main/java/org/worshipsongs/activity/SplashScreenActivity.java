@@ -62,7 +62,6 @@ public class SplashScreenActivity extends AppCompatActivity
     private void importFavourites()
     {
         Uri data = getIntent().getData();
-
         if (data != null) {
             String encodedString = data.getQuery();
             String decodedString = new String(Base64.decode(encodedString, 0));
@@ -71,12 +70,22 @@ public class SplashScreenActivity extends AppCompatActivity
                 favouriteName = favouriteIdArray[0];
                 List<SongDragDrop> songDragDrops = new ArrayList<>();
                 for (int i = 1; i < favouriteIdArray.length; i++) {
-                    Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
-                    SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(), false);
-                    songDragDrop.setTamilTitle(song.getTamilTitle());
-                    songDragDrops.add(songDragDrop);
+                    try {
+                        Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
+                        SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(),
+                                false);
+                        songDragDrop.setTamilTitle(song.getTamilTitle());
+                        songDragDrops.add(songDragDrop);
+                    } catch (Exception ex) {
+                        Log.e(SplashScreenActivity.class.getSimpleName(),
+                                "Error occurred while finding song " + ex.getMessage());
+                    }
                 }
-                favouriteService.save(favouriteName, songDragDrops);
+                if (songDragDrops.isEmpty()) {
+                    favouriteName = null;
+                } else {
+                    favouriteService.save(favouriteName, songDragDrops);
+                }
                 Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
                         " successfully imported with " + songDragDrops.size() + " songs");
             }
