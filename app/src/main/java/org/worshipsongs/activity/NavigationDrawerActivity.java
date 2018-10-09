@@ -1,71 +1,137 @@
 package org.worshipsongs.activity;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.HomeFragment;
-import org.worshipsongs.service.PresentationScreenService;
+import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.SongService;
-import org.worshipsongs.utils.CommonUtils;
 
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
-import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
-
-/**
- * author:Madasamy
- * version:2.1.0
- */
-public class NavigationDrawerActivity extends MaterialNavigationDrawer
+public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private static final int UPDATE_DB_REQUEST_CODE = 555;
-    private PresentationScreenService presentationScreenService;
     private SharedPreferences sharedPreferences;
 
     @Override
-    public void init(Bundle bundle)
+    protected void onCreate(Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0);
+        }
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
-            SongService songService = new SongService(WorshipSongApplication.getContext());
-            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply();
+            SongService songService = new SongService(this);
+            long count = songService.count();
+            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, count).apply();
         }
-        long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-        presentationScreenService = new PresentationScreenService(this);
-        this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs + " Songs are available", null, R.drawable.worshipsongs));
-        HomeFragment homeFragment = HomeFragment.newInstance();
-        homeFragment.setArguments(getIntent().getExtras());
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, homeFragment));
-        this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
-        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
-        this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
-        this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
-        this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
-        this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
+        Log.i(NavigationDrawerActivity.class.getSimpleName(), "No of songs"+ sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0));
+        TextView headerSubTitleTextView = (TextView) findViewById(R.id.header_subtitle);
+        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable, sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
     }
 
-    private MaterialSectionListener getUpdateDbIntent()
+    @Override
+    public void onBackPressed()
     {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection materialSection)
-            {
-                Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
-                startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        Fragment fragment = null;
+        if (id == R.id.home) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            HomeFragment existingHomeTabFragment = (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+            if (existingHomeTabFragment == null) {
+                fragment = HomeFragment.newInstance();
+                fragment.setArguments(getIntent().getExtras());
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, fragment, HomeFragment.class.getSimpleName());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
-        };
+        } else if (id == R.id.updateSongs) {
+            Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
+            startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
+        } else if (id == R.id.settings) {
+
+        } else if (id == R.id.rateUs) {
+
+        } else if (id == R.id.share) {
+
+        } else if (id == R.id.feedback) {
+
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -74,115 +140,15 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
         switch (requestCode) {
             case UPDATE_DB_REQUEST_CODE:
                 long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-                if (this.getAccountList().size() > 0) {
-                    this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
-                    this.notifyAccountDataChanged();
-                }
+//                if (this.getAccountList().size() > 0) {
+//                    this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
+//                    this.notifyAccountDataChanged();
+                TextView headerSubTitleTextView = (TextView) findViewById(R.id.header_subtitle);
+                headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable, noOfSongs));
+//
                 break;
             default:
                 break;
         }
-    }
-
-    private Intent getSettings()
-    {
-        return new Intent(NavigationDrawerActivity.this, UserSettingActivity.class);
-    }
-
-    private MaterialSectionListener getRateThisAppOnClickListener()
-    {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection section)
-            {
-                Uri uri = Uri.parse("market://details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName());
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                goToMarket.addFlags(getFlags());
-                try {
-                    startActivity(goToMarket);
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/apps/details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName())));
-                }
-            }
-        };
-    }
-
-    int getFlags()
-    {
-        return (Intent.FLAG_ACTIVITY_NO_HISTORY |
-                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-    }
-
-    private Intent getShare()
-    {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.app_download_info));
-        shareIntent.setType("text/plain");
-        Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
-
-    private Intent getEmail()
-    {
-        Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
-        mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
-        mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getEmailSubject(getApplicationContext()));
-        return Intent.createChooser(mailIntent, "");
-    }
-
-    String getEmailSubject(Context context)
-    {
-        try {
-            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            return String.format(context.getString(R.string.feedback_subject), versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return getString(R.string.feedback);
-        }
-    }
-
-    private MaterialSectionListener getVersionOnClickListener()
-    {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection section)
-            {
-                //Do nothing when click on version
-            }
-        };
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        presentationScreenService.onResume();
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        presentationScreenService.onPause();
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        presentationScreenService.onResume();
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        finish();
     }
 }

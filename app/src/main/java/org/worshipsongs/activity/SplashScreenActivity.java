@@ -20,7 +20,6 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.service.DatabaseService;

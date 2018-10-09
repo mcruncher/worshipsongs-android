@@ -1,7 +1,6 @@
 package org.worshipsongs.fragment;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -13,12 +12,10 @@ import android.view.ViewGroup;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;
-import org.worshipsongs.registry.ITabFragment;
 
 import java.util.List;
 

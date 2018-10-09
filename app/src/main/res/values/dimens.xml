@@ -8,4 +8,5 @@
     <dimen name="ten_sp">10sp</dimen>
     <dimen name="help_text_size">20sp</dimen>
     <dimen name="help_image_size">50dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
