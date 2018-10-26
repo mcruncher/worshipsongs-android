@@ -27,7 +27,7 @@ class FavouriteServiceTest extends ElectricSpecification
 
     def cleanup()
     {
-        preferences.edit().remove(CommonConstants.IMPORTED_SONGS_KEY).apply()
+        preferences.edit().remove(CommonConstants.FAVOURITES_KEY).apply()
     }
 
     def "Save"()

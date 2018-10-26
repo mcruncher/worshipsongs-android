@@ -198,7 +198,7 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
-        intent.putExtra(CommonConstants.IMPORTED_SONGS_KEY, noOfImportedSongs);
+        intent.putExtra(CommonConstants.FAVOURITES_KEY, noOfImportedSongs);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();

@@ -68,12 +68,12 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-        if (getArguments() != null && getArguments().getInt(CommonConstants.IMPORTED_SONGS_KEY) > 0) {
+        if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) > 0) {
             List<String> titles = fragmentRegistry.getTitles(getActivity());
             if (titles.contains("playlists")) {
                 pager.setCurrentItem(titles.indexOf("playlists"));
             }
-        } else if (getArguments() != null && getArguments().getInt(CommonConstants.IMPORTED_SONGS_KEY) == 0){
+        } else if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) == 0){
             Toast.makeText(getActivity(), R.string.message_songs_not_existing, Toast.LENGTH_LONG).show();
         }
         return view;
