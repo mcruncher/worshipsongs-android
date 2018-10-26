@@ -6,7 +6,6 @@ import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.Favourite
-import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 
 /**

@@ -57,7 +57,6 @@ public final class CommonConstants
     public static final String MIGRATION_KEY = "migrationKey";
     public static final String DISPLAY_FAVOURITE_HELP_ACTIVITY = "displayFavouriteHelpActivity";
 
-
     private CommonConstants()
     {
         //Do nothing
