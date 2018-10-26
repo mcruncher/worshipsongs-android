@@ -133,7 +133,7 @@ class FavouriteServiceTest extends ElectricSpecification
         then:
         result.contains("foo")
         result.contains("bar")
-        result.contains("https://worshipsongs.org/c2VydmljZTE7MTsyOw==")
+        result.contains("https://mcruncher.github.io/worshipsongs/?c2VydmljZTE7MTsyOw==")
     }
 
     def "Remove"()
