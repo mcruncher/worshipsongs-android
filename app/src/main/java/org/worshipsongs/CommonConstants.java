@@ -53,10 +53,9 @@ public final class CommonConstants
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 1001;
 
     //Favourites
-    public static final String FAVOURITES_KEY = "favouritesKey";
+    public static final String IMPORTED_SONGS_KEY = "favouritesKey";
     public static final String MIGRATION_KEY = "migrationKey";
     public static final String DISPLAY_FAVOURITE_HELP_ACTIVITY = "displayFavouriteHelpActivity";
-
 
     private CommonConstants()
     {

@@ -142,4 +142,5 @@
     <string name="song_book_no">Song no</string>
     <string name="rearrange_song_order">Do you know that you can rearrange the songs by dragging this icon up or down?</string>
     <string name="no_of_songs"> %1$s songs</string>
+    <string name="message_songs_not_existing">Please update songs, imported favourite songs not existing in database</string>
 </resources>

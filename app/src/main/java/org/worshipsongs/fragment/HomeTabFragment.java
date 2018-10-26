@@ -1,7 +1,7 @@
 package org.worshipsongs.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,15 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.activity.NavigationDrawerActivity;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.FragmentRegistry;
-import org.worshipsongs.registry.ITabFragment;
 
 import java.util.List;
 
@@ -37,6 +36,7 @@ public class HomeTabFragment extends Fragment
         return new HomeTabFragment();
     }
 
+    @SuppressLint("ShowToast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -68,11 +68,13 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-        if (getArguments() != null && getArguments().getString(CommonConstants.FAVOURITES_KEY) != null) {
+        if (getArguments() != null && getArguments().getInt(CommonConstants.IMPORTED_SONGS_KEY) > 0) {
             List<String> titles = fragmentRegistry.getTitles(getActivity());
             if (titles.contains("playlists")) {
                 pager.setCurrentItem(titles.indexOf("playlists"));
             }
+        } else if (getArguments() != null && getArguments().getInt(CommonConstants.IMPORTED_SONGS_KEY) == 0){
+            Toast.makeText(getActivity(), R.string.message_songs_not_existing, Toast.LENGTH_LONG).show();
         }
         return view;
     }

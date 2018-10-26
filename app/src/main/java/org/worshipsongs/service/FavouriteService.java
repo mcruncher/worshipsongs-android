@@ -63,12 +63,12 @@ public class FavouriteService
             favouriteList.add(new Favourite(i, services.get(i), dragDrops));
         }
         Log.i(FavouriteService.class.getSimpleName(), "No. of services " + favouriteList.size());
-        sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(favouriteList)).apply();
+        sharedPreferences.edit().putString(CommonConstants.IMPORTED_SONGS_KEY, Favourite.toJson(favouriteList)).apply();
     }
 
     public void save(String serviceName, SongDragDrop songDragDrop)
     {
-        String favouriteString = sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, "");
+        String favouriteString = sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, "");
         List<Favourite> favourites = Favourite.toArrays(favouriteString);
         Favourite existingFavourite = find(favourites, serviceName);
         Set<Favourite> favouriteSet = new HashSet<>();
@@ -84,7 +84,7 @@ public class FavouriteService
             favouriteSet.add(new Favourite(getFavouritesNewOrderNumber(favourites), serviceName, dragDrops));
         }
         List<Favourite> uniqueFavourites = new ArrayList<>(favouriteSet);
-        sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(uniqueFavourites)).apply();
+        sharedPreferences.edit().putString(CommonConstants.IMPORTED_SONGS_KEY, Favourite.toJson(uniqueFavourites)).apply();
     }
 
     public int getFavouritesNewOrderNumber(List<Favourite> favourites)
@@ -99,7 +99,7 @@ public class FavouriteService
 
     public void save(String name, List<SongDragDrop> dragDrops)
     {
-        String favouriteString = sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, "");
+        String favouriteString = sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, "");
         List<Favourite> favourites = Favourite.toArrays(favouriteString);
         Favourite existingFavourite = find(favourites, name);
         Set<Favourite> favouriteSet = new HashSet<>();
@@ -111,12 +111,12 @@ public class FavouriteService
         }
         favouriteSet.add(existingFavourite);
         List<Favourite> uniqueFavourites = new ArrayList<>(favouriteSet);
-        sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(uniqueFavourites)).apply();
+        sharedPreferences.edit().putString(CommonConstants.IMPORTED_SONGS_KEY, Favourite.toJson(uniqueFavourites)).apply();
     }
 
     public Favourite find(String name)
     {
-        List<Favourite> favourites = Favourite.toArrays(sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, ""));
+        List<Favourite> favourites = Favourite.toArrays(sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, ""));
         return find(favourites, name);
     }
 
@@ -132,7 +132,7 @@ public class FavouriteService
 
     public List<String> findNames()
     {
-        List<Favourite> favourites = Favourite.toArrays(sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, ""));
+        List<Favourite> favourites = Favourite.toArrays(sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, ""));
         Collections.sort(favourites);
         List<String> names = new ArrayList<>();
         for (Favourite favourite : favourites) {
@@ -171,16 +171,16 @@ public class FavouriteService
 
     public void remove(String name)
     {
-        String favouriteString = sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, "");
+        String favouriteString = sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, "");
         List<Favourite> favourites = Favourite.toArrays(favouriteString);
         Favourite favourite = find(favourites, name);
         favourites.remove(favourite);
-        sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(favourites)).apply();
+        sharedPreferences.edit().putString(CommonConstants.IMPORTED_SONGS_KEY, Favourite.toJson(favourites)).apply();
     }
 
     public void removeSong(String name, String songName)
     {
-        String favouriteString = sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, "");
+        String favouriteString = sharedPreferences.getString(CommonConstants.IMPORTED_SONGS_KEY, "");
         List<Favourite> favourites = Favourite.toArrays(favouriteString);
         Favourite existingFavourite = find(favourites, name);
         List<SongDragDrop> dragDrops = new ArrayList<>();
@@ -193,7 +193,7 @@ public class FavouriteService
         Set<Favourite> favouriteSet = new HashSet<>();
         favouriteSet.add(existingFavourite);
         favouriteSet.addAll(favourites);
-        sharedPreferences.edit().putString(CommonConstants.FAVOURITES_KEY, Favourite.toJson(new ArrayList<>(favouriteSet))).apply();
+        sharedPreferences.edit().putString(CommonConstants.IMPORTED_SONGS_KEY, Favourite.toJson(new ArrayList<>(favouriteSet))).apply();
     }
 
     public void setSharedPreferences(SharedPreferences sharedPreferences)

@@ -20,7 +20,6 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.service.DatabaseService;
@@ -46,6 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity
     private FavouriteService favouriteService;
     private SongService songService;
     private String favouriteName;
+    private int noOfImportedSongs = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -82,7 +82,7 @@ public class SplashScreenActivity extends AppCompatActivity
                     }
                 }
                 if (songDragDrops.isEmpty()) {
-                    favouriteName = null;
+                    noOfImportedSongs = 0;
                 } else {
                     favouriteService.save(favouriteName, songDragDrops);
                 }
@@ -198,7 +198,7 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
-        intent.putExtra(CommonConstants.FAVOURITES_KEY, favouriteName);
+        intent.putExtra(CommonConstants.IMPORTED_SONGS_KEY, noOfImportedSongs);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();

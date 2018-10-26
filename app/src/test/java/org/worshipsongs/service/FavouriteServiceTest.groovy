@@ -6,7 +6,6 @@ import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.Favourite
-import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 
 /**
@@ -28,7 +27,7 @@ class FavouriteServiceTest extends ElectricSpecification
 
     def cleanup()
     {
-        preferences.edit().remove(CommonConstants.FAVOURITES_KEY).apply()
+        preferences.edit().remove(CommonConstants.IMPORTED_SONGS_KEY).apply()
     }
 
     def "Save"()
