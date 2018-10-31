@@ -84,6 +84,7 @@ public class SplashScreenActivity extends AppCompatActivity
                 if (songDragDrops.isEmpty()) {
                     noOfImportedSongs = 0;
                 } else {
+                    noOfImportedSongs = songDragDrops.size(); 
                     favouriteService.save(favouriteName, songDragDrops);
                 }
                 Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
