@@ -1,7 +1,11 @@
 package org.worshipsongs.activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,21 +18,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.HomeFragment;
-import org.worshipsongs.fragment.HomeTabFragment;
 import org.worshipsongs.service.SongService;
+import org.worshipsongs.utils.CommonUtils;
+
 
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final int UPDATE_DB_REQUEST_CODE = 555;
+    private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -36,6 +41,23 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSongCount();
+        setDrawerLayout();
+        setNavigationView(savedInstanceState);
+    }
+
+    private void setSongCount()
+    {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
+            SongService songService = new SongService(this);
+            long count = songService.count();
+            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, count).apply();
+        }
+    }
+
+    private void setDrawerLayout()
+    {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setElevation(0);
@@ -43,23 +65,27 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
 
+    private void setNavigationView(Bundle savedInstanceState)
+    {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
-            SongService songService = new SongService(this);
-            long count = songService.count();
-            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, count).apply();
+        View headerView = navigationView.getHeaderView(0);
+        TextView headerSubTitleTextView = (TextView) headerView.findViewById(R.id.header_subtitle);
+        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable,
+                sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
+        if (savedInstanceState == null) {
+            MenuItem item = navigationView.getMenu().getItem(0);
+            onNavigationItemSelected(item);
+            navigationView.setCheckedItem(R.id.home);
         }
-        Log.i(NavigationDrawerActivity.class.getSimpleName(), "No of songs"+ sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0));
-        TextView headerSubTitleTextView = (TextView) findViewById(R.id.header_subtitle);
-        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable, sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
+        TextView versionTextView = (TextView) navigationView.findViewById(R.id.version);
+        versionTextView.setText(getString(R.string.version, CommonUtils.getProjectVersion()));
     }
 
     @Override
@@ -84,16 +110,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -101,37 +117,108 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Fragment fragment = null;
-        if (id == R.id.home) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            HomeFragment existingHomeTabFragment = (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-            if (existingHomeTabFragment == null) {
-                fragment = HomeFragment.newInstance();
-                fragment.setArguments(getIntent().getExtras());
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content_frame, fragment, HomeFragment.class.getSimpleName());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        } else if (id == R.id.updateSongs) {
-            Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
-            startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
-        } else if (id == R.id.settings) {
 
-        } else if (id == R.id.rateUs) {
-
-        } else if (id == R.id.share) {
-
-        } else if (id == R.id.feedback) {
-
+        switch (item.getItemId()) {
+            case R.id.home:
+                setHomeView();
+                break;
+            case R.id.updateSongs:
+                setUpdateView();
+                break;
+            case R.id.settings:
+                startActivity(new Intent(NavigationDrawerActivity.this,
+                        UserSettingActivity.class));
+                break;
+            case R.id.rateUs:
+                setRateUsView();
+                break;
+            case R.id.share:
+                setShareView();
+                break;
+            case R.id.feedback:
+                setEmail();
+                break;
         }
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setHomeView()
+    {
+        Fragment fragment;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        HomeFragment existingHomeTabFragment = (HomeFragment) fragmentManager
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        if (existingHomeTabFragment == null) {
+            fragment = HomeFragment.newInstance();
+            fragment.setArguments(getIntent().getExtras());
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_frame, fragment, HomeFragment.class.getSimpleName());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    private void setUpdateView()
+    {
+        Intent updateSongs = new Intent(NavigationDrawerActivity.this,
+                UpdateSongsDatabaseActivity.class);
+        startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
+    }
+
+    private void setRateUsView()
+    {
+        Uri uri = Uri.parse("market://details?id=" + NavigationDrawerActivity.
+                this.getApplicationContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        goToMarket.addFlags(getFlags());
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" +
+                            NavigationDrawerActivity.this.getApplicationContext().getPackageName())));
+        }
+    }
+
+    private void setShareView()
+    {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                getString(R.string.app_description) + getString(R.string.app_download_info));
+        shareIntent.setType("text/plain");
+        Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " "
+                + getString(R.string.app_name) + " in");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(shareIntent);
+    }
+
+    int getFlags()
+    {
+        return (Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+    }
+
+    private void setEmail()
+    {
+        Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
+        mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, getEmailSubject(getApplicationContext()));
+        startActivity(Intent.createChooser(mailIntent, ""));
+    }
+
+    String getEmailSubject(Context context)
+    {
+        try {
+            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName()
+                    , 0).versionName;
+            return String.format(context.getString(R.string.feedback_subject), versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            return getString(R.string.feedback);
+        }
     }
 
     @Override
@@ -140,12 +227,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         switch (requestCode) {
             case UPDATE_DB_REQUEST_CODE:
                 long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-//                if (this.getAccountList().size() > 0) {
-//                    this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
-//                    this.notifyAccountDataChanged();
+                sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, noOfSongs).apply();
                 TextView headerSubTitleTextView = (TextView) findViewById(R.id.header_subtitle);
                 headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable, noOfSongs));
-//
                 break;
             default:
                 break;
