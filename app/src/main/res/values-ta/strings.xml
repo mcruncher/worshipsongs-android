@@ -139,5 +139,6 @@
     <string name="no_of_songs">%1$s பாடல்கள்</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="message_songs_not_existing">Please update songs, imported favourite songs not existing in database</string>
 </resources>
