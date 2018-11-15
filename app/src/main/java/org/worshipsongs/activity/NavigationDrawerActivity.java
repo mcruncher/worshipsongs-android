@@ -26,6 +26,7 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
+import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 
@@ -35,12 +36,15 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private static final int UPDATE_DB_REQUEST_CODE = 555;
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private SharedPreferences sharedPreferences;
+    private PresentationScreenService presentationScreenService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        presentationScreenService = new PresentationScreenService(this);
         setSongCount();
         setDrawerLayout();
         setNavigationView(savedInstanceState);
@@ -96,6 +100,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -234,5 +239,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        presentationScreenService.onPause();
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        presentationScreenService.onResume();
     }
 }
