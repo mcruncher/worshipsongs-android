@@ -16,7 +16,6 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_white"
             android:title="@string/settings" />
-        <!--android.R.drawable.star_off-->
         <item
             android:id="@+id/rateUs"
             android:icon="@android:drawable/star_off"
