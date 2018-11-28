@@ -5,8 +5,9 @@
 // noinspection is used to remove some "warnings" from Android Studio
 sonarqube {
     //noinspection GroovyAssignabilityCheck
+    androidVariant 'debug'
     properties {
-        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-25/android.jar," +
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-26/android.jar," +
                 "build/intermediates/exploded-aar/**/classes.jar"
         property "sonar.host.url", "http://sonarqube.mcruncher.com"
         property "sonar.projectName", "WORSHIPSONGS::ANDROID"
