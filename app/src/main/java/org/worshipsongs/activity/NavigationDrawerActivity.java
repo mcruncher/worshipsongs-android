@@ -6,107 +6,197 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
-import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
-/**
- * author:Madasamy
- * version:2.1.0
- */
-public class NavigationDrawerActivity extends MaterialNavigationDrawer
+public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private static final int UPDATE_DB_REQUEST_CODE = 555;
-    private PresentationScreenService presentationScreenService;
+    private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private SharedPreferences sharedPreferences;
+    private PresentationScreenService presentationScreenService;
+
 
     @Override
-    public void init(Bundle bundle)
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        presentationScreenService = new PresentationScreenService(this);
+        setSongCount();
+        setDrawerLayout();
+        setNavigationView(savedInstanceState);
+    }
+
+    private void setSongCount()
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!sharedPreferences.getAll().containsKey(CommonConstants.NO_OF_SONGS)) {
-            SongService songService = new SongService(WorshipSongApplication.getContext());
-            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply();
+            SongService songService = new SongService(this);
+            long count = songService.count();
+            sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, count).apply();
         }
-        long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-        presentationScreenService = new PresentationScreenService(this);
-        this.addAccount(new MaterialAccount(this.getResources(), null, noOfSongs + " Songs are available", null, R.drawable.worshipsongs));
-        HomeFragment homeFragment = HomeFragment.newInstance();
-        homeFragment.setArguments(getIntent().getExtras());
-        this.addSection(newSection(getString(R.string.home), R.drawable.ic_library_books_white, homeFragment));
-        this.addSection(newSection(getString(R.string.update_songs), android.R.drawable.stat_sys_download, getUpdateDbIntent()));
-        this.addSection(newSection(getString(R.string.settings), R.drawable.ic_settings_white, getSettings()));
-        this.addSection(newSection(getString(R.string.rate_this_app), android.R.drawable.star_off, getRateThisAppOnClickListener()));
-        this.addSection(newSection(getString(R.string.share), android.R.drawable.ic_menu_share, getShare()));
-        this.addSection(newSection(getString(R.string.feedback), android.R.drawable.sym_action_email, getEmail()));
-        this.addBottomSection(newSection(getString(R.string.version) + " " + CommonUtils.getProjectVersion(), getVersionOnClickListener()));
     }
 
-    private MaterialSectionListener getUpdateDbIntent()
+    private void setDrawerLayout()
     {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection materialSection)
-            {
-                Intent updateSongs = new Intent(NavigationDrawerActivity.this, UpdateSongsDatabaseActivity.class);
-                startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
-            }
-        };
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0);
+        }
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setNavigationView(Bundle savedInstanceState)
+    {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView headerSubTitleTextView = (TextView) headerView.findViewById(R.id.header_subtitle);
+        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable,
+                sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
+        if (savedInstanceState == null) {
+            MenuItem item = navigationView.getMenu().getItem(0);
+            onNavigationItemSelected(item);
+            navigationView.setCheckedItem(R.id.home);
+        }
+        TextView versionTextView = (TextView) navigationView.findViewById(R.id.version);
+        versionTextView.setText(getString(R.string.version, CommonUtils.getProjectVersion()));
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onBackPressed()
     {
-        switch (requestCode) {
-            case UPDATE_DB_REQUEST_CODE:
-                long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
-                if (this.getAccountList().size() > 0) {
-                    this.getAccountAtCurrentPosition(0).setSubTitle(getString(R.string.noOfSongsAvailable, noOfSongs));
-                    this.notifyAccountDataChanged();
-                }
-                break;
-            default:
-                break;
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            finish();
         }
     }
 
-    private Intent getSettings()
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        return new Intent(NavigationDrawerActivity.this, UserSettingActivity.class);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
-    private MaterialSectionListener getRateThisAppOnClickListener()
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection section)
-            {
-                Uri uri = Uri.parse("market://details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName());
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                goToMarket.addFlags(getFlags());
-                try {
-                    startActivity(goToMarket);
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/apps/details?id=" + NavigationDrawerActivity.this.getApplicationContext().getPackageName())));
-                }
-            }
-        };
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                setHomeView();
+                break;
+            case R.id.updateSongs:
+                setUpdateView();
+                break;
+            case R.id.settings:
+                startActivity(new Intent(NavigationDrawerActivity.this,
+                        UserSettingActivity.class));
+                break;
+            case R.id.rateUs:
+                setRateUsView();
+                break;
+            case R.id.share:
+                setShareView();
+                break;
+            case R.id.feedback:
+                setEmail();
+                break;
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void setHomeView()
+    {
+        Fragment fragment;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        HomeFragment existingHomeTabFragment = (HomeFragment) fragmentManager
+                .findFragmentByTag(HomeFragment.class.getSimpleName());
+        if (existingHomeTabFragment == null) {
+            fragment = HomeFragment.newInstance();
+            fragment.setArguments(getIntent().getExtras());
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.content_frame, fragment, HomeFragment.class.getSimpleName());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    private void setUpdateView()
+    {
+        Intent updateSongs = new Intent(NavigationDrawerActivity.this,
+                UpdateSongsDatabaseActivity.class);
+        startActivityForResult(updateSongs, UPDATE_DB_REQUEST_CODE);
+    }
+
+    private void setRateUsView()
+    {
+        Uri uri = Uri.parse("market://details?id=" + NavigationDrawerActivity.
+                this.getApplicationContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        goToMarket.addFlags(getFlags());
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" +
+                            NavigationDrawerActivity.this.getApplicationContext().getPackageName())));
+        }
+    }
+
+    private void setShareView()
+    {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                getString(R.string.app_description) + getString(R.string.app_download_info));
+        shareIntent.setType("text/plain");
+        Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " "
+                + getString(R.string.app_name) + " in");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(shareIntent);
     }
 
     int getFlags()
@@ -116,53 +206,39 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
     }
 
-    private Intent getShare()
-    {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_description) + getString(R.string.app_download_info));
-        shareIntent.setType("text/plain");
-        Intent intent = Intent.createChooser(shareIntent, getString(R.string.share) + " " + getString(R.string.app_name) + " in");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
-
-    private Intent getEmail()
+    private void setEmail()
     {
         Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
         mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
         mailIntent.putExtra(Intent.EXTRA_EMAIL, "");
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, getEmailSubject(getApplicationContext()));
-        return Intent.createChooser(mailIntent, "");
+        startActivity(Intent.createChooser(mailIntent, ""));
     }
 
     String getEmailSubject(Context context)
     {
         try {
-            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName()
+                    , 0).versionName;
             return String.format(context.getString(R.string.feedback_subject), versionName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
             return getString(R.string.feedback);
         }
     }
 
-    private MaterialSectionListener getVersionOnClickListener()
-    {
-        return new MaterialSectionListener()
-        {
-            @Override
-            public void onClick(MaterialSection section)
-            {
-                //Do nothing when click on version
-            }
-        };
-    }
-
     @Override
-    public void onResume()
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onResume();
-        presentationScreenService.onResume();
+        switch (requestCode) {
+            case UPDATE_DB_REQUEST_CODE:
+                long noOfSongs = sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0);
+                sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, noOfSongs).apply();
+                TextView headerSubTitleTextView = (TextView) findViewById(R.id.header_subtitle);
+                headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable, noOfSongs));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -177,12 +253,5 @@ public class NavigationDrawerActivity extends MaterialNavigationDrawer
     {
         super.onStop();
         presentationScreenService.onResume();
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        finish();
     }
 }

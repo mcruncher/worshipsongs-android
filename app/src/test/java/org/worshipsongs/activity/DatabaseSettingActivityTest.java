@@ -21,6 +21,7 @@ import org.worshipsongs.R;
 import hkhc.electricspock.ElectricSpecification;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -58,7 +59,6 @@ public class DatabaseSettingActivityTest
         Button importDataBaseButton = (Button) databaseSettingActivity.findViewById(R.id.upload_database_button);
         assertTrue(importDataBaseButton.performClick());
         AlertDialog dialog = (AlertDialog) ShadowDialog.getLatestDialog();
-
         assertEquals(2, dialog.getListView().getAdapter().getCount());
     }
 

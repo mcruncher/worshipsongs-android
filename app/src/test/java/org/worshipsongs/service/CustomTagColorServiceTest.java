@@ -3,6 +3,8 @@ package org.worshipsongs.service;
 import android.widget.TextView;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.worshipsongs.WorshipSongApplication;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import static org.junit.Assert.*;
  * Author : Madasamy
  * Version : 2.5.1
  */
+
+@RunWith(RobolectricTestRunner.class)
 public class CustomTagColorServiceTest
 {
     private CustomTagColorService customTagColorService = new CustomTagColorService();
