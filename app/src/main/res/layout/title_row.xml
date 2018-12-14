@@ -67,7 +67,7 @@
         android:contentDescription="optionImage"
         android:tint="@color/light_gray_header_color"
         android:visibility="gone"
-        app:srcCompat="@drawable/option_menu"/>
+        app:srcCompat="@drawable/ic_dots_vertical"/>
 
     <TextView
         android:id="@+id/subtitle_text_view"
