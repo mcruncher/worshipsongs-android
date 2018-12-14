@@ -14,7 +14,6 @@ import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -217,7 +216,6 @@ public class PopupMenuService
         }
         popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
         popupMenu.getMenu().findItem(R.id.play_song).setVisible(false);
-//        popupMenu.getMenu().findItem(R.id.export_pdf).setVisible(false);
         popupMenu.getMenu().findItem(R.id.present_song).setVisible(false);
         popupMenu.getMenu().findItem(R.id.addToList).setVisible(false);
         popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(activity,favouriteName));
@@ -256,10 +254,4 @@ public class PopupMenuService
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }
-
-    private void shareFavouritesInSocialMediaAsPdf(String text)
-    {
-
-    }
-
 }
