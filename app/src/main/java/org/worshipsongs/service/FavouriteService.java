@@ -169,6 +169,19 @@ public class FavouriteService
         return builder.toString();
     }
 
+    public List<Song> findSongsByFavouriteName(String name)
+    {
+        List<Song> songs = new ArrayList<>();
+        Favourite favourite = find(name);
+        for (SongDragDrop songDragDrop : favourite.getDragDrops()) {
+            Song song = songService.findContentsByTitle(songDragDrop.getTitle());
+            if (song != null) {
+                songs.add(song);
+            }
+        }
+        return songs;
+    }
+
     public void remove(String name)
     {
         String favouriteString = sharedPreferences.getString(CommonConstants.FAVOURITES_KEY, "");
