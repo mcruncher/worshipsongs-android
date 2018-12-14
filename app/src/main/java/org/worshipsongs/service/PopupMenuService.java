@@ -1,6 +1,7 @@
 package org.worshipsongs.service;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -33,6 +34,8 @@ import org.worshipsongs.utils.PermissionUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.content.Context.PRINT_SERVICE;
 import static org.worshipsongs.WorshipSongApplication.getContext;
@@ -92,7 +95,7 @@ public class PopupMenuService
                         return true;
                     case R.id.export_pdf:
                         if (PermissionUtils.isStoragePermissionGranted(activity)) {
-                            exportSongToPDF(songName, song);
+                            exportSongToPDF(songName, Arrays.asList(song));
                         }
                         return true;
                     default:
@@ -122,7 +125,7 @@ public class PopupMenuService
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void exportSongToPDF(String songName, Song song)
+    private void exportSongToPDF(String songName, List<Song> songs)
     {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), songName + ".pdf");
 
@@ -133,37 +136,39 @@ public class PopupMenuService
                 setMinMargins(PrintAttributes.Margins.NO_MARGINS).
                 build();
         PdfDocument document = new PrintedPdfDocument(WorshipSongApplication.getContext(), printAttrs);
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(450, 700, 1).create();
-        PdfDocument.Page page = document.startPage(pageInfo);
-
-        if (page != null) {
-            Paint titleDesign = new Paint();
-            titleDesign.setTextAlign(Paint.Align.LEFT);
-            titleDesign.setTextSize(18);
-            String title = song.getTamilTitle() + "/" + songName;
-            float titleLength = titleDesign.measureText(title);
-            float yPos = 50;
-            if (page.getCanvas().getWidth() > titleLength) {
-                int xPos = (page.getCanvas().getWidth() / 2) - (int) titleLength / 2;
-                page.getCanvas().drawText(title, xPos, 20, titleDesign);
-            } else {
-                int xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(song.getTamilTitle()) / 2;
-                page.getCanvas().drawText(song.getTamilTitle() + "/", xPos, 20, titleDesign);
-                xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(songName) / 2;
-                page.getCanvas().drawText(songName, xPos, 45, titleDesign);
-                yPos = 75;
-            }
-            for (String content : song.getContents()) {
-                if (yPos > 620) {
-                    document.finishPage(page);
-                    page = document.startPage(pageInfo);
-                    yPos = 40;
+        for (int i = 0; i < songs.size(); i++) {
+            Song song = songs.get(i);
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(450, 700, i).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+            if (page != null) {
+                Paint titleDesign = new Paint();
+                titleDesign.setTextAlign(Paint.Align.LEFT);
+                titleDesign.setTextSize(18);
+                String title = song.getTamilTitle() + "/" + song.getTitle();
+                float titleLength = titleDesign.measureText(title);
+                float yPos = 50;
+                if (page.getCanvas().getWidth() > titleLength) {
+                    int xPos = (page.getCanvas().getWidth() / 2) - (int) titleLength / 2;
+                    page.getCanvas().drawText(title, xPos, 20, titleDesign);
+                } else {
+                    int xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(song.getTamilTitle()) / 2;
+                    page.getCanvas().drawText(song.getTamilTitle() + "/", xPos, 20, titleDesign);
+                    xPos = (page.getCanvas().getWidth() / 2) - (int) titleDesign.measureText(song.getTitle()) / 2;
+                    page.getCanvas().drawText(song.getTitle(), xPos, 45, titleDesign);
+                    yPos = 75;
                 }
-                yPos = customTagColorService.getFormattedPage(content, page, 10, yPos);
-                yPos = yPos + 20;
+                for (String content : song.getContents()) {
+                    if (yPos > 620) {
+                        document.finishPage(page);
+                        page = document.startPage(pageInfo);
+                        yPos = 40;
+                    }
+                    yPos = customTagColorService.getFormattedPage(content, page, 10, yPos);
+                    yPos = yPos + 20;
+                }
             }
+            document.finishPage(page);
         }
-        document.finishPage(page);
         try {
             OutputStream os = new FileOutputStream(file);
             document.writeTo(os);
@@ -201,7 +206,7 @@ public class PopupMenuService
         getContext().startActivity(intent);
     }
 
-    public void shareFavouritesInSocialMedia(View view, final String favouriteName)
+    public void shareFavouritesInSocialMedia(Activity activity, View view, final String favouriteName)
     {
         Context wrapper = new ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme);
         final PopupMenu popupMenu;
@@ -212,15 +217,15 @@ public class PopupMenuService
         }
         popupMenu.getMenuInflater().inflate(R.menu.favourite_share_option_menu, popupMenu.getMenu());
         popupMenu.getMenu().findItem(R.id.play_song).setVisible(false);
-        popupMenu.getMenu().findItem(R.id.export_pdf).setVisible(false);
+//        popupMenu.getMenu().findItem(R.id.export_pdf).setVisible(false);
         popupMenu.getMenu().findItem(R.id.present_song).setVisible(false);
         popupMenu.getMenu().findItem(R.id.addToList).setVisible(false);
-        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(favouriteName));
+        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(activity,favouriteName));
         popupMenu.show();
     }
 
     @NonNull
-    private PopupMenu.OnMenuItemClickListener getPopupMenuItemListener(final String text)
+    private PopupMenu.OnMenuItemClickListener getPopupMenuItemListener(final Activity activity, final String text)
     {
         return new PopupMenu.OnMenuItemClickListener()
         {
@@ -230,6 +235,11 @@ public class PopupMenuService
                     case R.id.share_whatsapp:
                         shareFavouritesInSocialMedia(text);
                         return true;
+                    case R.id.export_pdf:
+                        if (PermissionUtils.isStoragePermissionGranted(activity)) {
+                            exportSongToPDF(text, favouriteService.findSongsByFavouriteName(text));
+                        }
+
                     default:
                         return false;
                 }
@@ -245,6 +255,11 @@ public class PopupMenuService
         Intent intent = Intent.createChooser(textShareIntent, "Share with...");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
+    }
+
+    private void shareFavouritesInSocialMediaAsPdf(String text)
+    {
+
     }
 
 }
