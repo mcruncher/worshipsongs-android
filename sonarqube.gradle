@@ -44,7 +44,7 @@ jacoco {
 }
 
 def coverageSourceDirs = ['../app/src/main/java']
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+task jacocoAndroidUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
     classDirectories = fileTree(
