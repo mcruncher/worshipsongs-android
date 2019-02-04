@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
@@ -143,7 +144,7 @@ public class PopupMenuService
                 Paint titleDesign = new Paint();
                 titleDesign.setTextAlign(Paint.Align.LEFT);
                 titleDesign.setTextSize(18);
-                String title = song.getTamilTitle() + "/" + song.getTitle();
+                String title = getTamilTitle(song) + song.getTitle();
                 float titleLength = titleDesign.measureText(title);
                 float yPos = 50;
                 if (page.getCanvas().getWidth() > titleLength) {
@@ -187,6 +188,11 @@ public class PopupMenuService
         }
     }
 
+    private String getTamilTitle(Song song)
+    {
+        return StringUtils.isNotBlank(song.getTamilTitle()) ? song.getTamilTitle() + "/" : "";
+    }
+
     private void showYouTube(String urlKey, String songName)
     {
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
@@ -218,7 +224,7 @@ public class PopupMenuService
         popupMenu.getMenu().findItem(R.id.play_song).setVisible(false);
         popupMenu.getMenu().findItem(R.id.present_song).setVisible(false);
         popupMenu.getMenu().findItem(R.id.addToList).setVisible(false);
-        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(activity,favouriteName));
+        popupMenu.setOnMenuItemClickListener(getPopupMenuItemListener(activity, favouriteName));
         popupMenu.show();
     }
 
