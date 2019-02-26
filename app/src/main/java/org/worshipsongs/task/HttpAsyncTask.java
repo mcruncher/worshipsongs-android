@@ -94,7 +94,9 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         super.onPostExecute(jsonObject);
         final String shaKey = commitMessageParser.getShaKey(jsonObject);
         String existingShaKey = sharedPreferences.getString(CommonConstants.COMMIT_SHA_KEY, "");
-        progressDialog.dismiss();
+        if (!context.isFinishing() && progressDialog !=null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.COMMIT_SHA_KEY, shaKey);
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.updates_title));

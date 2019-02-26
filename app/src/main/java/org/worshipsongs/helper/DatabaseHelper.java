@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.activity.NavigationDrawerActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
             this.getReadableDatabase();
+            this.close();
             try {
                 copyDataBase(databasePath);
             } catch (Exception ex) {
@@ -75,18 +78,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
      */
     public boolean checkDataBase()
     {
-        SQLiteDatabase checkDB = null;
         try {
-            String databasePath = dbPath + dbName;
-            Log.d(this.getClass().getName(), "Database path" + databasePath);
-            checkDB = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READONLY);
+            return new File(dbPath, dbName).exists();
         } catch (Exception ex) {
             Log.e(this.getClass().getName(), "Error occurred while checking database" + ex);
+            return false;
         }
-        if (checkDB != null) {
-            checkDB.close();
-        }
-        return checkDB != null ? true : false;
     }
 
     /**
@@ -96,30 +93,25 @@ public class DatabaseHelper extends SQLiteOpenHelper
      */
     public void copyDataBase(String databasePath) throws IOException
     {
-        Log.i(this.getClass().getName(), "Preparing to copy database");
         InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            if (StringUtils.isNotBlank(databasePath)) {
-                inputStream = new FileInputStream(new File(databasePath));
-            } else {
-                inputStream = context.getAssets().open(dbName);
-            }
-            String outFileName = dbPath + dbName;
-            Log.i(this.getClass().getName(), "Db path: " + outFileName);
-            Log.i(this.getClass().getName(), "InputStream : " + inputStream);
-            outputStream = new FileOutputStream(outFileName);
-
-            Log.i(this.getClass().getName(), "Output stream: " + outputStream);
-            IOUtils.copy(inputStream, outputStream);
-            Log.i(this.getClass().getName(), "Copied successfully");
-        } catch (Exception ex) {
-            Log.e(this.getClass().getName(), "Error occurred while copying database " + ex);
-        } finally {
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
+        // Open local db as the input stream
+        if (StringUtils.isNotBlank(databasePath)) {
+            inputStream = new FileInputStream(new File(databasePath));
+        } else {
+            inputStream = context.getAssets().open(dbName);
         }
+        String outFileName = dbPath + dbName;
+        OutputStream outputStream = new FileOutputStream(outFileName);
+        // transfer bytes from the input file to the output file
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) > 0) {
+            outputStream.write(buffer, 0, length);
+        }
+        // Close the streams
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
     }
 
     public SQLiteDatabase openDataBase() throws SQLException
@@ -131,11 +123,20 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.disableWriteAheadLogging();
+        }
+    }
+
+    @Override
     public synchronized void close()
     {
         if (database != null) {
             database.close();
         }
+        SQLiteDatabase.releaseMemory();
         super.close();
     }
 
@@ -156,7 +157,4 @@ public class DatabaseHelper extends SQLiteOpenHelper
         //Do nothing its read only database
     }
 
-    // Add your public helper methods to access and get content from the database.
-    // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-    // to you to create adapters for your views.
 }
