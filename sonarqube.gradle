@@ -7,8 +7,8 @@ sonarqube {
     //noinspection GroovyAssignabilityCheck
     androidVariant 'debug'
     properties {
-        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-26/android.jar," +
-                "build/intermediates/exploded-aar/**/classes.jar"
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-28/android.jar," +
+                "build/intermediates/**/classes.jar"
         property "sonar.host.url", "http://sonarqube.mcruncher.com"
         property "sonar.projectName", "WORSHIPSONGS::ANDROID"
         property "sonar.projectKey", "org.worshipsongs"
@@ -21,10 +21,10 @@ sonarqube {
         property "sonar.java.binaries", "build/intermediates/classes/debug"
         property "sonar.java.libraries", libraries
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.android.lint.report", "build/outputs/lint-results-debug.xml"
+        property "sonar.android.lint.report", "build/reports/lint-results.xml"
         property "sonar.java.binaries", "build/intermediates/classes/debug"
         property "sonar.jacoco.reportPath", "build/jacoco/testDebugUnitTest.exec"
-        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest/debug"
+        property "sonar.junit.reportsPath", "build/test-results/testDebugUnitTest"
     }
 }
 
@@ -35,7 +35,7 @@ task sonarComplete(type: Exec) {
     if (OperatingSystem.current().isWindows()) {
         command = command + ".bat"
     }
-    commandLine command, "clean", "assembleDebug", "lint", "jacocoTestReport", "sonarqube"
+    commandLine command, "clean", "assembleDebug", "lint", "jacocoTestDebugUnitTestReport", "sonarqube"
 }
 
 jacoco {
@@ -44,7 +44,7 @@ jacoco {
 }
 
 def coverageSourceDirs = ['../app/src/main/java']
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+task jacocoAndroidUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports"
     classDirectories = fileTree(
@@ -71,3 +71,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         }
     }
 }
+
