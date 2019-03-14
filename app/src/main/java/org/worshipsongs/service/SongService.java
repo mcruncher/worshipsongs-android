@@ -137,6 +137,7 @@ public class SongService
             parsedSong.setUrlKey(songParser.parseMediaUrlKey(song.getComments()));
             parsedSong.setChord(songParser.parseChord(song.getComments()));
             parsedSong.setTamilTitle(songParser.parseTamilTitle(song.getComments()));
+            parsedSong.setId(song.getId());
             return parsedSong;
         }
         return null;

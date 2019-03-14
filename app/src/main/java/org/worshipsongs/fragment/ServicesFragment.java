@@ -125,7 +125,7 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
             @Override
             public void onClick(View view)
             {
-                popupMenuService.shareFavouritesInSocialMedia(view, text);
+                popupMenuService.shareFavouritesInSocialMedia(getActivity(), view, text);
             }
         });
     }

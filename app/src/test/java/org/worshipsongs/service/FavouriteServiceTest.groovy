@@ -6,7 +6,6 @@ import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.Favourite
-import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 
 /**
@@ -134,7 +133,7 @@ class FavouriteServiceTest extends ElectricSpecification
         then:
         result.contains("foo")
         result.contains("bar")
-        result.contains("https://worshipsongs.org/c2VydmljZTE7MTsyOw==")
+        result.contains("https://mcruncher.github.io/worshipsongs/?c2VydmljZTE7MTsyOw==")
     }
 
     def "Remove"()

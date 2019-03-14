@@ -94,11 +94,21 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         super.onPostExecute(jsonObject);
         final String shaKey = commitMessageParser.getShaKey(jsonObject);
         String existingShaKey = sharedPreferences.getString(CommonConstants.COMMIT_SHA_KEY, "");
-        progressDialog.dismiss();
+        if (!context.isFinishing() && progressDialog !=null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.COMMIT_SHA_KEY, shaKey);
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.updates_title));
-        if (existingShaKey.equalsIgnoreCase(shaKey)) {
+        if (shaKey == null || shaKey.isEmpty()) {
+            bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.warning));
+            bundle.putString(CommonConstants.MESSAGE_KEY, "Error occurred while checking song updates");
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            alertDialogFragment.setCancelable(false);
+            alertDialogFragment.setVisibleNegativeButton(false);
+            alertDialogFragment.setDialogListener(this);
+            alertDialogFragment.show(context.getFragmentManager(), "MessageUpdateFragment");
+        } else if (existingShaKey.equalsIgnoreCase(shaKey)) {
             bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_no_update));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
@@ -117,11 +127,11 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
     @Override
     public void onClickPositiveButton(Bundle bundle, String tag)
     {
-        if ("NoUpdateFragment".equalsIgnoreCase(tag)) {
-            context.finish();
-        } else {
+        if ("UpdateFragment".equalsIgnoreCase(tag)) {
             new AsyncDownloadTask(context).execute(getRemoteUrl());
             sharedPreferences.edit().putString(CommonConstants.COMMIT_SHA_KEY, bundle.getString(CommonConstants.COMMIT_SHA_KEY)).apply();
+        } else {
+            HttpAsyncTask.this.onClickNegativeButton();
         }
     }
 

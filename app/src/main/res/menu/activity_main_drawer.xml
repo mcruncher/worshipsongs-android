@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_library_books_white"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/updateSongs"
+            android:icon="@android:drawable/stat_sys_download"
+            android:title="@string/update_songs" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings_white"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/rateUs"
+            android:icon="@android:drawable/star_off"
+            android:title="@string/rate_this_app" />
+
+        <item
+            android:id="@+id/share"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/share"/>
+
+        <item
+            android:id="@+id/feedback"
+            android:icon="@android:drawable/sym_action_email"
+            android:title="@string/feedback"/>
+
+    </group>
+
+</menu>

@@ -104,7 +104,7 @@
     <string name="rate_this_app">Rate us</string>
     <string name="feedback">Send feedback</string>
     <string name="feedback_subject">Worship Songs Android Feedback - %1$s</string>
-    <string name="version">Version:</string>
+    <string name="version">Version: %1$s</string>
     <string name="app_description"><![CDATA[Tamil Christian Worship Songs Android app brings you most of the Praise & Worship lyrics used by Tamil churches all over the world. Now, you can worship anytime, anywhere with all the lyrics you need.\n]]></string>
     <string name="reset_default_title">Reset to default</string>
     <string name="reset_default_summary">Reset other settings to default</string>
@@ -142,4 +142,7 @@
     <string name="song_book_no">Song no</string>
     <string name="rearrange_song_order">Do you know that you can rearrange the songs by dragging this icon up or down?</string>
     <string name="no_of_songs"> %1$s songs</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="message_songs_not_existing">Please update songs, imported favourite songs not existing in database</string>
 </resources>

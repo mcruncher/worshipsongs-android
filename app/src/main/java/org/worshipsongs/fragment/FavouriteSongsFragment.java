@@ -223,7 +223,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
                 getActivity().finish();
                return true;
             case R.id.options:
-                popupMenuService.shareFavouritesInSocialMedia(getActivity().findViewById(R.id.options),
+                popupMenuService.shareFavouritesInSocialMedia(getActivity(), getActivity().findViewById(R.id.options),
                         getArguments().getString(CommonConstants.SERVICE_NAME_KEY));
                 return true;
             default:

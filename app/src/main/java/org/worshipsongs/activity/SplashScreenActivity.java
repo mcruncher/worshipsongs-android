@@ -20,7 +20,6 @@ import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.service.DatabaseService;
@@ -46,6 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity
     private FavouriteService favouriteService;
     private SongService songService;
     private String favouriteName;
+    private int noOfImportedSongs = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,7 +62,6 @@ public class SplashScreenActivity extends AppCompatActivity
     private void importFavourites()
     {
         Uri data = getIntent().getData();
-
         if (data != null) {
             String encodedString = data.getQuery();
             String decodedString = new String(Base64.decode(encodedString, 0));
@@ -71,12 +70,23 @@ public class SplashScreenActivity extends AppCompatActivity
                 favouriteName = favouriteIdArray[0];
                 List<SongDragDrop> songDragDrops = new ArrayList<>();
                 for (int i = 1; i < favouriteIdArray.length; i++) {
-                    Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
-                    SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(), false);
-                    songDragDrop.setTamilTitle(song.getTamilTitle());
-                    songDragDrops.add(songDragDrop);
+                    try {
+                        Song song = songService.findById(Integer.valueOf(favouriteIdArray[i]));
+                        SongDragDrop songDragDrop = new SongDragDrop(song.getId(), song.getTitle(),
+                                false);
+                        songDragDrop.setTamilTitle(song.getTamilTitle());
+                        songDragDrops.add(songDragDrop);
+                    } catch (Exception ex) {
+                        Log.e(SplashScreenActivity.class.getSimpleName(),
+                                "Error occurred while finding song " + ex.getMessage());
+                    }
                 }
-                favouriteService.save(favouriteName, songDragDrops);
+                if (songDragDrops.isEmpty()) {
+                    noOfImportedSongs = 0;
+                } else {
+                    noOfImportedSongs = songDragDrops.size(); 
+                    favouriteService.save(favouriteName, songDragDrops);
+                }
                 Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
                         " successfully imported with " + songDragDrops.size() + " songs");
             }
@@ -189,7 +199,7 @@ public class SplashScreenActivity extends AppCompatActivity
     {
         setLocale();
         Intent intent = new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class);
-        intent.putExtra(CommonConstants.FAVOURITES_KEY, favouriteName);
+        intent.putExtra(CommonConstants.FAVOURITES_KEY, noOfImportedSongs);
         startActivity(intent);
         overridePendingTransition(R.anim.splash_fade_in, R.anim.splash_fade_out);
         SplashScreenActivity.this.finish();
