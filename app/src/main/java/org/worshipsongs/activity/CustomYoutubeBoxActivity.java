@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -86,7 +87,10 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
 
     private void initSetUp(Bundle bundle)
     {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O &&
+                android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O_MR1) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         if (bundle != null) {
             millis = bundle.getInt(KEY_VIDEO_TIME);
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
