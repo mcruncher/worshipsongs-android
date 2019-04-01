@@ -1,7 +1,6 @@
 package org.worshipsongs.fragment;
 
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -22,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,7 +43,6 @@ import org.worshipsongs.domain.Song;
 import org.worshipsongs.domain.Type;
 import org.worshipsongs.listener.SongContentViewListener;
 import org.worshipsongs.registry.ITabFragment;
-
 import org.worshipsongs.service.DatabaseService;
 import org.worshipsongs.service.PopupMenuService;
 import org.worshipsongs.service.SongService;
@@ -91,6 +89,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.i(SongsFragment.class.getSimpleName(), "Onc reate invoked");
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(STATE_KEY);
         }
@@ -353,7 +352,9 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
         if (presentingSong != null && presentingSong.getTitle().equals(song.getTitle())) {
             titleTextView.setTextColor(getContext().getResources().getColor(R.color.light_navy_blue));
         } else {
-            titleTextView.setTextColor(getResources().getColor(R.color.text_black_color));
+            TypedValue typedValue = new TypedValue();
+            getActivity().getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
+            titleTextView.setTextColor(typedValue.data);
         }
         TextView subTitleTextView = (TextView) objects.get(CommonConstants.SUBTITLE_KEY);
         subTitleTextView.setVisibility(song.getSongBookNumber() > 0 ? View.VISIBLE : View.GONE);

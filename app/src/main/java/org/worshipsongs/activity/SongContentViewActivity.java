@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @Author : Seenivasan, Madasamy, Vignesh Palanisamy
  * @Version : 1.0
  */
-public class SongContentViewActivity extends AppCompatActivity
+public class SongContentViewActivity extends AbstractAppCompactActivity
 {
     private UserPreferenceSettingService userPreferenceSettingService;
     private PresentationScreenService presentationScreenService;

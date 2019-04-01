@@ -47,7 +47,7 @@ import java.util.Map;
  * Version : 3.x
  */
 
-public class DatabaseSettingActivity extends AppCompatActivity implements AlertDialogFragment.DialogListener
+public class DatabaseSettingActivity extends AbstractAppCompactActivity implements AlertDialogFragment.DialogListener
 {
     private IImportDatabaseLocator importDatabaseLocator = new ImportDatabaseLocator();
     private SongService songService = new SongService(WorshipSongApplication.getContext());
@@ -97,7 +97,7 @@ public class DatabaseSettingActivity extends AppCompatActivity implements AlertD
 
     private void showDatabaseTypeDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(DatabaseSettingActivity.this, R.style.MyDialogTheme));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.type));
         builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
         {

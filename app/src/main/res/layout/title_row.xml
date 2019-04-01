@@ -13,13 +13,12 @@
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/video_image_view"
         android:layout_toStartOf="@+id/video_image_view"
-        android:textColor="@color/text_black_color"
         android:clickable="false"
         android:maxLines="1"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
-        android:text="TextView"
+        android:text="Foo"
         android:textSize="16dp"/>
 
     <TextView

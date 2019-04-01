@@ -7,22 +7,19 @@
             android:enabled="true"
             android:key="displayTamilLyrics"
             android:summary="@string/tamilLyricsSummary"
-            android:title="@string/tamil_key">
-        </SwitchPreference>
+            android:title="@string/tamil_key"></SwitchPreference>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="displayRomanisedLyrics"
             android:summary="@string/romanisedLyricsSummary"
-            android:title="@string/romanised">
-        </SwitchPreference>
+            android:title="@string/romanised"></SwitchPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Language">
         <org.worshipsongs.preference.LanguagePreference
             defaultLanguage="tamil"
-            android:key="languagePreference">
-        </org.worshipsongs.preference.LanguagePreference>
+            android:key="languagePreference"></org.worshipsongs.preference.LanguagePreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
@@ -32,21 +29,21 @@
             android:defaultValue="20"
             android:key="portraitFontSize"
             android:summary="@string/font_size_summary"
-            android:title="Font"/>
+            android:title="Font" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
             android:defaultValue="@integer/COLOR_RED"
             android:key="secondaryColor"
             android:summary="@string/secondary_summary"
-            android:title="@string/secondary_color"/>
+            android:title="@string/secondary_color" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
             android:defaultValue="@integer/COLOR_DARK_GRAY"
             android:key="primaryColor"
             android:summary="@string/primary_summary"
-            android:title="@string/primary_color"/>
+            android:title="@string/primary_color" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/presentation_color_settings_title">
@@ -56,33 +53,41 @@
             android:defaultValue="28"
             android:key="landscapeFontSize"
             android:summary="@string/font_size_summary"
-            android:title="Font"/>
+            android:title="Font" />
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
             android:defaultValue="@integer/COLOR_BLACK"
             android:key="presentationBackgroundColor"
             android:summary="@string/presentation_background_color_summary"
-            android:title="@string/background_color_title"/>
+            android:title="@string/background_color_title" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
             android:defaultValue="@integer/yellow"
             android:key="presentationSecondaryColor"
             android:summary="@string/presentation_secondary_color_summary"
-            android:title="@string/presentation_secondary_color_title"/>
+            android:title="@string/presentation_secondary_color_title" />
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             alphaSlider="true"
             android:defaultValue="@integer/white"
             android:key="presentationPrimaryColor"
             android:summary="@string/presentation_primary_color_summary"
-            android:title="@string/presentation_primary_color_title"/>
+            android:title="@string/presentation_primary_color_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/home_view_category_title">
         <org.worshipsongs.preference.TabChoicePreference
+            android:background="@color/white"
             android:summary="@string/tab_choice_summary"
-            android:title="@string/tab_choice_title">
-        </org.worshipsongs.preference.TabChoicePreference>
+            android:title="@string/tab_choice_title"></org.worshipsongs.preference.TabChoicePreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Theme settings">
+        <org.worshipsongs.preference.ThemeListPreference
+            android:key="themeKey"
+            android:summary="Choose theme"
+            android:title="Change theme">
+        </org.worshipsongs.preference.ThemeListPreference>
     </PreferenceCategory>
 
 
@@ -92,22 +97,19 @@
             android:enabled="true"
             android:key="prefKeepAwakeOn"
             android:summary="@string/awakeScreenSummary"
-            android:title="@string/awakeScreenTitle">
-        </SwitchPreference>
+            android:title="@string/awakeScreenTitle"></SwitchPreference>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefVideoPlay"
             android:summary="@string/videoPlaySummary"
-            android:title="@string/playVideoTitle">
-        </SwitchPreference>
+            android:title="@string/playVideoTitle"></SwitchPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/advanced">
         <org.worshipsongs.preference.DatabaseSettingsPreference
             android:summary="@string/database_summary"
-            android:title="@string/import_database_title">
-        </org.worshipsongs.preference.DatabaseSettingsPreference>
+            android:title="@string/import_database_title"></org.worshipsongs.preference.DatabaseSettingsPreference>
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="@string/reset_default_summary"
             android:key="resetDialog"
@@ -115,8 +117,7 @@
             android:persistent="false"
             android:positiveButtonText="@string/yes"
             android:summary="@string/reset_default_summary"
-            android:title="@string/reset_default_title">
-        </org.worshipsongs.service.ResetDefaultSettingsService>
+            android:title="@string/reset_default_title"></org.worshipsongs.service.ResetDefaultSettingsService>
     </PreferenceCategory>
 
 </PreferenceScreen>

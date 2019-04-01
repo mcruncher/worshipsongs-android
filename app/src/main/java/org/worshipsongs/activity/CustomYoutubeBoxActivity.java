@@ -28,6 +28,7 @@ import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.R;
+import org.worshipsongs.utils.ThemeUtils;
 
 /***********************************************************************************
  * The MIT License (MIT)
@@ -59,7 +60,7 @@ import org.worshipsongs.R;
  * custom behaviour, such as closing when the user clicks anywhere outside the player
  * We manage to avoid rebuffering the video by setting some configchange flags on this activities declaration in the manifest.
  */
-public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener
+public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity implements YouTubePlayer.OnInitializedListener
 {
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
@@ -77,6 +78,7 @@ public class CustomYoutubeBoxActivity extends AppCompatActivity implements YouTu
     {
         initSetUp(bundle);
         super.onCreate(bundle);
+        ThemeUtils.setTheme(this);
         songService = new SongService(this);
         setContentView(R.layout.custom_youtube_box_activity);
         setRelativeLayout();

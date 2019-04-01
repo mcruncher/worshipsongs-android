@@ -32,7 +32,7 @@ import java.util.List;
  * Author: Seenivasan, Madasamy
  * version 1.0.0
  */
-public class FavouriteSongsActivity extends AppCompatActivity implements SongContentViewListener
+public class FavouriteSongsActivity extends AbstractAppCompactActivity implements SongContentViewListener
 {
     private FrameLayout songContentFrameLayout;
     private PresentationScreenService presentationScreenService;

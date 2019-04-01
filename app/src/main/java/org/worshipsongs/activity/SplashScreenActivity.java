@@ -10,12 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
@@ -37,9 +33,8 @@ import java.util.Locale;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class SplashScreenActivity extends AppCompatActivity
+public class SplashScreenActivity extends AbstractAppCompactActivity
 {
-
     private DatabaseService databaseService;
     private SharedPreferences sharedPreferences;
     private FavouriteService favouriteService;
@@ -84,7 +79,7 @@ public class SplashScreenActivity extends AppCompatActivity
                 if (songDragDrops.isEmpty()) {
                     noOfImportedSongs = 0;
                 } else {
-                    noOfImportedSongs = songDragDrops.size(); 
+                    noOfImportedSongs = songDragDrops.size();
                     favouriteService.save(favouriteName, songDragDrops);
                 }
                 Log.i(SplashScreenActivity.class.getSimpleName(), favouriteName +
@@ -152,13 +147,11 @@ public class SplashScreenActivity extends AppCompatActivity
         boolean languageChoosed = sharedPreferences.getBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, false);
         int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
         if (!languageChoosed) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(SplashScreenActivity.this, R.style.MyDialogTheme));
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
             builder.setSingleChoiceItems(languageList, index, getOnItemClickListener());
             builder.setPositiveButton(R.string.ok, getOkButtonClickListener());
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
-            builder.setCustomTitle(titleView);
+            builder.setTitle(R.string.language_title);
             builder.setCancelable(false);
             builder.show();
         } else {

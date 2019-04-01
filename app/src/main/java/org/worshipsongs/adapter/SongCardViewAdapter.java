@@ -3,12 +3,14 @@ package org.worshipsongs.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
@@ -56,6 +58,10 @@ public class SongCardViewAdapter extends RecyclerView.Adapter<SongCardViewAdapte
         textView.setTextSize(preferenceSettingService.getPortraitFontSize());
         textView.setTextColor(preferenceSettingService.getPrimaryColor());
         textView.setVerticalScrollBarEnabled(true);
+        TypedValue typedValue = new TypedValue();
+        WorshipSongApplication.getContext().getTheme().resolveAttribute(
+                android.R.attr.background, typedValue, true);
+        textView.setBackgroundResource(typedValue.data);
     }
 
     @Override

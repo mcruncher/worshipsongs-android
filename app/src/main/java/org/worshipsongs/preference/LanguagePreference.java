@@ -3,10 +3,13 @@ package org.worshipsongs.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +30,7 @@ import java.util.Locale;
 public class LanguagePreference extends Preference
 {
     private SharedPreferences sharedPreferences;
-    private LanguageListener languageListener;
+    private PreferenceListener preferenceListener;
     private int languageIndex;
 
     public LanguagePreference(Context context, AttributeSet attrs)
@@ -57,11 +60,11 @@ public class LanguagePreference extends Preference
         int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, languageIndex);
         setLanguagePreferenceProperties(index);
         setLocale((index == 0) ? "ta" : "en");
-        if (index == 0) {
-            languageTypeRadioGroup.check(R.id.language_tamil);
-        } else {
-            languageTypeRadioGroup.check(R.id.language_english);
-        }
+        languageTypeRadioGroup.check(index == 0 ? R.id.language_tamil : R.id.language_english);
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
+        ((AppCompatRadioButton) view.findViewById(R.id.language_tamil)).setTextColor(typedValue.data);
+        ((AppCompatRadioButton) view.findViewById(R.id.language_english)).setTextColor(typedValue.data);
         languageTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -89,7 +92,7 @@ public class LanguagePreference extends Preference
     private void setLocaleAndSelectListener(String localeKey)
     {
         setLocale(localeKey);
-        languageListener.onSelect();
+        preferenceListener.onSelect();
     }
 
     private void setLocale(String localeKey)
@@ -101,13 +104,8 @@ public class LanguagePreference extends Preference
         getContext().getResources().updateConfiguration(config, getContext().getResources().getDisplayMetrics());
     }
 
-    public void setLanguageListener(LanguageListener languageListener)
+    public void setPreferenceListener(PreferenceListener preferenceListener)
     {
-        this.languageListener = languageListener;
-    }
-
-    public interface LanguageListener
-    {
-        void onSelect();
+        this.preferenceListener = preferenceListener;
     }
 }

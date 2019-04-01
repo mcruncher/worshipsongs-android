@@ -23,7 +23,7 @@ import java.util.List;
  * author: Seenivasan, Madasamy
  * version: 2.1.0
  */
-public class SongListActivity extends AppCompatActivity implements SongContentViewListener
+public class SongListActivity extends AbstractAppCompactActivity implements SongContentViewListener
 {
     private PresentationScreenService presentationScreenService;
     private FrameLayout songContentFrameLayout;
