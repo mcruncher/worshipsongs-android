@@ -18,7 +18,6 @@
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
-        android:text="Foo"
         android:textSize="16dp"/>
 
     <TextView

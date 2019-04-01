@@ -69,7 +69,7 @@
         <item name="colorControlNormal">@color/teal</item>
         <item name="colorControlActivated">@color/teal</item>
     </style>
-    
+
     <style name="NoActionBarDimTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/black_transparent_mild</item>

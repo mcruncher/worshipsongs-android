@@ -23,7 +23,6 @@
         app:itemIconTint="@drawable/nav_view_icon_color"
         app:itemTextColor="@drawable/nav_view_item_textcolor"
         app:menu="@menu/activity_main_drawer">
-        <!--app:itemBackground="@drawable/nav_view_item_background"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
