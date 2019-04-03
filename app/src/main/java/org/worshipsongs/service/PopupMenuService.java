@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import org.apache.commons.lang3.StringUtils;
+import org.worshipsongs.BuildConfig;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
@@ -176,8 +178,9 @@ public class PopupMenuService
             os.close();
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("application/pdf");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
-
+            Uri uriForFile = FileProvider.getUriForFile(WorshipSongApplication.getContext(),
+                    BuildConfig.APPLICATION_ID + ".provider", file);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uriForFile);
             Intent intent = Intent.createChooser(shareIntent, "Share " + songName + " with...");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);

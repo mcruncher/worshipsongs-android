@@ -23,6 +23,10 @@ android {
         versionName APP_VERSION
         setProperty("archivesBaseName",  "worshipsongs-" + defaultConfig.versionName )
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
     compileOptions.encoding = "UTF-8"
 
     signingConfigs {
