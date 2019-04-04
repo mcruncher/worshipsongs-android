@@ -52,31 +52,49 @@ public class AddFavouritesDialogFragment extends DialogFragment
         alertDialogBuilder.setTitle(R.string.favourite_title);
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton(R.string.ok, getPositiveOnClickListener(serviceName));
-        alertDialogBuilder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+        alertDialogBuilder.setNegativeButton(R.string.cancel, getNegativeOnClickListener());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         alertDialog.getWindow().setBackgroundDrawableResource(R.color.white);
         return alertDialog;
     }
 
+    private DialogInterface.OnClickListener getNegativeOnClickListener()
+    {
+        return new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.cancel();
+            }
+        };
+    }
+
 
     @NonNull
     private DialogInterface.OnClickListener getPositiveOnClickListener(final EditText serviceName)
     {
-        return (dialog, which) -> {
-            Bundle args = getArguments();
-            String songName = args.getString(CommonConstants.TITLE_KEY);
-            String localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY);
-            int id = args.getInt(CommonConstants.ID);
-            if (serviceName.getText().toString().equals("")) {
-                Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
-            } else {
-                String favouriteName = serviceName.getText().toString();
-                SongDragDrop songDragDrop = new SongDragDrop(id, songName, false);
-                songDragDrop.setTamilTitle(localisedName);
-                favouriteService.save(favouriteName, songDragDrop);
-                Toast.makeText(getActivity(), "Song added to favourite......!", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+
+        return new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Bundle args = getArguments();
+                String songName = args.getString(CommonConstants.TITLE_KEY);
+                String localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY);
+                int id = args.getInt(CommonConstants.ID);
+                if (serviceName.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Enter favourite name...!", Toast.LENGTH_LONG).show();
+                } else {
+                    String favouriteName = serviceName.getText().toString();
+                    SongDragDrop songDragDrop = new SongDragDrop(id, songName, false);
+                    songDragDrop.setTamilTitle(localisedName);
+                    favouriteService.save(favouriteName, songDragDrop);
+                    Toast.makeText(getActivity(), "Song added to favourite......!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
             }
         };
 
