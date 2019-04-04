@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:swipeViewId="@+id/item_layout">
-    <!--app:leftViewId="@+id/item_left"-->
-    <!--app:rightViewId="@+id/item_right"-->
-
-    <!--@drawable/list_item_selector-->
     <RelativeLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
@@ -20,7 +16,8 @@
         android:orientation="horizontal"
         android:paddingBottom="7dp"
         android:paddingTop="7dp"
-        android:background="@drawable/list_item_selector">
+        >
+        <!--android:background="@drawable/list_item_selector"-->
 
         <ImageView
             android:id="@+id/image"
