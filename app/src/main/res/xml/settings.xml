@@ -85,8 +85,8 @@
     <PreferenceCategory android:title="Theme settings">
         <org.worshipsongs.preference.ThemeListPreference
             android:key="themeKey"
-            android:summary="Choose theme"
-            android:title="Change theme">
+            android:summary="@string/theme_summary"
+            android:title="@string/theme_title">
         </org.worshipsongs.preference.ThemeListPreference>
     </PreferenceCategory>
 

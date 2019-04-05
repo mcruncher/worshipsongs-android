@@ -18,12 +18,4 @@ public class AbstractAppCompactActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         ThemeUtils.setTheme(this);
     }
-
-    public void reCreate()
-    {
-        Bundle savedInstanceState = new Bundle();
-        onSaveInstanceState(savedInstanceState);
-        super.onDestroy();
-        onCreate(savedInstanceState);
-    }
 }

@@ -145,4 +145,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="message_songs_not_existing">Please update songs, imported favourite songs not existing in database</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="theme_title">Theme</string>
+    <string name="theme_summary">Choose theme</string>
 </resources>

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.domain.Theme;
 
 /**
@@ -24,7 +25,7 @@ public class ThemeListPreference extends ListPreference
     {
         super(context, attrs);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        setEntries(new String[]{"Day", "Night"});
+        setEntries(new String[]{context.getString(R.string.light), context.getString(R.string.dark) });
         setEntryValues(new String[]{Theme.DAY.name(), Theme.NIGHT.name()});
         setDefaultValue(Theme.DAY.name());
     }
@@ -43,5 +44,4 @@ public class ThemeListPreference extends ListPreference
     {
         this.preferenceListener = preferenceListener;
     }
-
 }

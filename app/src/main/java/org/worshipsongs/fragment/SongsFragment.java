@@ -89,7 +89,6 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.i(SongsFragment.class.getSimpleName(), "Onc reate invoked");
         if (savedInstanceState != null) {
             state = savedInstanceState.getParcelable(STATE_KEY);
         }
