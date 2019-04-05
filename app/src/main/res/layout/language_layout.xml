@@ -18,22 +18,22 @@
             android:layout_weight="0.80"
             android:orientation="horizontal">
 
-            <RadioButton
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/language_tamil"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/tamil_key"
-                android:textColor="@color/black"/>
+                />
 
-            <RadioButton
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/language_english"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:text="@string/english_key"
-                android:textColor="@color/black"/>
+                />
         </RadioGroup>
 
     </LinearLayout>

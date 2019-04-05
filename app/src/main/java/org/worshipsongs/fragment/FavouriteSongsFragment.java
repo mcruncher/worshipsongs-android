@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import com.woxthebox.draglistview.DragListView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.FavouriteSongAdapter;
 import org.worshipsongs.domain.Favourite;
@@ -98,7 +100,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     @Override
     public void onRemove(final SongDragDrop dragDrop)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.remove_favourite_song_title));
         builder.setMessage(getString(R.string.remove_favourite_song_message));
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
@@ -173,7 +175,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
         {
             CharSequence text = ((TextView) clickedView.findViewById(R.id.text)).getText();
             ((TextView) dragView.findViewById(R.id.text)).setText(text);
-            dragView.findViewById(R.id.item_layout).setBackgroundColor(dragView.getResources().getColor(R.color.list_item_background));
+            //dragView.findViewById(R.id.item_layout).setBackgroundColor(dragView.getResources().getColor(R.color.list_item_background));
         }
     }
 

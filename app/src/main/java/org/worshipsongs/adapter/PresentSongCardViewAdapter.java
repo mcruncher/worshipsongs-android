@@ -1,6 +1,8 @@
 package org.worshipsongs.adapter;
 
 import android.content.Context;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.service.CustomTagColorService;
 import org.worshipsongs.service.UserPreferenceSettingService;
 
@@ -21,18 +24,15 @@ import java.util.List;
 public class PresentSongCardViewAdapter extends ArrayAdapter<String>
 {
     private int selectedItem = -1;
-    private final Context context;
     private UserPreferenceSettingService preferenceSettingService;
     private CustomTagColorService customTagColorService;
 
     public PresentSongCardViewAdapter(Context context, List<String> objects)
     {
         super(context, R.layout.present_song_card_view, objects);
-        this.context = context;
         preferenceSettingService = new UserPreferenceSettingService();
         customTagColorService = new CustomTagColorService();
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
@@ -53,10 +53,11 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
 
     private void setTextView(int position, View v, String verse)
     {
-        TextView textView = (TextView) v.findViewById(R.id.verse_text_view);
+        TextView textView = v.findViewById(R.id.verse_text_view);
         if (textView != null) {
             textView.setText("");
-            customTagColorService.setCustomTagTextView(textView, verse, preferenceSettingService.getPrimaryColor(),
+            customTagColorService.setCustomTagTextView(textView, verse,
+                    preferenceSettingService.getPrimaryColor(),
                     preferenceSettingService.getSecondaryColor());
             textView.setTextSize(preferenceSettingService.getPortraitFontSize());
             textView.setTextColor(preferenceSettingService.getPrimaryColor());
@@ -64,8 +65,10 @@ public class PresentSongCardViewAdapter extends ArrayAdapter<String>
         if (selectedItem == position) {
             textView.setBackgroundResource(R.color.gray);
         } else {
-            textView.setBackgroundResource(R.color.white);
-
+            TypedValue typedValue = new TypedValue();
+            WorshipSongApplication.getContext().getTheme().resolveAttribute(
+                    android.R.attr.background, typedValue, true);
+            textView.setBackgroundResource(typedValue.data);
         }
         textView.setLineSpacing(0, 1.2f);
     }

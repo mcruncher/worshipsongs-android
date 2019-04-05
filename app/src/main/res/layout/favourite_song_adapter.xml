@@ -4,11 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:leftViewId="@+id/item_left"
-    app:rightViewId="@+id/item_right"
     app:swipeViewId="@+id/item_layout">
-
-    <!--@drawable/list_item_selector-->
     <RelativeLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
@@ -16,11 +12,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/list_item_selector"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="7dp"
-        android:paddingTop="7dp">
+        android:paddingTop="7dp"
+        >
+        <!--android:background="@drawable/list_item_selector"-->
 
         <ImageView
             android:id="@+id/image"

@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +51,12 @@ public class HomeTabFragment extends Fragment
 
         // Assigning ViewPager View and setting the adapter
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
-
-
         pager.setAdapter(adapter);
         // Assiging the Sliding Tab Layout View
         SlidingTabLayout tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
+        TypedValue typedValue = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        tabs.setBackgroundColor(typedValue.data);
         tabs.setDistributeEvenly(false);
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
@@ -73,7 +75,7 @@ public class HomeTabFragment extends Fragment
             if (titles.contains("playlists")) {
                 pager.setCurrentItem(titles.indexOf("playlists"));
             }
-        } else if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) == 0){
+        } else if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) == 0) {
             Toast.makeText(getActivity(), R.string.message_songs_not_existing, Toast.LENGTH_LONG).show();
         }
         return view;

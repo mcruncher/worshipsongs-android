@@ -20,7 +20,7 @@ import org.worshipsongs.service.PresentationScreenService;
  * @Author : Seenivasan
  * @Version : 1.0
  */
-public class UserSettingActivity extends AppCompatActivity
+public class UserSettingActivity extends AbstractAppCompactActivity
 {
     private ActionBar actionBar;
     private PresentationScreenService presentationScreenService;

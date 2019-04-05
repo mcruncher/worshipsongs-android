@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,9 +16,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,20 +31,21 @@ import org.worshipsongs.fragment.HomeFragment;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
+import org.worshipsongs.utils.ThemeUtils;
 
 
-public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+public class NavigationDrawerActivity extends AbstractAppCompactActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final int UPDATE_DB_REQUEST_CODE = 555;
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private SharedPreferences sharedPreferences;
     private PresentationScreenService presentationScreenService;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        ThemeUtils.setNoActionBarTheme(this);
         setContentView(R.layout.activity_main);
         presentationScreenService = new PresentationScreenService(this);
         setSongCount();
@@ -88,6 +91,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             onNavigationItemSelected(item);
             navigationView.setCheckedItem(R.id.home);
         }
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
+        ColorStateList colorStateList = new ColorStateList(new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}},
+                new int[]{typedValue.data, typedValue.data});
+        navigationView.setItemTextColor(colorStateList);
         TextView versionTextView = (TextView) navigationView.findViewById(R.id.version);
         versionTextView.setText(getString(R.string.version, CommonUtils.getProjectVersion()));
     }
@@ -242,14 +252,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     @Override
-    public void onPause()
+    protected void onPause()
     {
         super.onPause();
         presentationScreenService.onPause();
     }
 
     @Override
-    public void onStop()
+    protected void onStop()
     {
         super.onStop();
         presentationScreenService.onResume();

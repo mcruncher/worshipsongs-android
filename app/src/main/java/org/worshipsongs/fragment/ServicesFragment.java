@@ -1,9 +1,12 @@
 package org.worshipsongs.fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -186,15 +189,44 @@ public class ServicesFragment extends Fragment implements TitleAdapter.TitleAdap
         @Override
         public boolean onLongClick(View v)
         {
-            Bundle bundle = new Bundle();
-            bundle.putString(CommonConstants.TITLE_KEY, getString(R.string.delete));
-            bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_delete_playlist, serviceName));
-            bundle.putString(CommonConstants.NAME_KEY, serviceName);
-            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
-            alertDialogFragment.setDialogListener(ServicesFragment.this);
-            alertDialogFragment.show(getActivity().getFragmentManager(), "DeleteConfirmationDialog");
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+            alertDialogBuilder.setTitle( getString(R.string.delete));
+            alertDialogBuilder.setMessage( getString(R.string.message_delete_playlist, serviceName));
+            alertDialogBuilder.setPositiveButton(getString(R.string.ok), getPositiveButtonListener());
+            alertDialogBuilder.setNegativeButton(R.string.cancel, getNegativeButtonListener());
+            alertDialogBuilder.show();
             return false;
         }
+
+        @NonNull
+        private DialogInterface.OnClickListener getPositiveButtonListener()
+        {
+            return new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    favouriteService.remove(serviceName);
+                    services.clear();
+                    initSetUp();
+                    titleAdapter.addObjects(services);
+                    infoTextView.setVisibility(services.isEmpty() ? View.VISIBLE : View.GONE);
+                }
+            };
+        }
+    }
+
+    @NonNull
+    private DialogInterface.OnClickListener getNegativeButtonListener()
+    {
+        return new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        };
     }
 
     private class TextViewOnClickListener implements View.OnClickListener

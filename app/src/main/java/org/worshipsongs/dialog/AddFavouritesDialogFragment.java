@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,7 +31,6 @@ import org.worshipsongs.service.FavouriteService;
 public class AddFavouritesDialogFragment extends DialogFragment
 {
     private FavouriteService favouriteService = new FavouriteService();
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext());
 
     public static AddFavouritesDialogFragment newInstance(Bundle bundle)
     {
@@ -45,15 +45,17 @@ public class AddFavouritesDialogFragment extends DialogFragment
     {
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptsView = layoutInflater.inflate(R.layout.add_service_dialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
         alertDialogBuilder.setView(promptsView);
-        EditText serviceName = (EditText) promptsView.findViewById(R.id.service_name);
+        EditText serviceName = promptsView.findViewById(R.id.service_name);
         alertDialogBuilder.setTitle(R.string.favourite_title);
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton(R.string.ok, getPositiveOnClickListener(serviceName));
         alertDialogBuilder.setNegativeButton(R.string.cancel, getNegativeOnClickListener());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        alertDialog.getWindow().setBackgroundDrawableResource(R.color.white);
         return alertDialog;
     }
 
@@ -69,9 +71,11 @@ public class AddFavouritesDialogFragment extends DialogFragment
         };
     }
 
+
     @NonNull
     private DialogInterface.OnClickListener getPositiveOnClickListener(final EditText serviceName)
     {
+
         return new DialogInterface.OnClickListener()
         {
             @Override

@@ -46,6 +46,7 @@ public class TabChoicePreference extends DialogPreference implements ItemAdapter
     @Override
     protected void onBindDialogView(View view)
     {
+        view.setBackgroundColor(getContext().getResources().getColor(R.color.white));
         setDragListView(view);
         super.onBindDialogView(view);
     }
