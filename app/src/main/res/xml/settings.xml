@@ -7,22 +7,26 @@
             android:enabled="true"
             android:key="displayTamilLyrics"
             android:summary="@string/tamilLyricsSummary"
-            android:title="@string/tamil_key"></SwitchPreference>
+            android:title="@string/tamil_key" />
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="displayRomanisedLyrics"
             android:summary="@string/romanisedLyricsSummary"
-            android:title="@string/romanised"></SwitchPreference>
+            android:title="@string/romanised" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Language">
         <org.worshipsongs.preference.LanguagePreference
             defaultLanguage="tamil"
-            android:key="languagePreference"></org.worshipsongs.preference.LanguagePreference>
+            android:key="languagePreference" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_color_settings">
+        <org.worshipsongs.preference.ThemeListPreference
+            android:key="themeKey"
+            android:summary="@string/theme_summary"
+            android:title="@string/theme_title" />
         <org.worshipsongs.preference.FontDialogPreference
             fontSize="20"
             maxSize="30"
@@ -79,16 +83,15 @@
         <org.worshipsongs.preference.TabChoicePreference
             android:background="@color/white"
             android:summary="@string/tab_choice_summary"
-            android:title="@string/tab_choice_title"></org.worshipsongs.preference.TabChoicePreference>
+            android:title="@string/tab_choice_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Theme settings">
-        <org.worshipsongs.preference.ThemeListPreference
-            android:key="themeKey"
-            android:summary="@string/theme_summary"
-            android:title="@string/theme_title">
-        </org.worshipsongs.preference.ThemeListPreference>
-    </PreferenceCategory>
+    <!--<PreferenceCategory android:title="Theme settings">-->
+    <!--<org.worshipsongs.preference.ThemeListPreference-->
+    <!--android:key="themeKey"-->
+    <!--android:summary="@string/theme_summary"-->
+    <!--android:title="@string/theme_title" />-->
+    <!--</PreferenceCategory>-->
 
 
     <PreferenceCategory android:title="@string/miscellaneous">
@@ -97,19 +100,19 @@
             android:enabled="true"
             android:key="prefKeepAwakeOn"
             android:summary="@string/awakeScreenSummary"
-            android:title="@string/awakeScreenTitle"></SwitchPreference>
+            android:title="@string/awakeScreenTitle" />
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefVideoPlay"
             android:summary="@string/videoPlaySummary"
-            android:title="@string/playVideoTitle"></SwitchPreference>
+            android:title="@string/playVideoTitle" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/advanced">
         <org.worshipsongs.preference.DatabaseSettingsPreference
             android:summary="@string/database_summary"
-            android:title="@string/import_database_title"></org.worshipsongs.preference.DatabaseSettingsPreference>
+            android:title="@string/import_database_title" />
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="@string/reset_default_summary"
             android:key="resetDialog"
@@ -117,7 +120,7 @@
             android:persistent="false"
             android:positiveButtonText="@string/yes"
             android:summary="@string/reset_default_summary"
-            android:title="@string/reset_default_title"></org.worshipsongs.service.ResetDefaultSettingsService>
+            android:title="@string/reset_default_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

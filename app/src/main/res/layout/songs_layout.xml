@@ -21,6 +21,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/info_text_view"
         android:layout_marginBottom="15dp"
-        android:divider="@color/gray_transparent"
         android:dividerHeight="0.01dp"/>
 </RelativeLayout>
