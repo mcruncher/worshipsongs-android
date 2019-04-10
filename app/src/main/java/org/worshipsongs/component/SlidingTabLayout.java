@@ -1,8 +1,13 @@
 package org.worshipsongs.component;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -18,7 +23,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.domain.Theme;
 
 /**
  * Created by madasamy on 8/16/15.
@@ -48,6 +55,7 @@ public class SlidingTabLayout extends HorizontalScrollView
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
     private final SlidingTabStrip mTabStrip;
+    private SharedPreferences sharedPreferences;
 
     public SlidingTabLayout(Context context)
     {
@@ -69,6 +77,7 @@ public class SlidingTabLayout extends HorizontalScrollView
         mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
         mTabStrip = new SlidingTabStrip(context);
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
@@ -193,9 +202,29 @@ public class SlidingTabLayout extends HorizontalScrollView
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
-            tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_selector));
+            tabTitleView.setTextColor(getTabColorStateList());
             tabTitleView.setTextSize(14);
         }
+    }
+
+    @NonNull
+    private ColorStateList getTabColorStateList()
+    {
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_selected},
+                new int[]{android.R.attr.state_focused},
+                new int[]{android.R.attr.state_pressed},
+                new int[]{}
+        };
+        String themeName = sharedPreferences.getString(CommonConstants.THEME_KEY, Theme.DAY.name());
+        int tabBackgroundColor = themeName.equalsIgnoreCase(Theme.DAY.name()) ? R.color.shade_blue
+                : R.color.list_item_background;
+        int[] colors = new int[]{getResources().getColor(R.color.white),
+                getResources().getColor(R.color.white),
+                getResources().getColor(R.color.white),
+                getResources().getColor(tabBackgroundColor)
+        };
+        return new ColorStateList(states, colors);
     }
 
     public void setContentDescription(int i, String desc)

@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/teal</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:textColor">@color/text_black_color</item>
+        <item name="android:divider">@color/gray_transparent</item>
         <item name="popupMenuStyle">@style/PopupMenu_Theme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
     </style>
@@ -16,8 +17,8 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="NightTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/black</item>
@@ -28,6 +29,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="textColorAlertDialogListItem">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="popupMenuStyle">@style/PopupMenu_Theme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
