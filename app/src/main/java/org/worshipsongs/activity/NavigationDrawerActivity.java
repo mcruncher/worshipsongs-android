@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +20,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,15 +92,31 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
             onNavigationItemSelected(item);
             navigationView.setCheckedItem(R.id.home);
         }
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
-        ColorStateList colorStateList = new ColorStateList(new int[][]{
-                new int[]{-android.R.attr.state_checked},
-                new int[]{android.R.attr.state_checked}},
-                new int[]{typedValue.data, typedValue.data});
+        ColorStateList colorStateList = getColorStateList();
         navigationView.setItemTextColor(colorStateList);
+        navigationView.setItemIconTintList(colorStateList);
         TextView versionTextView = (TextView) navigationView.findViewById(R.id.version);
         versionTextView.setText(getString(R.string.version, CommonUtils.getProjectVersion()));
+    }
+
+    @NonNull
+    private ColorStateList getColorStateList()
+    {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
+        int[][] state = new int[][] {
+                new int[] {-android.R.attr.state_enabled}, // disabled
+                new int[] {android.R.attr.state_enabled}, // enabled
+                new int[] {-android.R.attr.state_checked}, // unchecked
+                new int[] { android.R.attr.state_pressed}  // pressed
+        };
+        int[] color = new int[] {
+                typedValue.data,
+                typedValue.data,
+                typedValue.data,
+                typedValue.data
+        };
+        return new ColorStateList(state, color);
     }
 
     @Override

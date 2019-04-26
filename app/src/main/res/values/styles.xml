@@ -9,6 +9,8 @@
         <item name="android:divider">@color/gray_transparent</item>
         <item name="popupMenuStyle">@style/PopupMenu_Theme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+        <item name="colorButtonNormal">@android:color/holo_blue_light</item>
+        <item name="android:buttonStyle">@style/ButtonTheme</item>
     </style>
 
     <style name="DayTheme.NoActionBar">
@@ -27,10 +29,13 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:background">@android:color/background_dark</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:divider">@color/white</item>
         <item name="textColorAlertDialogListItem">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="popupMenuStyle">@style/PopupMenu_Theme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+        <item name="colorButtonNormal">@android:color/holo_orange_light</item>
+        <item name="android:buttonStyle">@style/ButtonTheme</item>
     </style>
 
     <style name="NightTheme.NoActionBar">
@@ -67,9 +72,13 @@
         <item name="colorAccent">@color/teal</item>
     </style>
 
-    <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
+    <style name="RadioButtonTheme" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/teal</item>
         <item name="colorControlActivated">@color/teal</item>
+    </style>
+
+    <style name="ButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="NoActionBarDimTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -100,11 +109,6 @@
         <item name="android:width">5sp</item>
         <item name="colorAccent">@android:color/holo_blue_dark</item>
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="CustomButtonTheme" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@android:color/holo_blue_light</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

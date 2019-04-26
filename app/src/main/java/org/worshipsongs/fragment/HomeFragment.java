@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements SongContentViewListener
 
     private void setContentViewFragment(View view)
     {
-        songContentFrameLayout = (FrameLayout) view.findViewById(R.id.song_content_fragment);
+        songContentFrameLayout = view.findViewById(R.id.song_content_fragment);
     }
 
     @Override
