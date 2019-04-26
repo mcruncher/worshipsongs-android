@@ -42,5 +42,5 @@
         android:text="@string/ok"
         android:textAllCaps="false"
         android:stateListAnimator="@null"
-        android:theme="@style/CustomButtonTheme"/>
+       />
 </RelativeLayout>

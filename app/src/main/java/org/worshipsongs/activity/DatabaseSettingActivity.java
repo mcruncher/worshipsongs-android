@@ -97,7 +97,7 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
 
     private void showDatabaseTypeDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.MyDialogTheme));
         builder.setTitle(getString(R.string.type));
         builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
         {
@@ -126,7 +126,8 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
     private void setDefaultDatabaseButton()
     {
         defaultDatabaseButton = (Button) findViewById(R.id.default_database_button);
-        defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
+        defaultDatabaseButton.setVisibility(sharedPreferences.getBoolean(
+                CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false) ? View.VISIBLE : View.GONE);
         defaultDatabaseButton.setOnClickListener(new DefaultDbOnClickListener());
     }
 

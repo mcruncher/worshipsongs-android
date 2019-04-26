@@ -94,7 +94,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(CommonUtils.isPhone(getContext()));
+        setHasOptionsMenu(CommonUtils.isPhone(WorshipSongApplication.getContext()));
     }
 
     @Override
@@ -124,7 +124,10 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         }
         setSong();
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(appCompatActivity.getSupportActionBar()!=null) {
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(
+                    CommonUtils.isPhone(WorshipSongApplication.getContext()));
+        }
     }
 
     private void showStatusBar()

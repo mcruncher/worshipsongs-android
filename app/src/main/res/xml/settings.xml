@@ -86,14 +86,6 @@
             android:title="@string/tab_choice_title" />
     </PreferenceCategory>
 
-    <!--<PreferenceCategory android:title="Theme settings">-->
-    <!--<org.worshipsongs.preference.ThemeListPreference-->
-    <!--android:key="themeKey"-->
-    <!--android:summary="@string/theme_summary"-->
-    <!--android:title="@string/theme_title" />-->
-    <!--</PreferenceCategory>-->
-
-
     <PreferenceCategory android:title="@string/miscellaneous">
         <SwitchPreference
             android:defaultValue="true"

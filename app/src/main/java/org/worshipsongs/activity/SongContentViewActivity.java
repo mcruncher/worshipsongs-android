@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -100,7 +101,7 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
                 }
             });
         } else {
-            getSupportActionBar().hide();
+            //getSupportActionBar().hide();
             SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
                     new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), titleList.get(Setting.getInstance().getPosition()));
             // Assigning ViewPager View and setting the adapter
@@ -123,6 +124,7 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
             tabs.setVisibility(View.GONE);
             // Setting the ViewPager For the SlidingTabsLayout
             tabs.setViewPager(pager);
+            Log.i(SongContentViewActivity.class.getSimpleName(), "Finished");
         }
     }
 

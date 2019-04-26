@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.WorshipSongApplication;
+import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.fragment.SongContentLandscapeViewFragment;
@@ -31,7 +33,10 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
 
     public SongContentLandScapeViewerPageAdapter(FragmentManager fragmentManager, String title)
     {
+
         super(fragmentManager);
+        Log.i(SongContentLandScapeViewerPageAdapter.class.getSimpleName(), "Song content land scape view");
+
         this.title = title;
         initSetUp();
     }
@@ -40,12 +45,14 @@ public class SongContentLandScapeViewerPageAdapter extends FragmentStatePagerAda
     {
         song = songService.findContentsByTitle(title);
         contents = song.getContents();
+        Log.i(SongContentLandScapeViewerPageAdapter.class.getSimpleName(), "Song content size" + contents.size());
         authorName = authorService.findAuthorNameByTitle(title);
     }
 
     @Override
     public Fragment getItem(int position)
     {
+
         SongContentLandscapeViewFragment songContentLandscapeViewFragment = new SongContentLandscapeViewFragment();
         Bundle bundle = new Bundle();
         String content = contents.get(position);
