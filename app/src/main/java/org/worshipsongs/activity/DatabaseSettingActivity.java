@@ -12,7 +12,6 @@ import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -97,7 +96,7 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
 
     private void showDatabaseTypeDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.MyDialogTheme));
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.DialogTheme));
         builder.setTitle(getString(R.string.type));
         builder.setItems(R.array.dataBaseTypes, new DialogInterface.OnClickListener()
         {
@@ -141,7 +140,7 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
             bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_database_confirmation));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setDialogListener(DatabaseSettingActivity.this);
-            alertDialogFragment.show(getFragmentManager(), "RevertDefaultDatabaseDialog");
+            alertDialogFragment.show(getSupportFragmentManager(), "RevertDefaultDatabaseDialog");
         }
     }
 
@@ -204,7 +203,7 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
         alertDialogFragment.setVisiblePositiveButton(true);
         alertDialogFragment.setVisibleNegativeButton(true);
         alertDialogFragment.setDialogListener(this);
-        alertDialogFragment.show(getFragmentManager(), "DatabaseImportConfirmation");
+        alertDialogFragment.show(getSupportFragmentManager(), "DatabaseImportConfirmation");
     }
 
 
@@ -288,7 +287,7 @@ public class DatabaseSettingActivity extends AbstractAppCompactActivity implemen
         alertDialogFragment.setDialogListener(this);
         alertDialogFragment.setVisibleNegativeButton(false);
         alertDialogFragment.setCancelable(false);
-        alertDialogFragment.show(getFragmentManager(), "InvalidLocalDbWaringDialog");
+        alertDialogFragment.show(getSupportFragmentManager(), "InvalidLocalDbWaringDialog");
     }
 
     @Override

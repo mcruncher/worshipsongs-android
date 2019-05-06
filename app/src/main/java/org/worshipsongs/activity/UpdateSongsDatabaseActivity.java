@@ -53,7 +53,7 @@ public class UpdateSongsDatabaseActivity extends AppCompatActivity implements Al
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.setDialogListener(this);
-            alertDialogFragment.show(getFragmentManager(), AlertDialogFragment.class.getSimpleName());
+            alertDialogFragment.show(getSupportFragmentManager(), AlertDialogFragment.class.getSimpleName());
         }
     }
 

@@ -45,7 +45,7 @@ public class CustomDialogBuilder
 
     private void setBuilder()
     {
-        builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.MyDialogTheme));
+        builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.DialogTheme));
         builder.setView(getCustomView(context, dialogConfiguration));
         builder.setTitle(dialogConfiguration.getTitle());
     }

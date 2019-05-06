@@ -39,7 +39,7 @@ public class FavouritesDialogFragment extends DialogFragment
     {
         final List<String> names = favouriteService.findNames();
         names.add(0, "New favourite...");
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.DialogTheme));
         builder.setTitle(getString(R.string.addToPlayList));
         builder.setItems(names.toArray(new String[names.size()]), new DialogInterface.OnClickListener()
         {

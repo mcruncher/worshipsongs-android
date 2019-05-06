@@ -22,6 +22,8 @@ import org.worshipsongs.preference.ThemeListPreference;
 
 public class SettingsPreferenceFragment extends PreferenceFragment implements PreferenceListener
 {
+    private static final String DEFAULT_PRIMARY_COLOR_KEY = "defaultPrimaryColor";
+    private static final String DEFAULT_SECONDARY_COLOR_KEY = "defaultSecondaryColor";
     private UserSettingActivity userSettingActivity = new UserSettingActivity();
 
 
@@ -61,10 +63,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
                         CommonConstants.THEME_KEY, Theme.DAY.name());
                 String newTheme = String.valueOf(newValue);
                 if (!themeName.equalsIgnoreCase(newTheme)) {
-                    setColor(preference, "primaryColor", -12303292,
-                            0xffffffff);
-                    setColor(preference, "secondaryColor", -65536,
-                            0xffffff00);
+                    setColor(preference, newTheme);
                     updateThemeAndRecreateActivity(preference, newTheme);
                 }
                 return false;
@@ -72,15 +71,29 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
         };
     }
 
-    private void setColor(Preference preference, String colorKey, int defaultColor,
-                          int updatedColor)
+    private void setColor(Preference preference, String theme)
     {
-        int primaryColor = preference.getSharedPreferences().getInt(colorKey, defaultColor);
-        if (primaryColor == defaultColor) {
-            preference.getSharedPreferences().edit().putInt(colorKey, updatedColor).apply();
-        } else if (primaryColor == updatedColor) {
-            preference.getSharedPreferences().edit().putInt(colorKey, defaultColor).apply();
+        if (Theme.NIGHT.name().equalsIgnoreCase(theme)) {
+            setDefaultColor(preference, DEFAULT_PRIMARY_COLOR_KEY, CommonConstants.PRIMARY_COLOR_KEY,
+                    DEFAULT_SECONDARY_COLOR_KEY, CommonConstants.SECONDARY_COLOR_KEY);
+            preference.getSharedPreferences().edit().putInt(CommonConstants.PRIMARY_COLOR_KEY, 0xffffffff).apply();
+            preference.getSharedPreferences().edit().putInt(CommonConstants.SECONDARY_COLOR_KEY, 0xffffff00).apply();
+        } else {
+            setDefaultColor(preference, CommonConstants.PRIMARY_COLOR_KEY, DEFAULT_PRIMARY_COLOR_KEY,
+                    CommonConstants.SECONDARY_COLOR_KEY, DEFAULT_SECONDARY_COLOR_KEY);
         }
+    }
+
+    private void setDefaultColor(Preference preference, String defaultPrimaryColorKey,
+                                 String primaryColorKey, String defaultSecondaryColorKey,
+                                 String secondaryColorKey)
+    {
+        preference.getSharedPreferences().edit().putInt(defaultPrimaryColorKey,
+                preference.getSharedPreferences().getInt(primaryColorKey,
+                        -12303292)).apply();
+        preference.getSharedPreferences().edit().putInt(defaultSecondaryColorKey,
+                preference.getSharedPreferences().getInt(secondaryColorKey,
+                        -65536)).apply();
     }
 
     private void updateThemeAndRecreateActivity(Preference preference, String newTheme)

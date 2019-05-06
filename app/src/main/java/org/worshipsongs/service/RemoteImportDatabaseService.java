@@ -148,7 +148,7 @@ public class RemoteImportDatabaseService implements ImportDatabaseService
     private class AsyncDownloadTask extends AsyncTask<String, Void, Boolean>
     {
         private File destinationFile = null;
-        private ProgressDialog progressDialog = new ProgressDialog(new ContextThemeWrapper(appCompatActivity, R.style.MyDialogTheme));
+        private ProgressDialog progressDialog = new ProgressDialog(new ContextThemeWrapper(appCompatActivity, R.style.DialogTheme));
         private TextView resultTextView = (TextView) objects.get(CommonConstants.TEXTVIEW_KEY);
 
         @Override

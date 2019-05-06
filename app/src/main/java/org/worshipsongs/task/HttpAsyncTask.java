@@ -97,6 +97,11 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         if (!context.isFinishing() && progressDialog !=null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+        displayAlertDialog(shaKey, existingShaKey);
+    }
+
+    private void displayAlertDialog(String shaKey, String existingShaKey)
+    {
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.COMMIT_SHA_KEY, shaKey);
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.updates_title));
@@ -107,20 +112,20 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.setDialogListener(this);
-            alertDialogFragment.show(context.getFragmentManager(), "MessageUpdateFragment");
+            alertDialogFragment.show(context.getSupportFragmentManager(), "MessageUpdateFragment");
         } else if (existingShaKey.equalsIgnoreCase(shaKey)) {
             bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_no_update));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.setDialogListener(this);
-            alertDialogFragment.show(context.getFragmentManager(), "NoUpdateFragment");
+            alertDialogFragment.show(context.getSupportFragmentManager(), "NoUpdateFragment");
         } else {
             bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_update_available));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setDialogListener(this);
-            alertDialogFragment.show(context.getFragmentManager(), "UpdateFragment");
+            alertDialogFragment.show(context.getSupportFragmentManager(), "UpdateFragment");
         }
     }
 

@@ -18,7 +18,6 @@ import org.apache.commons.io.FileUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.service.DatabaseService;
-import org.worshipsongs.service.SongBookService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.fragment.AlertDialogFragment;
 
@@ -58,7 +57,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
 
     private void setDialogBuilder(final AppCompatActivity context)
     {
-        builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.MyDialogTheme));
+        builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.DialogTheme));
         LayoutInflater li = LayoutInflater.from(context);
         View view = li.inflate(R.layout.dialog_custom_title, null);
         TextView titleTextView = (TextView) view.findViewById(R.id.title);
@@ -171,7 +170,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
         AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
         alertDialogFragment.setCancelable(false);
         alertDialogFragment.setVisibleNegativeButton(false);
-        alertDialogFragment.show(context.getFragmentManager(), "WarningUpdateFragment");
+        alertDialogFragment.show(context.getSupportFragmentManager(), "WarningUpdateFragment");
     }
 
 }
