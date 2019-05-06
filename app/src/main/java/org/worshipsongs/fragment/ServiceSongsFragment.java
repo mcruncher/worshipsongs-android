@@ -185,7 +185,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
                     bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_song_not_available, "\"" + title + "\""));
                     AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
                     alertDialogFragment.setVisibleNegativeButton(false);
-                    alertDialogFragment.show(getActivity().getFragmentManager(), "WarningDialogFragment");
+                    alertDialogFragment.show(getActivity().getSupportFragmentManager(), "WarningDialogFragment");
                 }
             }
         };
@@ -262,7 +262,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
                 bundle.putString(CommonConstants.MESSAGE_KEY, getString(R.string.message_song_not_available, "\"" + serviceSong.getTitle() + "\""));
                 AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
                 alertDialogFragment.setVisibleNegativeButton(false);
-                alertDialogFragment.show(getActivity().getFragmentManager(), "WarningDialogFragment");
+                alertDialogFragment.show(getActivity().getSupportFragmentManager(), "WarningDialogFragment");
             }
         }
     }
@@ -285,7 +285,7 @@ public class ServiceSongsFragment extends Fragment implements TitleAdapter.Title
             bundle.putString(CommonConstants.NAME_KEY, serviceSong.getTitle());
             AlertDialogFragment deleteAlertDialogFragment = AlertDialogFragment.newInstance(bundle);
             deleteAlertDialogFragment.setDialogListener(ServiceSongsFragment.this);
-            deleteAlertDialogFragment.show(getActivity().getFragmentManager(), "DeleteDialogFragment");
+            deleteAlertDialogFragment.show(getActivity().getSupportFragmentManager(), "DeleteDialogFragment");
             return true;
         }
     }

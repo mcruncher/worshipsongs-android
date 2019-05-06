@@ -25,7 +25,6 @@ import com.woxthebox.draglistview.DragListView;
 import org.apache.commons.lang3.StringUtils;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.FavouriteSongAdapter;
 import org.worshipsongs.domain.Favourite;
@@ -100,7 +99,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
     @Override
     public void onRemove(final SongDragDrop dragDrop)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.DialogTheme));
         builder.setTitle(getString(R.string.remove_favourite_song_title));
         builder.setMessage(getString(R.string.remove_favourite_song_message));
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
@@ -153,7 +152,7 @@ public class FavouriteSongsFragment extends Fragment implements FavouriteSongAda
                     "\"" + getTitle(dragDrop) + "\""));
             AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
             alertDialogFragment.setVisibleNegativeButton(false);
-            alertDialogFragment.show(getActivity().getFragmentManager(), "WarningDialogFragment");
+            alertDialogFragment.show(getActivity().getSupportFragmentManager(), "WarningDialogFragment");
         }
     }
 

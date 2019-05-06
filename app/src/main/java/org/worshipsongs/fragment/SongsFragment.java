@@ -19,7 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -243,7 +242,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
                 getActivity().finish();
                 return true;
             case R.id.filter:
-                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.MyDialogTheme));
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.DialogTheme));
                 builder.setTitle(getString(R.string.search_title));
                 builder.setCancelable(true);
                 String title = Type.SONG_BOOK.name().equalsIgnoreCase(getType()) ? getString(R.string.search_title_or_content) : getString(R.string.search_type_title);

@@ -58,6 +58,9 @@ public final class CommonConstants
     public static final String DISPLAY_FAVOURITE_HELP_ACTIVITY = "displayFavouriteHelpActivity";
     public static final String THEME_KEY = "themeKey";
 
+    public static final String PRIMARY_COLOR_KEY = "primaryColor";
+    public static final String SECONDARY_COLOR_KEY = "secondaryColor";
+
 
     private CommonConstants()
     {

@@ -3,24 +3,19 @@ package org.worshipsongs.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
-import org.worshipsongs.WorshipSongApplication;
-import org.worshipsongs.domain.DragDrop;
 import org.worshipsongs.domain.SongDragDrop;
 import org.worshipsongs.service.FavouriteService;
 
@@ -46,7 +41,7 @@ public class AddFavouritesDialogFragment extends DialogFragment
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptsView = layoutInflater.inflate(R.layout.add_service_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
+                new ContextThemeWrapper(getActivity(), R.style.DialogTheme));
         alertDialogBuilder.setView(promptsView);
         EditText serviceName = promptsView.findViewById(R.id.service_name);
         alertDialogBuilder.setTitle(R.string.favourite_title);
