@@ -27,6 +27,11 @@ public class PresentationScreenService
     private PresentationScreenService.DefaultMediaRouterCallBack songMediaRouterCallBack = new PresentationScreenService.DefaultMediaRouterCallBack();
     private MediaRouter mediaRouter;
 
+    public PresentationScreenService()
+    {
+
+    }
+
     public PresentationScreenService(Context context)
     {
         this.context = context;

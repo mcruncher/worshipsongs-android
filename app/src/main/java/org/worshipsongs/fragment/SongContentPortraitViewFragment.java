@@ -1,6 +1,8 @@
 package org.worshipsongs.fragment;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -8,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,6 +34,7 @@ import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.activity.CustomYoutubeBoxActivity;
+import org.worshipsongs.activity.SongContentViewActivity;
 import org.worshipsongs.adapter.PresentSongCardViewAdapter;
 import org.worshipsongs.domain.Setting;
 import org.worshipsongs.domain.Song;
@@ -123,11 +127,7 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
             Log.i(this.getClass().getSimpleName(), "Video time " + millis);
         }
         setSong();
-        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        if(appCompatActivity.getSupportActionBar()!=null) {
-            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(
-                    CommonUtils.isPhone(WorshipSongApplication.getContext()));
-        }
+
     }
 
     private void showStatusBar()
@@ -139,6 +139,12 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
                 View decorView = getActivity().getWindow().getDecorView();
                 decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             }
+        }
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        if (appCompatActivity.getSupportActionBar() != null) {
+            appCompatActivity.getSupportActionBar().show();
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(
+                    CommonUtils.isPhone(WorshipSongApplication.getContext()));
         }
     }
 
@@ -568,6 +574,15 @@ public class SongContentPortraitViewFragment extends Fragment implements ISongCo
         return "";
     }
 
+//    @Override
+//    public void onAttach(Context context)
+//    {
+//        super.onAttach(context);
+//        Log.i(SongContentPortraitViewFragment.class.getSimpleName(), "" + context);
+//        if (context instanceof SongContentViewActivity) {
+//            activity = (SongContentViewActivity) context;
+//        }
+//    }
 
     public PresentationScreenService getPresentationScreenService()
     {

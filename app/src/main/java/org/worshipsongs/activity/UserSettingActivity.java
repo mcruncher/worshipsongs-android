@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -96,6 +95,11 @@ public class UserSettingActivity extends AbstractAppCompactActivity
     {
         super.onStop();
         presentationScreenService.onStop();
+    }
+
+    public void setPresentationScreenService(PresentationScreenService presentationScreenService)
+    {
+        this.presentationScreenService = presentationScreenService;
     }
 }
 

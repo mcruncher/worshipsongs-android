@@ -1,13 +1,17 @@
 package org.worshipsongs.activity;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
@@ -38,6 +42,12 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_content_view);
+        initSetup(savedInstanceState);
+        setView();
+    }
+
+    private void initSetup(Bundle savedInstanceState)
+    {
         userPreferenceSettingService = new UserPreferenceSettingService();
         presentationScreenService = new PresentationScreenService(this);
         if (userPreferenceSettingService.isKeepAwake()) {
@@ -47,85 +57,128 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
             isSectionView = savedInstanceState.getBoolean("isSectionView");
             isTabView = savedInstanceState.getBoolean("isTabView");
         }
-        Intent intent = getIntent();
+    }
 
-        ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
+    private void setView()
+    {
         if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
-
-            final SongContentPortraitViewerPageAdapter songContentPortraitViewPagerAdapter =
-                    new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), getIntent().getExtras(), presentationScreenService);
-            // Assigning ViewPager View and setting the adapter
-            final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            pager.setAdapter(songContentPortraitViewPagerAdapter);
-            // Assiging the Sliding Tab Layout View
-            SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-            //tabs.setVerticalScrollbarPosition();
-            tabs.setDistributeEvenly(false);
-            // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-            // Setting Custom Color for the Scroll bar indicator of the Tab View
-            tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
-            {
-                @Override
-                public int getIndicatorColor(int position)
-                {
-                    return getResources().getColor(android.R.color.background_dark);
-                }
-            });
-
-            tabs.setVisibility(View.GONE);
-            // Setting the ViewPager For the SlidingTabsLayout
-            tabs.setViewPager(pager);
-            pager.setCurrentItem(Setting.getInstance().getPosition());
-
-            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-            {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-                {
-                    Setting.getInstance().setPosition(position);
-                }
-
-                @Override
-                public void onPageSelected(int position)
-                {
-                    ISongContentPortraitViewFragment fragment = (ISongContentPortraitViewFragment) songContentPortraitViewPagerAdapter.instantiateItem(pager, position);
-                    if (fragment != null) {
-                        fragment.fragmentBecameVisible();
-                    }
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state)
-                {
-                    //DO nothing when page scrolled
-                }
-            });
+            setPortraitView();
         } else {
-            //getSupportActionBar().hide();
-            SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
-                    new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), titleList.get(Setting.getInstance().getPosition()));
-            // Assigning ViewPager View and setting the adapter
-            ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
-            pager.setAdapter(songContentLandScapeViewerPageAdapter);
-            // Assiging the Sliding Tab Layout View
-            SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.land_tabs);
-            //tabs.setVerticalScrollbarPosition();
-            tabs.setDistributeEvenly(false);
-            // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-            // Setting Custom Color for the Scroll bar indicator of the Tab View
-            tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
-            {
-                @Override
-                public int getIndicatorColor(int position)
-                {
-                    return getResources().getColor(android.R.color.background_dark);
-                }
-            });
-            tabs.setVisibility(View.GONE);
-            // Setting the ViewPager For the SlidingTabsLayout
-            tabs.setViewPager(pager);
-            Log.i(SongContentViewActivity.class.getSimpleName(), "Finished");
+            setLandscapeView();
         }
+    }
+
+    private void setPortraitView()
+    {
+        setCustomActionBar();
+        final SongContentPortraitViewerPageAdapter songContentPortraitViewPagerAdapter =
+                new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), getIntent().getExtras(), presentationScreenService);
+        // Assigning ViewPager View and setting the adapter
+        final ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(songContentPortraitViewPagerAdapter);
+        // Assiging the Sliding Tab Layout View
+        SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        //tabs.setVerticalScrollbarPosition();
+        tabs.setDistributeEvenly(false);
+        // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
+        {
+            @Override
+            public int getIndicatorColor(int position)
+            {
+                return getResources().getColor(android.R.color.background_dark);
+            }
+        });
+
+        tabs.setVisibility(View.GONE);
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+        pager.setCurrentItem(Setting.getInstance().getPosition());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
+                Setting.getInstance().setPosition(position);
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                ISongContentPortraitViewFragment fragment = (ISongContentPortraitViewFragment) songContentPortraitViewPagerAdapter.instantiateItem(pager, position);
+                if (fragment != null) {
+                    fragment.fragmentBecameVisible();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+                //DO nothing when page scrolled
+            }
+        });
+    }
+
+    private void setCustomActionBar()
+    {
+        if (getSupportActionBar() == null) {
+            setStatusBarColor();
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar.setBackgroundColor(getToolbarColor());
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                toolbar.setElevation(0);
+            }
+            setSupportActionBar(toolbar);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor()
+    {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
+        window.setStatusBarColor(typedValue.data);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private int getToolbarColor()
+    {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
+        return typedValue.data;
+    }
+
+    private void setLandscapeView()
+    {
+        Intent intent = getIntent();
+        ArrayList<String> titleList = intent.getExtras().getStringArrayList(CommonConstants.TITLE_LIST_KEY);
+        SongContentLandScapeViewerPageAdapter songContentLandScapeViewerPageAdapter =
+                new SongContentLandScapeViewerPageAdapter(getSupportFragmentManager(), titleList.get(Setting.getInstance().getPosition()));
+        // Assigning ViewPager View and setting the adapter
+        ViewPager pager = (ViewPager) findViewById(R.id.land_pager);
+        pager.setAdapter(songContentLandScapeViewerPageAdapter);
+        // Assiging the Sliding Tab Layout View
+        SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.land_tabs);
+        //tabs.setVerticalScrollbarPosition();
+        tabs.setDistributeEvenly(false);
+        // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
+        {
+            @Override
+            public int getIndicatorColor(int position)
+            {
+                return getResources().getColor(android.R.color.background_dark);
+            }
+        });
+        tabs.setVisibility(View.GONE);
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+        Log.i(SongContentViewActivity.class.getSimpleName(), "Finished");
     }
 
     public void onResume()
