@@ -35,7 +35,7 @@ task sonarComplete(type: Exec) {
     if (OperatingSystem.current().isWindows()) {
         command = command + ".bat"
     }
-    commandLine command, "clean", "assembleDebug", "lint", "jacocoTestDebugUnitTestReport", "sonarqube"
+    commandLine command, "clean", "assembleDebug", "lintDebug", "jacocoTestDebugUnitTestReport", "sonarqube"
 }
 
 jacoco {
