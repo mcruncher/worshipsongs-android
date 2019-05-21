@@ -58,6 +58,7 @@ public class FavouriteSongsActivity extends AbstractAppCompactActivity implement
 
     private void setActionBar()
     {
+        setCustomActionBar();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);

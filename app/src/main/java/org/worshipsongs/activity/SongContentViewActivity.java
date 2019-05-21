@@ -70,7 +70,7 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
 
     private void setPortraitView()
     {
-        setCustomActionBar();
+        setActionBar();
         final SongContentPortraitViewerPageAdapter songContentPortraitViewPagerAdapter =
                 new SongContentPortraitViewerPageAdapter(getSupportFragmentManager(), getIntent().getExtras(), presentationScreenService);
         // Assigning ViewPager View and setting the adapter
@@ -120,36 +120,11 @@ public class SongContentViewActivity extends AbstractAppCompactActivity
         });
     }
 
-    private void setCustomActionBar()
+    private void setActionBar()
     {
         if (getSupportActionBar() == null) {
-            setStatusBarColor();
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setVisibility(View.VISIBLE);
-            toolbar.setBackgroundColor(getToolbarColor());
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-                toolbar.setElevation(0);
-            }
-            setSupportActionBar(toolbar);
+            setCustomActionBar();
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarColor()
-    {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
-        window.setStatusBarColor(typedValue.data);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private int getToolbarColor()
-    {
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
-        return typedValue.data;
     }
 
     private void setLandscapeView()
