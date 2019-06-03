@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
+import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
@@ -18,6 +19,7 @@ import android.widget.RadioGroup;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.utils.CommonUtils;
 
 import java.util.Locale;
 
@@ -63,7 +65,9 @@ public class LanguagePreference extends Preference
         languageTypeRadioGroup.check(index == 0 ? R.id.language_tamil : R.id.language_english);
         TypedValue typedValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
-        ((AppCompatRadioButton) view.findViewById(R.id.language_tamil)).setTextColor(typedValue.data);
+        AppCompatRadioButton tamilRadioButton = view.findViewById(R.id.language_tamil);
+        tamilRadioButton.setTextColor(typedValue.data);
+        tamilRadioButton.setVisibility(CommonUtils.isAboveKitkat() ? View.VISIBLE : View.GONE);
         ((AppCompatRadioButton) view.findViewById(R.id.language_english)).setTextColor(typedValue.data);
         languageTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {

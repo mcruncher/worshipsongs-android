@@ -1,6 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,29 +32,28 @@ public class AbstractAppCompactActivity extends AppCompatActivity
             setStatusBarColor();
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setVisibility(View.VISIBLE);
-            toolbar.setBackgroundColor(getToolbarColor());
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setBackgroundColor(getAttributeColor(R.attr.colorPrimary));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 toolbar.setElevation(0);
             }
             setSupportActionBar(toolbar);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor()
     {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
-        window.setStatusBarColor(typedValue.data);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getAttributeColor(R.attr.colorPrimaryDark));
+        }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private int getToolbarColor()
+    private int getAttributeColor(int attribute)
     {
         TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue, true);
+        getTheme().resolveAttribute(attribute, typedValue, true);
         return typedValue.data;
     }
+
 }

@@ -104,4 +104,9 @@ public final class CommonUtils
         return !context.getResources().getBoolean(R.bool.tablet);
     }
 
+    public static boolean isAboveKitkat()
+    {
+        return android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT;
+    }
+
 }
