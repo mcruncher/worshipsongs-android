@@ -189,7 +189,7 @@ public class SplashScreenActivity extends AbstractAppCompactActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                if (!CommonUtils.isAboveKitkat()) {
+                if (getLanguageList().length == 1) {
                     sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply();
                 }
                 sharedPreferences.edit().putBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, true).apply();
