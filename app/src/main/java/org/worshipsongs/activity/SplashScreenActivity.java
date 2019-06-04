@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.WindowManager;
 
 import org.worshipsongs.CommonConstants;
@@ -27,6 +26,7 @@ import org.worshipsongs.utils.PropertyUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -149,7 +149,7 @@ public class SplashScreenActivity extends AbstractAppCompactActivity
         int index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0);
         if (!languageChoosed) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            String[] languageList = new String[]{getString(R.string.tamil_key), getString(R.string.english_key)};
+            String[] languageList = getLanguageList();
             builder.setSingleChoiceItems(languageList, index, getOnItemClickListener());
             builder.setPositiveButton(R.string.ok, getOkButtonClickListener());
             builder.setTitle(R.string.language_title);
@@ -158,6 +158,13 @@ public class SplashScreenActivity extends AbstractAppCompactActivity
         } else {
             moveToMainActivity();
         }
+    }
+
+    @NonNull
+    private String[] getLanguageList()
+    {
+        return CommonUtils.isAboveKitkat() ? new String[]{getString(R.string.tamil_key), getString(R.string.english_key)}
+                : new String[]{getString(R.string.english_key)};
     }
 
     @NonNull
@@ -182,6 +189,9 @@ public class SplashScreenActivity extends AbstractAppCompactActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                if (getLanguageList().length == 1) {
+                    sharedPreferences.edit().putInt(CommonConstants.LANGUAGE_INDEX_KEY, 1).apply();
+                }
                 sharedPreferences.edit().putBoolean(CommonConstants.LANGUAGE_CHOOSED_KEY, true).apply();
                 dialog.cancel();
                 moveToMainActivity();
