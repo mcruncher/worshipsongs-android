@@ -1,6 +1,5 @@
 package org.worshipsongs.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -8,8 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,14 +19,15 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import org.worshipsongs.CommonConstants;
+import org.worshipsongs.R;
 import org.worshipsongs.adapter.SongCardViewAdapter;
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
-import org.worshipsongs.service.SongService;
 import org.worshipsongs.domain.Song;
-import org.worshipsongs.R;
+import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.ThemeUtils;
 
 /***********************************************************************************
@@ -122,9 +122,9 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
 
     private void setYouTubePlayerFragment()
     {
-        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+        YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
         youTubePlayerFragment.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isLandScape()) {
             transaction.remove(youTubePlayerFragment).commit();
         } else {

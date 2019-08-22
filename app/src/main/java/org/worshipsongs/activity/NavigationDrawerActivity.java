@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,10 +15,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,10 +30,13 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
+import org.worshipsongs.registry.FragmentRegistry;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
 import org.worshipsongs.utils.ThemeUtils;
+
+import java.util.List;
 
 
 public class NavigationDrawerActivity extends AbstractAppCompactActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -41,6 +45,7 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
     private static final String SENDER_MAIL = "appfeedback@mcruncher.com";
     private SharedPreferences sharedPreferences;
     private PresentationScreenService presentationScreenService;
+    private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,20 +88,65 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
     {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
-        TextView headerSubTitleTextView = (TextView) headerView.findViewById(R.id.header_subtitle);
-        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable,
-                sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
+        setHeaderView(navigationView);
+        Menu menu = navigationView.getMenu();
+        addTabsMenu(menu);
+        addMenus(menu);
         if (savedInstanceState == null) {
             MenuItem item = navigationView.getMenu().getItem(0);
             onNavigationItemSelected(item);
-            navigationView.setCheckedItem(R.id.home);
+            navigationView.setCheckedItem(item.getItemId());
         }
         ColorStateList colorStateList = getColorStateList();
         navigationView.setItemTextColor(colorStateList);
         navigationView.setItemIconTintList(colorStateList);
-        TextView versionTextView = (TextView) navigationView.findViewById(R.id.version);
-        versionTextView.setText(getString(R.string.version, CommonUtils.getProjectVersion()));
+    }
+
+    private void setHeaderView(NavigationView navigationView)
+    {
+        View headerView = navigationView.getHeaderView(0);
+        TextView headerSubTitleTextView = (TextView) headerView.findViewById(R.id.header_subtitle);
+        headerSubTitleTextView.setText(getString(R.string.noOfSongsAvailable,
+                sharedPreferences.getLong(CommonConstants.NO_OF_SONGS, 0)));
+    }
+
+    private void addTabsMenu(Menu menu)
+    {
+        List<String> titles = fragmentRegistry.getTitles(this);
+        for (int i = 0; i < titles.size(); i++) {
+            String titleKey = titles.get(i);
+            String title = getString(getResources().getIdentifier(titleKey, "string",
+                    getPackageName()));
+            menu.add(0, i, i, title);
+            MenuItem item = menu.getItem(i);
+        }
+    }
+
+    private void addMenus(Menu menu)
+    {
+        menu.add(0, 5, 5, getString(R.string.update_songs));
+        MenuItem updateSongMenuItem = menu.getItem(5);
+        updateSongMenuItem.setIcon(getResources().getDrawable(android.R.drawable.stat_sys_download));
+
+        menu.add(0, 6, 6, getString(R.string.settings));
+        MenuItem settingMenuItem = menu.getItem(6);
+        settingMenuItem.setIcon(getResources().getDrawable(R.drawable.ic_settings_white));
+
+        menu.add(0, 7, 7, getString(R.string.rate_this_app));
+        MenuItem rateMenuItem = menu.getItem(7);
+        rateMenuItem.setIcon(getResources().getDrawable(android.R.drawable.star_off));
+
+        menu.add(0, 8, 8, getString(R.string.share));
+        MenuItem shareMenuItem = menu.getItem(8);
+        shareMenuItem.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_share));
+
+        menu.add(0, 9, 9, getString(R.string.feedback));
+        MenuItem feedBackMenuItem = menu.getItem(9);
+        feedBackMenuItem.setIcon(getResources().getDrawable(android.R.drawable.sym_action_email));
+
+        menu.add(0, 10, 10, getString(R.string.version, CommonUtils.getProjectVersion()));
+        MenuItem versionMenuItem = menu.getItem(10);
+        versionMenuItem.setEnabled(false);
     }
 
     @NonNull
@@ -104,13 +154,13 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
     {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(android.R.attr.textColor, typedValue, true);
-        int[][] state = new int[][] {
-                new int[] {-android.R.attr.state_enabled}, // disabled
-                new int[] {android.R.attr.state_enabled}, // enabled
-                new int[] {-android.R.attr.state_checked}, // unchecked
-                new int[] { android.R.attr.state_pressed}  // pressed
+        int[][] state = new int[][]{
+                new int[]{-android.R.attr.state_enabled}, // disabled
+                new int[]{android.R.attr.state_enabled}, // enabled
+                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] color = new int[] {
+        int[] color = new int[]{
                 typedValue.data,
                 typedValue.data,
                 typedValue.data,
@@ -149,26 +199,31 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-
         switch (item.getItemId()) {
-            case R.id.home:
-                setHomeView();
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                setHomeView(item.getTitle().toString(), item.getItemId());
                 break;
-            case R.id.updateSongs:
+            case 5:
                 setUpdateView();
                 break;
-            case R.id.settings:
+            case 6:
                 startActivity(new Intent(NavigationDrawerActivity.this,
                         UserSettingActivity.class));
                 break;
-            case R.id.rateUs:
+            case 7:
                 setRateUsView();
                 break;
-            case R.id.share:
+            case 8:
                 setShareView();
                 break;
-            case R.id.feedback:
+            case 9:
                 setEmail();
+                break;
+            default:
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -176,20 +231,40 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
         return true;
     }
 
-    private void setHomeView()
+    private void setHomeView(String title, int menuItemId)
     {
-        Fragment fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         HomeFragment existingHomeTabFragment = (HomeFragment) fragmentManager
                 .findFragmentByTag(HomeFragment.class.getSimpleName());
-        if (existingHomeTabFragment == null) {
-            fragment = HomeFragment.newInstance();
-            fragment.setArguments(getIntent().getExtras());
+        if (isNewTabSelected(existingHomeTabFragment, menuItemId)) {
+            Fragment fragment = HomeFragment.newInstance();
+            fragment.setArguments(getBundle(title, menuItemId));
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.content_frame, fragment, HomeFragment.class.getSimpleName());
             transaction.addToBackStack(null);
             transaction.commit();
+        } else {
+            Log.i(NavigationDrawerActivity.class.getSimpleName(), "Existing tab selected");
         }
+    }
+
+    @NonNull
+    private Bundle getBundle(String title, int menuItemId)
+    {
+        Bundle bundle = getIntent().getExtras() == null ? new Bundle() : getIntent().getExtras();
+        bundle.putString(CommonConstants.TAB_TITLE_KEY, title);
+        bundle.putInt(CommonConstants.TAB_SELECTED_ITEM_ID, menuItemId);
+        return bundle;
+    }
+
+    boolean isNewTabSelected(HomeFragment homeFragment, int selectedMenuItemId)
+    {
+        if (homeFragment != null) {
+            ViewPager viewPager = homeFragment.getView().findViewById(R.id.pager);
+            int existingCurrentItem = viewPager.getCurrentItem();
+            return selectedMenuItemId != existingCurrentItem;
+        }
+        return true;
     }
 
     private void setUpdateView()

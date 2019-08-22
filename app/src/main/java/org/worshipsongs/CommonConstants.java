@@ -60,6 +60,8 @@ public final class CommonConstants
 
     public static final String PRIMARY_COLOR_KEY = "primaryColor";
     public static final String SECONDARY_COLOR_KEY = "secondaryColor";
+    public static final String TAB_TITLE_KEY = "tabTitle";
+    public static final String TAB_SELECTED_ITEM_ID = "tabSelectedItem";
 
 
     private CommonConstants()
