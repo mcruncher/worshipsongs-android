@@ -7,7 +7,7 @@
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="categories">Categories</string>
+
 
     <!-- Done bar strings -->
     <string name="save">Save</string>
@@ -70,8 +70,10 @@
 
     <string name="titles">Titles</string>
     <string name="artists">Authors</string>
-
     <string name="playlists">Favourites</string>
+    <string name="song_books">Song books</string>
+    <string name="categories">Categories</string>
+
     <string name="share">Share</string>
     <string name="share.info">Content shared from:
         https://play.google.com/store/apps/details?id=org.worshipsongs
@@ -133,7 +135,6 @@
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
-    <string name="song_books">Song books</string>
 
     <string name="hint_title_or_number">Search by title or song book number</string>
     <string name="search_title_or_content">Title or Song book number</string>

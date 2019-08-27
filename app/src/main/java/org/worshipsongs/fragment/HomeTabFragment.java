@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
+import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.component.HomeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.listener.SongContentViewListener;
@@ -70,6 +71,30 @@ public class HomeTabFragment extends Fragment
         });
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+        setSelectedTab(pager);
+        displayPlayListTab(pager);
+        return view;
+    }
+
+    private void setSelectedTab(ViewPager pager)
+    {
+        if (getArguments() != null && !getArguments().getString(CommonConstants.TAB_TITLE_KEY,
+                "").isEmpty()) {
+            String tabTitle = getArguments().getString(CommonConstants.TAB_TITLE_KEY);
+            List<String> titles = fragmentRegistry.getTitles(getActivity());
+            for (String existingTabTitle : titles) {
+                int tabTitleResourceId = getResources().getIdentifier(existingTabTitle,
+                        "string", WorshipSongApplication.getContext().getPackageName());
+                if (tabTitle != null && tabTitle.equalsIgnoreCase(getString(tabTitleResourceId))) {
+                    pager.setCurrentItem(titles.indexOf(existingTabTitle));
+                    return;
+                }
+            }
+        }
+    }
+
+    private void displayPlayListTab(ViewPager pager)
+    {
         if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) > 0) {
             List<String> titles = fragmentRegistry.getTitles(getActivity());
             if (titles.contains("playlists")) {
@@ -78,7 +103,6 @@ public class HomeTabFragment extends Fragment
         } else if (getArguments() != null && getArguments().getInt(CommonConstants.FAVOURITES_KEY) == 0) {
             Toast.makeText(getActivity(), R.string.message_songs_not_existing, Toast.LENGTH_LONG).show();
         }
-        return view;
     }
 
     public void setSongContentViewListener(SongContentViewListener songContentViewListener)
