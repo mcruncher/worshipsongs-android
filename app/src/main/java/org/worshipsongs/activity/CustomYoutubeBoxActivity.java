@@ -65,7 +65,9 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
+    private static final String API_KEY = "AIzaSyAt_lPNNOqs9bIVauW9k_plPJvEb1poxoA";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
+
     @Nullable
     private YouTubePlayer youTubePlayer;
     private boolean isFullscreen;
@@ -123,7 +125,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     private void setYouTubePlayerFragment()
     {
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-        youTubePlayerFragment.initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+        youTubePlayerFragment.initialize(API_KEY, this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isLandScape()) {
             transaction.remove(youTubePlayerFragment).commit();
@@ -299,7 +301,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize("AIzaSyB7hLcRMs5KPZwElJnHBPK5DNmDqFxVy3s", this);
+            getYouTubePlayerProvider().initialize(API_KEY, this);
         }
     }
 
