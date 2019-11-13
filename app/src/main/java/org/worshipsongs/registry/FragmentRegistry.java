@@ -62,6 +62,7 @@ public class FragmentRegistry
     public ITabFragment findByTitle(Activity activity, String title)
     {
         List<ITabFragment> fragments = findAll(activity);
+        Log.i(this.getClass().getSimpleName(), "Fragement "+ fragments);
         for (ITabFragment fragment : fragments) {
             if (title.equalsIgnoreCase(fragment.getTitle())) {
                 return fragment;

@@ -322,7 +322,7 @@ public class SongsFragment extends Fragment implements TitleAdapter.TitleAdapter
 
     int getResourceId(boolean searchByText)
     {
-        return searchByText ? R.drawable.ic_format_title : R.drawable.ic_content_paste;
+        return searchByText ? R.drawable.ic_titles : R.drawable.ic_content_paste;
     }
 
     @Override
