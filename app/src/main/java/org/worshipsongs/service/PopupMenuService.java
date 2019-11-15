@@ -200,7 +200,7 @@ public class PopupMenuService
     {
         Log.i(this.getClass().getSimpleName(), "Url key: " + urlKey);
         Intent youTubeIntent = new Intent(getContext(), CustomYoutubeBoxActivity.class);
-        youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey);
+        youTubeIntent.putExtra(CustomYoutubeBoxActivity.Companion.getKEY_VIDEO_ID(), urlKey);
         youTubeIntent.putExtra(CommonConstants.TITLE_KEY, songName);
         youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(youTubeIntent);

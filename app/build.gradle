@@ -2,6 +2,8 @@ plugins {
     id "org.sonarqube" version "2.6.2"
 }
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 apply from: '../sonarqube.gradle'
 apply plugin: 'groovyx.android'
@@ -134,4 +136,8 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:3.6.1'
     testImplementation 'org.robolectric:shadows-support-v4:3.0'
     testImplementation 'com.github.hkhc:electricspock:0.8'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
