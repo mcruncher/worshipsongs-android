@@ -28,7 +28,6 @@ import android.widget.TextView;
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.R;
 import org.worshipsongs.fragment.HomeFragment;
-import org.worshipsongs.registry.FragmentRegistry;
 import org.worshipsongs.service.PresentationScreenService;
 import org.worshipsongs.service.SongService;
 import org.worshipsongs.utils.CommonUtils;
@@ -173,7 +172,7 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
                 setShareView();
                 break;
             case R.id.feedback:
-                setEmail();
+                setFeedbackView();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -238,7 +237,7 @@ public class NavigationDrawerActivity extends AbstractAppCompactActivity impleme
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
     }
 
-    private void setEmail()
+    private void setFeedbackView()
     {
         Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
         mailIntent.setData(Uri.parse("mailto:" + SENDER_MAIL));
