@@ -5,7 +5,7 @@
     <item
         android:id="@+id/filter"
         android:title="Search by title"
-        android:icon="@drawable/ic_format_title"
+        android:icon="@drawable/ic_titles"
         appcompat:showAsAction="always"/>
 
     <item

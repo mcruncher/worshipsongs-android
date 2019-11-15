@@ -1,9 +1,11 @@
 package org.worshipsongs.component;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import org.worshipsongs.WorshipSongApplication;
 import org.worshipsongs.fragment.SongsFragment;
@@ -25,11 +27,12 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
     private SongContentViewListener songContentViewListener;
     private FragmentRegistry fragmentRegistry = new FragmentRegistry();
 
-    public HomeViewerPageAdapter(FragmentManager fragmentManager, Activity activity, SongContentViewListener songContentViewListener)
+    public HomeViewerPageAdapter(FragmentManager fragmentManager, Activity activity,
+                                 List<String> titles, SongContentViewListener songContentViewListener)
     {
         super(fragmentManager);
+        this.titles = titles;
         this.activity = activity;
-        this.titles = fragmentRegistry.getTitles(activity);
         this.songContentViewListener = songContentViewListener;
     }
 
@@ -48,9 +51,7 @@ public class HomeViewerPageAdapter extends FragmentPagerAdapter
     @Override
     public CharSequence getPageTitle(int position)
     {
-        int identifier = activity.getResources().getIdentifier(titles.get(position),
-                DEF_TYPE, WorshipSongApplication.getContext().getPackageName());
-        return activity.getString(identifier);
+        return "";
     }
 
     @Override
