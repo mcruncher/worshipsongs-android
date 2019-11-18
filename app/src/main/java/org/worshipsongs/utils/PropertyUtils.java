@@ -48,6 +48,20 @@ public final class PropertyUtils
         return commonPropertyFile;
     }
 
+    public static String getApiValue(Context context)
+    {
+        try {
+            Properties properties = new Properties();
+            InputStream inputStream = context.getAssets().open(
+                    CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+            properties.load(inputStream);
+            return properties.getProperty("youTubeApiKey");
+        } catch (IOException e) {
+
+        }
+        return "";
+    }
+
     public static Properties getProperties(File propertyFile)
     {
         Properties properties = new Properties();

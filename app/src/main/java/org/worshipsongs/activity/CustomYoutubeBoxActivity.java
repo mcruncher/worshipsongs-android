@@ -28,6 +28,7 @@ import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter;
 import org.worshipsongs.component.SlidingTabLayout;
 import org.worshipsongs.domain.Song;
 import org.worshipsongs.service.SongService;
+import org.worshipsongs.utils.PropertyUtils;
 import org.worshipsongs.utils.ThemeUtils;
 
 /***********************************************************************************
@@ -65,7 +66,6 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     //Keys
     public static final String KEY_VIDEO_ID = "KEY_VIDEO_ID";
     private static final String KEY_VIDEO_TIME = "KEY_VIDEO_TIME";
-    private static final String API_KEY = "AIzaSyAt_lPNNOqs9bIVauW9k_plPJvEb1poxoA";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     @Nullable
@@ -125,7 +125,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     private void setYouTubePlayerFragment()
     {
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-        youTubePlayerFragment.initialize(API_KEY, this);
+        youTubePlayerFragment.initialize(PropertyUtils.getApiValue(this), this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isLandScape()) {
             transaction.remove(youTubePlayerFragment).commit();
@@ -301,7 +301,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(API_KEY, this);
+            getYouTubePlayerProvider().initialize(PropertyUtils.getApiValue(this), this);
         }
     }
 
