@@ -125,7 +125,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     private void setYouTubePlayerFragment()
     {
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-        youTubePlayerFragment.initialize(PropertyUtils.getApiValue(this), this);
+        youTubePlayerFragment.initialize(PropertyUtils.getYouTubeApiKey(this), this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isLandScape()) {
             transaction.remove(youTubePlayerFragment).commit();
@@ -301,7 +301,7 @@ public class CustomYoutubeBoxActivity extends AbstractAppCompactActivity impleme
     {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(PropertyUtils.getApiValue(this), this);
+            getYouTubePlayerProvider().initialize(PropertyUtils.getYouTubeApiKey(this), this);
         }
     }
 
