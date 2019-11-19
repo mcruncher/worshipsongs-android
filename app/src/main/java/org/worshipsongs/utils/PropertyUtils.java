@@ -48,6 +48,21 @@ public final class PropertyUtils
         return commonPropertyFile;
     }
 
+    public static String getYouTubeApiKey(Context context)
+    {
+        try {
+            Properties properties = new Properties();
+            InputStream inputStream = context.getAssets().open(
+                    CommonConstants.COMMON_PROPERTY_TEMP_FILENAME);
+            properties.load(inputStream);
+            return properties.getProperty("youTubeApiKey");
+        } catch (Exception ex) {
+            Log.e(PropertyUtils.class.getSimpleName(), "Error occurred while getting api " +
+                    "value" + ex);
+        }
+        return "";
+    }
+
     public static Properties getProperties(File propertyFile)
     {
         Properties properties = new Properties();
