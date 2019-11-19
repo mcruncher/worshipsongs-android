@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,12 +12,10 @@ import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
-
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
-
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.adapter.SongCardViewAdapter
@@ -82,7 +79,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     private val songCardViewAdapter: SongCardViewAdapter
         get()
         {
-            val songCarViewAdapter = SongCardViewAdapter(song, this)
+            val songCarViewAdapter = SongCardViewAdapter(song!!, this)
             songCarViewAdapter.notifyDataSetChanged()
             return songCarViewAdapter
         }
@@ -267,7 +264,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
                 }
                 youTubePlayer!!.pause()
             }
-        } catch (e: IllegalStateException)
+        } catch (e: Exception)
         {
             Log.e(CustomYoutubeBoxActivity::class.java.simpleName, "Error", e)
         }
