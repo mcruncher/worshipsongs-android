@@ -26,22 +26,23 @@ pipeline {
              }
           }
       }
-     stage ('Package and Publish'){
-         steps {
-            withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                def changes = ""
-                sh './bundle-db.sh'
-                sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
-                env.WORKSPACE = pwd()
-                changes = readFile "${env.WORKSPACE}/changelist"
-            }
-         }
-         post {
-            success {
-                 archive includes:'**/*.apk'
-                 androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: changes]], trackName: 'beta'
-            }
-         }
-     }
+      stage ('Package and Publish'){
+              steps {
+                 withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+                     sh './bundle-db.sh'
+                     sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
+                 }
+              }
+              post {
+                 success {
+                     script {
+                         env.WORKSPACE = pwd()
+                         env.FILENAME = readFile "${env.WORKSPACE}/changelist"
+                     }
+                     archive includes:'**/*.apk'
+                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}]], trackName: 'beta'
+                 }
+              }
+      }
    }
 }
