@@ -40,7 +40,7 @@ pipeline {
                          env.FILENAME = readFile "${env.WORKSPACE}/changelist"
                      }
                      archive includes:'**/*.apk'
-                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}]], trackName: 'beta'
+                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta'
                  }
               }
       }
