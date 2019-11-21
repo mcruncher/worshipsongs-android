@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config( sdk = 22)
 public class SongServiceTest
 {
     private SongService oldSongService;

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config( sdk = 22)
 public class CommonUtilsTest
 {
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());

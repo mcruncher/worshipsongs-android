@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config(sdk = 22)
 public class DatabaseSettingActivityTest
 {
     private DatabaseSettingActivity databaseSettingActivity;
