@@ -108,21 +108,21 @@ public class HttpAsyncTask extends AsyncTask<String, String, String> implements 
         if (shaKey == null || shaKey.isEmpty()) {
             bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.warning));
             bundle.putString(CommonConstants.MESSAGE_KEY, "Error occurred while checking song updates");
-            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.Companion.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.setDialogListener(this);
             alertDialogFragment.show(context.getSupportFragmentManager(), "MessageUpdateFragment");
         } else if (existingShaKey.equalsIgnoreCase(shaKey)) {
             bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_no_update));
-            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.Companion.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setVisibleNegativeButton(false);
             alertDialogFragment.setDialogListener(this);
             alertDialogFragment.show(context.getSupportFragmentManager(), "NoUpdateFragment");
         } else {
             bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_update_available));
-            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.Companion.newInstance(bundle);
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.setDialogListener(this);
             alertDialogFragment.show(context.getSupportFragmentManager(), "UpdateFragment");

@@ -167,7 +167,7 @@ public class AsyncDownloadTask extends AsyncTask<String, Integer, Boolean>
         Bundle bundle = new Bundle();
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.warning));
         bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_configure_invalid_url));
-        AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(bundle);
+        AlertDialogFragment alertDialogFragment = AlertDialogFragment.Companion.newInstance(bundle);
         alertDialogFragment.setCancelable(false);
         alertDialogFragment.setVisibleNegativeButton(false);
         alertDialogFragment.show(context.getSupportFragmentManager(), "WarningUpdateFragment");

@@ -21,6 +21,7 @@ import org.worshipsongs.R
 import org.worshipsongs.adapter.SongCardViewAdapter
 import org.worshipsongs.adapter.SongContentLandScapeViewerPageAdapter
 import org.worshipsongs.component.SlidingTabLayout
+import org.worshipsongs.component.SlidingTabLayout.TabColorizer
 import org.worshipsongs.domain.Song
 import org.worshipsongs.service.SongService
 import org.worshipsongs.utils.ThemeUtils
@@ -110,10 +111,10 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     private val youTubePlayerProvider: YouTubePlayer.Provider
         get() = YouTubePlayerFragment.newInstance()
 
-    override fun onCreate(bundle: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?)
     {
-        initSetUp(bundle)
-        super.onCreate(bundle)
+        initSetUp(savedInstanceState)
+        super.onCreate(savedInstanceState)
         ThemeUtils.setTheme(this)
         songService = SongService(this)
         setContentView(R.layout.custom_youtube_box_activity)
@@ -176,7 +177,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     private fun setContentTabs()
     {
         val title = intent.extras!!.getString(CommonConstants.TITLE_KEY)
-        val songContentLandScapeViewerPageAdapter = SongContentLandScapeViewerPageAdapter(supportFragmentManager, title)
+        val songContentLandScapeViewerPageAdapter = SongContentLandScapeViewerPageAdapter(supportFragmentManager, title!!)
         setSlidingTab(songContentLandScapeViewerPageAdapter)
     }
 
@@ -184,7 +185,13 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     {
         val tabs = findViewById<View>(R.id.sliding_tab) as SlidingTabLayout
         tabs.setDistributeEvenly(false)
-        tabs.setCustomTabColorizer { resources.getColor(android.R.color.background_dark) }
+        tabs.setCustomTabColorizer(object : TabColorizer
+        {
+            override fun getIndicatorColor(position: Int): Int
+            {
+                return resources.getColor(android.R.color.background_dark)
+            }
+        })
         tabs.visibility = View.GONE
         tabs.setViewPager(getViewPager(songContentLandScapeViewerPageAdapter))
     }

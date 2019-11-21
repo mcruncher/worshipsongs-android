@@ -62,7 +62,7 @@ class SongListActivity : AbstractAppCompactActivity(), SongContentViewListener
         val songsFragment = SongsFragment.newInstance(bundle)
         if (songContentFrameLayout != null)
         {
-            songsFragment.setListenerAndBundle(this, null)
+            songsFragment.setListenerAndBundle(this, Bundle())
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.tabs_fragment, songsFragment)

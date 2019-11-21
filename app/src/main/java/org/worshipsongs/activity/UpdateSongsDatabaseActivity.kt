@@ -66,7 +66,7 @@ class UpdateSongsDatabaseActivity : AppCompatActivity(), AlertDialogFragment.Dia
         finish()
     }
 
-    override fun onClickPositiveButton(bundle: Bundle, tag: String)
+    override fun onClickPositiveButton(bundle: Bundle?, tag: String?)
     {
         finish()
     }

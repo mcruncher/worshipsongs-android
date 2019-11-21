@@ -47,7 +47,7 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
     private var defaultDatabaseButton: Button? = null
     private var resultTextView: TextView? = null
 
-    internal val destinationFile: File
+    val destinationFile: File
         get() = File(cacheDir.absolutePath, CommonConstants.DATABASE_NAME)
 
     val countQueryResult: String
@@ -328,11 +328,11 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
         }
     }
 
-    override fun onClickPositiveButton(bundle: Bundle, tag: String)
+    override fun onClickPositiveButton(bundle: Bundle?, tag: String?)
     {
         if ("DatabaseImportConfirmation".equals(tag, ignoreCase = true))
         {
-            val uriString = bundle.getString(CommonConstants.NAME_KEY)
+            val uriString = bundle!!.getString(CommonConstants.NAME_KEY)
             val uri = Uri.parse(uriString)
             copyFile(uri)
         } else if ("InvalidLocalDbWaringDialog".equals(tag, ignoreCase = true))

@@ -87,6 +87,6 @@ class TitleAdapter<T>(context: AppCompatActivity, @LayoutRes resource: Int) : Ar
 
     interface TitleAdapterListener<T>
     {
-        fun setViews(objects: Map<String, Any>, t: T?)
+      open  fun setViews(objects: Map<String, Any>, t: T?)
     }
 }

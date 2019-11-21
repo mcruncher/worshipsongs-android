@@ -33,11 +33,6 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
     private var sharedPreferences: SharedPreferences? = null
     private var presentationScreenService: PresentationScreenService? = null
 
-
-    private// disabled
-    // enabled
-    // unchecked
-    // pressed
     val colorStateList: ColorStateList
         get() {
             val typedValue = TypedValue()
@@ -47,7 +42,7 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
             return ColorStateList(state, color)
         }
 
-    internal val flags: Int
+    val flags: Int
         get() = Intent.FLAG_ACTIVITY_NO_HISTORY or
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK
@@ -196,7 +191,7 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
         startActivity(Intent.createChooser(mailIntent, ""))
     }
 
-    internal fun getEmailSubject(context: Context): String {
+     fun getEmailSubject(context: Context): String {
         try {
             val versionName = context.packageManager.getPackageInfo(context.packageName, 0).versionName
             return String.format(context.getString(R.string.feedback_subject), versionName)

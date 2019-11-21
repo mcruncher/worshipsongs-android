@@ -1,17 +1,11 @@
 package org.worshipsongs.activity
 
 
-import android.annotation.TargetApi
-import android.content.Intent
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 
 import org.worshipsongs.CommonConstants
@@ -23,8 +17,6 @@ import org.worshipsongs.domain.Setting
 import org.worshipsongs.fragment.ISongContentPortraitViewFragment
 import org.worshipsongs.service.PresentationScreenService
 import org.worshipsongs.service.UserPreferenceSettingService
-
-import java.util.ArrayList
 
 /**
  * @Author : Seenivasan, Madasamy, Vignesh Palanisamy
@@ -74,7 +66,7 @@ class SongContentViewActivity : AbstractAppCompactActivity()
     private fun setPortraitView()
     {
         setActionBar()
-        val songContentPortraitViewPagerAdapter = SongContentPortraitViewerPageAdapter(supportFragmentManager, intent.extras!!, presentationScreenService)
+        val songContentPortraitViewPagerAdapter = SongContentPortraitViewerPageAdapter(supportFragmentManager, intent.extras!!, presentationScreenService!!)
         // Assigning ViewPager View and setting the adapter
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = songContentPortraitViewPagerAdapter
@@ -84,7 +76,13 @@ class SongContentViewActivity : AbstractAppCompactActivity()
         tabs.setDistributeEvenly(false)
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer { resources.getColor(android.R.color.background_dark) }
+        tabs.setCustomTabColorizer(object : SlidingTabLayout.TabColorizer
+        {
+            override fun getIndicatorColor(position: Int): Int
+            {
+                return resources.getColor(android.R.color.background_dark)
+            }
+        })
 
         tabs.visibility = View.GONE
         // Setting the ViewPager For the SlidingTabsLayout
@@ -132,7 +130,13 @@ class SongContentViewActivity : AbstractAppCompactActivity()
         tabs.setDistributeEvenly(false)
         // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer { resources.getColor(android.R.color.background_dark) }
+        tabs.setCustomTabColorizer(object : SlidingTabLayout.TabColorizer
+        {
+            override fun getIndicatorColor(position: Int): Int
+            {
+                return resources.getColor(android.R.color.background_dark)
+            }
+        })
         tabs.visibility = View.GONE
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager)

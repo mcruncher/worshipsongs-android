@@ -112,7 +112,7 @@ class SplashScreenActivity : AbstractAppCompactActivity()
         }
     }
 
-    internal fun initSetUp(context: Context)
+    fun initSetUp(context: Context)
     {
         databaseService = DatabaseService(context)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
