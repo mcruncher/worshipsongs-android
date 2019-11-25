@@ -83,7 +83,7 @@ public class PopupMenuService
                         bundle.putString(CommonConstants.TITLE_KEY, songName);
                         bundle.putString(CommonConstants.LOCALISED_TITLE_KEY, song.getTamilTitle());
                         bundle.putInt(CommonConstants.ID, song.getId());
-                        FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.newInstance(bundle);
+                        FavouritesDialogFragment favouritesDialogFragment = FavouritesDialogFragment.Companion.newInstance(bundle);
                         favouritesDialogFragment.show(activity.getSupportFragmentManager(), "FavouritesDialogFragment");
                         return true;
                     case R.id.share_whatsapp:
