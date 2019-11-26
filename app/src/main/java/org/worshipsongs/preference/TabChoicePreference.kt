@@ -32,12 +32,12 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
 {
     private var configureDragDrops: ArrayList<DragDrop>? = null
     private var mDragListView: DragListView? = null
-    private val sharedPreferences: SharedPreferences
+    private var defaultSharedPreferences: SharedPreferences? = null
     private val fragmentRegistry = FragmentRegistry()
 
     init
     {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         setItems()
         dialogLayoutResource = R.layout.tab_choice_layout
     }
@@ -55,8 +55,8 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
         if (positiveResult)
         {
             val itemList = mDragListView!!.adapter.itemList as ArrayList<DragDrop>
-            sharedPreferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(itemList)).apply()
-            sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
+            defaultSharedPreferences!!.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(itemList)).apply()
+            defaultSharedPreferences!!.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
         }
         super.onDialogClosed(positiveResult)
     }
@@ -68,7 +68,7 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
         if (configureDragDrops == null || configureDragDrops!!.isEmpty())
         {
             configureDragDrops = defaultList
-            sharedPreferences.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply()
+            defaultSharedPreferences!!.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply()
         } else if (defaultList.size > configureDragDrops!!.size)
         {
             defaultList.removeAll(configureDragDrops!!)
