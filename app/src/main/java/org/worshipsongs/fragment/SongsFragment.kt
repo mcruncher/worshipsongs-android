@@ -317,7 +317,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
     {
         val titleTextView = objects[CommonConstants.TITLE_KEY] as TextView?
         titleTextView!!.text = getTitle(song!!)
-        val presentingSong = Setting.getInstance().song
+        val presentingSong = Setting.instance.song
         if (presentingSong != null && presentingSong.title == song.title)
         {
             titleTextView.setTextColor(context!!.resources.getColor(R.color.light_navy_blue))
@@ -333,20 +333,20 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
         val playImageView = objects[CommonConstants.PLAY_IMAGE_KEy] as ImageView?
         playImageView!!.visibility = if (isShowPlayIcon(song)) View.VISIBLE else View.GONE
-        playImageView.setOnClickListener(imageOnClickListener(song.title))
+        playImageView.setOnClickListener(imageOnClickListener(song.title!!))
 
         val optionsImageView = objects[CommonConstants.OPTIONS_IMAGE_KEY] as ImageView?
         optionsImageView!!.visibility = View.VISIBLE
-        optionsImageView.setOnClickListener(imageOnClickListener(song.title))
+        optionsImageView.setOnClickListener(imageOnClickListener(song.title!!))
     }
 
     private fun onItemClickListener(): AdapterView.OnItemClickListener
     {
         return AdapterView.OnItemClickListener { parent, view, position, id ->
             val song = titleAdapter!!.getItem(position)
-            Setting.getInstance().position = 0
+            Setting.instance.position = 0
             val titleList = ArrayList<String>()
-            titleList.add(song!!.title)
+            titleList.add(song!!.title!!)
             val bundle = Bundle()
             bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titleList)
             if (songContentViewListener == null)
@@ -358,7 +358,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
                 context!!.startActivity(intent)
             } else
             {
-                songContentViewListener!!.displayContent(song.title, titleList, 0)
+                songContentViewListener!!.displayContent(song.title!!, titleList, 0)
             }
         }
     }
@@ -367,11 +367,11 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
     {
         try
         {
-            return if (preferenceSettingService.isTamil && song.tamilTitle.length > 0) song.tamilTitle
-            else song.title
+            return if (preferenceSettingService.isTamil && song.tamilTitle!!.length > 0) song.tamilTitle!!
+            else song.title!!
         } catch (e: Exception)
         {
-            return song.title
+            return song.title!!
         }
 
     }

@@ -27,14 +27,14 @@ class SongCardViewAdapter(private val song: Song, private val context: Context) 
 
     override fun getItemCount(): Int
     {
-        return song.contents.size
+        return song.contents!!.size
     }
 
     override fun onBindViewHolder(songContentViewHolder: SongContentViewHolder, position: Int)
     {
         customTagColorService = CustomTagColorService()
         preferenceSettingService = UserPreferenceSettingService()
-        val verse = song.contents[position]
+        val verse = song.contents!![position]
         songContentViewHolder.textView.text = verse
         loadTextStyle(songContentViewHolder.textView, position)
     }

@@ -33,7 +33,7 @@ public class FragmentRegistry
     public List<String> getTitles(Activity activity)
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        List<DragDrop> configuredDragDrops = DragDrop.toArrays(sharedPreferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
+        List<DragDrop> configuredDragDrops = DragDrop.Companion.toArrays(sharedPreferences.getString(CommonConstants.TAB_CHOICE_KEY, ""));
         List<String> titles = new ArrayList<>();
         ArrayList<DragDrop> defaultDragDrops = getDragDrops(activity);
         if (configuredDragDrops == null || configuredDragDrops.isEmpty()) {

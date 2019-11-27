@@ -68,7 +68,7 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
         if (configureDragDrops == null || configureDragDrops!!.isEmpty())
         {
             configureDragDrops = defaultList
-            defaultSharedPreferences!!.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops)).apply()
+            defaultSharedPreferences!!.edit().putString(CommonConstants.TAB_CHOICE_KEY, DragDrop.toJson(configureDragDrops!!)).apply()
         } else if (defaultList.size > configureDragDrops!!.size)
         {
             defaultList.removeAll(configureDragDrops!!)

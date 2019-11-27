@@ -90,7 +90,7 @@ class SplashScreenActivity : AbstractAppCompactActivity()
                     try
                     {
                         val song = songService!!.findById(Integer.valueOf(favouriteIdArray[i]))
-                        val songDragDrop = SongDragDrop(song!!.id.toLong(), song.title, false)
+                        val songDragDrop = SongDragDrop(song!!.id.toLong(), song.title!!, false)
                         songDragDrop.tamilTitle = song.tamilTitle
                         songDragDrops.add(songDragDrop)
                     } catch (ex: Exception)

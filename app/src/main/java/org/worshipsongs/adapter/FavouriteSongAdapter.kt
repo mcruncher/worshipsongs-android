@@ -53,10 +53,10 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
     {
         return if (userPreferenceSettingService.isTamil)
         {
-            if (StringUtils.isNotBlank(songDragDrop.tamilTitle)) songDragDrop.tamilTitle else songDragDrop.title
+            if (StringUtils.isNotBlank(songDragDrop.tamilTitle)) songDragDrop.tamilTitle!! else songDragDrop.title!!
         } else
         {
-            songDragDrop.title
+            songDragDrop.title!!
         }
     }
 

@@ -148,7 +148,7 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
 
     private fun getTopicsName(topics: Topics): String
     {
-        return if (userPreferenceSettingService.isTamil) topics.tamilName else topics.defaultName
+        return if (userPreferenceSettingService.isTamil) topics.tamilName!! else topics.defaultName!!
     }
 
     override fun setViews(objects: Map<String, Any>, topics: Topics?)

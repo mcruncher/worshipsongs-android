@@ -63,7 +63,7 @@ class PresentSongActivity : AppCompatActivity()
     private fun setListView(song: Song)
     {
         listView = findViewById<View>(R.id.content_list) as ListView
-        presentSongCardViewAdapter = PresentSongCardViewAdapter(this@PresentSongActivity, song.contents)
+        presentSongCardViewAdapter = PresentSongCardViewAdapter(this@PresentSongActivity, song.contents!!)
         presentSongCardViewAdapter!!.setItemSelected(0)
         listView!!.adapter = presentSongCardViewAdapter
         listView!!.onItemClickListener = ListViewOnItemClickListener()
@@ -132,7 +132,7 @@ class PresentSongActivity : AppCompatActivity()
             {
                 previousButton!!.visibility = View.GONE
                 nextButton!!.visibility = View.VISIBLE
-            } else if (song!!.contents.size == position + 1)
+            } else if (song!!.contents!!.size == position + 1)
             {
                 nextButton!!.visibility = View.GONE
                 previousButton!!.visibility = View.VISIBLE
@@ -150,11 +150,11 @@ class PresentSongActivity : AppCompatActivity()
         override fun onClick(v: View)
         {
             currentPosition = currentPosition + 1
-            if (song.contents.size == currentPosition)
+            if (song.contents!!.size == currentPosition)
             {
                 nextButton!!.visibility = View.GONE
             }
-            if (song.contents.size > currentPosition)
+            if (song.contents!!.size > currentPosition)
             {
                 presentationScreenService!!.showNextVerse(song, currentPosition)
                 listView!!.smoothScrollToPositionFromTop(currentPosition, 2)
@@ -171,11 +171,11 @@ class PresentSongActivity : AppCompatActivity()
         override fun onClick(v: View)
         {
             currentPosition = currentPosition - 1
-            if (currentPosition == song.contents.size)
+            if (currentPosition == song.contents!!.size)
             {
                 currentPosition = currentPosition - 1
             }
-            if (currentPosition <= song.contents.size && currentPosition >= 0)
+            if (currentPosition <= song.contents!!.size && currentPosition >= 0)
             {
                 presentationScreenService!!.showNextVerse(song, currentPosition)
                 listView!!.smoothScrollToPosition(currentPosition, 2)

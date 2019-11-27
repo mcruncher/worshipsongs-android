@@ -135,12 +135,12 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
         titleTextView.setOnLongClickListener(SongOnLongClickListener(serviceSong))
 
         val playImageView = objects[CommonConstants.PLAY_IMAGE_KEy] as ImageView?
-        playImageView!!.visibility = if (isShowPlayIcon(serviceSong.song)) View.VISIBLE else View.GONE
-        playImageView.setOnClickListener(imageOnClickListener(serviceSong.song, serviceSong.title))
+        playImageView!!.visibility = if (isShowPlayIcon(serviceSong.song!!)) View.VISIBLE else View.GONE
+        playImageView.setOnClickListener(imageOnClickListener(serviceSong.song, serviceSong.title!!))
 
         val optionsImageView = objects[CommonConstants.OPTIONS_IMAGE_KEY] as ImageView?
         optionsImageView!!.visibility = View.VISIBLE
-        optionsImageView.setOnClickListener(imageOnClickListener(serviceSong.song, serviceSong.title))
+        optionsImageView.setOnClickListener(imageOnClickListener(serviceSong.song, serviceSong.title!!))
     }
 
     internal fun isShowPlayIcon(song: Song): Boolean
@@ -228,16 +228,16 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
                     val intent = Intent(activity, SongContentViewActivity::class.java)
                     val bundle = Bundle()
                     val titles = ArrayList<String>()
-                    titles.add(serviceSong.title)
+                    titles.add(serviceSong.title!!)
                     bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles)
                     bundle.putInt(CommonConstants.POSITION_KEY, 0)
-                    Setting.getInstance().position = 0
+                    Setting.instance.position = 0
                     intent.putExtras(bundle)
                     activity!!.startActivity(intent)
                 } else
                 {
-                    Setting.getInstance().position = titleAdapter!!.getPosition(serviceSong)
-                    songContentViewListener!!.displayContent(serviceSong.title, titles, titleAdapter!!.getPosition(serviceSong))
+                    Setting.instance.position = titleAdapter!!.getPosition(serviceSong)
+                    songContentViewListener!!.displayContent(serviceSong.title!!, titles, titleAdapter!!.getPosition(serviceSong))
                 }
             } else
             {

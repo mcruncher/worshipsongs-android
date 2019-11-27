@@ -67,7 +67,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
         authorService = AuthorService(context)
         for (author in authorService!!.findAll())
         {
-            if (!author.name.toLowerCase().contains("unknown") && author.name != null)
+            if (!author.name!!.toLowerCase().contains("unknown") && author.name != null)
             {
                 authorList.add(author)
             }
@@ -191,7 +191,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
 
     private fun getAuthorName(author: Author): String
     {
-        return if (userPreferenceSettingService.isTamil) author.tamilName else author.defaultName
+        return if (userPreferenceSettingService.isTamil) author.tamilName!! else author.defaultName!!
     }
 
 

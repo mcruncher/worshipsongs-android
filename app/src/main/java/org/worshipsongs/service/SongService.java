@@ -282,7 +282,7 @@ public class SongService
     {
         if (Type.SONG_BOOK.name().equalsIgnoreCase(type)) {
             List<Song> songs = new ArrayList<>(filteredSongSet);
-            Collections.sort(songs, Song.SONG_BOOK_NUMBER_ASC);
+            Collections.sort(songs, Song.Companion.getSONG_BOOK_NUMBER_ASC());
             return songs;
         } else {
             return getSortedSongs(filteredSongSet);

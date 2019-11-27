@@ -108,20 +108,20 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
         if (song != null)
         {
             val titles = ArrayList<String>()
-            titles.add(dragDrop.title)
+            titles.add(dragDrop.title!!)
             if (CommonUtils.isPhone(context!!))
             {
                 val intent = Intent(activity, SongContentViewActivity::class.java)
                 val bundle = Bundle()
                 bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles)
                 bundle.putInt(CommonConstants.POSITION_KEY, 0)
-                Setting.getInstance().position = 0
+                Setting.instance.position = 0
                 intent.putExtras(bundle)
                 activity!!.startActivity(intent)
             } else
             {
-                Setting.getInstance().position = favouriteSongAdapter!!.getPositionForItem(dragDrop)
-                songContentViewListener!!.displayContent(dragDrop.title, titles, favouriteSongAdapter!!.getPositionForItem(dragDrop))
+                Setting.instance.position = favouriteSongAdapter!!.getPositionForItem(dragDrop)
+                songContentViewListener!!.displayContent(dragDrop.title!!, titles, favouriteSongAdapter!!.getPositionForItem(dragDrop))
             }
         } else
         {
@@ -136,8 +136,8 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
 
     private fun getTitle(dragDrop: SongDragDrop): String
     {
-        return if (userPreferenceSettingService.isTamil && StringUtils.isNotBlank(dragDrop.tamilTitle)) dragDrop.tamilTitle
-        else dragDrop.title
+        return if (userPreferenceSettingService.isTamil && StringUtils.isNotBlank(dragDrop.tamilTitle)) dragDrop.tamilTitle!!
+        else dragDrop.title!!
     }
 
     private class MyDragItem internal constructor(context: Context, layoutId: Int) : DragItem(context, layoutId)

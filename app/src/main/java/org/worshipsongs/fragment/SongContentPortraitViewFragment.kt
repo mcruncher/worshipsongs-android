@@ -165,7 +165,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         song = songDao.findContentsByTitle(title)
         if (song == null)
         {
-            song = Song(title)
+            song = Song(title!!)
             val contents = ArrayList<String>()
             contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""))
             song!!.contents = contents
@@ -176,7 +176,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
     private fun setListView(view: View, song: Song)
     {
         listView = view.findViewById<View>(R.id.content_list) as ListView
-        presentSongCardViewAdapter = PresentSongCardViewAdapter(activity!!, song.contents)
+        presentSongCardViewAdapter = PresentSongCardViewAdapter(activity!!, song.contents!!)
         listView!!.adapter = presentSongCardViewAdapter
         listView!!.onItemClickListener = ListViewOnItemClickListener()
         listView!!.onItemLongClickListener = ListViewOnItemLongClickListener()
@@ -202,7 +202,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
                     setListViewForegroundColor(color)
                 }
             })
-            setPlaySongFloatingMenuButton(view, song.urlKey)
+            setPlaySongFloatingMenuButton(view, song.urlKey!!)
             setPresentSongFloatingMenuButton(view)
         } else
         {
@@ -213,7 +213,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             }
             if (isPlayVideo(song.urlKey))
             {
-                setPlaySongFloatingButton(view, song.urlKey)
+                setPlaySongFloatingButton(view, song.urlKey!!)
             }
         }
     }
@@ -311,7 +311,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
 
     private fun onBecameVisible(song: Song?)
     {
-        val presentingSong = Setting.getInstance().song
+        val presentingSong = Setting.instance.song
         if (presentingSong != null && presentingSong == song && presentationScreenService!!.presentation != null)
         {
             setPresentation(song)
@@ -324,7 +324,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
 
     private fun setPresentation(song: Song)
     {
-        val currentPosition = Setting.getInstance().slidePosition
+        val currentPosition = Setting.instance.slidePosition
         presentSelectedVerse(currentPosition)
         if (floatingActionMenu != null)
         {
@@ -334,7 +334,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         {
             presentSongFloatingButton!!.visibility = View.GONE
         }
-        nextButton!!.visibility = if (song.contents.size - 1 == currentPosition) View.GONE else View.VISIBLE
+        nextButton!!.visibility = if (song.contents!!.size - 1 == currentPosition) View.GONE else View.VISIBLE
         previousButton!!.visibility = if (currentPosition == 0) View.GONE else View.VISIBLE
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
@@ -374,7 +374,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         {
             val position = presentSongCardViewAdapter!!.selectedItem + 1
             listView!!.smoothScrollToPositionFromTop(position, 2)
-            presentSelectedVerse(if (position <= song!!.contents.size) position else position - 1)
+            presentSelectedVerse(if (position <= song!!.contents!!.size) position else position - 1)
         }
     }
 
@@ -417,7 +417,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             presentSongCardViewAdapter!!.setItemSelected(position)
             presentSongCardViewAdapter!!.notifyDataSetChanged()
             previousButton!!.visibility = if (position <= 0) View.GONE else View.VISIBLE
-            nextButton!!.visibility = if (position >= song!!.contents.size - 1) View.GONE else View.VISIBLE
+            nextButton!!.visibility = if (position >= song!!.contents!!.size - 1) View.GONE else View.VISIBLE
         }
     }
 
@@ -431,7 +431,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         {
             if (isCopySelectedVerse)
             {
-                val selectedVerse = song!!.contents[position]
+                val selectedVerse = song!!.contents!![position]
                 presentSongCardViewAdapter!!.setItemSelected(position)
                 presentSongCardViewAdapter!!.notifyDataSetChanged()
                 shareSongInSocialMedia(selectedVerse)
@@ -479,7 +479,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         override fun onTouch(v: View, event: MotionEvent): Boolean
         {
             val position = tilteList!!.indexOf(title)
-            Setting.getInstance().position = position
+            Setting.instance.position = position
             return true
         }
     }
@@ -544,7 +544,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
                     title = tilteList!![0]
                 } else
                 {
-                    title = tilteList!![Setting.getInstance().position]
+                    title = tilteList!![Setting.instance.position]
                 }
                 val song = songDao.findContentsByTitle(title)
                 appCompatActivity!!.title = getTitle(song, title)
@@ -560,7 +560,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
     {
         try
         {
-            val title = if (preferenceSettingService.isTamil && song!!.tamilTitle.length > 0) song.tamilTitle
+            val title = if (preferenceSettingService.isTamil && song!!.tamilTitle!!.length > 0) song.tamilTitle
             else song!!.title
             return songBookNumber + title
         } catch (e: Exception)

@@ -87,12 +87,12 @@ class SongContentViewActivity : AbstractAppCompactActivity()
         tabs.visibility = View.GONE
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager)
-        pager.currentItem = Setting.getInstance().position
+        pager.currentItem = Setting.instance.position
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int)
             {
-                Setting.getInstance().position = position
+                Setting.instance.position = position
             }
 
             override fun onPageSelected(position: Int)
@@ -120,7 +120,7 @@ class SongContentViewActivity : AbstractAppCompactActivity()
     {
         val intent = intent
         val titleList = intent.extras!!.getStringArrayList(CommonConstants.TITLE_LIST_KEY)
-        val songContentLandScapeViewerPageAdapter = SongContentLandScapeViewerPageAdapter(supportFragmentManager, titleList!![Setting.getInstance().position])
+        val songContentLandScapeViewerPageAdapter = SongContentLandScapeViewerPageAdapter(supportFragmentManager, titleList!![Setting.instance.position])
         // Assigning ViewPager View and setting the adapter
         val pager = findViewById<View>(R.id.land_pager) as ViewPager
         pager.adapter = songContentLandScapeViewerPageAdapter

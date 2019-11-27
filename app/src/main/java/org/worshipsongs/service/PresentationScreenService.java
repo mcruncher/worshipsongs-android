@@ -126,8 +126,8 @@ public class PresentationScreenService
                 remoteSongPresentation.show();
             }
             if (remoteSongPresentation != null && selectedDisplay != null) {
-                if (Setting.getInstance().getSong() != null) {
-                    showNextVerse(Setting.getInstance().getSong(), Setting.getInstance().getSlidePosition());
+                if (Setting.Companion.getInstance().getSong() != null) {
+                    showNextVerse(Setting.Companion.getInstance().getSong(), Setting.Companion.getInstance().getSlidePosition());
                 }
             }
         } catch (Exception ex) {
@@ -163,8 +163,8 @@ public class PresentationScreenService
                 remoteSongPresentation.setSongTitleAndChord(song.getTitle(), song.getChord(), preferenceSettingService.getPresentationPrimaryColor());
                 remoteSongPresentation.setAuthorName(song.getAuthorName(), preferenceSettingService.getPresentationPrimaryColor());
                 remoteSongPresentation.setSlidePosition(position, song.getContents().size(), preferenceSettingService.getPresentationPrimaryColor());
-                Setting.getInstance().setSong(song);
-                Setting.getInstance().setSlidePosition(position);
+                Setting.Companion.getInstance().setSong(song);
+                Setting.Companion.getInstance().setSlidePosition(position);
             }
         } catch (Exception e) {
             Log.e(PresentationScreenService.class.getSimpleName(), "Error occurred while presenting song content" + e);
