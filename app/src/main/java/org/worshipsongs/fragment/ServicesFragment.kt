@@ -138,10 +138,8 @@ class ServicesFragment : Fragment(), TitleAdapter.TitleAdapterListener<String>, 
         return 4
     }
 
-    override fun getTitle(): String
-    {
-        return "playlists"
-    }
+    override val title: String get() { return "playlists"}
+
 
     override fun checked(): Boolean
     {

@@ -5,21 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-
-import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.SongListActivity
@@ -156,10 +148,8 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
         return 3
     }
 
-    override fun getTitle(): String
-    {
-        return "song_books"
-    }
+    override val title: String get() { return "song_books"}
+
 
     override fun checked(): Boolean
     {

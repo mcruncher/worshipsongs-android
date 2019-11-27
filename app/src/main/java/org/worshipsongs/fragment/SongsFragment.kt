@@ -392,10 +392,12 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         return 0
     }
 
-    override fun getTitle(): String
-    {
-        return "titles"
-    }
+    override val title: String
+        get()
+        {
+            return "titles"
+        }
+
 
     override fun checked(): Boolean
     {

@@ -44,12 +44,19 @@ import java.util.ArrayList
  */
 class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<Author>, ITabFragment
 {
+
     private var state: Parcelable? = null
     private var authorService: AuthorService? = null
     private val authorList = ArrayList<Author>()
     private var authorListView: ListView? = null
     private var titleAdapter: TitleAdapter<Author>? = null
     private val userPreferenceSettingService = UserPreferenceSettingService()
+
+    override val title: String
+        get()
+        {
+            return "artists"
+        }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -168,7 +175,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
         }
     }
 
-   override fun setViews(objects: Map<String, Any>, author: Author?)
+    override fun setViews(objects: Map<String, Any>, author: Author?)
     {
         val titleTextView = objects[CommonConstants.TITLE_KEY] as TextView?
         titleTextView!!.text = getAuthorName(author!!)
@@ -200,10 +207,6 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
         return 1
     }
 
-    override fun getTitle(): String
-    {
-        return "artists"
-    }
 
     override fun checked(): Boolean
     {

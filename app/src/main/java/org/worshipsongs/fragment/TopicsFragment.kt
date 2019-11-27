@@ -175,10 +175,11 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
         return 2
     }
 
-    override fun getTitle(): String
-    {
-        return "categories"
-    }
+    override val title: String
+        get()
+        {
+            return "categories"
+        }
 
     override fun checked(): Boolean
     {
