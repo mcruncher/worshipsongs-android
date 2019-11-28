@@ -124,8 +124,8 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         {
             state = savedInstanceState.getParcelable(STATE_KEY)
         }
-        databaseService = DatabaseService(activity)
-        songService = SongService(activity)
+        databaseService = DatabaseService(activity!!)
+        songService = SongService(activity!!.applicationContext)
         setHasOptionsMenu(true)
         initSetUp()
     }
@@ -266,7 +266,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         } else
         {
             updateObjects("")
-            titleAdapter!!.addObjects(songService!!.filterSongs(type, "", songs))
+            titleAdapter!!.addObjects(songService!!.filterSongs(type, "", songs!!))
         }
 
     }
@@ -384,7 +384,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     private fun imageOnClickListener(title: String): View.OnClickListener
     {
-        return View.OnClickListener { view -> popupMenuService.showPopupmenu(activity as AppCompatActivity?, view, title, true) }
+        return View.OnClickListener { view -> popupMenuService.showPopupmenu(activity as AppCompatActivity, view, title, true) }
     }
 
     override fun defaultSortOrder(): Int
@@ -414,7 +414,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         activity!!.runOnUiThread {
             if (titleAdapter != null)
             {
-                titleAdapter!!.addObjects(songService!!.filterSongs(type, query, songs))
+                titleAdapter!!.addObjects(songService!!.filterSongs(type, query, songs!!))
             }
         }
     }

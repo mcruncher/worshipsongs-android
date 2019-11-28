@@ -58,7 +58,7 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
     {
         super.onCreate(savedInstanceState)
         serviceName = arguments!!.getString(CommonConstants.SERVICE_NAME_KEY)
-        songService = SongService(activity)
+        songService = SongService(activity!!.applicationContext)
         setHasOptionsMenu(true)
         loadSongs()
     }
@@ -69,7 +69,7 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
         val serviceFile = PropertyUtils.getPropertyFile(activity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
         val property = PropertyUtils.getProperty(serviceName, serviceFile)
         val propertyValues = property.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        songService = SongService(activity)
+        songService = SongService(activity!!.applicationContext)
         serviceSongs = ArrayList()
         for (title in propertyValues)
         {
@@ -130,7 +130,7 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
    override fun setViews(objects: Map<String, Any>, serviceSong: ServiceSong?)
     {
         val titleTextView = objects[CommonConstants.TITLE_KEY] as TextView?
-        titleTextView!!.text = songService!!.getTitle(preferenceSettingService.isTamil, serviceSong)
+        titleTextView!!.text = songService!!.getTitle(preferenceSettingService.isTamil, serviceSong!!)
         titleTextView.setOnClickListener(SongOnClickListener(serviceSong!!))
         titleTextView.setOnLongClickListener(SongOnLongClickListener(serviceSong))
 
@@ -161,7 +161,7 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
         return View.OnClickListener { view ->
             if (song != null)
             {
-                popupMenuService.showPopupmenu(activity as AppCompatActivity?, view, song.title, true)
+                popupMenuService.showPopupmenu(activity as AppCompatActivity, view, song.title!!, true)
             } else
             {
                 val bundle = Bundle()

@@ -162,7 +162,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
 
     private fun setSong()
     {
-        song = songDao.findContentsByTitle(title)
+        song = songDao.findContentsByTitle(title!!)
         if (song == null)
         {
             song = Song(title!!)
@@ -170,7 +170,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""))
             song!!.contents = contents
         }
-        song!!.authorName = authorService.findAuthorNameByTitle(title)
+        song!!.authorName = authorService.findAuthorNameByTitle(title!!)
     }
 
     private fun setListView(view: View, song: Song)
@@ -510,7 +510,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
                 Log.i(SongContentPortraitViewFragment::class.java.simpleName, "On tapped options")
                 popupMenuService = PopupMenuService()
                 PermissionUtils.isStoragePermissionGranted(activity)
-                popupMenuService!!.showPopupmenu(activity as AppCompatActivity?, activity!!.findViewById(R.id.options), title, false)
+                popupMenuService!!.showPopupmenu(activity as AppCompatActivity, activity!!.findViewById(R.id.options), title!!, false)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

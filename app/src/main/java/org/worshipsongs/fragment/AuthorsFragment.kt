@@ -71,7 +71,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
 
     private fun initSetUp()
     {
-        authorService = AuthorService(context)
+        authorService = AuthorService(context!!)
         for (author in authorService!!.findAll())
         {
             if (!author.name!!.toLowerCase().contains("unknown") && author.name != null)

@@ -60,7 +60,7 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
 
     private fun initSetUp()
     {
-        topicsService = TopicService(activity)
+        topicsService = TopicService(activity!!.applicationContext)
         topicsList = topicsService!!.findAll()
     }
 
@@ -76,7 +76,7 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
         topicsListView = view.findViewById<View>(R.id.song_list_view) as ListView
         titleAdapter = TitleAdapter((activity as AppCompatActivity?)!!, R.layout.songs_layout)
         titleAdapter!!.setTitleAdapterListener(this)
-        titleAdapter!!.addObjects(topicsService!!.filteredTopics("", topicsList))
+        titleAdapter!!.addObjects(topicsService!!.filteredTopics("", topicsList!!))
         topicsListView!!.adapter = titleAdapter
     }
 
@@ -95,13 +95,13 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
         {
             override fun onQueryTextSubmit(query: String): Boolean
             {
-                titleAdapter!!.addObjects(topicsService!!.filteredTopics(query, topicsList))
+                titleAdapter!!.addObjects(topicsService!!.filteredTopics(query, topicsList!!))
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean
             {
-                titleAdapter!!.addObjects(topicsService!!.filteredTopics(newText, topicsList))
+                titleAdapter!!.addObjects(topicsService!!.filteredTopics(newText, topicsList!!))
                 return true
             }
         })
@@ -126,7 +126,7 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
             topicsListView!!.onRestoreInstanceState(state)
         } else
         {
-            titleAdapter!!.addObjects(topicsService!!.filteredTopics("", topicsList))
+            titleAdapter!!.addObjects(topicsService!!.filteredTopics("", topicsList!!))
         }
     }
 

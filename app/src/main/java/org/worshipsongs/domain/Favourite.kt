@@ -74,7 +74,7 @@ class Favourite : Comparable<Favourite>
             return gson.toJson(items)
         }
 
-        fun toArrays(jsonString: String): List<Favourite>
+        fun toArrays(jsonString: String): MutableList<Favourite>
         {
             if (StringUtils.isNotBlank(jsonString))
             {

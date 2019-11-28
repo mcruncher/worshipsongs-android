@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment
 
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -112,7 +113,7 @@ class ServicesFragment : Fragment(), TitleAdapter.TitleAdapterListener<String>, 
 
         val optionsImageView = objects[CommonConstants.OPTIONS_IMAGE_KEY] as ImageView?
         optionsImageView!!.visibility = View.VISIBLE
-        optionsImageView.setOnClickListener { view -> popupMenuService.shareFavouritesInSocialMedia(activity, view, text) }
+        optionsImageView.setOnClickListener { view -> popupMenuService.shareFavouritesInSocialMedia(activity as Activity, view, text) }
     }
 
 

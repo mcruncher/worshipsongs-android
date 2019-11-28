@@ -48,7 +48,7 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
 
     private fun initSetUp()
     {
-        songBookService = SongBookService(activity)
+        songBookService = SongBookService(activity!!.applicationContext)
         songBookList = songBookService!!.findAll()
     }
 
@@ -64,7 +64,7 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
         songBookListView = view.findViewById<View>(R.id.song_list_view) as ListView
         titleAdapter = TitleAdapter((activity as AppCompatActivity?)!!, R.layout.songs_layout)
         titleAdapter!!.setTitleAdapterListener(this)
-        titleAdapter!!.addObjects(songBookService!!.filteredSongBooks("", songBookList))
+        titleAdapter!!.addObjects(songBookService!!.filteredSongBooks("", songBookList!!))
         songBookListView!!.adapter = titleAdapter
     }
 
@@ -83,13 +83,13 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
         {
             override fun onQueryTextSubmit(query: String): Boolean
             {
-                titleAdapter!!.addObjects(songBookService!!.filteredSongBooks(query, songBookList))
+                titleAdapter!!.addObjects(songBookService!!.filteredSongBooks(query, songBookList!!))
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean
             {
-                titleAdapter!!.addObjects(songBookService!!.filteredSongBooks(newText, songBookList))
+                titleAdapter!!.addObjects(songBookService!!.filteredSongBooks(newText, songBookList!!))
                 return true
             }
         })
@@ -114,7 +114,7 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
             songBookListView!!.onRestoreInstanceState(state)
         } else
         {
-            titleAdapter!!.addObjects(songBookService!!.filteredSongBooks("", songBookList))
+            titleAdapter!!.addObjects(songBookService!!.filteredSongBooks("", songBookList!!))
         }
     }
 

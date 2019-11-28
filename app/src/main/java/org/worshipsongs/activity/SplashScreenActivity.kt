@@ -105,7 +105,7 @@ class SplashScreenActivity : AbstractAppCompactActivity()
                 } else
                 {
                     noOfImportedSongs = songDragDrops.size
-                    favouriteService!!.save(favouriteName, songDragDrops)
+                    favouriteService!!.save(favouriteName!!, songDragDrops)
                 }
                 Log.i(SplashScreenActivity::class.java.simpleName, favouriteName + " successfully imported with " + songDragDrops.size + " songs")
             }

@@ -1,6 +1,7 @@
 package org.worshipsongs.fragment
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -59,7 +60,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
     {
         super.onCreate(savedInstanceState)
         favouriteService = FavouriteService()
-        songService = SongService(context)
+        songService = SongService(context!!.applicationContext)
         val serviceName = arguments!!.getString(CommonConstants.SERVICE_NAME_KEY)
         val favourite = favouriteService!!.find(serviceName)
         configureDragDrops = favourite.dragDrops
@@ -92,7 +93,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
         builder.setTitle(getString(R.string.remove_favourite_song_title))
         builder.setMessage(getString(R.string.remove_favourite_song_message))
         builder.setPositiveButton(R.string.yes) { dialog, which ->
-            favouriteService!!.removeSong(arguments!!.getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.title)
+            favouriteService!!.removeSong(arguments!!.getString(CommonConstants.SERVICE_NAME_KEY), dragDrop.title!!)
             configureDragDrops!!.remove(dragDrop)
             favouriteSongAdapter!!.itemList = configureDragDrops
             favouriteSongAdapter!!.notifyDataSetChanged()
@@ -104,7 +105,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
 
     override fun onClick(dragDrop: SongDragDrop)
     {
-        val song = songService!!.findContentsByTitle(dragDrop.title)
+        val song = songService!!.findContentsByTitle(dragDrop.title!!)
         if (song != null)
         {
             val titles = ArrayList<String>()
@@ -196,7 +197,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
             }
             R.id.options ->
             {
-                popupMenuService.shareFavouritesInSocialMedia(activity, activity!!.findViewById(R.id.options), arguments!!.getString(CommonConstants.SERVICE_NAME_KEY))
+                popupMenuService.shareFavouritesInSocialMedia(activity as Activity, activity!!.findViewById(R.id.options), arguments!!.getString(CommonConstants.SERVICE_NAME_KEY))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

@@ -83,7 +83,7 @@ class RemoteSongPresentation(context: Context, display: Display)//this.context =
     fun setVerse(verse: String)
     {
         verseTextView!!.text = ""
-        customTagColorService.setCustomTagTextView(verseTextView, verse, preferenceSettingService.presentationPrimaryColor, preferenceSettingService.presentationSecondaryColor)
+        customTagColorService.setCustomTagTextView(verseTextView!!, verse, preferenceSettingService.presentationPrimaryColor, preferenceSettingService.presentationSecondaryColor)
         verseTextView!!.textSize = preferenceSettingService.landScapeFontSize
         // verseTextView.setTextColor(preferenceSettingService.getPrimaryColor());
         verseTextView!!.isVerticalScrollBarEnabled = true
