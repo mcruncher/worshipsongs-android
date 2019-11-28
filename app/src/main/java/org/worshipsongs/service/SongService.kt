@@ -143,10 +143,10 @@ class SongService(context: Context)
             parsedSong.searchTitle = song.searchTitle
             parsedSong.searchLyrics = song.searchLyrics
             parsedSong.comments = song.comments
-            parsedSong.contents = songParser.parseContents(WorshipSongApplication.context, song.lyrics, song.verseOrder)
-            parsedSong.urlKey = songParser.parseMediaUrlKey(song.comments)
-            parsedSong.chord = songParser.parseChord(song.comments)
-            parsedSong.tamilTitle = songParser.parseTamilTitle(song.comments)
+            parsedSong.contents = songParser.parseContents(WorshipSongApplication.context!!, song.lyrics!!, song.verseOrder!!)
+            parsedSong.urlKey = songParser.parseMediaUrlKey(song.comments!!)
+            parsedSong.chord = songParser.parseChord(song.comments!!)
+            parsedSong.tamilTitle = songParser.parseTamilTitle(song.comments!!)
             parsedSong.id = song.id
             return parsedSong
         }
@@ -192,9 +192,9 @@ class SongService(context: Context)
         song.searchLyrics = cursor.getString(4)
         song.comments = cursor.getString(5)
         song.id = cursor.getInt(6)
-        song.urlKey = songParser.parseMediaUrlKey(song.comments)
-        song.chord = songParser.parseChord(song.comments)
-        song.tamilTitle = songParser.parseTamilTitle(song.comments)
+        song.urlKey = songParser.parseMediaUrlKey(song.comments!!)
+        song.chord = songParser.parseChord(song.comments!!)
+        song.tamilTitle = songParser.parseTamilTitle(song.comments!!)
         return song
     }
 
