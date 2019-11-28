@@ -65,7 +65,7 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
         context.theme.resolveAttribute(android.R.attr.textColor, typedValue, true)
         val tamilRadioButton = view.findViewById<AppCompatRadioButton>(R.id.language_tamil)
         tamilRadioButton.setTextColor(typedValue.data)
-        tamilRadioButton.visibility = if (CommonUtils.isAboveKitkat()) View.VISIBLE else View.GONE
+        tamilRadioButton.visibility = if (CommonUtils.isAboveKitkat) View.VISIBLE else View.GONE
         (view.findViewById<View>(R.id.language_english) as AppCompatRadioButton).setTextColor(typedValue.data)
         languageTypeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
             val foodOrSupplementType = view.findViewById<View>(checkedId) as RadioButton

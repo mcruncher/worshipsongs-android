@@ -45,8 +45,8 @@ class ItemAdapter(list: ArrayList<DragDrop>, private val mLayoutId: Int, private
     {
         super.onBindViewHolder(holder, position)
         val text = mItemList[position].title
-        val identifier = WorshipSongApplication.getContext().resources.getIdentifier(text, "string", WorshipSongApplication.getContext().packageName)
-        holder.mText.text = WorshipSongApplication.getContext().getString(identifier)
+        val identifier = WorshipSongApplication.context!!.resources.getIdentifier(text, "string", WorshipSongApplication.context!!.packageName)
+        holder.mText.text = WorshipSongApplication.context!!.getString(identifier)
         holder.checkbox.isChecked = mItemList[position].isChecked
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
             mItemList[position].isChecked = isChecked

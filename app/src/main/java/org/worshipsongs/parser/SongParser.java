@@ -109,7 +109,7 @@ public class SongParser implements ISongParser
     {
         String mediaUrl = "";
         if (comments != null && comments.length() > 0) {
-            String mediaUrlLine = RegexUtils.getMatchString(comments, MEDIA_URL_REGEX);
+            String mediaUrlLine = RegexUtils.INSTANCE.getMatchString(comments, MEDIA_URL_REGEX);
             String[] medialUrlArray = mediaUrlLine.split("=");
             if (medialUrlArray != null && medialUrlArray.length >= 3) {
                 mediaUrl = medialUrlArray[2];
@@ -122,7 +122,7 @@ public class SongParser implements ISongParser
     {
         String chord = "";
         if (comments != null && comments.length() > 0) {
-            String chordLine = RegexUtils.getMatchString(comments, CHORD_REGEX);
+            String chordLine = RegexUtils.INSTANCE.getMatchString(comments, CHORD_REGEX);
             String[] chordArray = chordLine.split("=");
             if (chordArray != null && chordArray.length >= 2) {
                 chord = chordArray[1];
@@ -136,7 +136,7 @@ public class SongParser implements ISongParser
     {
         String tamilTitle = "";
         if (comments != null && comments.length() > 0) {
-            String tamilTitleLine = RegexUtils.getMatchString(comments, I_18_N_TITLE_REGEX);
+            String tamilTitleLine = RegexUtils.INSTANCE.getMatchString(comments, I_18_N_TITLE_REGEX);
             String[] chordArray = tamilTitleLine.split("=");
             if (chordArray != null && chordArray.length >= 2) {
                 tamilTitle = chordArray[1];

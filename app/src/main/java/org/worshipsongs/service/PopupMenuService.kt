@@ -2,11 +2,10 @@ package org.worshipsongs.service
 
 import android.annotation.TargetApi
 import android.app.Activity
-import android.content.Context
+import android.content.Context.PRINT_SERVICE
 import android.content.Intent
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -17,28 +16,22 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
-
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.BuildConfig
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
+import org.worshipsongs.WorshipSongApplication.Companion.context
 import org.worshipsongs.activity.CustomYoutubeBoxActivity
 import org.worshipsongs.activity.PresentSongActivity
 import org.worshipsongs.dialog.FavouritesDialogFragment
 import org.worshipsongs.domain.Song
 import org.worshipsongs.utils.PermissionUtils
-
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
-import java.util.Arrays
-
-import android.content.Context.PRINT_SERVICE
-import org.worshipsongs.WorshipSongApplication.getContext
+import java.util.*
 
 /**
  * author: Madasamy,Seenivasan, Vignesh Palanisamy
@@ -51,11 +44,11 @@ class PopupMenuService
     private val customTagColorService = CustomTagColorService()
     private val preferenceSettingService = UserPreferenceSettingService()
     private val favouriteService = FavouriteService()
-    private val songService = SongService(getContext())
+    private val songService = SongService(context!!)
 
     fun showPopupmenu(activity: AppCompatActivity, view: View, songName: String, hidePlay: Boolean)
     {
-        val wrapper = ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme)
+        val wrapper = ContextThemeWrapper(context, R.style.PopupMenu_Theme)
         val popupMenu: PopupMenu
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
         {
@@ -124,14 +117,14 @@ class PopupMenuService
             builder.append(customTagColorService.getFormattedLines(content))
             builder.append("\n")
         }
-        builder.append(getContext().getString(R.string.share_info))
+        builder.append(context!!.getString(R.string.share_info))
         Log.i(this@PopupMenuService.javaClass.simpleName, builder.toString())
         val textShareIntent = Intent(Intent.ACTION_SEND)
         textShareIntent.putExtra(Intent.EXTRA_TEXT, builder.toString())
         textShareIntent.type = "text/plain"
         val intent = Intent.createChooser(textShareIntent, "Share $songName with...")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        getContext().startActivity(intent)
+        context!!.startActivity(intent)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -140,7 +133,7 @@ class PopupMenuService
         val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "$songName.pdf")
 
         val printAttrs = PrintAttributes.Builder().setColorMode(PrintAttributes.COLOR_MODE_COLOR).setMediaSize(PrintAttributes.MediaSize.ISO_A4).setResolution(PrintAttributes.Resolution("zooey", PRINT_SERVICE, 450, 700)).setMinMargins(PrintAttributes.Margins.NO_MARGINS).build()
-        val document = PrintedPdfDocument(WorshipSongApplication.getContext(), printAttrs)
+        val document = PrintedPdfDocument(WorshipSongApplication.context, printAttrs)
         for (i in songs.indices)
         {
             val song = songs[i]
@@ -188,11 +181,11 @@ class PopupMenuService
             os.close()
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "application/pdf"
-            val uriForFile = FileProvider.getUriForFile(WorshipSongApplication.getContext(), BuildConfig.APPLICATION_ID + ".provider", file)
+            val uriForFile = FileProvider.getUriForFile(context!!, BuildConfig.APPLICATION_ID + ".provider", file)
             shareIntent.putExtra(Intent.EXTRA_STREAM, uriForFile)
             val intent = Intent.createChooser(shareIntent, "Share $songName with...")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            getContext().startActivity(intent)
+            context!!.startActivity(intent)
             Log.i("done", file.absolutePath.toString())
 
         } catch (ex: Exception)
@@ -210,24 +203,24 @@ class PopupMenuService
     private fun showYouTube(urlKey: String?, songName: String)
     {
         Log.i(this.javaClass.simpleName, "Url key: " + urlKey!!)
-        val youTubeIntent = Intent(getContext(), CustomYoutubeBoxActivity::class.java)
+        val youTubeIntent = Intent(context, CustomYoutubeBoxActivity::class.java)
         youTubeIntent.putExtra(CustomYoutubeBoxActivity.KEY_VIDEO_ID, urlKey)
         youTubeIntent.putExtra(CommonConstants.TITLE_KEY, songName)
         youTubeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        getContext().startActivity(youTubeIntent)
+        context!!.startActivity(youTubeIntent)
     }
 
     private fun startPresentActivity(title: String)
     {
-        val intent = Intent(getContext(), PresentSongActivity::class.java)
+        val intent = Intent(context, PresentSongActivity::class.java)
         intent.putExtra(CommonConstants.TITLE_KEY, title)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        getContext().startActivity(intent)
+        context!!.startActivity(intent)
     }
 
     fun shareFavouritesInSocialMedia(activity: Activity, view: View, favouriteName: String)
     {
-        val wrapper = ContextThemeWrapper(getContext(), R.style.PopupMenu_Theme)
+        val wrapper = ContextThemeWrapper(context, R.style.PopupMenu_Theme)
         val popupMenu: PopupMenu
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
         {
@@ -275,6 +268,6 @@ class PopupMenuService
         textShareIntent.type = "text/plain"
         val intent = Intent.createChooser(textShareIntent, "Share with...")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        getContext().startActivity(intent)
+        context!!.startActivity(intent)
     }
 }

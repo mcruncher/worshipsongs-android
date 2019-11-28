@@ -49,7 +49,7 @@ class SettingsPreferenceFragment : PreferenceFragment(), PreferenceListener
     {
         val resetDialogPreference = findPreference(preferenceKey)
         resetDialogPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            val startIntent = Intent(WorshipSongApplication.getContext(), UserSettingActivity::class.java)
+            val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
             startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             userSettingActivity.activityFinish()
             startActivity(startIntent)
@@ -66,7 +66,7 @@ class SettingsPreferenceFragment : PreferenceFragment(), PreferenceListener
     {
         userSettingActivity.invalidateOptionsMenu()
         userSettingActivity.finish()
-        val startIntent = Intent(WorshipSongApplication.getContext(), UserSettingActivity::class.java)
+        val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
         startActivity(startIntent)
 
     }

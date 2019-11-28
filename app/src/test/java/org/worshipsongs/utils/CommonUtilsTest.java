@@ -37,7 +37,7 @@ public class CommonUtilsTest
     public void testIsProductionMode()
     {
         System.out.println("--isProductionMode--");
-        assertTrue(CommonUtils.isProductionMode());
+        assertTrue(CommonUtils.INSTANCE.isProductionMode());
     }
 
 
@@ -45,7 +45,7 @@ public class CommonUtilsTest
     public void testIsJellyBeanMrOrGreater()
     {
         System.out.println("--isJellyBeanMrOrGreater--");
-        assertTrue(CommonUtils.isJellyBeanMrOrGreater());
+        assertTrue(CommonUtils.INSTANCE.isJellyBeanMrOrGreater());
     }
 
     @Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
@@ -53,14 +53,14 @@ public class CommonUtilsTest
     public void testIsNotJellyBeanMR()
     {
         System.out.println("--isNotJellyBeanMR--");
-        assertFalse(CommonUtils.isJellyBeanMrOrGreater());
+        assertFalse(CommonUtils.INSTANCE.isJellyBeanMrOrGreater());
     }
 
     @Test
     public void testIsLolliPopOrGreater()
     {
         System.out.println("--isLolliPopOrGreater--");
-        assertTrue(CommonUtils.isLollipopOrGreater());
+        assertTrue(CommonUtils.INSTANCE.isLollipopOrGreater());
     }
 
     @Config(sdk = Build.VERSION_CODES.KITKAT)
@@ -68,47 +68,47 @@ public class CommonUtilsTest
     public void testIsNotLollipop()
     {
         System.out.println("--IsNotLollipop--");
-        assertFalse(CommonUtils.isLollipopOrGreater());
+        assertFalse(CommonUtils.INSTANCE.isLollipopOrGreater());
     }
 
     //Note: Update this test every major release
     @Test
     public void testGetProjectVersion()
     {
-        String version = CommonUtils.getProjectVersion();
+        String version = CommonUtils.INSTANCE.getProjectVersion();
         assertTrue(version.contains("3."));
     }
 
     @Test
     public void testIsNotImportedDatabase() throws Exception
     {
-        assertTrue(CommonUtils.isNotImportedDatabase());
+        assertTrue(CommonUtils.INSTANCE.isNotImportedDatabase());
     }
 
     @Test
     public void testIsImportedDatabase() throws Exception
     {
-        sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply();
-        assertFalse(CommonUtils.isNotImportedDatabase());
+        sharedPreferences.edit().putBoolean(CommonConstants.INSTANCE.getSHOW_REVERT_DATABASE_BUTTON_KEY(), true).apply();
+        assertFalse(CommonUtils.INSTANCE.isNotImportedDatabase());
     }
 
 
     @Test
     public void testIsNewVersion()
     {
-       assertTrue(CommonUtils.isNewVersion("3.x", "100.34"));
+       assertTrue(CommonUtils.INSTANCE.isNewVersion("3.x", "100.34"));
     }
 
     @Test
     public void testIsNewVersionEmptyVersionInPropertyFile()
     {
-        assertTrue(CommonUtils.isNewVersion("3.x", ""));
+        assertTrue(CommonUtils.INSTANCE.isNewVersion("3.x", ""));
     }
 
     @Test
     public void testIsNotNewVersion() throws PackageManager.NameNotFoundException
     {
 
-        assertFalse(CommonUtils.isNewVersion("3.x", "3.x"));
+        assertFalse(CommonUtils.INSTANCE.isNewVersion("3.x", "3.x"));
     }
 }

@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -66,8 +67,8 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
     private fun loadSongs()
     {
         Log.i(CLASS_NAME, "Preparing to find songs")
-        val serviceFile = PropertyUtils.getPropertyFile(activity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
-        val property = PropertyUtils.getProperty(serviceName, serviceFile)
+        val serviceFile = PropertyUtils.getPropertyFile(activity as Activity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
+        val property = PropertyUtils.getProperty(serviceName!!, serviceFile!!)
         val propertyValues = property.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         songService = SongService(activity!!.applicationContext)
         serviceSongs = ArrayList()
@@ -187,8 +188,8 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
     {
         try
         {
-            val serviceFile = PropertyUtils.getPropertyFile(activity, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
-            PropertyUtils.removeSong(serviceFile, serviceName, serviceSong)
+            val serviceFile = PropertyUtils.getPropertyFile(activity!!, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
+            PropertyUtils.removeSong(serviceFile!!, serviceName!!, serviceSong!!)
             serviceSongs!!.remove(getSongToBeRemoved(serviceSong, serviceSongs!!))
             titleAdapter!!.addObjects(serviceSongs!!)
         } catch (e: Exception)

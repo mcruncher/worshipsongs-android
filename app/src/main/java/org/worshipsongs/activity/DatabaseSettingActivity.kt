@@ -40,9 +40,9 @@ import java.util.*
 class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragment.DialogListener
 {
     private val importDatabaseLocator = ImportDatabaseLocator()
-    private val songService = SongService(WorshipSongApplication.getContext())
-    private val databaseService = DatabaseService(WorshipSongApplication.getContext())
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext())
+    private val songService = SongService(WorshipSongApplication.context!!)
+    private val databaseService = DatabaseService(WorshipSongApplication.context!!)
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.context)
     private var presentationScreenService: PresentationScreenService? = null
     private var defaultDatabaseButton: Button? = null
     private var resultTextView: TextView? = null

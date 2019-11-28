@@ -59,7 +59,7 @@ class HomeTabFragment : Fragment()
     {
         for (i in titles!!.indices)
         {
-            val drawable = activity!!.resources.getIdentifier("ic_" + titles!![i], "drawable", WorshipSongApplication.getContext().packageName)
+            val drawable = activity!!.resources.getIdentifier("ic_" + titles!![i], "drawable", WorshipSongApplication.context!!.packageName)
             tabLayout.getTabAt(i)!!.icon = resources.getDrawable(drawable)
         }
     }

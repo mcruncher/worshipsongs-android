@@ -60,8 +60,8 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
     private var millis: Int = 0
     private val youTubePlayer: YouTubePlayer? = null
     private val preferenceSettingService = UserPreferenceSettingService()
-    private val songDao = SongService(WorshipSongApplication.getContext())
-    private val authorService = AuthorService(WorshipSongApplication.getContext())
+    private val songDao = SongService(WorshipSongApplication.context!!)
+    private val authorService = AuthorService(WorshipSongApplication.context!!)
     private var popupMenuService: PopupMenuService? = null
     private var floatingActionMenu: FloatingActionsMenu? = null
     private var song: Song? = null
@@ -107,7 +107,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(CommonUtils.isPhone(WorshipSongApplication.getContext()))
+        setHasOptionsMenu(CommonUtils.isPhone(WorshipSongApplication.context!!))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -156,7 +156,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         if (appCompatActivity!!.supportActionBar != null)
         {
             appCompatActivity.supportActionBar!!.show()
-            appCompatActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(CommonUtils.isPhone(WorshipSongApplication.getContext()))
+            appCompatActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(CommonUtils.isPhone(WorshipSongApplication.context!!))
         }
     }
 
@@ -509,7 +509,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             {
                 Log.i(SongContentPortraitViewFragment::class.java.simpleName, "On tapped options")
                 popupMenuService = PopupMenuService()
-                PermissionUtils.isStoragePermissionGranted(activity)
+                PermissionUtils.isStoragePermissionGranted(activity as Activity)
                 popupMenuService!!.showPopupmenu(activity as AppCompatActivity, activity!!.findViewById(R.id.options), title!!, false)
                 return true
             }

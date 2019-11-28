@@ -14,7 +14,7 @@ import org.worshipsongs.WorshipSongApplication
 class UserPreferenceSettingService
 {
 
-    private val context = WorshipSongApplication.getContext()
+    private val context = WorshipSongApplication.context
     private var sharedPreferences: SharedPreferences? = null
 
     val portraitFontSize: Float

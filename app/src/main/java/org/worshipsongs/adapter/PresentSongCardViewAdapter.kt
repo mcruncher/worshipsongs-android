@@ -63,7 +63,7 @@ class PresentSongCardViewAdapter(context: Context, objects: List<String>) : Arra
         } else
         {
             val typedValue = TypedValue()
-            WorshipSongApplication.getContext().theme.resolveAttribute(android.R.attr.background, typedValue, true)
+            WorshipSongApplication.context!!.theme.resolveAttribute(android.R.attr.background, typedValue, true)
             textView!!.setBackgroundResource(typedValue.data)
         }
         textView.setLineSpacing(0f, 1.2f)

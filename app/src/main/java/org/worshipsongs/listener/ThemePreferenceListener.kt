@@ -53,7 +53,7 @@ class ThemePreferenceListener(private val userSettingActivity: UserSettingActivi
         preference.sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
         userSettingActivity.invalidateOptionsMenu()
         userSettingActivity.finish()
-        fragment.startActivity(Intent(WorshipSongApplication.getContext(), UserSettingActivity::class.java))
+        fragment.startActivity(Intent(WorshipSongApplication.context, UserSettingActivity::class.java))
     }
 
     companion object

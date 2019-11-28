@@ -93,7 +93,7 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
         navigationView.itemTextColor = colorStateList
         navigationView.itemIconTintList = colorStateList
         val versionTextView = navigationView.findViewById<View>(R.id.version) as TextView
-        versionTextView.text = getString(R.string.version, CommonUtils.getProjectVersion())
+        versionTextView.text = getString(R.string.version, CommonUtils.projectVersion)
     }
 
     private fun setHeaderView(navigationView: NavigationView) {

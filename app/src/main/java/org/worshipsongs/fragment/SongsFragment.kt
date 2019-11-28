@@ -66,7 +66,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
     private var songs: List<Song>? = null
     private var titleAdapter: TitleAdapter<Song>? = null
     private var songContentViewListener: SongContentViewListener? = null
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext())
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.context)
     private val preferenceSettingService = UserPreferenceSettingService()
     private val popupMenuService = PopupMenuService()
     private var songService: SongService? = null

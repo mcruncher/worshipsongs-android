@@ -32,14 +32,14 @@ class FavouriteService
 
     constructor()
     {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.getContext())
-        songService = SongService(WorshipSongApplication.getContext())
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.context)
+        songService = SongService(WorshipSongApplication.context!!)
     }
 
     constructor(context: Context?)
     {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context
-                ?: WorshipSongApplication.getContext())
+                ?: WorshipSongApplication.context)
     }
 
     fun migration(context: Context)
@@ -47,7 +47,7 @@ class FavouriteService
         Log.i(FavouriteService::class.java.simpleName, "Preparing to migrate...")
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val serviceFileName = PropertyUtils.getPropertyFile(context, CommonConstants.SERVICE_PROPERTY_TEMP_FILENAME)
-        val services = PropertyUtils.getServices(serviceFileName)
+        val services = PropertyUtils.getServices(serviceFileName!!)
         val favouriteList = ArrayList<Favourite>()
         for (i in services.indices)
         {

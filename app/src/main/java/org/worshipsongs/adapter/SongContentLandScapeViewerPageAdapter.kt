@@ -21,8 +21,8 @@ import org.worshipsongs.service.AuthorService
 class SongContentLandScapeViewerPageAdapter(fragmentManager: FragmentManager, private val title: String) : FragmentStatePagerAdapter(fragmentManager)
 {
 
-    private val songService = SongService(WorshipSongApplication.getContext())
-    private val authorService = AuthorService(WorshipSongApplication.getContext())
+    private val songService = SongService(WorshipSongApplication.context!!)
+    private val authorService = AuthorService(WorshipSongApplication.context!!)
     private var contents: List<String>? = null
     private var authorName: String? = null
     private var song: Song? = null

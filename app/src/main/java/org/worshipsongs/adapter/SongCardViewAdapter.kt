@@ -48,7 +48,7 @@ class SongCardViewAdapter(private val song: Song, private val context: Context) 
         textView.setTextColor(preferenceSettingService!!.primaryColor)
         textView.isVerticalScrollBarEnabled = true
         val typedValue = TypedValue()
-        WorshipSongApplication.getContext().theme.resolveAttribute(android.R.attr.background, typedValue, true)
+        WorshipSongApplication.context!!.theme.resolveAttribute(android.R.attr.background, typedValue, true)
         textView.setBackgroundResource(typedValue.data)
     }
 

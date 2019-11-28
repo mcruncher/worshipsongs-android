@@ -31,8 +31,8 @@ public class ImportDatabaseLocator implements IImportDatabaseLocator
     public void load(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
         for (ImportDatabaseService importDatabaseService : findAll(appCompatActivity, PACKAGE_NAME)) {
-            int index = (Integer) objects.get(CommonConstants.INDEX_KEY);
-            ProgressBar progressBar = (ProgressBar)objects.get(CommonConstants.PROGRESS_BAR_KEY);
+            int index = (Integer) objects.get(CommonConstants.INSTANCE.getINDEX_KEY());
+            ProgressBar progressBar = (ProgressBar)objects.get(CommonConstants.INSTANCE.getPROGRESS_BAR_KEY());
             if (importDatabaseService.getOrder() == index) {
                 importDatabaseService.loadDb(appCompatActivity, objects);
             }

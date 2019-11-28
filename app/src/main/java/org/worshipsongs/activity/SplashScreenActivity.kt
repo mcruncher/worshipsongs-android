@@ -42,7 +42,7 @@ class SplashScreenActivity : AbstractAppCompactActivity()
     private var noOfImportedSongs = -1
 
     private val languageList: Array<String>
-        get() = if (CommonUtils.isAboveKitkat()) arrayOf(getString(R.string.tamil_key), getString(R.string.english_key))
+        get() = if (CommonUtils.isAboveKitkat) arrayOf(getString(R.string.tamil_key), getString(R.string.english_key))
         else arrayOf(getString(R.string.english_key))
 
     private val onItemClickListener: DialogInterface.OnClickListener
@@ -155,9 +155,9 @@ class SplashScreenActivity : AbstractAppCompactActivity()
         try
         {
             val commonPropertyFile = PropertyUtils.getPropertyFile(context, CommonConstants.COMMON_PROPERTY_TEMP_FILENAME)
-            val versionInPropertyFile = PropertyUtils.getProperty(CommonConstants.VERSION_KEY, commonPropertyFile)
+            val versionInPropertyFile = PropertyUtils.getProperty(CommonConstants.VERSION_KEY, commonPropertyFile!!)
             Log.i(SplashScreenActivity::class.java.simpleName, "Version in property file $versionInPropertyFile")
-            if (CommonUtils.isNotImportedDatabase() && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion))
+            if (CommonUtils.isNotImportedDatabase && CommonUtils.isNewVersion(versionInPropertyFile, currentVersion))
             {
                 Log.i(SplashScreenActivity::class.java.simpleName, "Preparing to copy bundle database.")
                 databaseService!!.copyDatabase("", true)

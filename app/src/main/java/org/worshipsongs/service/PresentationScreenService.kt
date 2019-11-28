@@ -63,7 +63,7 @@ class PresentationScreenService
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     fun onResume()
     {
-        if (isJellyBean && CommonUtils.isProductionMode())
+        if (isJellyBean && CommonUtils.isProductionMode)
         {
             mediaRouter!!.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, songMediaRouterCallBack)
             updatePresentation()
@@ -74,7 +74,7 @@ class PresentationScreenService
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     fun onPause()
     {
-        if (isJellyBean && CommonUtils.isProductionMode())
+        if (isJellyBean && CommonUtils.isProductionMode)
         {
             mediaRouter!!.removeCallback(songMediaRouterCallBack)
         }
