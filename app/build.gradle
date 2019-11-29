@@ -25,6 +25,10 @@ android {
         versionName APP_VERSION
         setProperty("archivesBaseName",  "worshipsongs-" + defaultConfig.versionName )
     }
+    compileOptions {
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
+    }
     compileOptions.encoding = "UTF-8"
 
     signingConfigs {
@@ -126,7 +130,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'commons-io:commons-io:2.4'
     implementation 'org.apache.commons:commons-lang3:3.3.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     androidTestImplementation('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -137,6 +141,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
     testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation 'org.robolectric:shadows-support-v4:3.0'
+    testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'com.github.hkhc:electricspock:0.8'
 }
 repositories {

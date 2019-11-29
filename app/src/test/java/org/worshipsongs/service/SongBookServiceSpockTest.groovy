@@ -1,8 +1,8 @@
 package org.worshipsongs.service
 
 import android.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import hkhc.electricspock.ElectricSpecification
-import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.SongBook
 
@@ -12,8 +12,9 @@ import org.worshipsongs.domain.SongBook
  */
 class SongBookServiceSpockTest extends ElectricSpecification
 {
-    def songBookService = new SongBookService(RuntimeEnvironment.application.getApplicationContext())
-    def sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+
+    def songBookService = new SongBookService(ApplicationProvider.getApplicationContext())
+    def sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
     void cleanup()
     {
