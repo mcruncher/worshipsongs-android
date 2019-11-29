@@ -325,7 +325,7 @@ class SongService(context: Context)
         return sortedSongs
     }
 
-    internal fun getTitles(searchTitle: String): List<String>
+    fun getTitles(searchTitle: String): List<String>
     {
         return Arrays.asList(*searchTitle.split("@".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
     }

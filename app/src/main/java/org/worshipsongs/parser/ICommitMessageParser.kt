@@ -7,5 +7,5 @@ package org.worshipsongs.parser
 
 interface ICommitMessageParser
 {
-    fun getShaKey(result: String): String
+    fun getShaKey(result: String?): String
 }

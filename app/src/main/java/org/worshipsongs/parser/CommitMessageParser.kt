@@ -10,7 +10,7 @@ import org.json.JSONObject
 class CommitMessageParser : ICommitMessageParser
 {
 
-    override fun getShaKey(result: String): String
+    override fun getShaKey(result: String?): String
     {
         try
         {
