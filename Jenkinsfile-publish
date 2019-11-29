@@ -4,7 +4,7 @@ pipeline {
       stage('Unit test') {
           steps {
               withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                  sh '$GRADLE_HOME/bin/gradle clean testDebug'
+                  sh './gradlew clean testDebug'
               }
           }
           post {
@@ -16,7 +16,7 @@ pipeline {
       stage('Code coverage') {
           steps {
             withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                  sh '$GRADLE_HOME/bin/gradle clean sonarComplete'
+                  sh './gradlew clean sonarComplete'
             }
           }
           post {
@@ -26,23 +26,23 @@ pipeline {
              }
           }
       }
-     stage ('Package and Publish'){
-         steps {
-            withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                sh './bundle-db.sh'
-                sh '$GRADLE_HOME/bin/gradle clean assembleRelease'
-            }
-         }
-         post {
-            success {
-                script {
-                    env.WORKSPACE = pwd()
-                    env.FILENAME = readFile "${env.WORKSPACE}/changelist"
-                }
-                archive includes:'**/*.apk'
-                androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta'
-            }
-         }
-     }
+      stage ('Package and Publish'){
+              steps {
+                 withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
+                     sh './bundle-db.sh'
+                     sh './gradlew clean assembleRelease'
+                 }
+              }
+              post {
+                 success {
+                     script {
+                         env.WORKSPACE = pwd()
+                         env.FILENAME = readFile "${env.WORKSPACE}/changelist"
+                     }
+                     archive includes:'**/*.apk'
+                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta'
+                 }
+              }
+      }
    }
 }

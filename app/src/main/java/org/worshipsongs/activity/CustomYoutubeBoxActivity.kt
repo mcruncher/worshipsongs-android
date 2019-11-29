@@ -24,6 +24,7 @@ import org.worshipsongs.component.SlidingTabLayout
 import org.worshipsongs.component.SlidingTabLayout.TabColorizer
 import org.worshipsongs.domain.Song
 import org.worshipsongs.service.SongService
+import org.worshipsongs.utils.PropertyUtils
 import org.worshipsongs.utils.ThemeUtils
 
 /***********************************************************************************
@@ -156,7 +157,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     private fun setYouTubePlayerFragment()
     {
         val youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance()
-        youTubePlayerFragment.initialize(API_KEY, this)
+        youTubePlayerFragment.initialize(PropertyUtils.getYouTubeApiKey(this.applicationContext!!), this)
         val transaction = supportFragmentManager.beginTransaction()
         if (isLandScape)
         {
@@ -287,7 +288,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
         if (requestCode == RECOVERY_DIALOG_REQUEST)
         {
             // Retry initialization if user performed a recovery action
-            youTubePlayerProvider.initialize(API_KEY, this)
+            youTubePlayerProvider.initialize(PropertyUtils.getYouTubeApiKey(this.applicationContext!!), this)
         }
     }
 
@@ -295,7 +296,6 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
     {
         val KEY_VIDEO_ID = "KEY_VIDEO_ID"
         private val KEY_VIDEO_TIME = "KEY_VIDEO_TIME"
-        private val API_KEY = "AIzaSyAt_lPNNOqs9bIVauW9k_plPJvEb1poxoA"
         private val RECOVERY_DIALOG_REQUEST = 1
     }
 

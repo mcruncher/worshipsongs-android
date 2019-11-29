@@ -50,6 +50,15 @@ object PropertyUtils
         return commonPropertyFile
     }
 
+    fun getYouTubeApiKey(context: Context): String
+    {
+        val properties = Properties()
+        val inputStream = context.assets.open(CommonConstants.COMMON_PROPERTY_TEMP_FILENAME)
+        properties.load(inputStream)
+        return properties.getProperty("youTubeApiKey")
+    }
+
+
     fun getProperties(propertyFile: File): Properties
     {
         val properties = Properties()
