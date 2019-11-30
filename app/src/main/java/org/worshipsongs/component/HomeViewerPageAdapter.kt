@@ -13,7 +13,7 @@ import org.worshipsongs.registry.FragmentRegistry
  * Author: madasamy.
  * version: 1.0.0
  */
-class HomeViewerPageAdapter(fragmentManager: FragmentManager, private val activity: Activity, private val titles: List<String>, private val songContentViewListener: SongContentViewListener) : FragmentPagerAdapter(fragmentManager)
+class HomeViewerPageAdapter(fragmentManager: FragmentManager, private val activity: Activity, private val titles: List<String>, private val songContentViewListener: SongContentViewListener?) : FragmentPagerAdapter(fragmentManager)
 {
     private val fragmentRegistry = FragmentRegistry()
 

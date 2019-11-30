@@ -96,7 +96,7 @@ class SongParser : ISongParser
         } else ""
     }
 
-    override fun parseMediaUrlKey(comments: String): String
+    override fun parseMediaUrlKey(comments: String?): String
     {
         var mediaUrl = ""
         if (comments != null && comments.length > 0)
@@ -111,7 +111,7 @@ class SongParser : ISongParser
         return mediaUrl
     }
 
-    override fun parseChord(comments: String): String
+    override fun parseChord(comments: String?): String
     {
         var chord = ""
         if (comments != null && comments.length > 0)
@@ -126,7 +126,7 @@ class SongParser : ISongParser
         return chord
     }
 
-    override fun parseTamilTitle(comments: String): String
+    override fun parseTamilTitle(comments: String?): String
     {
         var tamilTitle = ""
         if (comments != null && comments.length > 0)

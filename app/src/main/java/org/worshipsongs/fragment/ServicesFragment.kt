@@ -147,7 +147,7 @@ class ServicesFragment : Fragment(), TitleAdapter.TitleAdapterListener<String>, 
         return true
     }
 
-    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener, bundle: Bundle)
+    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener?, bundle: Bundle)
     {
 
     }

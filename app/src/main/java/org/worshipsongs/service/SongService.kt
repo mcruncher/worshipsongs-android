@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.support.v7.preference.PreferenceManager
+import android.util.Log
 
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
@@ -11,6 +12,7 @@ import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.domain.ServiceSong
 import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.Type
+import org.worshipsongs.fragment.HomeTabFragment
 import org.worshipsongs.parser.ISongParser
 import org.worshipsongs.parser.SongParser
 import org.worshipsongs.service.DatabaseService
@@ -192,9 +194,10 @@ class SongService(context: Context)
         song.searchLyrics = cursor.getString(4)
         song.comments = cursor.getString(5)
         song.id = cursor.getInt(6)
-        song.urlKey = songParser.parseMediaUrlKey(song.comments!!)
-        song.chord = songParser.parseChord(song.comments!!)
-        song.tamilTitle = songParser.parseTamilTitle(song.comments!!)
+
+        song.urlKey = songParser.parseMediaUrlKey(song.comments)
+        song.chord = songParser.parseChord(song.comments)
+        song.tamilTitle = songParser.parseTamilTitle(song.comments)
         return song
     }
 

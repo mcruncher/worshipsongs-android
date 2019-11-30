@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import android.widget.Toast
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
+import org.worshipsongs.activity.SplashScreenActivity
 import org.worshipsongs.component.HomeViewerPageAdapter
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.FragmentRegistry
@@ -37,7 +39,12 @@ class HomeTabFragment : Fragment()
         val view = inflater.inflate(R.layout.home_tab_layout, container, false) as View
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
         titles = fragmentRegistry.getTitles( activity as Activity)
-        val adapter = HomeViewerPageAdapter(childFragmentManager, activity!!, titles!!, songContentViewListener!!)
+        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + activity)
+        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + titles)
+        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + songContentViewListener)
+
+
+        val adapter = HomeViewerPageAdapter(childFragmentManager, activity!!, titles!!, songContentViewListener)
         adapter.notifyDataSetChanged()
 
         // Assigning ViewPager View and setting the adapter

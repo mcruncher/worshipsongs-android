@@ -404,7 +404,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         return true
     }
 
-    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener, bundle: Bundle)
+    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener?, bundle: Bundle)
     {
         this.songContentViewListener = songContentViewListener
     }

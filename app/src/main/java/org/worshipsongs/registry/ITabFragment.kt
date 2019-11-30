@@ -17,5 +17,5 @@ interface ITabFragment
 
     fun checked(): Boolean
 
-    fun setListenerAndBundle(songContentViewListener: SongContentViewListener, bundle: Bundle)
+    fun setListenerAndBundle(songContentViewListener: SongContentViewListener?, bundle: Bundle)
 }

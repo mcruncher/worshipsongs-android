@@ -50,7 +50,7 @@ class SongListActivity : AbstractAppCompactActivity(), SongContentViewListener
 
     private fun setContentViewFragment()
     {
-        songContentFrameLayout = findViewById<View>(R.id.song_content_fragment) as FrameLayout
+        songContentFrameLayout = findViewById(R.id.song_content_fragment)
     }
 
     private fun setFragment()
@@ -111,6 +111,5 @@ class SongListActivity : AbstractAppCompactActivity(), SongContentViewListener
         super.onBackPressed()
         finish()
     }
-
-
+    
 }

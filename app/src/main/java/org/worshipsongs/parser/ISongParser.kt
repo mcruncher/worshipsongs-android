@@ -18,10 +18,10 @@ interface ISongParser
 
     fun getVerseOrders(verseOrder: String): List<String>
 
-    fun parseMediaUrlKey(comments: String): String
+    fun parseMediaUrlKey(comments: String?): String
 
-    fun parseChord(comments: String): String
+    fun parseChord(comments: String?): String
 
-    fun parseTamilTitle(comments: String): String
+    fun parseTamilTitle(comments: String?): String
 
 }

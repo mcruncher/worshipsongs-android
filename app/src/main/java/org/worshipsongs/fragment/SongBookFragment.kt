@@ -156,7 +156,7 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
         return true
     }
 
-    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener, bundle: Bundle)
+    override fun setListenerAndBundle(songContentViewListener: SongContentViewListener?, bundle: Bundle)
     {
         // Do nothing
     }
