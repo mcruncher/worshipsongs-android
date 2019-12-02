@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.NavUtils
 import android.support.v7.app.ActionBar
+import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import org.worshipsongs.CommonConstants
@@ -26,6 +27,7 @@ class UserSettingActivity : AbstractAppCompactActivity()
     public override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         actionBar = supportActionBar
         actionBar!!.setDisplayShowHomeEnabled(true)
         actionBar!!.setDisplayShowTitleEnabled(true)

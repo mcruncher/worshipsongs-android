@@ -1,10 +1,11 @@
 package org.worshipsongs.fragment
 
+
 import android.content.Intent
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
-
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
+import org.worshipsongs.CommonConstants.THEME_KEY
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.activity.UserSettingActivity
@@ -13,21 +14,26 @@ import org.worshipsongs.preference.LanguagePreference
 import org.worshipsongs.preference.PreferenceListener
 import org.worshipsongs.preference.ThemeListPreference
 
-import org.worshipsongs.CommonConstants.THEME_KEY
-
 /**
- * Author:Seenivasan, Madasamy
- * version:1.0.0
+ * @author Madasamy
+ * @since 1.0.0
  */
 
-class SettingsPreferenceFragment : PreferenceFragment(), PreferenceListener
+class SettingsPreferenceFragment : PreferenceFragmentCompat(), PreferenceListener
 {
+
+
     private var userSettingActivity = UserSettingActivity()
+
+    override fun onCreatePreferences(bundle: Bundle?, string: String?)
+    {
+        addPreferencesFromResource(R.xml.settings)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        addPreferencesFromResource(R.xml.settings)
+
         languagePreference()
         themePreference()
         resetPreferenceSettings("resetDialog")
@@ -48,7 +54,7 @@ class SettingsPreferenceFragment : PreferenceFragment(), PreferenceListener
     fun resetPreferenceSettings(preferenceKey: String)
     {
         val resetDialogPreference = findPreference(preferenceKey)
-        resetDialogPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+        resetDialogPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
             startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             userSettingActivity.activityFinish()

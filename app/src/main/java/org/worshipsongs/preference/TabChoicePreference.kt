@@ -63,7 +63,7 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
 
     private fun setItems()
     {
-        configureDragDrops = DragDrop.toArrays(sharedPreferences.getString(CommonConstants.TAB_CHOICE_KEY, ""))
+        configureDragDrops = DragDrop.toArrays(defaultSharedPreferences!!.getString(CommonConstants.TAB_CHOICE_KEY, "")!!)
         val defaultList = fragmentRegistry.getDragDrops(context as Activity)
         if (configureDragDrops == null || configureDragDrops!!.isEmpty())
         {
