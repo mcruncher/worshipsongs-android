@@ -24,10 +24,7 @@ import org.worshipsongs.fragment.AlertDialogFragment
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import java.net.URL
-import java.net.URLConnection
 
 /**
  * Author : Madasamy
@@ -87,11 +84,11 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
             destinationFile = File(context.cacheDir.absolutePath, CommonConstants.DATABASE_NAME)
             val remoteUrl = strings[0]
             val url = URL(remoteUrl)
-            val conection = url.openConnection()
-            conection.readTimeout = 60000
-            conection.connectTimeout = 60000
-            conection.connect()
-            val lenghtOfFile = conection.contentLength
+            val connection = url.openConnection()
+            connection.readTimeout = 60000
+            connection.connectTimeout = 60000
+            connection.connect()
+            val lengthOfFile = connection.contentLength
             val input = BufferedInputStream(url.openStream(), 10 * 1024)
             // Output stream to write file in SD card
             val output = FileOutputStream(destinationFile!!)
@@ -103,7 +100,7 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
                     }) {
                 total += count.toLong()
                 output.write(data, 0, count)
-                publishProgress((total * 100 / lenghtOfFile).toInt())
+                publishProgress((total * 100 / lengthOfFile).toInt())
             }
             output.flush()
             output.close()

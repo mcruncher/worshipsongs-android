@@ -6,14 +6,11 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
-
+import android.util.Log
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
-import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.fragment.AlertDialogFragment
 import org.worshipsongs.parser.CommitMessageParser
-import org.worshipsongs.parser.ICommitMessageParser
-
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -28,11 +25,11 @@ class HttpAsyncTask(private val context: AppCompatActivity) : AsyncTask<String, 
 {
 
     private val progressDialog: ProgressDialog?
-    private val sharedPreferences: SharedPreferences
+    private var sharedPreferences: SharedPreferences? = null
     private val commitMessageParser = CommitMessageParser()
 
     private val remoteUrl: String
-        get() = sharedPreferences.getString(CommonConstants.REMOTE_URL, context.getString(R.string.remoteUrl))
+        get() = sharedPreferences!!.getString(CommonConstants.REMOTE_URL, context.getString(R.string.remoteUrl))
 
     init
     {
@@ -53,28 +50,23 @@ class HttpAsyncTask(private val context: AppCompatActivity) : AsyncTask<String, 
     {
         val stringUrl = params[0]
         val result: String
-        var inputLine: String
+        var inputLine: String? = null
         try
         {
             val myUrl = URL(stringUrl)
+            Log.i(CLASS_NAME, "Preparing to check download " + stringUrl + "")
             val connection = myUrl.openConnection() as HttpURLConnection
             connection.requestMethod = REQUEST_METHOD
             connection.readTimeout = READ_TIMEOUT
             connection.connectTimeout = CONNECTION_TIMEOUT
-
-            //Connect to our url
             connection.connect()
-            //Create a new InputStreamReader
             val streamReader = InputStreamReader(connection.inputStream)
-            //Create a new buffered reader and String Builder
             val reader = BufferedReader(streamReader)
             val stringBuilder = StringBuilder()
-            //Check if the line we are reading is not null
-            while (reader.readLine().let { inputLine = it; it != null })
+            while ({ inputLine = reader.readLine(); inputLine }() != null)
             {
                 stringBuilder.append(inputLine)
             }
-
             //Close our InputStream and Buffered reader
             reader.close()
             streamReader.close()
@@ -83,21 +75,21 @@ class HttpAsyncTask(private val context: AppCompatActivity) : AsyncTask<String, 
             return result
         } catch (e: Exception)
         {
-            return null
+            Log.e(CLASS_NAME, "Error", e)
+            return ""
         }
-
     }
 
     override fun onPostExecute(jsonObject: String)
     {
         super.onPostExecute(jsonObject)
         val shaKey = commitMessageParser.getShaKey(jsonObject)
-        val existingShaKey = sharedPreferences.getString(CommonConstants.COMMIT_SHA_KEY, "")
+        val existingShaKey = sharedPreferences!!.getString(CommonConstants.COMMIT_SHA_KEY, "")
         if (!context.isFinishing && progressDialog != null && progressDialog.isShowing)
         {
             progressDialog.dismiss()
         }
-        displayAlertDialog(shaKey, existingShaKey)
+        displayAlertDialog(shaKey, existingShaKey!!)
     }
 
     private fun displayAlertDialog(shaKey: String?, existingShaKey: String)
@@ -137,7 +129,7 @@ class HttpAsyncTask(private val context: AppCompatActivity) : AsyncTask<String, 
         if ("UpdateFragment".equals(tag!!, ignoreCase = true))
         {
             AsyncDownloadTask(context).execute(remoteUrl)
-            sharedPreferences.edit().putString(CommonConstants.COMMIT_SHA_KEY, bundle!!.getString(CommonConstants.COMMIT_SHA_KEY)).apply()
+            sharedPreferences!!.edit().putString(CommonConstants.COMMIT_SHA_KEY, bundle!!.getString(CommonConstants.COMMIT_SHA_KEY)).apply()
         } else
         {
             this@HttpAsyncTask.onClickNegativeButton()
