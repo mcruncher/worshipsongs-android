@@ -3,8 +3,9 @@ package org.worshipsongs.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
+import android.preference.Preference
+import android.preference.PreferenceFragment
+
 import org.worshipsongs.CommonConstants.THEME_KEY
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
@@ -19,21 +20,14 @@ import org.worshipsongs.preference.ThemeListPreference
  * @since 1.0.0
  */
 
-class SettingsPreferenceFragment : PreferenceFragmentCompat(), PreferenceListener
+class SettingsPreferenceFragment : PreferenceFragment(), PreferenceListener
 {
-
-
     private var userSettingActivity = UserSettingActivity()
-
-    override fun onCreatePreferences(bundle: Bundle?, string: String?)
-    {
-        addPreferencesFromResource(R.xml.settings)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-
+        addPreferencesFromResource(R.xml.settings)
         languagePreference()
         themePreference()
         resetPreferenceSettings("resetDialog")
