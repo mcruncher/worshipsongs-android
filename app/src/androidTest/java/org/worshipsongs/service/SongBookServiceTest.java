@@ -1,17 +1,19 @@
 package org.worshipsongs.service;
 
-import android.support.test.runner.AndroidJUnit4;
+
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.*;
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author : Madasamy
+ * @since : 3.x
  */
 
 @RunWith(AndroidJUnit4.class)
