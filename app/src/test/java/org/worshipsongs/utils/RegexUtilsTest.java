@@ -16,7 +16,7 @@ public class RegexUtilsTest
         System.out.println("--getMatchString_1--");
         String line = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n" +
                 "bar=foo";
-        assertEquals("mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI", RegexUtils.getMatchString(line, "mediaurl" + ".*"));
+        assertEquals("mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI", RegexUtils.INSTANCE.getMatchString(line, "mediaurl" + ".*"));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class RegexUtilsTest
         System.out.println("--getMatchString_2--");
         String line = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n" +
                 "chord=g";
-        assertEquals("chord=g", RegexUtils.getMatchString(line, "chord" + ".*"));
+        assertEquals("chord=g", RegexUtils.INSTANCE.getMatchString(line, "chord" + ".*"));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class RegexUtilsTest
         System.out.println("--getMatchString_3--");
         String line = "chord=g\n" +
                 "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n";
-        assertEquals("chord=g", RegexUtils.getMatchString(line, "chord" + ".*"));
-        assertEquals("mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI", RegexUtils.getMatchString(line, "mediaurl" + ".*"));
+        assertEquals("chord=g", RegexUtils.INSTANCE.getMatchString(line, "chord" + ".*"));
+        assertEquals("mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI", RegexUtils.INSTANCE.getMatchString(line, "mediaurl" + ".*"));
     }
 }

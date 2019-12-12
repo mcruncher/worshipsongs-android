@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP_MR1)
+@Config(sdk = Build.VERSION_CODES.LOLLIPOP_MR1)
 public class NavigationDrawerActivityTest
 {
     private NavigationDrawerActivity navigationDrawerActivity;

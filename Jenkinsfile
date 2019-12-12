@@ -4,7 +4,7 @@ pipeline {
       stage('Unit test') {
           steps {
               withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                  sh '$GRADLE_HOME/bin/gradle clean testDebug'
+                  sh './gradlew clean testDebug'
               }
           }
           post {
@@ -16,7 +16,7 @@ pipeline {
       stage('Code coverage') {
           steps {
             withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                  sh '$GRADLE_HOME/bin/gradle clean sonarComplete'
+                  sh './gradlew clean sonarComplete'
             }
           }
           post {
@@ -30,7 +30,7 @@ pipeline {
           steps {
             withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
                   sh './bundle-db.sh'
-                  sh '$GRADLE_HOME/bin/gradle clean assembleDebug'
+                  sh './gradlew clean assembleDebug'
             }
           }
           post {
