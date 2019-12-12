@@ -34,12 +34,14 @@ pipeline {
                  }
               }
               post {
+                 always {
+                    archive includes:'**/*.apk'
+                 }
                  success {
                      script {
                          env.WORKSPACE = pwd()
                          env.FILENAME = readFile "${env.WORKSPACE}/changelist"
                      }
-                     archive includes:'**/*.apk'
                      androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta'
                  }
               }
