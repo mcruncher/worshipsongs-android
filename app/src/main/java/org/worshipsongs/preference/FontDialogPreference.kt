@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.font_size_dialog.view.*
 import org.worshipsongs.R
 
 /**
- * Author:Madasamy
- * version:1.0.0
+ * @author Madasamy
+ * @version 1.0.0
  */
 class FontDialogPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs)
 {

@@ -46,84 +46,105 @@
             android:summary="@string/font_size_summary"
             android:title="Font" />
 
-<!--                    <net.margaritov.preference.colorpicker.ColorPickerPreference-->
-<!--                        alphaSlider="true"-->
-<!--                        android:defaultValue="@integer/COLOR_RED"-->
-<!--                        android:key="secondaryColor"-->
-<!--                        android:summary="@string/secondary_summary"-->
-<!--                        android:title="@string/secondary_color" />-->
+        <org.worshipsongs.preference.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@integer/COLOR_RED"
+            android:key="secondaryColor"
+            android:summary="@string/secondary_summary"
+            android:title="@string/secondary_color"
+            app:iconSpaceReserved="false" />
 
-        <!--            <net.margaritov.preference.colorpicker.ColorPickerPreference-->
-        <!--                alphaSlider="true"-->
-        <!--                android:defaultValue="@integer/COLOR_DARK_GRAY"-->
-        <!--                android:key="primaryColor"-->
-        <!--                android:summary="@string/primary_summary"-->
-        <!--                android:title="@string/primary_color" />-->
+        <org.worshipsongs.preference.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@integer/COLOR_DARK_GRAY"
+            android:key="primaryColor"
+            android:summary="@string/primary_summary"
+            android:title="@string/primary_color"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
-    <!--    <PreferenceCategory android:title="@string/presentation_color_settings_title">-->
-    <!--        <org.worshipsongs.preference.FontDialogPreference-->
-    <!--            fontSize="28"-->
-    <!--            maxSize="50"-->
-    <!--            android:defaultValue="28"-->
-    <!--            android:key="landscapeFontSize"-->
-    <!--            android:summary="@string/font_size_summary"-->
-    <!--            android:title="Font" />-->
-    <!--        <net.margaritov.preference.colorpicker.ColorPickerPreference-->
-    <!--            alphaSlider="true"-->
-    <!--            android:defaultValue="@integer/COLOR_BLACK"-->
-    <!--            android:key="presentationBackgroundColor"-->
-    <!--            android:summary="@string/presentation_background_color_summary"-->
-    <!--            android:title="@string/background_color_title" />-->
+    <PreferenceCategory
+        android:title="@string/presentation_color_settings_title"
+        app:iconSpaceReserved="false">
+        <org.worshipsongs.preference.FontDialogPreference
+            fontSize="28"
+            maxSize="50"
+            android:defaultValue="28"
+            android:key="landscapeFontSize"
+            android:summary="@string/font_size_summary"
+            android:title="Font"
+            app:iconSpaceReserved="false" />
+        <org.worshipsongs.preference.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@integer/COLOR_BLACK"
+            android:key="presentationBackgroundColor"
+            android:summary="@string/presentation_background_color_summary"
+            android:title="@string/background_color_title"
+            app:iconSpaceReserved="false" />
 
-    <!--        <net.margaritov.preference.colorpicker.ColorPickerPreference-->
-    <!--            alphaSlider="true"-->
-    <!--            android:defaultValue="@integer/yellow"-->
-    <!--            android:key="presentationSecondaryColor"-->
-    <!--            android:summary="@string/presentation_secondary_color_summary"-->
-    <!--            android:title="@string/presentation_secondary_color_title" />-->
-    <!--        <net.margaritov.preference.colorpicker.ColorPickerPreference-->
-    <!--            alphaSlider="true"-->
-    <!--            android:defaultValue="@integer/white"-->
-    <!--            android:key="presentationPrimaryColor"-->
-    <!--            android:summary="@string/presentation_primary_color_summary"-->
-    <!--            android:title="@string/presentation_primary_color_title" />-->
-    <!--    </PreferenceCategory>-->
+        <org.worshipsongs.preference.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@integer/yellow"
+            android:key="presentationSecondaryColor"
+            android:summary="@string/presentation_secondary_color_summary"
+            android:title="@string/presentation_secondary_color_title"
+            app:iconSpaceReserved="false" />
+        <org.worshipsongs.preference.ColorPickerPreference
+            alphaSlider="true"
+            android:defaultValue="@integer/white"
+            android:key="presentationPrimaryColor"
+            android:summary="@string/presentation_primary_color_summary"
+            android:title="@string/presentation_primary_color_title"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 
-    <!--    <PreferenceCategory android:title="@string/home_view_category_title">-->
-    <!--        <org.worshipsongs.preference.TabChoicePreference-->
-    <!--            android:background="@color/white"-->
-    <!--            android:summary="@string/tab_choice_summary"-->
-    <!--            android:title="@string/tab_choice_title" />-->
-    <!--    </PreferenceCategory>-->
+    <PreferenceCategory
+        android:title="@string/home_view_category_title"
+        app:iconSpaceReserved="false">
+        <org.worshipsongs.preference.TabChoicePreference
+            android:background="@color/white"
+            android:summary="@string/tab_choice_summary"
+            android:title="@string/tab_choice_title"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 
-    <!--    <PreferenceCategory android:title="@string/miscellaneous">-->
-    <!--        <SwitchPreference-->
-    <!--            android:defaultValue="true"-->
-    <!--            android:enabled="true"-->
-    <!--            android:key="prefKeepAwakeOn"-->
-    <!--            android:summary="@string/awakeScreenSummary"-->
-    <!--            android:title="@string/awakeScreenTitle" />-->
+    <PreferenceCategory
+        android:title="@string/miscellaneous"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:enabled="true"
+            android:summary="@string/awakeScreenSummary"
+            android:title="@string/awakeScreenTitle"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="prefKeepAwakeOn" />
 
-    <!--        <SwitchPreference-->
-    <!--            android:defaultValue="true"-->
-    <!--            android:key="prefVideoPlay"-->
-    <!--            android:summary="@string/videoPlaySummary"-->
-    <!--            android:title="@string/playVideoTitle" />-->
-    <!--    </PreferenceCategory>-->
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:summary="@string/videoPlaySummary"
+            android:title="@string/playVideoTitle"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="prefVideoPlay" />
+    </PreferenceCategory>
 
-    <!--    <PreferenceCategory android:title="@string/advanced">-->
-    <!--        <org.worshipsongs.preference.DatabaseSettingsPreference-->
-    <!--            android:summary="@string/database_summary"-->
-    <!--            android:title="@string/import_database_title" />-->
-    <!--        <org.worshipsongs.service.ResetDefaultSettingsService-->
-    <!--            android:dialogMessage="@string/reset_default_summary"-->
-    <!--            android:key="resetDialog"-->
-    <!--            android:negativeButtonText="@string/no"-->
-    <!--            android:persistent="false"-->
-    <!--            android:positiveButtonText="@string/yes"-->
-    <!--            android:summary="@string/reset_default_summary"-->
-    <!--            android:title="@string/reset_default_title" />-->
-    <!--    </PreferenceCategory>-->
+    <PreferenceCategory
+        android:title="@string/advanced"
+        app:iconSpaceReserved="false">
+        <org.worshipsongs.preference.DatabaseSettingsPreference
+            android:summary="@string/database_summary"
+            android:title="@string/import_database_title"
+            app:iconSpaceReserved="false" />
+        <org.worshipsongs.service.ResetDefaultSettingsService
+            android:dialogMessage="@string/reset_default_summary"
+            android:key="resetDialog"
+            android:negativeButtonText="@string/no"
+            android:persistent="false"
+            android:positiveButtonText="@string/yes"
+            android:summary="@string/reset_default_summary"
+            android:title="@string/reset_default_title"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

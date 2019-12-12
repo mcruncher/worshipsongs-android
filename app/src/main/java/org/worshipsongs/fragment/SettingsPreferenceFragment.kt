@@ -3,6 +3,7 @@ package org.worshipsongs.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.worshipsongs.CommonConstants.THEME_KEY
 import org.worshipsongs.R
@@ -12,6 +13,7 @@ import org.worshipsongs.listener.ThemePreferenceListener
 import org.worshipsongs.preference.LanguagePreference
 import org.worshipsongs.preference.PreferenceListener
 import org.worshipsongs.preference.ThemeListPreference
+import org.worshipsongs.service.ResetDefaultSettingsService
 
 /**
  * @author Madasamy
@@ -27,46 +29,37 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat(), PreferenceListene
     {
         setPreferencesFromResource(R.xml.settings, rootKey)
         languagePreference()
-       // themePreference()
-
+        themePreference()
+        resetPreferenceSettings()
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?)
-//    {
-//        super.onCreate(savedInstanceState)
-//       // addPreferencesFromResource(R.xml.settings)
-////        languagePreference()
-////        themePreference()
-////        resetPreferenceSettings("resetDialog")
-//    }
-
-    private fun  languagePreference()
+    private fun languagePreference()
     {
         val preference = findPreference<LanguagePreference>("languagePreference")
-        if(preference is LanguagePreference)
+        if (preference is LanguagePreference)
         {
             preference.setPreferenceListener(this)
         }
-
     }
-//
+
+
     private fun themePreference()
     {
         val themeListPreference = findPreference<ThemeListPreference>(THEME_KEY)
         themeListPreference!!.onPreferenceChangeListener = ThemePreferenceListener(userSettingActivity, this)
     }
 
-//    fun resetPreferenceSettings(preferenceKey: String)
-//    {
-//        val resetDialogPreference = findPreference(preferenceKey)
-//        resetDialogPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-//            val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
-//            startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            userSettingActivity.activityFinish()
-//            startActivity(startIntent)
-//            false
-//        }
-//    }
+   private fun resetPreferenceSettings()
+    {
+        val resetDialogPreference = findPreference<ResetDefaultSettingsService>("resetDialog")
+        resetDialogPreference!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
+            startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            userSettingActivity.activityFinish()
+            startActivity(startIntent)
+            false
+        }
+    }
 
     fun setUserSettingActivity(userSettingActivity: UserSettingActivity)
     {
@@ -79,6 +72,5 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat(), PreferenceListene
         userSettingActivity.finish()
         val startIntent = Intent(WorshipSongApplication.context, UserSettingActivity::class.java)
         startActivity(startIntent)
-
     }
 }

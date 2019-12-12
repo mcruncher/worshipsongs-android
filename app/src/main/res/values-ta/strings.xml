@@ -145,4 +145,7 @@
     <string name="dark">Dark</string>
     <string name="theme_title">Theme</string>
     <string name="theme_summary">Choose theme</string>
+
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
 </resources>

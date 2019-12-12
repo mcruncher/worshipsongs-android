@@ -33,8 +33,8 @@ import java.io.IOException
 import java.util.*
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author  Madasamy
+ * @version  3.x.
  */
 
 class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragment.DialogListener

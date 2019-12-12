@@ -1,13 +1,15 @@
 package org.worshipsongs.registry;
 
 import android.os.Bundle;
-import androidx.core.app.Fragment;
+
 
 import org.worshipsongs.listener.SongContentViewListener;
 
+import androidx.fragment.app.Fragment;
+
 /**
- * Author : Madasamy
- * Version : x.x.x
+ * @author  Madasamy
+ * @since 3.x.x
  */
 
 public class DummyFragment1 extends Fragment implements ITabFragment

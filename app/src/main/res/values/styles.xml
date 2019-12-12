@@ -60,7 +60,7 @@
         <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:textColor">@color/text_black_color</item>
+<!--        <item name="android:textColor">@color/text_black_color</item>-->
         <item name="android:background">@color/white</item>
         <item name="colorAccent">@color/teal</item>
         <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>

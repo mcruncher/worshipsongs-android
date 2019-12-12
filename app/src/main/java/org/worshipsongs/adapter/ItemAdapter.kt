@@ -58,7 +58,7 @@ class ItemAdapter(list: ArrayList<DragDrop>, private val mLayoutId: Int, private
         holder.itemView.tag = mItemList[position]
     }
 
-    override fun getItemId(position: Int): Long
+    override fun getUniqueItemId(position: Int): Long
     {
         return mItemList[position].id
     }
