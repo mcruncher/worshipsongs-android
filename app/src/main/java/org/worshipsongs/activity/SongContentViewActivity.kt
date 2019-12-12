@@ -3,10 +3,11 @@ package org.worshipsongs.activity
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.view.ViewPager
+
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.viewpager.widget.ViewPager
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R

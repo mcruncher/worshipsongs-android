@@ -4,23 +4,21 @@ package org.worshipsongs.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
-
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.domain.SongDragDrop
 import org.worshipsongs.service.FavouriteService
 
 /**
- * Author: Seenivasan, Madasamy
- * version :1.0.0
+ * @author: Seenivasan, Madasamy
+ * @since :1.0.0
  */
 class AddFavouritesDialogFragment : DialogFragment()
 {

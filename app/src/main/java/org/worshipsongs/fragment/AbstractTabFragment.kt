@@ -1,8 +1,9 @@
 package org.worshipsongs.fragment
 
-import android.support.v4.app.Fragment
+
 import android.view.View
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.R

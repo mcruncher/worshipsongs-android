@@ -1,14 +1,9 @@
 package org.worshipsongs.preference
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.SharedPreferences
-import android.preference.ListPreference
-import android.preference.PreferenceManager
-import android.util.AttributeSet
-import android.util.Log
 
-import org.worshipsongs.CommonConstants
+import android.util.AttributeSet
+import androidx.preference.ListPreference
 import org.worshipsongs.R
 import org.worshipsongs.domain.Theme
 

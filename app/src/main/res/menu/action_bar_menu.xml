@@ -11,7 +11,7 @@
     <item
         android:id="@+id/menu_search"
         android:title="Search by title"
-        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        appcompat:actionViewClass="androidx.appcompat.widget.SearchView"
         appcompat:showAsAction="always"/>
 
 </menu>

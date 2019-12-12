@@ -1,9 +1,8 @@
 package org.worshipsongs.registry;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.core.app.Fragment;
 
-import org.worshipsongs.R;
 import org.worshipsongs.listener.SongContentViewListener;
 
 /**

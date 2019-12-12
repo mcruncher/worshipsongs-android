@@ -23,7 +23,7 @@ android {
         targetSdkVersion 28
         versionCode versionCodeNumber
         versionName APP_VERSION
-        setProperty("archivesBaseName",  "worshipsongs-" + defaultConfig.versionName )
+        setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
     }
     compileOptions {
         sourceCompatibility = "1.8"
@@ -117,22 +117,24 @@ def getCurrentVersionName(versionCodeNumber)
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/YouTubeAndroidPlayerApi-1.2.2.jar')
-    implementation 'com.android.support:preference-v14:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+   // implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.github.woxthebox:draglistview:1.4.8'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'commons-io:commons-io:2.4'
     implementation 'org.apache.commons:commons-lang3:3.3.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    androidTestImplementation('com.android.support.test:runner:0.3') {
+
+    androidTestImplementation('androidx.test.ext:junit:1.1.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     testImplementation 'junit:junit:4.12'

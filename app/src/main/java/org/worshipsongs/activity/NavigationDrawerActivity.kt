@@ -9,17 +9,20 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.preference.PreferenceManager
-import android.support.v7.widget.Toolbar
+
+import androidx.core.view.GravityCompat
+
+
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
+import com.google.android.material.navigation.NavigationView
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.fragment.HomeFragment
@@ -201,7 +204,9 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
 
     }
 
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             UPDATE_DB_REQUEST_CODE -> {
                 val noOfSongs = sharedPreferences!!.getLong(CommonConstants.NO_OF_SONGS, 0)

@@ -1,27 +1,21 @@
 package org.worshipsongs.fragment
 
+
 import android.app.AlertDialog
 import android.app.Dialog
-
-
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
-
-import java.lang.reflect.Field
 
 
 /**
@@ -104,19 +98,19 @@ class AlertDialogFragment : DialogFragment()
     override fun onDetach()
     {
         super.onDetach()
-        try
-        {
-            val childFragmentManager = Fragment::class.java.getDeclaredField("mChildFragmentManager")
-            childFragmentManager.isAccessible = true
-            childFragmentManager.set(this, null)
-        } catch (ex: Exception)
-        {
-            Log.e(AlertDialogFragment::class.java.simpleName, "Error", ex)
-        }
+//        try
+//        {
+//            val childFragmentManager = Fragment::class.java.getDeclaredField("mChildFragmentManager")
+//            childFragmentManager.isAccessible = true
+//            childFragmentManager.set(this, null)
+//        } catch (ex: Exception)
+//        {
+//            Log.e(AlertDialogFragment::class.java.simpleName, "Error", ex)
+//        }
 
     }
 
-    override fun show(manager: FragmentManager, tag: String)
+    override fun show(manager: FragmentManager, tag: String?)
     {
         try
         {
@@ -127,8 +121,8 @@ class AlertDialogFragment : DialogFragment()
         {
             Log.e(AlertDialogFragment::class.java.simpleName, "Error", e)
         }
-
     }
+
 
     companion object
     {

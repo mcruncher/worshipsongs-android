@@ -3,26 +3,15 @@ package org.worshipsongs.service
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
-import android.support.v7.preference.PreferenceManager
-import android.util.Log
-
+import androidx.preference.PreferenceManager
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.domain.ServiceSong
 import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.Type
-import org.worshipsongs.fragment.HomeTabFragment
-import org.worshipsongs.parser.ISongParser
 import org.worshipsongs.parser.SongParser
-import org.worshipsongs.service.DatabaseService
-import org.worshipsongs.service.UserPreferenceSettingService
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
-import java.util.Comparator
-import java.util.HashSet
+import java.util.*
 
 /**
  * @Author : Madasamy

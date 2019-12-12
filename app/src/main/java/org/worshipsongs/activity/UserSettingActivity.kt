@@ -4,19 +4,19 @@ package org.worshipsongs.activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.NavUtils
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.NavUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.fragment.SettingsPreferenceFragment
 import org.worshipsongs.service.PresentationScreenService
 
 /**
- * @Author : Seenivasan
- * @Version : 1.0
+ * @author Madasamy
+ * @since 1.0.0
  */
 class UserSettingActivity : AbstractAppCompactActivity()
 {
@@ -34,7 +34,7 @@ class UserSettingActivity : AbstractAppCompactActivity()
         actionBar!!.setTitle(R.string.settings)
         val settingsPreferenceFragment = SettingsPreferenceFragment()
         settingsPreferenceFragment.setUserSettingActivity(this)
-        fragmentManager.beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit()
+        supportFragmentManager.beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit()
         presentationScreenService = PresentationScreenService(this)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
     }

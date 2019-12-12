@@ -1,30 +1,23 @@
 package org.worshipsongs.dialog
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.text.Html
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.RadioButton
-import android.widget.TextView
-
-import org.worshipsongs.domain.DialogConfiguration
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import org.worshipsongs.R
-
-import java.util.ArrayList
+import org.worshipsongs.domain.DialogConfiguration
+import java.util.*
 
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 
+@Deprecated("Do not use this")
 class CustomDialogBuilder(private val context: Context, private val dialogConfiguration: DialogConfiguration)
 {
     var editText: EditText? = null

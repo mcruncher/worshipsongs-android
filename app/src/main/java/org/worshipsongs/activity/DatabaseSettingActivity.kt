@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.OpenableColumns
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.MenuItem
@@ -16,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.worshipsongs.CommonConstants

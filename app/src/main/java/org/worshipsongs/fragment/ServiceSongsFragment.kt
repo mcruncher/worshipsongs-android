@@ -8,9 +8,9 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
+
+
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,6 +20,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -39,8 +42,8 @@ import java.io.File
 import java.util.ArrayList
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author : Madasamy
+ * @since : 3.x
  */
 
 class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<ServiceSong>, AlertDialogFragment.DialogListener
@@ -97,7 +100,7 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
         songListView!!.adapter = titleAdapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         inflater.inflate(R.menu.action_bar_menu, menu)
         val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -126,6 +129,36 @@ class ServiceSongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Servi
         searchView.setOnQueryTextListener(textChangeListener)
         menu.getItem(0).isVisible = false
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater)
+//    {
+//        inflater.inflate(R.menu.action_bar_menu, menu)
+//        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        val searchView = menu!!.findItem(R.id.menu_search).actionView as SearchView
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+//        searchView.setIconifiedByDefault(true)
+//        searchView.maxWidth = Integer.MAX_VALUE
+//        searchView.queryHint = getString(R.string.action_search)
+//        val image = searchView.findViewById<View>(R.id.search_close_btn) as ImageView
+//        val drawable = image.drawable
+//        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+//        val textChangeListener = object : SearchView.OnQueryTextListener
+//        {
+//            override fun onQueryTextChange(newText: String): Boolean
+//            {
+//                titleAdapter!!.addObjects(songService!!.filteredServiceSongs(newText, serviceSongs))
+//                return true
+//            }
+//
+//            override fun onQueryTextSubmit(query: String): Boolean
+//            {
+//                titleAdapter!!.addObjects(songService!!.filteredServiceSongs(query, serviceSongs))
+//                return true
+//            }
+//        }
+//        searchView.setOnQueryTextListener(textChangeListener)
+//        menu.getItem(0).isVisible = false
+//    }
 
     //Adapter listener methods
    override fun setViews(objects: Map<String, Any>, serviceSong: ServiceSong?)

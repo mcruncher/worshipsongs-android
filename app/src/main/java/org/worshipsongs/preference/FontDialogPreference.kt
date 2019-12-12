@@ -1,16 +1,13 @@
 package org.worshipsongs.preference
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.Preference
-import android.preference.PreferenceManager
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
-
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceViewHolder
+import kotlinx.android.synthetic.main.font_size_dialog.view.*
 import org.worshipsongs.R
 
 /**
@@ -23,10 +20,10 @@ class FontDialogPreference(context: Context, attrs: AttributeSet?) : Preference(
     private var defaultFontSize = 20
     private var maxSize = 100
     private val customSharedPreference = PreferenceManager.getDefaultSharedPreferences(this@FontDialogPreference.context)
-    private var fontSizetextView: TextView? = null
 
     init
     {
+        layoutResource = R.layout.font_size_dialog
         isPersistent = true
         if (attrs != null)
         {
@@ -35,20 +32,19 @@ class FontDialogPreference(context: Context, attrs: AttributeSet?) : Preference(
         }
     }
 
-    override fun onCreateView(parent: ViewGroup): View
+    override fun onBindViewHolder(holder: PreferenceViewHolder?)
     {
-        super.onCreateView(parent)
-        val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = layoutInflater.inflate(R.layout.font_size_dialog, parent, false)
-        setFontSizeSeekBar(view)
-        setFontSizeTextView(view)
-        setMaxSizeTextView(view)
-        return view
+        super.onBindViewHolder(holder)
+        with(holder!!.itemView){
+           setFontSizeSeekBar(portrait_font_size, fontSize)
+            setFontSizeTextView(fontSize)
+            maxsize_textView.text = maxSize.toString()
+        }
     }
 
-    private fun setFontSizeSeekBar(view: View)
+
+    private fun setFontSizeSeekBar(fontSizeSeekBar: SeekBar, fontSizeTextView: TextView?)
     {
-        val fontSizeSeekBar = view.findViewById<View>(R.id.portrait_font_size) as SeekBar
         fontSizeSeekBar.max = maxSize
         fontSize = customSharedPreference.getInt(key, defaultFontSize)
         fontSizeSeekBar.progress = fontSize
@@ -58,7 +54,7 @@ class FontDialogPreference(context: Context, attrs: AttributeSet?) : Preference(
             {
                 fontSize = progress
                 val text = context.resources.getString(R.string.fontSize) + ": " + fontSize
-                fontSizetextView!!.text = text
+                fontSizeTextView!!.text = text
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar)
@@ -73,17 +69,10 @@ class FontDialogPreference(context: Context, attrs: AttributeSet?) : Preference(
         })
     }
 
-    private fun setFontSizeTextView(view: View)
+    private fun setFontSizeTextView(fontSizeTextView: TextView?)
     {
-        fontSizetextView = view.findViewById<View>(R.id.fontSize) as TextView
         val text = context.resources.getString(R.string.fontSize) + ": " + fontSize
-        fontSizetextView!!.text = text
-    }
-
-    private fun setMaxSizeTextView(view: View)
-    {
-        val textView = view.findViewById<View>(R.id.maxsize_textView) as TextView
-        textView.text = maxSize.toString()
+        fontSizeTextView!!.text = text
     }
 
     private fun saveFontSizePreference(key: String, fontSize: Int)

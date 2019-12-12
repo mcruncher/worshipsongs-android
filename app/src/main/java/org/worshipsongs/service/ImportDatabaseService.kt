@@ -1,11 +1,7 @@
 package org.worshipsongs.service
 
+import androidx.appcompat.app.AppCompatActivity
 
-import android.animation.ObjectAnimator
-import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.widget.ProgressBar
 
 /**
  * Author : Madasamy

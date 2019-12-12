@@ -6,11 +6,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.DialogPreference
 import android.preference.PreferenceManager
-import android.support.v7.widget.LinearLayoutManager
+
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.woxthebox.draglistview.DragItem
 import com.woxthebox.draglistview.DragListView

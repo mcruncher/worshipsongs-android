@@ -1,28 +1,21 @@
 package org.worshipsongs.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import org.worshipsongs.CommonConstants
-import org.worshipsongs.WorshipSongApplication
-import org.worshipsongs.activity.NavigationDrawerActivity
-import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.R
+import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.FragmentRegistry
-
-import java.util.ArrayList
+import java.util.*
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author : Madasamy
+ * @since : 3.x
  */
 
 class HomeFragment : Fragment(), SongContentViewListener
