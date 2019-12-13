@@ -93,7 +93,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
             var song: Song? = Song()
             if (extras != null && extras.containsKey("title"))
             {
-                song = songService!!.findContentsByTitle(extras.getString("title"))
+                song = songService!!.findContentsByTitle(extras.getString("title")!!)
             }
             return song
         }

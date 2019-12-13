@@ -94,21 +94,6 @@ class AlertDialogFragment : DialogFragment()
         this.visibleNegativeButton = visibleNegativeButton
     }
 
-    //https://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
-    override fun onDetach()
-    {
-        super.onDetach()
-//        try
-//        {
-//            val childFragmentManager = Fragment::class.java.getDeclaredField("mChildFragmentManager")
-//            childFragmentManager.isAccessible = true
-//            childFragmentManager.set(this, null)
-//        } catch (ex: Exception)
-//        {
-//            Log.e(AlertDialogFragment::class.java.simpleName, "Error", ex)
-//        }
-
-    }
 
     override fun show(manager: FragmentManager, tag: String?)
     {

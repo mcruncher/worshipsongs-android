@@ -2,12 +2,9 @@ package org.worshipsongs.preference
 
 import android.content.Context
 import android.content.res.Configuration
-
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.widget.AppCompatRadioButton
@@ -21,8 +18,8 @@ import java.util.*
 
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author Madasamy
+ * @since 3.x
  */
 
 class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs)
@@ -77,16 +74,7 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
             sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
         }
     }
-
-//    override fun onCreateView(parent: ViewGroup): View
-//    {
-//        super.onCreateView(parent)
-//        val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//        val view = layoutInflater.inflate(R.layout.language_layout, parent, false)
-//        setLanguageRadioGroup(view)
-//        return view
-//    }
-
+    
 
     private fun setLanguagePreferenceProperties(index: Int)
     {

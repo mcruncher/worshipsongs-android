@@ -53,7 +53,7 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
     val countQueryResult: String
         get()
         {
-            var count: String? = null
+            var count: String?
             try
             {
                 count = songService.count().toString()
