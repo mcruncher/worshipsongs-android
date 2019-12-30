@@ -74,7 +74,7 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
             sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
         }
     }
-    
+
 
     private fun setLanguagePreferenceProperties(index: Int)
     {
