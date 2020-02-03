@@ -11,9 +11,9 @@ import android.os.Parcelable
 import android.view.*
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.SongListActivity
@@ -27,8 +27,8 @@ import org.worshipsongs.service.UserPreferenceSettingService
 import org.worshipsongs.utils.CommonUtils
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author: Madasamy
+ * @since: 3.x
  */
 
 class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<Topics>, ITabFragment

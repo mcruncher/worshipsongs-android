@@ -28,8 +28,8 @@ import java.util.*
 
 
 /**
- * @Author : Seenivasan,Madasamy
- * @Version : 1.0
+ * @author: Madasamy
+ * @since: 3.x
  */
 class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<Author>, ITabFragment
 {
