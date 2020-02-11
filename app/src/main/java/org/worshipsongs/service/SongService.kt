@@ -135,9 +135,9 @@ class SongService(context: Context)
             parsedSong.searchLyrics = song.searchLyrics
             parsedSong.comments = song.comments
             parsedSong.contents = songParser.parseContents(WorshipSongApplication.context!!, song.lyrics!!, song.verseOrder!!)
-            parsedSong.urlKey = songParser.parseMediaUrlKey(song.comments!!)
-            parsedSong.chord = songParser.parseChord(song.comments!!)
-            parsedSong.tamilTitle = songParser.parseTamilTitle(song.comments!!)
+            parsedSong.urlKey = songParser.parseMediaUrlKey(song.comments)
+            parsedSong.chord = songParser.parseChord(song.comments)
+            parsedSong.tamilTitle = songParser.parseTamilTitle(song.comments)
             parsedSong.id = song.id
             return parsedSong
         }

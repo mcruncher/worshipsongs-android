@@ -60,8 +60,8 @@ class HomeFragment : Fragment(), SongContentViewListener
     {
         if (homeTabFragment != null)
         {
-            val viewPager = homeTabFragment.view!!.findViewById<ViewPager>(R.id.pager)
-            val existingCurrentItem = viewPager.currentItem
+            val viewPager = homeTabFragment.view?.findViewById<ViewPager>(R.id.pager)
+            val existingCurrentItem = viewPager?.currentItem
             if (arguments != null && arguments!!.containsKey(CommonConstants.TAB_SELECTED_ITEM_ID))
             {
                 return arguments!!.getInt(CommonConstants.TAB_SELECTED_ITEM_ID) != existingCurrentItem
