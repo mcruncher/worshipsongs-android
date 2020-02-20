@@ -21,7 +21,6 @@ import java.util.*
 class HomeFragment : Fragment(), SongContentViewListener
 {
     private var songContentFrameLayout: FrameLayout? = null
-    private val fragmentRegistry = FragmentRegistry()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
