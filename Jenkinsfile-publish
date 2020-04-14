@@ -1,5 +1,5 @@
 pipeline {
-   agent { label "android"}
+   agent { label "java"}
    stages {
       stage('Unit test') {
           steps {
