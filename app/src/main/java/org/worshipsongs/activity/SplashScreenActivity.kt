@@ -7,11 +7,12 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.support.v7.app.AlertDialog
+
 import android.util.Base64
 import android.util.Log
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R

@@ -3,33 +3,23 @@ package org.worshipsongs.fragment
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
 import android.util.TypedValue
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
@@ -46,8 +36,7 @@ import org.worshipsongs.service.SongService
 import org.worshipsongs.service.UserPreferenceSettingService
 import org.worshipsongs.utils.CommonUtils
 import org.worshipsongs.utils.ImageUtils
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author : Madasamy
@@ -177,7 +166,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         songListView!!.onItemClickListener = onItemClickListener()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         // Inflate menu to add items to action bar if it is present.
         inflater.inflate(R.menu.action_bar_menu, menu)
@@ -248,7 +237,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?)
+    override fun onPrepareOptionsMenu(menu: Menu)
     {
         super.onPrepareOptionsMenu(menu)
     }

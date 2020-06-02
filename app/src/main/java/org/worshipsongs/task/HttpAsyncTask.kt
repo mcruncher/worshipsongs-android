@@ -1,12 +1,13 @@
 package org.worshipsongs.task
 
+
 import android.app.ProgressDialog
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.fragment.AlertDialogFragment

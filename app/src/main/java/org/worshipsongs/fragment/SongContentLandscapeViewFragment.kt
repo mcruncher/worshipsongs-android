@@ -2,13 +2,13 @@ package org.worshipsongs.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R

@@ -60,7 +60,7 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
         }
     }
 
-    override fun getItemId(position: Int): Long
+    override fun getUniqueItemId(position: Int): Long
     {
         return mItemList[position].id
     }
@@ -70,7 +70,7 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
         this.favouriteListener = favouriteListener
     }
 
-     inner class ViewHolder(view: View) : DragItemAdapter.ViewHolder(view, R.id.image, false)
+    inner class ViewHolder(view: View) : DragItemAdapter.ViewHolder(view, R.id.image, false)
     {
         var mText: TextView
         var listSwipeItem: RelativeLayout

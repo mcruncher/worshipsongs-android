@@ -3,8 +3,8 @@ package org.worshipsongs.service
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 
 import org.worshipsongs.utils.PropertyUtils
 
@@ -13,7 +13,8 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 /**
- * Created by Seenivasan on 10/26/2014.
+ * @author Madasamy
+ * @since 1.1.0
  */
 open class CustomTagColorService
 {

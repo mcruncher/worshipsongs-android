@@ -1,10 +1,11 @@
 package org.worshipsongs.adapter
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+
 import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.WorshipSongApplication
@@ -15,8 +16,8 @@ import org.worshipsongs.fragment.SongContentLandscapeViewFragment
 import org.worshipsongs.service.AuthorService
 
 /**
- * author:madasamy
- * version:2.1.0
+ * @author: Madasamy
+ * @since: 2.1.0
  */
 class SongContentLandScapeViewerPageAdapter(fragmentManager: FragmentManager, private val title: String) : FragmentStatePagerAdapter(fragmentManager)
 {

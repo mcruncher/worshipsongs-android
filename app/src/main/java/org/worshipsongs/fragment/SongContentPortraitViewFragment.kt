@@ -1,56 +1,37 @@
 package org.worshipsongs.fragment
 
-import android.annotation.TargetApi
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.getbase.floatingactionbutton.FloatingActionButton
 import com.getbase.floatingactionbutton.FloatingActionsMenu
 import com.google.android.youtube.player.YouTubePlayer
-
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.activity.CustomYoutubeBoxActivity
-import org.worshipsongs.activity.SongContentViewActivity
 import org.worshipsongs.adapter.PresentSongCardViewAdapter
 import org.worshipsongs.domain.Setting
 import org.worshipsongs.domain.Song
-import org.worshipsongs.service.AuthorService
-import org.worshipsongs.service.CustomTagColorService
-import org.worshipsongs.service.PopupMenuService
-import org.worshipsongs.service.PresentationScreenService
-import org.worshipsongs.service.SongService
-import org.worshipsongs.service.UserPreferenceSettingService
+import org.worshipsongs.service.*
 import org.worshipsongs.utils.CommonUtils
 import org.worshipsongs.utils.PermissionUtils
-
-import java.util.ArrayList
+import java.util.*
 
 /**
- * Author: Madasamy, Vignesh Palanisamy
- * version: 1.0.0
+ * @author: Madasamy, Vignesh Palanisamy
+ * @since: 1.0.0
  */
 
 class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFragment
@@ -484,7 +465,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         menu.clear()
         if (CommonUtils.isPhone(context!!))
@@ -493,7 +474,6 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
@@ -517,10 +497,11 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?)
+    override fun onPrepareOptionsMenu(menu: Menu)
     {
         super.onPrepareOptionsMenu(menu)
     }
+
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean)
     {

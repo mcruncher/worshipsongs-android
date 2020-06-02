@@ -1,22 +1,20 @@
 package org.worshipsongs.adapter
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.Log
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.fragment.SongContentPortraitViewFragment
 import org.worshipsongs.service.PresentationScreenService
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * author : Madasamy
  * version : 2.1.0
  */
-class SongContentPortraitViewerPageAdapter(private val fragmentManager: FragmentManager, private val bundle: Bundle, private val presentationScreenService: PresentationScreenService) : FragmentStatePagerAdapter(fragmentManager)
+class SongContentPortraitViewerPageAdapter(private val fragmentManager: FragmentManager, private val bundle: Bundle, private val presentationScreenService: PresentationScreenService) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_SET_USER_VISIBLE_HINT)
 {
     private val titles: ArrayList<String>?
 
@@ -24,6 +22,8 @@ class SongContentPortraitViewerPageAdapter(private val fragmentManager: Fragment
     {
         this.titles = bundle.getStringArrayList(CommonConstants.TITLE_LIST_KEY)
     }
+
+
 
     override fun getItem(position: Int): Fragment
     {

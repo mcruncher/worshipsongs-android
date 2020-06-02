@@ -5,13 +5,13 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -93,7 +93,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
             var song: Song? = Song()
             if (extras != null && extras.containsKey("title"))
             {
-                song = songService!!.findContentsByTitle(extras.getString("title"))
+                song = songService!!.findContentsByTitle(extras.getString("title")!!)
             }
             return song
         }
@@ -161,7 +161,7 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
         val transaction = supportFragmentManager.beginTransaction()
         if (isLandScape)
         {
-            transaction.remove(youTubePlayerFragment).commit()
+            transaction.replace(R.id.youtube_fragment, youTubePlayerFragment).commit()
         } else
         {
             transaction.add(R.id.youtube_fragment, youTubePlayerFragment).commit()
@@ -283,8 +283,10 @@ class CustomYoutubeBoxActivity : AbstractAppCompactActivity(), YouTubePlayer.OnI
         }
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RECOVERY_DIALOG_REQUEST)
         {
             // Retry initialization if user performed a recovery action

@@ -1,7 +1,8 @@
 package org.worshipsongs.listener
 
 import android.content.Intent
-import android.preference.Preference
+import androidx.preference.Preference
+
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.WorshipSongApplication

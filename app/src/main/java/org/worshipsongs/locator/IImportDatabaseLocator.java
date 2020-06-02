@@ -1,9 +1,7 @@
 package org.worshipsongs.locator;
 
-import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ProgressBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 import java.util.Map;
 

@@ -2,17 +2,18 @@ package org.worshipsongs.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import org.worshipsongs.R
 import org.worshipsongs.utils.ThemeUtils
 
 /**
- * @author: Madasamy
- * @version: 3.3.x
+ * @author Madasamy
+ * @since 3.3.x
  */
 open class AbstractAppCompactActivity : AppCompatActivity()
 {

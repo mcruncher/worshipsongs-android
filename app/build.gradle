@@ -2,8 +2,8 @@ plugins {
     id "org.sonarqube" version "2.6.2"
 }
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'jacoco-android'
 apply from: '../sonarqube.gradle'
 apply plugin: 'groovyx.android'
@@ -23,7 +23,7 @@ android {
         targetSdkVersion 28
         versionCode versionCodeNumber
         versionName APP_VERSION
-        setProperty("archivesBaseName",  "worshipsongs-" + defaultConfig.versionName )
+        setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
     }
     compileOptions {
         sourceCompatibility = "1.8"
@@ -53,6 +53,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
+            debuggable = false
         }
     }
     packagingOptions {
@@ -74,9 +75,9 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
 
+        unitTests.all {
+            maxHeapSize = "1024m"
             jacoco {
                 includeNoLocationClasses = true
             }
@@ -84,6 +85,7 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -117,32 +119,33 @@ def getCurrentVersionName(versionCodeNumber)
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/YouTubeAndroidPlayerApi-1.2.2.jar')
-    implementation 'com.android.support:preference-v14:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
     implementation 'com.getbase:floatingactionbutton:1.10.1'
-    implementation 'com.github.woxthebox:draglistview:1.4.8'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.github.woxthebox:draglistview:1.6.6'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'commons-io:commons-io:2.4'
     implementation 'org.apache.commons:commons-lang3:3.3.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    androidTestImplementation('com.android.support.test:runner:0.3') {
+
+    androidTestImplementation('androidx.test.ext:junit:1.1.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.json:json:20140107'
     testImplementation 'org.codehaus.groovy:groovy-all:2.4.15'
     testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
-    testImplementation 'org.robolectric:robolectric:4.3'
-    testImplementation 'org.robolectric:shadows-support-v4:3.0'
+    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'org.robolectric:shadows-support-v4:3.1'
     testImplementation 'androidx.test:core:1.2.0'
-    testImplementation 'com.github.hkhc:electricspock:0.8'
+    testImplementation 'com.github.hkhc:electricspock:0.9'
 }
 repositories {
     mavenCentral()

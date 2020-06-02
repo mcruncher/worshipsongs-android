@@ -3,8 +3,8 @@ package org.worshipsongs.activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R

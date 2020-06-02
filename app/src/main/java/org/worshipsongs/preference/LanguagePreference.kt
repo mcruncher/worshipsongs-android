@@ -1,32 +1,25 @@
 package org.worshipsongs.preference
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
-
-import android.os.Build
-import android.preference.Preference
-import android.preference.PreferenceManager
-import android.support.annotation.IdRes
-import android.support.v7.widget.AppCompatRadioButton
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-
+import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
+import kotlinx.android.synthetic.main.language_layout.view.*
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.utils.CommonUtils
-
-import java.util.Locale
+import java.util.*
 
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author Madasamy
+ * @since 3.x
  */
 
 class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs)
@@ -36,6 +29,7 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
 
     init
     {
+        layoutResource = R.layout.language_layout
         isPersistent = true
 
         if (attrs != null)
@@ -43,32 +37,31 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
             val defaultLanguage = attrs.getAttributeValue(null, "defaultLanguage")
             languageIndex = if ("tamil".equals(defaultLanguage, ignoreCase = true)) 0 else 1
         }
+
     }
 
-    override fun onCreateView(parent: ViewGroup): View
+    override fun onBindViewHolder(holder: PreferenceViewHolder?)
     {
-        super.onCreateView(parent)
-        val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = layoutInflater.inflate(R.layout.language_layout, parent, false)
-        setLanguageRadioGroup(view)
-        return view
+        super.onBindViewHolder(holder)
+        with(holder!!.itemView){
+            setLanguageRadioGroup(type)
+        }
     }
 
-    private fun setLanguageRadioGroup(view: View)
+    private fun setLanguageRadioGroup(radioGroup: RadioGroup?)
     {
-        val languageTypeRadioGroup = view.findViewById<View>(R.id.type) as RadioGroup
         val index = sharedPreferences.getInt(CommonConstants.LANGUAGE_INDEX_KEY, languageIndex)
         setLanguagePreferenceProperties(index)
         setLocale(if (index == 0) "ta" else "en")
-        languageTypeRadioGroup.check(if (index == 0) R.id.language_tamil else R.id.language_english)
+        radioGroup!!.check(if (index == 0) R.id.language_tamil else R.id.language_english)
         val typedValue = TypedValue()
         context.theme.resolveAttribute(android.R.attr.textColor, typedValue, true)
-        val tamilRadioButton = view.findViewById<AppCompatRadioButton>(R.id.language_tamil)
+        val tamilRadioButton = radioGroup.findViewById<AppCompatRadioButton>(R.id.language_tamil)
         tamilRadioButton.setTextColor(typedValue.data)
         tamilRadioButton.visibility = if (CommonUtils.isAboveKitkat) View.VISIBLE else View.GONE
-        (view.findViewById<View>(R.id.language_english) as AppCompatRadioButton).setTextColor(typedValue.data)
-        languageTypeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val foodOrSupplementType = view.findViewById<View>(checkedId) as RadioButton
+        (radioGroup.findViewById<View>(R.id.language_english) as AppCompatRadioButton).setTextColor(typedValue.data)
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val foodOrSupplementType = radioGroup.findViewById<View>(checkedId) as RadioButton
             if (foodOrSupplementType.id == R.id.language_tamil)
             {
                 setLocaleAndSelectListener("ta")
@@ -81,6 +74,7 @@ class LanguagePreference(context: Context, attrs: AttributeSet?) : Preference(co
             sharedPreferences.edit().putBoolean(CommonConstants.UPDATE_NAV_ACTIVITY_KEY, true).apply()
         }
     }
+
 
     private fun setLanguagePreferenceProperties(index: Int)
     {

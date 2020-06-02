@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:appcompat="http://schemas.android.com/apk/res-auto"
-      xmlns:app="http://schemas.android.com/tools">
+      xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/filter"
@@ -11,7 +11,7 @@
     <item
         android:id="@+id/menu_search"
         android:title="Search by title"
-        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        appcompat:actionViewClass="androidx.appcompat.widget.SearchView"
         appcompat:showAsAction="always"/>
 
 </menu>

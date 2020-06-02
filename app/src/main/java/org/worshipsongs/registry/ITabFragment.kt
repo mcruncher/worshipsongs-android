@@ -5,8 +5,8 @@ import android.os.Bundle
 import org.worshipsongs.listener.SongContentViewListener
 
 /**
- * Author : Madasamy
- * Version : 3.x.x
+ * @author: Madasamy
+ * @since: 3.x
  */
 
 interface ITabFragment

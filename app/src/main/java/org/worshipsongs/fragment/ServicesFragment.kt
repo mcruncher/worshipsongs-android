@@ -7,14 +7,15 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -29,8 +30,8 @@ import org.worshipsongs.utils.CommonUtils
 import java.util.ArrayList
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author : Madasamy
+ * @since : 3.x
  */
 
 class ServicesFragment : Fragment(), TitleAdapter.TitleAdapterListener<String>, AlertDialogFragment.DialogListener, ITabFragment

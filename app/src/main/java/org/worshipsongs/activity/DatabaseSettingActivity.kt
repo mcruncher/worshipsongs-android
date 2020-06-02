@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.OpenableColumns
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.MenuItem
@@ -16,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.worshipsongs.CommonConstants
@@ -33,8 +33,8 @@ import java.io.IOException
 import java.util.*
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author  Madasamy
+ * @version  3.x.
  */
 
 class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragment.DialogListener
@@ -53,7 +53,7 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
     val countQueryResult: String
         get()
         {
-            var count: String? = null
+            var count: String?
             try
             {
                 count = songService.count().toString()

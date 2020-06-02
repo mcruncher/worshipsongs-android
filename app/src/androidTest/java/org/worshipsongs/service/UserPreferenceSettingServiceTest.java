@@ -1,16 +1,17 @@
 package org.worshipsongs.service;
 
-import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author  Madasamy
+ * @since  3.x
  */
 
 @RunWith(AndroidJUnit4.class)

@@ -2,36 +2,27 @@ package org.worshipsongs.service
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.AsyncTask
 import android.preference.PreferenceManager
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.SplashScreenActivity
 import org.worshipsongs.dialog.CustomDialogBuilder
 import org.worshipsongs.domain.DialogConfiguration
-
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.net.URL
-import java.net.URLConnection
 
 /**
  * Author : Madasamy

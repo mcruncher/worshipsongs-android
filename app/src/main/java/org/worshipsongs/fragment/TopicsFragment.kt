@@ -6,21 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-
-import org.apache.commons.lang3.StringUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.SongListActivity
@@ -34,8 +27,8 @@ import org.worshipsongs.service.UserPreferenceSettingService
 import org.worshipsongs.utils.CommonUtils
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author: Madasamy
+ * @since: 3.x
  */
 
 class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<Topics>, ITabFragment
@@ -80,18 +73,18 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
         topicsListView!!.adapter = titleAdapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         inflater.inflate(R.menu.action_bar_menu, menu)
         val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu!!.findItem(R.id.menu_search).actionView as android.support.v7.widget.SearchView
+        val searchView = menu!!.findItem(R.id.menu_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
         searchView.maxWidth = Integer.MAX_VALUE
         searchView.queryHint = getString(R.string.action_search)
         val image = searchView.findViewById<View>(R.id.search_close_btn) as ImageView
         val drawable = image.drawable
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
-        searchView.setOnQueryTextListener(object : android.support.v7.widget.SearchView.OnQueryTextListener
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener
         {
             override fun onQueryTextSubmit(query: String): Boolean
             {

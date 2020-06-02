@@ -3,33 +3,22 @@ package org.worshipsongs.fragment
 
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
-
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.woxthebox.draglistview.DragItem
 import com.woxthebox.draglistview.DragListView
-
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.SongContentViewActivity
 import org.worshipsongs.adapter.FavouriteSongAdapter
-import org.worshipsongs.domain.Favourite
 import org.worshipsongs.domain.Setting
-import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.service.FavouriteService
@@ -37,8 +26,7 @@ import org.worshipsongs.service.PopupMenuService
 import org.worshipsongs.service.SongService
 import org.worshipsongs.service.UserPreferenceSettingService
 import org.worshipsongs.utils.CommonUtils
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author : Madasamy
@@ -175,7 +163,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
         this.songContentViewListener = songContentViewListener
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         menu.clear()
         if (CommonUtils.isPhone(context!!))
@@ -184,6 +172,7 @@ class FavouriteSongsFragment : Fragment(), FavouriteSongAdapter.FavouriteListene
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {

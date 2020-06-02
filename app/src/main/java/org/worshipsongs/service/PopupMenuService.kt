@@ -11,13 +11,14 @@ import android.os.Bundle
 import android.os.Environment
 import android.print.PrintAttributes
 import android.print.pdf.PrintedPdfDocument
-import android.support.v4.content.FileProvider
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.FileProvider
+
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.BuildConfig
 import org.worshipsongs.CommonConstants

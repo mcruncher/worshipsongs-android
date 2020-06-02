@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.preference.PreferenceManager
-import android.support.v4.view.ViewPager
+
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.util.TypedValue
@@ -17,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R

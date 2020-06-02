@@ -2,9 +2,10 @@ package org.worshipsongs.component
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+
 import org.worshipsongs.fragment.SongsFragment
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.FragmentRegistry
