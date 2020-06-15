@@ -12,7 +12,7 @@
         android:id="@+id/upload_database_button"
         android:text="@string/import_database_title"
         android:textAllCaps="false"
-        android:theme="@style/CustomButtonTheme"/>
+       />
 
     <Button
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:layout_below="@+id/upload_database_button"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"
-        android:theme="@style/CustomButtonTheme"/>
+       />
 
     <TextView
         android:text=""

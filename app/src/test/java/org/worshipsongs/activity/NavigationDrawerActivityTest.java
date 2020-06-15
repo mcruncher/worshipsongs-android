@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v7.preference.PreferenceManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,8 @@ import org.robolectric.annotation.Config;
 import org.worshipsongs.BuildConfig;
 import org.worshipsongs.R;
 
+import androidx.preference.PreferenceManager;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertEquals;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP_MR1)
+@Config(sdk = Build.VERSION_CODES.LOLLIPOP_MR1)
 public class NavigationDrawerActivityTest
 {
     private NavigationDrawerActivity navigationDrawerActivity;

@@ -1,10 +1,7 @@
 package org.worshipsongs.locator;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import org.worshipsongs.CommonConstants;
 import org.worshipsongs.service.ImportDatabaseService;
@@ -16,11 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
 import dalvik.system.DexFile;
 
+
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author  Madasamy
+ * @since  3.x
  */
 
 public class ImportDatabaseLocator implements IImportDatabaseLocator
@@ -31,8 +30,8 @@ public class ImportDatabaseLocator implements IImportDatabaseLocator
     public void load(AppCompatActivity appCompatActivity, Map<String, Object> objects)
     {
         for (ImportDatabaseService importDatabaseService : findAll(appCompatActivity, PACKAGE_NAME)) {
-            int index = (Integer) objects.get(CommonConstants.INDEX_KEY);
-            ProgressBar progressBar = (ProgressBar)objects.get(CommonConstants.PROGRESS_BAR_KEY);
+            int index = (Integer) objects.get(CommonConstants.INSTANCE.getINDEX_KEY());
+           // ProgressBar progressBar = (ProgressBar)objects.get(CommonConstants.INSTANCE.getPROGRESS_BAR_KEY());
             if (importDatabaseService.getOrder() == index) {
                 importDatabaseService.loadDb(appCompatActivity, objects);
             }

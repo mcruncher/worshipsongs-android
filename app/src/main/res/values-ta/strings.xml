@@ -19,6 +19,7 @@
     <string name="artists">ஆசிரியர்கள்</string>
     <string name="playlists">பிடித்தவை</string>
     <string name="categories">வகைகள்</string>
+    <string name="song_books">பாடல் புத்தகங்கள்</string>
 
     <!--Settings-->
     <string name="Lyrics_preference_settings">Lyrics Preference</string>
@@ -128,7 +129,6 @@
     <string name="favourite_title">Add favourite</string>
     <string name="font_size">Font size</string>
     <string name="noOfSongsAvailable">%1$d Songs are available</string>
-    <string name="song_books">பாடல் புத்தகங்கள்</string>
 
     <string name="hint_title_or_number">Search by title or song book number</string>
     <string name="search_title_or_content">Title or Song book number</string>
@@ -141,4 +141,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="message_songs_not_existing">Please update songs, imported favourite songs not existing in database</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="theme_title">Theme</string>
+    <string name="theme_summary">Choose theme</string>
+
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
 </resources>

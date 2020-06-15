@@ -108,7 +108,7 @@ public class CustomTagColorServiceTest
         String expected = "                                Aalugai seiyyum aaviyaanavarae\n" +
                 "                                Paliyaai thanthaen parisuththamaanavarae\n" +
                 "                                Aaviyaanavarae - En aatralaanavarae\n";
-        TextView textView = new TextView(WorshipSongApplication.getContext());
+        TextView textView = new TextView(WorshipSongApplication.Companion.getContext());
         customTagColorService.setCustomTagTextView(textView, content, 0xffffffff, 0xffffffff);
         assertEquals(expected, result.toString());
     }
@@ -148,7 +148,7 @@ public class CustomTagColorServiceTest
         String expected = "ஆளுகை செய்யும் ஆவியானவரே \n" +
                 "                                பலியாய் தந்தேன் பரிசுத்தமானவரே\n" +
                 "                                ஆவியானவரே - என் ஆற்றலானவரே\n";
-        TextView textView = new TextView(WorshipSongApplication.getContext());
+        TextView textView = new TextView(WorshipSongApplication.Companion.getContext());
         customTagColorService.setCustomTagTextView(textView, content, 0xffffffff, 0xffffffff);
         assertEquals(expected, result.toString());
     }
@@ -185,7 +185,7 @@ public class CustomTagColorServiceTest
         String expected = "Aalugai seiyyum aaviyaanavarae\n" +
                 "                                Paliyaai thanthaen parisuththamaanavarae\n" +
                 "                                Aaviyaanavarae - En aatralaanavarae\n";
-        TextView textView = new TextView(WorshipSongApplication.getContext());
+        TextView textView = new TextView(WorshipSongApplication.Companion.getContext());
         customTagColorService.setCustomTagTextView(textView, content, 0xffffffff, 0xffffffff);
         assertEquals(expected, result.toString());
     }
