@@ -12,25 +12,20 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
-
 import org.worshipsongs.R
 import org.worshipsongs.service.CustomTagColorService
 import org.worshipsongs.service.UserPreferenceSettingService
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author: Madasamy
+ * @version: 3.x
  */
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-class RemoteSongPresentation(context: Context, display: Display)//this.context = context;
-    : Presentation(context, display)
+class RemoteSongPresentation(context: Context?, display: Display?): Presentation(context, display)
 {
-
-    private val preferenceSettingService = UserPreferenceSettingService()
+    private val preferenceSettingService = UserPreferenceSettingService(context!!)
     private val customTagColorService = CustomTagColorService()
-
-    // private Context context;
     private var songSlideTextView: TextView? = null
     private var imageView: ImageView? = null
     private var scrollView: ScrollView? = null
@@ -38,7 +33,7 @@ class RemoteSongPresentation(context: Context, display: Display)//this.context =
     private var songTitleTextView: TextView? = null
     private var authorNameTextView: TextView? = null
 
-    override fun onCreate(savedInstanceState: Bundle)
+    override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.song_content_landscape_view_fragment)
