@@ -65,7 +65,9 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
     private val customTagColorService = CustomTagColorService()
 
     private val isPresentSong: Boolean
-        get() = presentationScreenService != null && presentationScreenService!!.presentation != null
+        get() {
+            return  presentationScreenService != null && presentationScreenService!!.presentation != null
+        }
 
     private val songBookNumber: String
         get()
@@ -185,8 +187,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             })
             setPlaySongFloatingMenuButton(view, song.urlKey!!)
             setPresentSongFloatingMenuButton(view)
-        } else
-        {
+        } else {
             floatingActionMenu!!.visibility = View.GONE
             if (isPresentSong)
             {

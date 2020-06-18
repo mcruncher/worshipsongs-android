@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.viewpager.widget.ViewPager
@@ -20,8 +21,8 @@ import org.worshipsongs.service.PresentationScreenService
 import org.worshipsongs.service.UserPreferenceSettingService
 
 /**
- * @Author : Seenivasan, Madasamy, Vignesh Palanisamy
- * @Version : 1.0
+ * @author: Seenivasan, Madasamy, Vignesh Palanisamy
+ * @version: 1.0
  */
 class SongContentViewActivity : AbstractAppCompactActivity()
 {
@@ -167,5 +168,4 @@ class SongContentViewActivity : AbstractAppCompactActivity()
     {
         super.onSaveInstanceState(outState)
     }
-
 }

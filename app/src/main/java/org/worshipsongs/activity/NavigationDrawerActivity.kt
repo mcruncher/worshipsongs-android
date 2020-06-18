@@ -9,6 +9,7 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 
 import androidx.core.view.GravityCompat
 
@@ -219,6 +220,11 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
         }
     }
 
+    public override fun onResume()
+    {
+        super.onResume()
+        presentationScreenService!!.onResume()
+    }
     override fun onPause() {
         super.onPause()
         presentationScreenService!!.onPause()
@@ -226,7 +232,7 @@ class NavigationDrawerActivity : AbstractAppCompactActivity(), NavigationView.On
 
     override fun onStop() {
         super.onStop()
-        presentationScreenService!!.onResume()
+        presentationScreenService!!.onStop()
     }
 
     companion object {
