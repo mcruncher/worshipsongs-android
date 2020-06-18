@@ -24,7 +24,7 @@ class PresentationScreenService
     private val preferenceSettingService = UserPreferenceSettingService()
     private var context: Context? = null
     var presentation: RemoteSongPresentation? = null
-    private var songMediaRouterCallBack = DefaultMediaRouterCallBack()
+    private val songMediaRouterCallBack = DefaultMediaRouterCallBack()
     private var mediaRouter: MediaRouter? = null
 
     private val remoteDisplayDismissListener = DialogInterface.OnDismissListener { dialog ->
@@ -81,7 +81,6 @@ class PresentationScreenService
                 }
                 presentation = null
             }
-            Log.i(this.javaClass.simpleName, "Presentation: $presentation")
             if (presentation == null && selectedDisplay != null)
             {
                 presentation = RemoteSongPresentation(context!!, selectedDisplay)
