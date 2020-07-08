@@ -104,7 +104,7 @@ class TopicsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener<
 
     override fun onSaveInstanceState(outState: Bundle)
     {
-        if (this.isAdded)
+        if (this.isAdded && topicsListView != null)
         {
             outState.putParcelable(STATE_KEY, topicsListView!!.onSaveInstanceState())
         }

@@ -101,7 +101,7 @@ class SongBookFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListene
 
     override fun onSaveInstanceState(outState: Bundle)
     {
-        if (this.isAdded)
+        if (this.isAdded && songBookListView != null)
         {
             outState.putParcelable(STATE_KEY, songBookListView!!.onSaveInstanceState())
         }
