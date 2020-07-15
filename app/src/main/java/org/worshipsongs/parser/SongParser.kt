@@ -2,30 +2,21 @@ package org.worshipsongs.parser
 
 import android.content.Context
 import android.util.Log
-
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.w3c.dom.CharacterData
-import org.w3c.dom.Document
 import org.w3c.dom.Element
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
 import org.worshipsongs.WorshipSongApplication
 import org.worshipsongs.domain.Verse
 import org.worshipsongs.utils.RegexUtils
-
 import java.io.File
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.HashMap
-
+import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author: Madasamy
+ * @version: 3.x
  */
-
 class SongParser : ISongParser
 {
 
@@ -47,7 +38,11 @@ class SongParser : ISongParser
             contents.clear()
             for (verseOrderKey in verseOrderList)
             {
-                contents.add(verseDataMap[verseOrderKey]!!)
+                val content = verseDataMap[verseOrderKey]
+                if (content != null)
+                {
+                    contents.add(content)
+                }
             }
         }
         Log.d(this.javaClass.name, "Parsed contents :$contents")
