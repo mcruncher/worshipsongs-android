@@ -45,13 +45,10 @@ import java.util.*
 
 class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabFragment
 {
-
-
     private var state: Parcelable? = null
     private var searchView: SearchView? = null
     private var filterMenuItem: MenuItem? = null
     private var songListView: ListView? = null
-
     private var songs: List<Song>? = null
     private var titleAdapter: TitleAdapter<Song>? = null
     private var songContentViewListener: SongContentViewListener? = null
@@ -289,7 +286,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     override fun onSaveInstanceState(outState: Bundle)
     {
-        if (this.isAdded)
+        if (this.isAdded && songListView != null)
         {
             outState.putParcelable(STATE_KEY, songListView!!.onSaveInstanceState())
         }

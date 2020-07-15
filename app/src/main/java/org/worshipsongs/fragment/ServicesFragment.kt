@@ -90,7 +90,7 @@ class ServicesFragment : Fragment(), TitleAdapter.TitleAdapterListener<String>, 
 
     override fun onSaveInstanceState(outState: Bundle)
     {
-        if (this.isAdded)
+        if (this.isAdded && serviceListView !=null)
         {
             outState.putParcelable(CommonConstants.STATE_KEY, serviceListView!!.onSaveInstanceState())
         }

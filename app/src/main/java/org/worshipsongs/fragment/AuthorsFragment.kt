@@ -131,7 +131,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
 
     override fun onSaveInstanceState(outState: Bundle)
     {
-        if (this.isAdded)
+        if (this.isAdded && authorListView != null)
         {
             outState.putParcelable(STATE_KEY, authorListView!!.onSaveInstanceState())
         }

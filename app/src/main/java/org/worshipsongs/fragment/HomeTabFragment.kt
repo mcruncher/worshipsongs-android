@@ -24,8 +24,8 @@ import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.FragmentRegistry
 
 /**
- * author:Seenivasan, Madasamy
- * version:2.1.0
+ * @author: Seenivasan, Madasamy
+ * @version: 2.1.0
  */
 class HomeTabFragment : Fragment()
 {
@@ -40,10 +40,6 @@ class HomeTabFragment : Fragment()
         val view = inflater.inflate(R.layout.home_tab_layout, container, false) as View
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
         titles = fragmentRegistry.getTitles( activity as Activity)
-        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + activity)
-        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + titles)
-        Log.i(HomeTabFragment::class.java.simpleName, "Current  version" + songContentViewListener)
-
 
         val adapter = HomeViewerPageAdapter(childFragmentManager, activity!!, titles!!, songContentViewListener)
         adapter.notifyDataSetChanged()
