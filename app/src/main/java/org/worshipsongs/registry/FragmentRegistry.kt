@@ -1,7 +1,6 @@
 package org.worshipsongs.registry
 
 import android.app.Activity
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
 
@@ -11,14 +10,13 @@ import org.worshipsongs.domain.DragDrop
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
-import java.util.Enumeration
 import java.util.HashSet
 
 import dalvik.system.DexFile
 
 /**
- * Author : Madasamy
- * Version : 3.x.x
+ * @author: Madasamy
+ * @version: 3.x.x
  */
 
 class FragmentRegistry
@@ -45,7 +43,17 @@ class FragmentRegistry
                 titles.add(configuredDragDrop.title!!)
             }
         }
+        setDefaultTitles(titles, defaultDragDrops)
         return titles
+    }
+
+    private fun setDefaultTitles(titles: ArrayList<String>, defaultDragDrops: ArrayList<DragDrop>)
+    {
+        if (titles.isEmpty())
+        {
+            defaultDragDrops.forEach { it.title?.let { existingTitle ->
+                titles.add(existingTitle) } }
+        }
     }
 
     fun getDragDrops(activity: Activity): ArrayList<DragDrop>

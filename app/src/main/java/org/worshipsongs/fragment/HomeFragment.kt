@@ -14,8 +14,8 @@ import org.worshipsongs.registry.FragmentRegistry
 import java.util.*
 
 /**
- * @author : Madasamy
- * @since : 3.x
+ * @author: Madasamy
+ * @since: 3.x
  */
 
 class HomeFragment : Fragment(), SongContentViewListener
