@@ -160,4 +160,9 @@ class PresentationScreenService
         }
     }
 
+    fun isPresentSong(): Boolean
+    {
+        return mediaRouter!!.selectedRoute.presentationDisplay != null
+    }
+
 }
