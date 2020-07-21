@@ -30,17 +30,14 @@ import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.Type
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.ITabFragment
-import org.worshipsongs.service.DatabaseService
-import org.worshipsongs.service.PopupMenuService
-import org.worshipsongs.service.SongService
-import org.worshipsongs.service.UserPreferenceSettingService
+import org.worshipsongs.service.*
 import org.worshipsongs.utils.CommonUtils
 import org.worshipsongs.utils.ImageUtils
 import java.util.*
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author : Madasamy
+ * @version : 3.x
  */
 
 class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabFragment
@@ -57,6 +54,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
     private val popupMenuService = PopupMenuService()
     private var songService: SongService? = null
     private var databaseService: DatabaseService? = null
+    private var presentationScreenService: PresentationScreenService? = null
 
     private val type: String
         get()
@@ -112,6 +110,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         }
         databaseService = DatabaseService(activity!!)
         songService = SongService(activity!!.applicationContext)
+        presentationScreenService = PresentationScreenService(activity!!)
         setHasOptionsMenu(true)
         initSetUp()
     }
@@ -304,7 +303,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         val titleTextView = objects[CommonConstants.TITLE_KEY] as TextView?
         titleTextView!!.text = getTitle(song!!)
         val presentingSong = Setting.instance.song
-        if (presentingSong != null && presentingSong.title == song.title)
+        if (presentingSong != null && presentingSong.title == song.title && presentationScreenService!!.isPresentSong())
         {
             titleTextView.setTextColor(context!!.resources.getColor(R.color.light_navy_blue))
         } else
@@ -407,7 +406,6 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     companion object
     {
-
         private val CLASS_NAME = SongsFragment::class.java.simpleName
         private val STATE_KEY = "listViewState"
 
@@ -418,5 +416,4 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
             return songsFragment
         }
     }
-
 }
