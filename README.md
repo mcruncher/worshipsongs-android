@@ -68,7 +68,7 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Copy part of song
     </li>
     <li>
-        Easy update songs
+        Easily update songs
     </li>
     <li>
         Optimized view for tablets
@@ -76,7 +76,7 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
      <li>
         Export song as PDF and share on Social media
     </li>
-    <li>
+    <li>Cancel Changes
         Professional design with no ads.
     </li>
  </ul>
@@ -94,7 +94,7 @@ Refine your search terms. For example, instead of "Arathanai", try searching for
 Q. I still couldn't find the song. I bet it's not there in your database. What now?
 </h4>
 <p>
-You can create a new issue at our <a href="https://github.com/crunchersaspire/worshipsongs-db">Github project</a>. Worship Songs is an open source project. Anyone interested can contribute song lyrics. If you are interested, please let us know.
+You can create a new issue at our <a href="https://github.com/crunchersaspire/worshipsongs-db-dev/issues">Github project for the songs database</a>. Worship Songs is an open source project. Anyone interested can contribute song lyrics. If you are interested, please let us know.
 </p>
 
 <h4>
