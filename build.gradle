@@ -29,7 +29,7 @@ allprojects {
         mavenLocal()
         maven {
             name = "nexus"
-            url = "http://nexus.mcruncher.com/content/groups/public"
+            url = "https://artifacts.mcruncher.com/content/groups/public"
         }
         maven { url 'https://jitpack.io' }
         maven {
