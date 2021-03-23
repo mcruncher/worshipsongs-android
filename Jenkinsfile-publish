@@ -1,11 +1,18 @@
 pipeline {
    agent { label "java"}
+
+    tools{
+        gradle 'Gradle-5.4'
+    }
+
+      environment{
+        GRADLE_OPTS='-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m'
+      }
+
    stages {
       stage('Unit test') {
           steps {
-              withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                  sh './gradlew clean testDebug'
-              }
+            sh './gradlew clean testDebug'
           }
           post {
             always {
@@ -15,9 +22,7 @@ pipeline {
       }
    //   stage('Code coverage') {
    //       steps {
-   //         withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-   //               sh './gradlew clean sonarComplete'
-   //         }
+   //           sh './gradlew clean sonarComplete'
    //       }
    //       post {
    //          success {
@@ -28,10 +33,8 @@ pipeline {
    //   }
       stage ('Package and Publish'){
               steps {
-                 withEnv(['GRADLE_HOME=/var/jenkins_home/tools/gradle', 'GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m"', 'ANDROID_HOME=/var/jenkins_home/tools/android-sdk']) {
-                     sh './bundle-db.sh'
-                     sh './gradlew clean assembleRelease'
-                 }
+                sh './bundle-db.sh'
+                sh './gradlew clean assembleRelease'
               }
               post {
                  always {
@@ -42,7 +45,7 @@ pipeline {
                          env.WORKSPACE = pwd()
                          env.FILENAME = readFile "${env.WORKSPACE}/changelist"
                      }
-                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: 'app-publish', recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta'
+                     androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: "$GOOGLE_DEVELOPER_CREDENTIALS_ID", recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta', rolloutPercentage: '0%'
                  }
               }
       }
