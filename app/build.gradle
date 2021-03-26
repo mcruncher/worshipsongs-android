@@ -8,8 +8,8 @@ apply plugin: 'jacoco-android'
 apply from: '../sonarqube.gradle'
 apply plugin: 'groovyx.android'
 
-def buildNumber = System.getenv("BUILD_NUMBER") ?: "308"
-def versionCodeNumber = Integer.parseInt(buildNumber) + 291
+def buildNumber = System.getenv("BUILD_NUMBER")
+def versionCodeNumber = Integer.parseInt(buildNumber)
 def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
