@@ -85,14 +85,14 @@ Refine your search terms. For example, instead of "Arathanai", try searching for
 Q. I still couldn't find the song. I bet it's not there in your database. What now?
 </h4>
 <p>
-You can create a new issue at our <a href="https://github.com/crunchersaspire/worshipsongs-db">Github project</a>. Worship Songs is an open source project. Anyone interested can contribute song lyrics. If you are interested, please let us know.
+You can create a new issue at our <a href="https://github.com/mcruncher/worshipsongs-db-dev">Github project</a>. Worship Songs is an open source project. Anyone interested can contribute song lyrics. If you are interested, please let us know.
 </p>
 
 <h4>
 Q. I want to request a new feature. How do I go about that?
 </h4>
 <p>
-The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/crunchersaspire/worshipsongs-android. You can request for a new feature by creating an issue there.
+The songs database and the app are maintained in separate Github projects. This is because the songs database is shared by both the Android and iOS version of Worship Songs. Worship Songs for Android lives at https://github.com/mcruncher/worshipsongs-android. You can request for a new feature by creating an issue there.
 </p>
 
 <h4>
