@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
@@ -53,8 +54,10 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
     private val preferenceSettingService = UserPreferenceSettingService()
     private val popupMenuService = PopupMenuService()
     private var songService: SongService? = null
+    private var songBookService: SongBookService? = null
     private var databaseService: DatabaseService? = null
     private var presentationScreenService: PresentationScreenService? = null
+    private val userPreferenceSettingService = UserPreferenceSettingService()
 
     private val type: String
         get()
@@ -110,6 +113,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         }
         databaseService = DatabaseService(activity!!)
         songService = SongService(activity!!.applicationContext)
+        songBookService = SongBookService(activity!!.applicationContext)
         presentationScreenService = PresentationScreenService(activity!!)
         setHasOptionsMenu(true)
         initSetUp()
@@ -323,6 +327,11 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         val optionsImageView = objects[CommonConstants.OPTIONS_IMAGE_KEY] as ImageView?
         optionsImageView!!.visibility = View.VISIBLE
         optionsImageView.setOnClickListener(imageOnClickListener(song.title!!))
+
+        val songBookName = songBookService?.findSongBookName(song.id)
+        val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
+        songBookTextView!!.visibility = if (StringUtils.isNotBlank(songBookName)) View.VISIBLE else View.GONE
+        songBookTextView.text = getString(R.string.song_book) + " - " + songBookName
     }
 
     private fun onItemClickListener(): AdapterView.OnItemClickListener
