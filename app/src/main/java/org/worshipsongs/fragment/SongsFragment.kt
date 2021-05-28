@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
@@ -328,11 +327,19 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         optionsImageView!!.visibility = View.VISIBLE
         optionsImageView.setOnClickListener(imageOnClickListener(song.title!!))
 
-        val songBookName = songBookService?.findSongBookName(song.id)
-        val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
-        songBookTextView!!.visibility = if (StringUtils.isNotBlank(songBookName)) View.VISIBLE else View.GONE
-        songBookTextView.text = getString(R.string.song_book) + " - " + songBookName
+        showSongBook(song, objects)
     }
+
+    private fun showSongBook(song: Song, objects: Map<String, Any>)
+    {
+        val songBookNameList = songBookService?.findSongBookName(song.id)
+        val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
+        songBookTextView!!.visibility = if (canDisplaySongBook(songBookNameList)) View.VISIBLE else View.GONE
+        songBookTextView.text = songBookNameList!!.joinToString(",")
+    }
+
+    private fun canDisplaySongBook(songBookNameList: List<String>?) =
+            userPreferenceSettingService.displaySongBook && songBookNameList!!.isNotEmpty()
 
     private fun onItemClickListener(): AdapterView.OnItemClickListener
     {

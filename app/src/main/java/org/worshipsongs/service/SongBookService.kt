@@ -40,20 +40,23 @@ class SongBookService(context: Context)
         return songBooks
     }
 
-    fun findSongBookName(songId: Int): String?
+    fun findSongBookName(songId: Int): List<String>
     {
-        var songBookName: String? = null
+        val songBookNames = ArrayList<String>()
 
-        val query = "select sb.name from song_books as sb, songs_songbooks as ssb where ssb.song_id = ? and ssb.songbook_id = sb.id"
-
+        val query = "select songBook.name from song_books as songBook, songs_songbooks as songsSongBook " +
+                "where songsSongBook.song_id = ? and songsSongBook.songbook_id = songBook.id"
         val cursor = databaseService.database!!.rawQuery(query, arrayOf(songId.toString()))
-        if (cursor.count > 0)
+        cursor.moveToFirst()
+
+        while (!cursor.isAfterLast)
         {
-            cursor.moveToFirst()
-            songBookName = cursor.getString(0)
-            cursor.close()
+            val songBookName = cursor.getString(0)
+            songBookNames.add(parseName(songBookName!!))
+            cursor.moveToNext()
         }
-        return if(StringUtils.isNotBlank(songBookName)) parseName(songBookName!!) else ""
+        cursor.close()
+        return songBookNames
     }
 
     private fun cursorToSongBook(cursor: Cursor): SongBook
