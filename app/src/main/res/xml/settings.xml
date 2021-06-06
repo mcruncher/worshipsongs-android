@@ -136,6 +136,12 @@
             android:summary="@string/database_summary"
             android:title="@string/import_database_title"
             app:iconSpaceReserved="false" />
+
+        <org.worshipsongs.preference.LiveSharePreference
+            android:background="@color/white"
+            android:summary="@string/live_share_summary"
+            android:title="@string/live_share_title"
+            app:iconSpaceReserved="false" />
         <org.worshipsongs.service.ResetDefaultSettingsService
             android:dialogMessage="@string/reset_default_summary"
             android:key="resetDialog"

@@ -20,6 +20,7 @@
     <string name="playlists">பிடித்தவை</string>
     <string name="categories">வகைகள்</string>
     <string name="song_books">பாடல் புத்தகங்கள்</string>
+    <string name="live_share">Live share</string>
 
     <!--Settings-->
     <string name="Lyrics_preference_settings">Lyrics Preference</string>
@@ -67,6 +68,9 @@
     <string name="home_view_category_title">Home view settings</string>
     <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
     <string name="tab_choice_title">Change tab items</string>
+
+    <string name="live_share_summary">Configured dropbox shared folder path for live share songs</string>
+    <string name="live_share_title">Live share path</string>
 
     <string name="delete">Delete</string>
     <string name="remove_favourite_song_title">Remove from favourite list</string>
@@ -148,4 +152,5 @@
 
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
+    <string name="live_share_hint">Enter dropbox shared folder path</string>
 </resources>

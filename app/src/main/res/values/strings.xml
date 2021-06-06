@@ -45,6 +45,9 @@
     <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
     <string name="tab_choice_title">Change tab items</string>
 
+    <string name="live_share_summary">Configured dropbox shared folder path for live share songs</string>
+    <string name="live_share_title">Live share path</string>
+
     <string name="Play">Play</string>
     <string name="remote_display_settings">Remote Display settings</string>
     <string name="remote_display_summary">Show/Hide song in remote display</string>
@@ -73,6 +76,7 @@
     <string name="playlists">Favourites</string>
     <string name="song_books">Song books</string>
     <string name="categories">Categories</string>
+    <string name="live_share">Live share</string>
 
     <string name="share">Share</string>
     <string name="share.info">Content shared from:
@@ -153,4 +157,5 @@
 
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
+    <string name="live_share_hint">Enter dropbox shared folder path</string>
 </resources>
