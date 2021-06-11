@@ -52,7 +52,7 @@ class SongBookService(context: Context)
         while (!cursor.isAfterLast)
         {
             val songBookName = cursor.getString(0)
-            songBookNames.add(parseName(songBookName!!))
+            songBookNames.add(parseName(songBookName!!).trim())
             cursor.moveToNext()
         }
         cursor.close()
