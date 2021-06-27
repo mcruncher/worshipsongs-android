@@ -77,7 +77,7 @@ public class AsyncLiveShareTask(private val context: AppCompatActivity) : AsyncT
             val input = BufferedInputStream(url.openStream(), 10 * 1024)
             // Output stream to write file in SD card
             val output = FileOutputStream(destinationFile!!)
-            val data = ByteArray(1024)
+            val data = ByteArray(10)
             var total: Long = 0
             publishProgress(0)
             Log.e(this.javaClass.simpleName, "Length of file $lengthOfFile")
@@ -86,7 +86,7 @@ public class AsyncLiveShareTask(private val context: AppCompatActivity) : AsyncT
                     }) {
                 total += count.toLong()
                 output.write(data, 0, count)
-                Log.e(this.javaClass.simpleName, "publish")
+                Log.i(this.javaClass.simpleName, "publish")
                 publishProgress((total * 100 / lengthOfFile).toInt())
             }
             output.flush()

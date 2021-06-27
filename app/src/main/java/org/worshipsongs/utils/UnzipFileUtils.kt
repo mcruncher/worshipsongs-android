@@ -1,12 +1,46 @@
 package org.worshipsongs.utils
 
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.*
 import java.util.ArrayList
 import java.util.zip.ZipFile
 
 object UnzipUtils
 {
+
+    fun getSongs(serviceFilePath: String): MutableList<String>
+    {
+        var songs: MutableList<String> = ArrayList()
+        val serviceDir = File(serviceFilePath)
+        val readFileToString = FileUtils.readFileToString(serviceDir)
+        var rootJsonArray = JSONArray(readFileToString)
+        for (i in 0 until rootJsonArray.length())
+        {
+            val rootJsonObject = rootJsonArray.getJSONObject(i)
+            val serviceItemObject = jsonObject(rootJsonObject, "serviceitem");
+            if (serviceItemObject != null)
+            {
+                val headerObject = serviceItemObject.getJSONObject("header")
+                val title = headerObject.getString("title")
+                songs.add(title)
+            }
+        }
+        return songs
+    }
+
+    private fun jsonObject(rootJsonObject: JSONObject, key: String): JSONObject?
+    {
+        try
+        {
+            return rootJsonObject.getJSONObject(key)
+        } catch (e: Exception)
+        {
+            return null
+        }
+    }
 
     fun getServiceNames(serviceDirPath: String): MutableList<String>
     {
