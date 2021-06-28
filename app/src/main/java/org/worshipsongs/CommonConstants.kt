@@ -7,7 +7,8 @@ import org.apache.commons.lang3.StringUtils
  * Author: Seenivasan
  * Version: 2.1.0
  */
-object CommonConstants {
+object CommonConstants
+{
     val COMMON_PROPERTY_TEMP_FILENAME = "common.properties"
     val SERVICE_PROPERTY_TEMP_FILENAME = "service.properties"
 
@@ -48,7 +49,6 @@ object CommonConstants {
     val SONG_BOOK_NUMBER_KEY = "songBookNumberKey"
     val TAB_CHOICE_KEY = "tabChoicesKey"
     val UPDATE_NAV_ACTIVITY_KEY = "updateNavActivityKey"
-    val LIVE_SHARE_PATH_KEY = "liveSharePathKey"
 
     val STORAGE_PERMISSION_REQUEST_CODE = 1001
 
@@ -62,5 +62,7 @@ object CommonConstants {
     val SECONDARY_COLOR_KEY = "secondaryColor"
     val TAB_TITLE_KEY = "tabTitle"
     val TAB_SELECTED_ITEM_ID = "tabSelectedItem"
+
+    val LIVE_SHARE_PATH_KEY = "liveSharePathKey"
 
 }//Do nothing

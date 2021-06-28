@@ -1,12 +1,11 @@
 package org.worshipsongs.parser
 
 import android.content.Context
-
 import org.worshipsongs.domain.Verse
 
 /**
- * Author : Madasamy
- * Version : 3.x
+ * @author: Madasamy
+ * @version: 3.x
  */
 
 interface ISongParser

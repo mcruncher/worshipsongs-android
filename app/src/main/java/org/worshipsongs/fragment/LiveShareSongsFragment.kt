@@ -1,5 +1,6 @@
 package org.worshipsongs.fragment;
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
+import org.worshipsongs.activity.SongContentViewActivity
 import org.worshipsongs.adapter.TitleAdapter
-import org.worshipsongs.utils.UnzipUtils
+import org.worshipsongs.domain.Setting
+import org.worshipsongs.parser.LiveShareSongParser
+import org.worshipsongs.utils.CommonUtils
 import java.io.File
 import java.util.ArrayList
 
@@ -21,7 +25,8 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
     private var serviceName: String? = null
     private var songsListView: ListView? = null
     private var titleAdapter: TitleAdapter<String>? = null
-    private var songs: MutableList<String> = ArrayList()
+    private var titles: MutableList<String> = ArrayList()
+    private var liveShareSongParser = LiveShareSongParser()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -33,15 +38,13 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
 
     private fun loadSongs()
     {
-        //"/data/data/" + context.applicationContext.packageName + "/databases/service"
         var serviceFilePath = "/data/data/" + context!!.applicationContext.packageName + "/databases/service/" + File.separator + serviceName
-        songs = UnzipUtils.getSongs(serviceFilePath)
+        titles = liveShareSongParser.parseTitles (serviceFilePath)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         val view = inflater.inflate(R.layout.songs_layout, container, false)
-        //  setInfoTextView(view)
         setListView(view)
         return view
     }
@@ -51,7 +54,7 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
         songsListView = view.findViewById<View>(R.id.song_list_view) as ListView
         titleAdapter = TitleAdapter((activity as AppCompatActivity?)!!, R.layout.songs_layout)
         titleAdapter!!.setTitleAdapterListener(this)
-        titleAdapter!!.addObjects(songs)
+        titleAdapter!!.addObjects(titles)
         songsListView!!.adapter = titleAdapter
     }
 
@@ -60,6 +63,32 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
     {
         val titleTextView = objects[CommonConstants.TITLE_KEY] as TextView?
         titleTextView!!.text = text!!
+        titleTextView.setOnClickListener(SongOnClickListener(text))
+    }
+
+    private inner class SongOnClickListener internal constructor(private val songTitle: String) : View.OnClickListener
+    {
+
+        override fun onClick(view: View)
+        {
+
+                if (CommonUtils.isPhone(context!!))
+                {
+                    val intent = Intent(activity, SongContentViewActivity::class.java)
+                    val bundle = Bundle()
+                    val titles = ArrayList<String>()
+                    titles.add(songTitle!!)
+                    bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles)
+                    bundle.putInt(CommonConstants.POSITION_KEY, 0)
+                    bundle.putString(CommonConstants.SERVICE_NAME_KEY, serviceName)
+                    Setting.instance.position = 0
+                    intent.putExtras(bundle)
+                    activity!!.startActivity(intent)
+                } else {
+                    Setting.instance.position = titleAdapter!!.getPosition(songTitle)
+                   // songContentViewListener!!.displayContent(serviceSong.title!!, titles, titleAdapter!!.getPosition(songTitle))
+                }
+        }
     }
 
     companion object

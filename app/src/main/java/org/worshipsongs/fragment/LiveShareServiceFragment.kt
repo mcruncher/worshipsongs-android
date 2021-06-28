@@ -1,25 +1,29 @@
 package org.worshipsongs.fragment
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.activity.LiveShareSongsActivity
 import org.worshipsongs.adapter.TitleAdapter
 import org.worshipsongs.listener.SongContentViewListener
+import org.worshipsongs.parser.LiveShareSongParser
 import org.worshipsongs.registry.ITabFragment
 import org.worshipsongs.task.AsyncLiveShareTask
 import org.worshipsongs.utils.CommonUtils
-import org.worshipsongs.utils.UnzipUtils
 import java.util.*
 
 class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAdapterListener<String>
@@ -29,6 +33,8 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
     private var services: MutableList<String> = ArrayList()
     private var refreshServiceListView: ListView? = null
     private var titleAdapter: TitleAdapter<String>? = null
+    private var liveShareSongParser = LiveShareSongParser()
+    private var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -37,6 +43,7 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
         {
             state = savedInstanceState.getParcelable(CommonConstants.STATE_KEY)
         }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         setHasOptionsMenu(true)
         setServices()
     }
@@ -53,7 +60,7 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
     private fun setInfoTextView(view: View)
     {
         infoTextView = view.findViewById<View>(R.id.info_text_view) as TextView
-        infoTextView!!.text = getString(R.string.favourite_info_message_)
+        infoTextView!!.text = getString(R.string.live_share_info_message)
         infoTextView!!.setLineSpacing(0f, 1.2f)
         infoTextView!!.visibility = if (services.isEmpty()) View.VISIBLE else View.GONE
     }
@@ -63,11 +70,11 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
         val swipeRefreshView = view!!.findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         swipeRefreshView.visibility = View.VISIBLE
         swipeRefreshView.setOnRefreshListener {
-            AsyncLiveShareTask(activity as AppCompatActivity).execute()
+            doFetchServices()
             if (titleAdapter != null)
             {
                 setServices()
-                titleAdapter!!.addObjects(services)
+                refreshListView()
             }
             swipeRefreshView.isRefreshing = false
         }
@@ -78,12 +85,30 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
         refreshServiceListView!!.adapter = titleAdapter
     }
 
+    private fun doFetchServices()
+    {
+        if (CommonUtils.isWifiOrMobileDataConnectionExists(activity as AppCompatActivity))
+        {
+            val liveSharePathKey = sharedPreferences!!.getString(CommonConstants.LIVE_SHARE_PATH_KEY, "")
+            if (StringUtils.isNotBlank(liveSharePathKey))
+            {
+                AsyncLiveShareTask(activity as AppCompatActivity, this).execute()
+            } else
+            {
+                Toast.makeText(context, getString(R.string.message_warning_live_share_path), Toast.LENGTH_LONG).show()
+            }
+        } else
+        {
+            Toast.makeText(context, getString(R.string.message_warning_internet_connection), Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun setServices()
     {
         if (context != null)
         {
             val serviceDir = "/data/data/" + context!!.applicationContext.packageName + "/databases/service"
-            services = UnzipUtils.getServiceNames(serviceDir)
+            services = liveShareSongParser.parseServices(serviceDir)
         }
     }
 
@@ -175,5 +200,6 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
             CommonUtils.hideKeyboard(activity)
         }
     }
+
 
 }

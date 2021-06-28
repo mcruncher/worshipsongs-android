@@ -158,4 +158,7 @@
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Press on Color to apply</string>
     <string name="live_share_hint">Enter dropbox shared folder path</string>
+
+    <string name="live_share_info_message">App doesn\'t fetch services from dropbox yet!.To fetch services, tap the Navigation -> Settings -> Live share path.</string>
+    <string name="message_warning_live_share_path">Configure live share path</string>
 </resources>

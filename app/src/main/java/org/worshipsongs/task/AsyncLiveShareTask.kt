@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment
 import org.apache.commons.io.FileUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -20,7 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 
-public class AsyncLiveShareTask(private val context: AppCompatActivity) : AsyncTask<String, Int, Boolean>()
+public class AsyncLiveShareTask(private val context: AppCompatActivity,private val fragment:Fragment) : AsyncTask<String, Int, Boolean>()
 {
     private var progressBar: ProgressBar? = null
     private var destinationFile: File? = null
@@ -124,7 +125,8 @@ public class AsyncLiveShareTask(private val context: AppCompatActivity) : AsyncT
                 FileUtils.copyDirectory(tempServiceDir, File(serviceDir))
                 FileUtils.deleteQuietly(tempLiveShareDir)
                 FileUtils.deleteQuietly(tempServiceDir)
-                Log.i(AsyncDownloadTask::class.java.simpleName, "Services ${UnzipUtils.getServiceNames(serviceDir)}")
+                fragment.onResume()
+
             }
         } catch (ex: Exception)
         {
