@@ -24,11 +24,10 @@ import org.worshipsongs.activity.CustomYoutubeBoxActivity
 import org.worshipsongs.adapter.PresentSongCardViewAdapter
 import org.worshipsongs.domain.Setting
 import org.worshipsongs.domain.Song
-import org.worshipsongs.parser.ILiveShareSongParser
 import org.worshipsongs.parser.LiveShareSongParser
-import org.worshipsongs.parser.SongParser
 import org.worshipsongs.service.*
 import org.worshipsongs.utils.CommonUtils
+import org.worshipsongs.utils.LiveShareUtils
 import org.worshipsongs.utils.PermissionUtils
 import java.io.File
 import java.util.*
@@ -154,7 +153,7 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
         if (arguments!!.containsKey(CommonConstants.SERVICE_NAME_KEY))
         {
             val serviceName = arguments!!.getString(CommonConstants.SERVICE_NAME_KEY)
-            val serviceFilePath = "/data/data/" + context!!.applicationContext.packageName + "/databases/service/" + File.separator + serviceName
+            val serviceFilePath = LiveShareUtils.getServiceDirPath(context!!) + File.separator + serviceName
             song = liveShareSongParser.parseSong(serviceFilePath, title!!)
         } else
         {

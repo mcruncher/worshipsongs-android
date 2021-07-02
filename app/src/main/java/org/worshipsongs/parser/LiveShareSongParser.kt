@@ -7,7 +7,7 @@ import org.worshipsongs.domain.Song
 import java.io.File
 import java.util.*
 
-@Suppress("NAME_SHADOWING") class LiveShareSongParser : ILiveShareSongParser
+class LiveShareSongParser : ILiveShareSongParser
 {
     override fun parseSong(serviceFilePath: String, songTitle: String): Song
     {
@@ -43,23 +43,9 @@ import java.util.*
         return song
     }
 
-    override fun parseServices(serviceDirPath: String): MutableList<String>
-    {
-        var services: MutableList<String> = ArrayList()
-        val serviceDir = File(serviceDirPath)
-        if (serviceDir.exists())
-        {
-            for (serviceFile in serviceDir.listFiles())
-            {
-                services.add(serviceFile.name)
-            }
-        }
-        return services
-    }
-
     override fun parseTitles(serviceFilePath: String): MutableList<String>
     {
-        var songs: MutableList<String> = ArrayList()
+        var titles: MutableList<String> = ArrayList()
         val serviceDir = File(serviceFilePath)
         val readFileToString = FileUtils.readFileToString(serviceDir)
         var rootJsonArray = JSONArray(readFileToString)
@@ -71,10 +57,10 @@ import java.util.*
             {
                 val headerObject = serviceItemObject.getJSONObject(HEADER_KEY)
                 val title = headerObject.getString(TITLE_KEY)
-                songs.add(title)
+                titles.add(title)
             }
         }
-        return songs
+        return titles
     }
 
     private fun getJsonObject(rootJsonObject: JSONObject, key: String): JSONObject?

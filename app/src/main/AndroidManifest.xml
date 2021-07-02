@@ -87,10 +87,7 @@
                 android:value="org.worshipsongs.activity.FavouriteSongsActivity" />
         </activity>
 
-        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">/>
 
         </activity>
     </application>

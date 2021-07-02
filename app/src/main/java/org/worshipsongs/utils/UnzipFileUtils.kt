@@ -1,31 +1,11 @@
 package org.worshipsongs.utils
 
-import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
-import org.json.JSONArray
-import org.json.JSONObject
-import org.worshipsongs.domain.Song
 import java.io.*
-import java.util.ArrayList
 import java.util.zip.ZipFile
 
 object UnzipUtils
 {
-
-
-
-    private fun jsonObject(rootJsonObject: JSONObject, key: String): JSONObject?
-    {
-        try
-        {
-            return rootJsonObject.getJSONObject(key)
-        } catch (e: Exception)
-        {
-            return null
-        }
-    }
-
-
 
     fun unZipServices(serviceDir: File, destinationDir: File)
     {

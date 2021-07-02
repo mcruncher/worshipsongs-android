@@ -16,6 +16,7 @@ import org.worshipsongs.adapter.TitleAdapter
 import org.worshipsongs.domain.Setting
 import org.worshipsongs.parser.LiveShareSongParser
 import org.worshipsongs.utils.CommonUtils
+import org.worshipsongs.utils.LiveShareUtils
 import java.io.File
 import java.util.ArrayList
 
@@ -38,8 +39,8 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
 
     private fun loadSongs()
     {
-        var serviceFilePath = "/data/data/" + context!!.applicationContext.packageName + "/databases/service/" + File.separator + serviceName
-        titles = liveShareSongParser.parseTitles (serviceFilePath)
+        var serviceFilePath = LiveShareUtils.getServiceDirPath(context!!) + File.separator + serviceName
+        titles = liveShareSongParser.parseTitles(serviceFilePath)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -72,22 +73,23 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
         override fun onClick(view: View)
         {
 
-                if (CommonUtils.isPhone(context!!))
-                {
-                    val intent = Intent(activity, SongContentViewActivity::class.java)
-                    val bundle = Bundle()
-                    val titles = ArrayList<String>()
-                    titles.add(songTitle!!)
-                    bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles)
-                    bundle.putInt(CommonConstants.POSITION_KEY, 0)
-                    bundle.putString(CommonConstants.SERVICE_NAME_KEY, serviceName)
-                    Setting.instance.position = 0
-                    intent.putExtras(bundle)
-                    activity!!.startActivity(intent)
-                } else {
-                    Setting.instance.position = titleAdapter!!.getPosition(songTitle)
-                   // songContentViewListener!!.displayContent(serviceSong.title!!, titles, titleAdapter!!.getPosition(songTitle))
-                }
+            if (CommonUtils.isPhone(context!!))
+            {
+                val intent = Intent(activity, SongContentViewActivity::class.java)
+                val bundle = Bundle()
+                val titles = ArrayList<String>()
+                titles.add(songTitle!!)
+                bundle.putStringArrayList(CommonConstants.TITLE_LIST_KEY, titles)
+                bundle.putInt(CommonConstants.POSITION_KEY, 0)
+                bundle.putString(CommonConstants.SERVICE_NAME_KEY, serviceName)
+                Setting.instance.position = 0
+                intent.putExtras(bundle)
+                activity!!.startActivity(intent)
+            } else
+            {
+                Setting.instance.position = titleAdapter!!.getPosition(songTitle)
+                // songContentViewListener!!.displayContent(serviceSong.title!!, titles, titleAdapter!!.getPosition(songTitle))
+            }
         }
     }
 

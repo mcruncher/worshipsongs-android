@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,9 @@ import org.worshipsongs.parser.LiveShareSongParser
 import org.worshipsongs.registry.ITabFragment
 import org.worshipsongs.task.AsyncLiveShareTask
 import org.worshipsongs.utils.CommonUtils
+import org.worshipsongs.utils.LiveShareUtils
 import java.util.*
+
 
 class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAdapterListener<String>
 {
@@ -59,10 +62,9 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
 
     private fun setInfoTextView(view: View)
     {
-        infoTextView = view.findViewById<View>(R.id.info_text_view) as TextView
-        infoTextView!!.text = getString(R.string.live_share_info_message)
+        infoTextView = view!!.findViewById<TextView>(R.id.info_text_view) as TextView
+        infoTextView!!.text = Html.fromHtml(getString(R.string.live_share_info_message))
         infoTextView!!.setLineSpacing(0f, 1.2f)
-        infoTextView!!.visibility = if (services.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun setSwipeRefreshLayout(view: View)
@@ -107,8 +109,7 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
     {
         if (context != null)
         {
-            val serviceDir = "/data/data/" + context!!.applicationContext.packageName + "/databases/service"
-            services = liveShareSongParser.parseServices(serviceDir)
+            services = LiveShareUtils.getServices(LiveShareUtils.getServiceDirPath(context!!))
         }
     }
 
@@ -200,6 +201,5 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
             CommonUtils.hideKeyboard(activity)
         }
     }
-
 
 }

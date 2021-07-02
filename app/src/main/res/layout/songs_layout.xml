@@ -10,7 +10,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:maxLines="10"
+        android:maxLines="500"
         android:padding="10dp"
         android:textSize="16dp"
         android:visibility="gone" />

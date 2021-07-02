@@ -1,6 +1,7 @@
 package org.worshipsongs.activity;
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.FrameLayout
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -9,7 +10,7 @@ import org.worshipsongs.fragment.LiveShareSongsFragment
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.service.PresentationScreenService
 
-public class LiveShareSongsActivity: AbstractAppCompactActivity(), SongContentViewListener
+class LiveShareSongsActivity : AbstractAppCompactActivity(), SongContentViewListener
 {
     private var songContentFrameLayout: FrameLayout? = null
     private var presentationScreenService: PresentationScreenService? = null
@@ -49,7 +50,7 @@ public class LiveShareSongsActivity: AbstractAppCompactActivity(), SongContentVi
             val bundle = Bundle()
             bundle.putString(CommonConstants.SERVICE_NAME_KEY, getFavouriteName())
             val liveShareSongsFragment = LiveShareSongsFragment.newInstance(bundle)
-           // liveShareSongsFragment.setSongContentViewListener(this)
+            // liveShareSongsFragment.setSongContentViewListener(this)
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.tabs_fragment, liveShareSongsFragment, LiveShareSongsFragment::class.java.simpleName)
             transaction.addToBackStack(null)
@@ -99,5 +100,14 @@ public class LiveShareSongsActivity: AbstractAppCompactActivity(), SongContentVi
     {
         super.onBackPressed()
         finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        if (item.getItemId() == android.R.id.home)
+        {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
