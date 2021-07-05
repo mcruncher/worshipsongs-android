@@ -63,4 +63,6 @@ object CommonConstants
     val TAB_TITLE_KEY = "tabTitle"
     val TAB_SELECTED_ITEM_ID = "tabSelectedItem"
 
+    val LIVE_SHARE_PATH_KEY = "liveSharePathKey"
+
 }//Do nothing

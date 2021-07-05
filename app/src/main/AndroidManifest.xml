@@ -86,6 +86,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.worshipsongs.activity.FavouriteSongsActivity" />
         </activity>
+
+        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">/>
+
+        </activity>
     </application>
 
 </manifest>
