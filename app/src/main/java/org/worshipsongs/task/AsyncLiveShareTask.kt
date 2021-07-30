@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import org.apache.commons.io.FileUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
+import org.worshipsongs.utils.LiveShareUtils
 import org.worshipsongs.utils.UnzipUtils
 import java.io.BufferedInputStream
 import java.io.File
@@ -69,7 +70,7 @@ public class AsyncLiveShareTask(private val context: AppCompatActivity,private v
             var count: Int
             destinationFile = File(context.cacheDir.absolutePath, "liveshare")
             val remoteUrl = sharedPreferences.getString(CommonConstants.LIVE_SHARE_PATH_KEY, "")
-            val url = URL(remoteUrl)
+            val url = URL(LiveShareUtils.formatLiveShareUrl(remoteUrl!!))
             val connection = url.openConnection()
             connection.readTimeout = 60000
             connection.connectTimeout = 60000
@@ -126,7 +127,6 @@ public class AsyncLiveShareTask(private val context: AppCompatActivity,private v
                 FileUtils.deleteQuietly(tempLiveShareDir)
                 FileUtils.deleteQuietly(tempServiceDir)
                 fragment.onResume()
-
             }
         } catch (ex: Exception)
         {

@@ -7,6 +7,7 @@ import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.fragment.FavouriteSongsFragment
 import org.worshipsongs.fragment.LiveShareSongsFragment
+import org.worshipsongs.fragment.SongContentPortraitViewFragment
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.service.PresentationScreenService
 
@@ -50,7 +51,7 @@ class LiveShareSongsActivity : AbstractAppCompactActivity(), SongContentViewList
             val bundle = Bundle()
             bundle.putString(CommonConstants.SERVICE_NAME_KEY, getFavouriteName())
             val liveShareSongsFragment = LiveShareSongsFragment.newInstance(bundle)
-            // liveShareSongsFragment.setSongContentViewListener(this)
+            liveShareSongsFragment.setSongContentViewListener(this)
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.tabs_fragment, liveShareSongsFragment, LiveShareSongsFragment::class.java.simpleName)
             transaction.addToBackStack(null)
@@ -68,13 +69,13 @@ class LiveShareSongsActivity : AbstractAppCompactActivity(), SongContentViewList
     {
         if (songContentFrameLayout != null)
         {
-//            val titles = ArrayList<String>()
-//            titles.add(title)
-//            val songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(title, titles)
-//            val transaction = supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.song_content_fragment, songContentPortraitViewFragment)
-//            transaction.addToBackStack(null)
-//            transaction.commit()
+            val bundle = Bundle(intent.extras)
+            bundle.putString(CommonConstants.TITLE_KEY, title)
+            val songContentPortraitViewFragment = SongContentPortraitViewFragment.newInstance(bundle)
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.song_content_fragment, songContentPortraitViewFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 
