@@ -14,6 +14,7 @@ import org.worshipsongs.R
 import org.worshipsongs.activity.SongContentViewActivity
 import org.worshipsongs.adapter.TitleAdapter
 import org.worshipsongs.domain.Setting
+import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.parser.LiveShareSongParser
 import org.worshipsongs.utils.CommonUtils
 import org.worshipsongs.utils.LiveShareUtils
@@ -28,6 +29,7 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
     private var titleAdapter: TitleAdapter<String>? = null
     private var titles: MutableList<String> = ArrayList()
     private var liveShareSongParser = LiveShareSongParser()
+    private var songContentViewListener: SongContentViewListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -88,9 +90,14 @@ public class LiveShareSongsFragment : Fragment(), TitleAdapter.TitleAdapterListe
             } else
             {
                 Setting.instance.position = titleAdapter!!.getPosition(songTitle)
-                // songContentViewListener!!.displayContent(serviceSong.title!!, titles, titleAdapter!!.getPosition(songTitle))
+                 songContentViewListener!!.displayContent(songTitle!!, titles, titleAdapter!!.getPosition(songTitle))
             }
         }
+    }
+
+    fun setSongContentViewListener(songContentViewListener: SongContentViewListener)
+    {
+        this.songContentViewListener = songContentViewListener
     }
 
     companion object

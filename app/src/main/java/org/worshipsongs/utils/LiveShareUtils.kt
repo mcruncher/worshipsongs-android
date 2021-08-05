@@ -24,4 +24,15 @@ object LiveShareUtils
         }
         return services
     }
+
+    fun formatLiveShareUrl(url: String): String
+    {
+        var formattedUrl = url;
+        if (formattedUrl.endsWith("0"))
+        {
+            formattedUrl = formattedUrl.substring(0, formattedUrl.lastIndexOf("=") + 1)
+            formattedUrl += "1"
+        }
+        return formattedUrl;
+    }
 }

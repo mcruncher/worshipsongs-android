@@ -13,6 +13,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.apache.commons.lang3.StringUtils
@@ -31,7 +32,7 @@ import java.util.*
 
 class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAdapterListener<String>
 {
-    private var infoTextView: TextView? = null
+    private var infoScrollView: NestedScrollView? = null
     private var state: Parcelable? = null
     private var services: MutableList<String> = ArrayList()
     private var refreshServiceListView: ListView? = null
@@ -53,18 +54,9 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        val view = inflater.inflate(R.layout.songs_layout, container, false)
-        setInfoTextView(view)
+        val view = inflater.inflate(R.layout.live_share_service_layout, container, false)
         setSwipeRefreshLayout(view)
-        setListView(view)
         return view
-    }
-
-    private fun setInfoTextView(view: View)
-    {
-        infoTextView = view!!.findViewById<TextView>(R.id.info_text_view) as TextView
-        infoTextView!!.text = Html.fromHtml(getString(R.string.live_share_info_message))
-        infoTextView!!.setLineSpacing(0f, 1.2f)
     }
 
     private fun setSwipeRefreshLayout(view: View)
@@ -80,7 +72,23 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
             }
             swipeRefreshView.isRefreshing = false
         }
+        setInfoScrollView(swipeRefreshView)
+        setListView(swipeRefreshView)
+    }
+
+    private fun setInfoScrollView(view: View)
+    {
+        infoScrollView = view.findViewById<NestedScrollView>(R.id.info_scroll_view)
+        var infoTextView = infoScrollView!!.findViewById<TextView>(R.id.info_text_view)
+        infoTextView!!.text = Html.fromHtml(getString(R.string.live_share_info_message))
+        infoTextView!!.setLineSpacing(0f, 1.2f)
+        infoScrollView!!.visibility = if (services.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun setListView(swipeRefreshView: SwipeRefreshLayout)
+    {
         refreshServiceListView = swipeRefreshView.findViewById<View>(R.id.refresh_list_view) as ListView
+        refreshServiceListView!!.visibility = if (services.isEmpty()) View.GONE else View.VISIBLE
         titleAdapter = TitleAdapter((activity as AppCompatActivity?)!!, R.layout.songs_layout)
         titleAdapter!!.setTitleAdapterListener(this)
         titleAdapter!!.addObjects(services)
@@ -111,12 +119,6 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
         {
             services = LiveShareUtils.getServices(LiveShareUtils.getServiceDirPath(context!!))
         }
-    }
-
-    private fun setListView(view: View)
-    {
-        val serviceListView = view.findViewById<View>(R.id.song_list_view) as ListView
-        serviceListView!!.visibility = View.GONE
     }
 
     override val title: String
@@ -178,8 +180,9 @@ class LiveShareServiceFragment : Fragment(), ITabFragment, TitleAdapter.TitleAda
             refreshServiceListView!!.onRestoreInstanceState(state)
         } else if (titleAdapter != null)
         {
+            infoScrollView!!.visibility = if (services.isEmpty()) View.VISIBLE else View.GONE
+            refreshServiceListView!!.visibility = if (services.isEmpty()) View.GONE else View.VISIBLE
             titleAdapter!!.addObjects(services)
-            infoTextView!!.visibility = if (services.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
