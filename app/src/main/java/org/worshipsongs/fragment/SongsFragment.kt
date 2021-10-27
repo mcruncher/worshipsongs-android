@@ -332,7 +332,7 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     private fun showSongBook(song: Song, objects: Map<String, Any>)
     {
-        val songBookNameList = songBookService?.findSongBookName(song.id)
+        val songBookNameList = songBookService?.findFormattedSongBookNames(song.id)
         val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
         songBookTextView!!.visibility = if (canDisplaySongBook(songBookNameList)) View.VISIBLE else View.GONE
         songBookTextView.text = songBookNameList!!.joinToString()

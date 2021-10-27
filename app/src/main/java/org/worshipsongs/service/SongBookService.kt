@@ -40,7 +40,19 @@ class SongBookService(context: Context)
         return songBooks
     }
 
-    fun findSongBookName(songId: Int): List<String>
+    fun findFormattedSongBookNames(songId: Int): List<String>
+    {
+        val songBookNames = findSongBookNames(songId)
+        val formattedSongBookNames = ArrayList<String>()
+
+        for (songBookName in songBookNames)
+        {
+            formattedSongBookNames.add(parseName(songBookName).trim())
+        }
+        return formattedSongBookNames
+    }
+
+    fun findSongBookNames(songId: Int): List<String>
     {
         val songBookNames = ArrayList<String>()
 
@@ -52,7 +64,7 @@ class SongBookService(context: Context)
         while (!cursor.isAfterLast)
         {
             val songBookName = cursor.getString(0)
-            songBookNames.add(parseName(songBookName!!).trim())
+            songBookNames.add(songBookName!!.trim())
             cursor.moveToNext()
         }
         cursor.close()

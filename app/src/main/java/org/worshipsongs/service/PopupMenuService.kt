@@ -11,14 +11,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.print.PrintAttributes
 import android.print.pdf.PrintedPdfDocument
-import androidx.core.content.FileProvider
-
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.BuildConfig
 import org.worshipsongs.CommonConstants
@@ -46,6 +45,8 @@ class PopupMenuService
     private val preferenceSettingService = UserPreferenceSettingService()
     private val favouriteService = FavouriteService()
     private val songService = SongService(context!!)
+    private val databaseService = DatabaseService(context!!)
+    private var songBookService = SongBookService(context!!)
 
     fun showPopupmenu(activity: AppCompatActivity, view: View, songName: String, hidePlay: Boolean)
     {
@@ -70,12 +71,14 @@ class PopupMenuService
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId)
             {
-                R.id.addToList ->
-                {
+                R.id.addToList -> {
                     val bundle = Bundle()
                     bundle.putString(CommonConstants.TITLE_KEY, songName)
                     bundle.putString(CommonConstants.LOCALISED_TITLE_KEY, song.tamilTitle)
                     bundle.putInt(CommonConstants.ID, song.id)
+                    val songBookNameList = songBookService.findSongBookNames(song.id)
+                    bundle.putString("songBookName", getEnglishSongBookName(songBookNameList))
+                    bundle.putString("tamilSongBookName", getTamilSongBookName(songBookNameList))
                     val favouritesDialogFragment = FavouritesDialogFragment.newInstance(bundle)
                     favouritesDialogFragment.show(activity.supportFragmentManager, "FavouritesDialogFragment")
                     true
@@ -270,5 +273,23 @@ class PopupMenuService
         val intent = Intent.createChooser(textShareIntent, "Share with...")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context!!.startActivity(intent)
+    }
+
+    private fun getEnglishSongBookName(songBookNameList: List<String>): String
+    {
+        val songBookNames = ArrayList<String>()
+        for(songBookName in songBookNameList) {
+            songBookNames.add(databaseService.parseEnglishName(songBookName))
+        }
+        return songBookNames.joinToString()
+    }
+
+    private fun getTamilSongBookName(songBookNameList: List<String>): String
+    {
+        val songBookNames = ArrayList<String>()
+        for(songBookName in songBookNameList) {
+            songBookNames.add(databaseService.parseTamilName(songBookName))
+        }
+        return songBookNames.joinToString()
     }
 }

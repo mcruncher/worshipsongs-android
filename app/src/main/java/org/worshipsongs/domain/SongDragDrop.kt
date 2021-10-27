@@ -2,10 +2,8 @@ package org.worshipsongs.domain
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 import org.apache.commons.lang3.StringUtils
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author : Madasamy
@@ -16,6 +14,8 @@ class SongDragDrop : DragDrop
 {
 
     var tamilTitle: String? = null
+    var songBookName: String? = null
+    var tamilSongBookName: String? = null
 
     constructor()
     {
