@@ -172,9 +172,9 @@
 
     <p> Currently, you can only create your Live Share lists from OpenLP which should be installed on your computer. </p>
     <p> From OpenLP, create a service with some songs and save it in OpenLP Service Lite format (oszl). Make sure the file is saved in the respective shared Dropbox folder. </p>
-    <p> Pull down the Live Share tab to refresh and your service files will be listed. Tap on it to view the songs. Feel free to re-arrange the songs </p>
+    <p> Pull down the Live Share tab to refresh and your service files will be listed. Tap on it to view the songs. </p>
 
-    <p> - Now you are all set to go. Your team members will be able to see your list of songs in their app. They will also see any update you make to the lists. </p>
+    <p> - Now you are all set to go. Your team members will be able to see your list of songs in their app. They will also see any update you make to the lists (from OpenLP). </p>
 
     <p> NOTE: We are working to make this even smoother but until then please use this and give your feedback. </p>
     </p>
