@@ -154,25 +154,28 @@
     <string name="press_color_to_apply">Press on Color to apply</string>
     <string name="live_share_hint">Enter dropbox shared folder path</string>
 
-    <string name="live_share_info_message"><![CDATA[<p>
-Live Share lets you share a list of songs with others through a Dropbox shared folder. This can help you prepare songs for a meeting (e.g Sunday Service) with others. As you make changes to your Live Share song list, this will help others in your music/singing team to view the changes instantly. You need to do the following to use this feature:
-</p>
-<ul>
-<li>
-Create a shared Dropbox folder. This folder shall be used to store the Live Share lists and share it with your team.
-</li>
-<li>
-Get the url for this folder and configure it in the app.
-</li>
-<li>
-Get your team members to configure this url of the shared Dropbox folder in their app.
-</li>
-<li>
-Now you are all set to go. Start creating your Live Share lists and your team members will be able to see your list of songs in their app. They will also see any update you make to the lists.
-</li>
-</ul>
-<p>
-The Live Share lists shall be created in the OpenLP service format. This means you can also open your Live Share lists in OpenLP lyrics projection software.
-</p>]]></string>
+    <string name="live_share_info_message"><![CDATA[
+
+    <p> Live Share (Beta) </p>
+    <p> Live Share lets you share a list of songs with others through a Dropbox shared folder. This can help you prepare songs for a meeting (e.g Sunday Service) with others. </p>
+    <p> As you make changes to your Live Share song list, this will help others in your music/singing team to view the changes instantly. You need to do the following to use this feature:</p>
+
+    <p> - Create a shared Dropbox folder. This folder shall be used to store the Live Share lists and share it with your team. </p>
+    <p> - Get the url for this folder and configure it in the app. </p>
+    <p> - Get your team members to configure this url of the shared Dropbox folder in their app. </p>
+    <p> - Create your Live Share lists </p>
+
+    <p> Currently, you can only create your Live Share lists from OpenLP which should be installed on your computer. </p>
+    <p> From OpenLP, create a service with some songs and save it in OpenLP Service Lite format (oszl). Make sure the file is saved in the respective shared Dropbox folder. </p>
+    <p> Pull down the Live Share tab to refresh and your service files will be listed. Tap on it to view the songs. </p>
+
+    <p> - Now you are all set to go. Your team members will be able to see your list of songs in their app. They will also see any update you make to the lists (from OpenLP). </p>
+
+    <p> NOTE: We are working to make this even smoother but until then please use this and give your feedback. </p>
+    </p>
+
+    ]]>
+    </string>
+
     <string name="message_warning_live_share_path">Configure live share path</string>
 </resources>

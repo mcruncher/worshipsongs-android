@@ -94,26 +94,16 @@ def getCurrentVersionName(versionCodeNumber)
     def versionPropertyFile = file('../version.properties')
     def majorVersion
     def minorVersion
-    def batchVersion = versionCodeNumber
-    def currentVersionName = "2.91"
+    def patchVersion = versionCodeNumber
+
     if (versionPropertyFile.canRead()) {
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionPropertyFile))
         majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
         minorVersion = versionProps['MINOR_VERSION'] ?: "0"
-        def currentBranch = System.getenv("GIT_BRANCH") ?: "development"
-        if (currentBranch.toLowerCase().contains("development")) {
-            currentVersionName = majorVersion + "." + minorVersion + "." + batchVersion.toString()
-            versionProps['MAJOR_VERSION'] = majorVersion
-            versionProps["MINOR_VERSION"] = minorVersion
-            versionProps["BATCH_VERSION"] = batchVersion.toString()
-            versionProps["VERSION_CODE"] = batchVersion.toString()
-            versionProps.store(versionPropertyFile.newWriter(), null)
-        } else {
-            currentVersionName = majorVersion + "." + minorVersion + "." + batchVersion.toString()
-        }
+        return "${majorVersion}.${minorVersion}.${patchVersion}"
     }
-    return currentVersionName
+    throw new Exception("Unable to read from version file.")
 }
 
 dependencies {
