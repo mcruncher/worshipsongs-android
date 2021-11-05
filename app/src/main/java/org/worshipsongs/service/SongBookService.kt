@@ -2,11 +2,9 @@ package org.worshipsongs.service
 
 import android.content.Context
 import android.database.Cursor
-
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.domain.SongBook
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author : Madasamy
@@ -40,6 +38,37 @@ class SongBookService(context: Context)
         }
         cursor.close()
         return songBooks
+    }
+
+    fun findFormattedSongBookNames(songId: Int): List<String>
+    {
+        val songBookNames = findSongBookNames(songId)
+        val formattedSongBookNames = ArrayList<String>()
+
+        for (songBookName in songBookNames)
+        {
+            formattedSongBookNames.add(parseName(songBookName).trim())
+        }
+        return formattedSongBookNames
+    }
+
+    fun findSongBookNames(songId: Int): List<String>
+    {
+        val songBookNames = ArrayList<String>()
+
+        val query = "select songBook.name from song_books as songBook, songs_songbooks as songsSongBook " +
+                "where songsSongBook.song_id = ? and songsSongBook.songbook_id = songBook.id"
+        val cursor = databaseService.database!!.rawQuery(query, arrayOf(songId.toString()))
+        cursor.moveToFirst()
+
+        while (!cursor.isAfterLast)
+        {
+            val songBookName = cursor.getString(0)
+            songBookNames.add(songBookName!!.trim())
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return songBookNames
     }
 
     private fun cursorToSongBook(cursor: Cursor): SongBook

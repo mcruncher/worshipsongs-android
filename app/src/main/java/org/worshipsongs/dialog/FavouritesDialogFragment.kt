@@ -1,7 +1,5 @@
 package org.worshipsongs.dialog
 
-
-
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -38,6 +36,8 @@ class FavouritesDialogFragment : DialogFragment()
         val songName = args!!.getString(CommonConstants.TITLE_KEY)
         val localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY)
         val id = args.getInt(CommonConstants.ID)
+        val songBookName = args.getString("songBookName")
+        val tamilSongBookName = args.getString("tamilSongBookName")
         if (which == 0)
         {
             val addFavouritesDialogFragment = AddFavouritesDialogFragment.newInstance(args)
@@ -46,6 +46,8 @@ class FavouritesDialogFragment : DialogFragment()
         {
             val songDragDrop = SongDragDrop(id.toLong(), songName!!, false)
             songDragDrop.tamilTitle = localisedName
+            songDragDrop.songBookName = songBookName
+            songDragDrop.tamilSongBookName = tamilSongBookName
             favouriteService.save(names[which], songDragDrop)
             Toast.makeText(activity, "Song added to favourite...!", Toast.LENGTH_LONG).show()
         }
@@ -61,5 +63,4 @@ class FavouritesDialogFragment : DialogFragment()
             return favouritesDialogFragment
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package org.worshipsongs.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +7,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 
 import com.woxthebox.draglistview.DragItemAdapter
-import com.woxthebox.draglistview.swipe.ListSwipeItem
 
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.R
-import org.worshipsongs.WorshipSongApplication
-import org.worshipsongs.domain.DragDrop
 import org.worshipsongs.domain.SongDragDrop
 import org.worshipsongs.service.UserPreferenceSettingService
-
-import java.util.ArrayList
 
 /**
  * Author : Madasamy
@@ -45,7 +39,8 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
     {
         super.onBindViewHolder(holder, position)
         val text = getTitle(mItemList[position])
-        holder.mText.text = text
+        holder.titleText.text = text
+        holder.songBookNameText.text = getSongBookName(mItemList[position])
         holder.itemView.tag = mItemList[position]
     }
 
@@ -57,6 +52,17 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
         } else
         {
             songDragDrop.title!!
+        }
+    }
+
+    private fun getSongBookName(songDragDrop: SongDragDrop): String
+    {
+        return if (userPreferenceSettingService.isTamil)
+        {
+            if (StringUtils.isNotBlank(songDragDrop.tamilSongBookName)) songDragDrop.tamilSongBookName!! else songDragDrop.songBookName!!
+        } else
+        {
+            if (StringUtils.isNotBlank(songDragDrop.songBookName)) songDragDrop.songBookName!! else ""
         }
     }
 
@@ -72,12 +78,14 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
 
     inner class ViewHolder(view: View) : DragItemAdapter.ViewHolder(view, R.id.image, false)
     {
-        var mText: TextView
+        var titleText: TextView
+        var songBookNameText: TextView
         var listSwipeItem: RelativeLayout
 
         init
         {
-            mText = itemView.findViewById<View>(R.id.text) as TextView
+            titleText = itemView.findViewById<View>(R.id.text) as TextView
+            songBookNameText = itemView.findViewById<View>(R.id.songBookName_text_view) as TextView
             listSwipeItem = itemView.findViewById<View>(R.id.item_layout) as RelativeLayout
         }
 
