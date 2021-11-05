@@ -24,9 +24,12 @@ import org.worshipsongs.activity.CustomYoutubeBoxActivity
 import org.worshipsongs.adapter.PresentSongCardViewAdapter
 import org.worshipsongs.domain.Setting
 import org.worshipsongs.domain.Song
+import org.worshipsongs.parser.LiveShareSongParser
 import org.worshipsongs.service.*
 import org.worshipsongs.utils.CommonUtils
+import org.worshipsongs.utils.LiveShareUtils
 import org.worshipsongs.utils.PermissionUtils
+import java.io.File
 import java.util.*
 
 /**
@@ -63,10 +66,12 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
 
     var presentationScreenService: PresentationScreenService? = null
     private val customTagColorService = CustomTagColorService()
+    private val liveShareSongParser = LiveShareSongParser()
 
     private val isPresentSong: Boolean
-        get() {
-            return  presentationScreenService != null && presentationScreenService!!.presentation != null
+        get()
+        {
+            return presentationScreenService != null && presentationScreenService!!.presentation != null
         }
 
     private val songBookNumber: String
@@ -145,15 +150,23 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
 
     private fun setSong()
     {
-        song = songDao.findContentsByTitle(title!!)
-        if (song == null)
+        if (arguments!!.containsKey(CommonConstants.SERVICE_NAME_KEY))
         {
-            song = Song(title!!)
-            val contents = ArrayList<String>()
-            contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""))
-            song!!.contents = contents
+            val serviceName = arguments!!.getString(CommonConstants.SERVICE_NAME_KEY)
+            val serviceFilePath = LiveShareUtils.getServiceDirPath(context!!) + File.separator + serviceName
+            song = liveShareSongParser.parseSong(serviceFilePath, title!!)
+        } else
+        {
+            song = songDao.findContentsByTitle(title!!)
+            if (song == null)
+            {
+                song = Song(title!!)
+                val contents = ArrayList<String>()
+                contents.add(getString(R.string.message_song_not_available, "\"" + title + "\""))
+                song!!.contents = contents
+            }
+            song!!.authorName = authorService.findAuthorNameByTitle(title!!)
         }
-        song!!.authorName = authorService.findAuthorNameByTitle(title!!)
     }
 
     private fun setListView(view: View, song: Song)
@@ -187,7 +200,8 @@ class SongContentPortraitViewFragment : Fragment(), ISongContentPortraitViewFrag
             })
             setPlaySongFloatingMenuButton(view, song.urlKey!!)
             setPresentSongFloatingMenuButton(view)
-        } else {
+        } else
+        {
             floatingActionMenu!!.visibility = View.GONE
             if (isPresentSong)
             {

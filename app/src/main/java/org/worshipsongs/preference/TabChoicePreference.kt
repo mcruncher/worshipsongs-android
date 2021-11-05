@@ -88,7 +88,6 @@ class TabChoicePreference(context: Context, attrs: AttributeSet) : DialogPrefere
 
     private fun setDragListView(view: View)
     {
-
         mDragListView = view.findViewById<DragListView>(R.id.drag_list_view)
         mDragListView!!.recyclerView.isVerticalScrollBarEnabled = true
         mDragListView!!.setLayoutManager(LinearLayoutManager(context))

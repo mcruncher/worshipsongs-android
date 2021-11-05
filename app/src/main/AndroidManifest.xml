@@ -86,6 +86,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.worshipsongs.activity.FavouriteSongsActivity" />
         </activity>
-    </application>
 
+        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">/>
+
+        </activity>
+    </application>
+    <queries>
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START" />
+        </intent>
+    </queries>
 </manifest>
