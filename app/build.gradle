@@ -92,17 +92,18 @@ android {
 def getCurrentVersionName(versionCodeNumber)
 {
     def versionPropertyFile = file('../version.properties')
-    def majorVersion
-    def minorVersion
-    def patchVersion = versionCodeNumber
 
     if (versionPropertyFile.canRead()) {
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionPropertyFile))
-        majorVersion = versionProps['MAJOR_VERSION'] ?: "3"
-        minorVersion = versionProps['MINOR_VERSION'] ?: "0"
-        return "${majorVersion}.${minorVersion}.${patchVersion}"
+
+        def majorVersion = versionProps['MAJOR_VERSION'] ?: "0"
+        def minorVersion = versionProps['MINOR_VERSION'] ?: "0"
+        def patchVersion = versionProps['PATCH_VERSION'] ?: "0"
+
+        return "${majorVersion}.${minorVersion}.${patchVersion}.${versionCodeNumber}"
     }
+
     throw new Exception("Unable to read from version file.")
 }
 
