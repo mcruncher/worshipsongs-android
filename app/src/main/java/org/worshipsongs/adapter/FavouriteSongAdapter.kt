@@ -86,6 +86,7 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
         {
             titleText = itemView.findViewById<View>(R.id.text) as TextView
             songBookNameText = itemView.findViewById<View>(R.id.songBookName_text_view) as TextView
+            songBookNameText.visibility = if (userPreferenceSettingService.displaySongBook) View.VISIBLE else View.GONE
             listSwipeItem = itemView.findViewById<View>(R.id.item_layout) as RelativeLayout
         }
 
