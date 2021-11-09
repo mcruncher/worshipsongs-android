@@ -57,13 +57,13 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
 
     private fun getSongBookName(songDragDrop: SongDragDrop): String
     {
-        return if (userPreferenceSettingService.isTamil)
-        {
-            if (StringUtils.isNotBlank(songDragDrop.tamilSongBookName)) songDragDrop.tamilSongBookName!! else songDragDrop.songBookName!!
-        } else
-        {
-            if (StringUtils.isNotBlank(songDragDrop.songBookName)) songDragDrop.songBookName!! else ""
+        if (userPreferenceSettingService.isTamil && StringUtils.isNotBlank(songDragDrop.tamilSongBookName)) {
+            return songDragDrop.tamilSongBookName!!
         }
+        else if (StringUtils.isNotBlank(songDragDrop.songBookName)) {
+            return songDragDrop.songBookName!!
+        }
+        return ""
     }
 
     override fun getUniqueItemId(position: Int): Long
