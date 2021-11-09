@@ -332,14 +332,16 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     private fun showSongBook(song: Song, objects: Map<String, Any>)
     {
-        val songBookNameList = songBookService?.findFormattedSongBookNames(song.id)
+        val songBookNames = songBookService?.findFormattedSongBookNames(song.id)
         val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
-        songBookTextView!!.visibility = if (canDisplaySongBook(songBookNameList)) View.VISIBLE else View.GONE
-        songBookTextView.text = songBookNameList!!.joinToString()
+        songBookTextView!!.visibility = if (canDisplaySongBook(song, songBookNames)) View.VISIBLE else View.GONE
+        songBookTextView.text = songBookNames!!.joinToString()
     }
 
-    private fun canDisplaySongBook(songBookNameList: List<String>?) =
-            userPreferenceSettingService.displaySongBook && songBookNameList!!.isNotEmpty()
+    private fun canDisplaySongBook(song: Song, songBookNames: List<String>?) =
+            userPreferenceSettingService.displaySongBook && songBookNames!!.isNotEmpty() && isUserNotInSongBooksTab(song)
+
+    private fun isUserNotInSongBooksTab(song: Song) = song.songBookNumber == 0
 
     private fun onItemClickListener(): AdapterView.OnItemClickListener
     {
