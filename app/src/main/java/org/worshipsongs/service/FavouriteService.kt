@@ -162,9 +162,9 @@ class FavouriteService
             val songDragDrop = dragDrops[i]
             builder.append(i + 1).append(". ").append(if (StringUtils.isNotBlank(songDragDrop.tamilTitle)) songDragDrop.tamilTitle!! + "\n"
                     else "").append(songDragDrop.title).append("\n\n")
-            if (songDragDrop.sortOrder > 0)
+            if (songDragDrop.id > 0)
             {
-                linkBuilder.append(songDragDrop.sortOrder).append(";")
+                linkBuilder.append(songDragDrop.id).append(";")
             } else
             {
                 val song = songService!!.findByTitle(songDragDrop.title!!)

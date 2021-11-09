@@ -82,7 +82,7 @@ class FavouriteSongAdapter(songs: List<SongDragDrop>) : DragItemAdapter<SongDrag
 
     override fun getUniqueItemId(position: Int): Long
     {
-        return mItemList[position].sortOrder
+        return mItemList[position].id
     }
 
     fun setFavouriteListener(favouriteListener: FavouriteListener)

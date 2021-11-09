@@ -15,7 +15,7 @@ class SongDragDropTest extends Specification
     {
         songDragDrop1 = new SongDragDrop(0, "foo", false)
         songDragDrop1.tamilTitle = "fooo"
-        songDragDrop2 = new SongDragDrop(songDragDrop1.sortOrder, songDragDrop1.title, songDragDrop1.checked)
+        songDragDrop2 = new SongDragDrop(songDragDrop1.id, songDragDrop1.title, songDragDrop1.checked)
 
     }
 

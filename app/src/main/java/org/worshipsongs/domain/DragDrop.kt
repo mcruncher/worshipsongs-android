@@ -16,7 +16,8 @@ import java.util.ArrayList
 
 open class DragDrop
 {
-    var sortOrder: Long = 0
+    //TODO: Rename this as orderId (Ref: Favourite.kt). (Please note that this will have an impact in existing favourites)
+    var id: Long = 0
     var title: String? = null
     var isChecked: Boolean = false
 
@@ -24,16 +25,16 @@ open class DragDrop
     {
     }
 
-    constructor(sortOrder: Long, title: String, checked: Boolean)
+    constructor(orderId: Long, title: String, checked: Boolean)
     {
-        this.sortOrder = sortOrder
+        this.id = orderId
         this.title = title
         this.isChecked = checked
     }
 
     override fun toString(): String
     {
-        return "DragDrop{" + "sortOrder=" + sortOrder + ", title='" + title + '\''.toString() + ", checked=" + isChecked + '}'.toString()
+        return "DragDrop{" + "orderId=" + id + ", title='" + title + '\''.toString() + ", checked=" + isChecked + '}'.toString()
     }
 
     override fun equals(`object`: Any?): Boolean

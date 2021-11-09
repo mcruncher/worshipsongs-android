@@ -58,7 +58,7 @@ class ItemAdapter(list: ArrayList<DragDrop>, private val mLayoutId: Int, private
 
     override fun getUniqueItemId(position: Int): Long
     {
-        return mItemList[position].sortOrder
+        return mItemList[position].id
     }
 
     inner class ViewHolder(itemView: View) : DragItemAdapter.ViewHolder(itemView, mGrabHandleId, mDragOnLongPress)
