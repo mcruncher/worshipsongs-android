@@ -2,6 +2,7 @@
 <com.woxthebox.draglistview.swipe.ListSwipeItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:swipeViewId="@+id/item_layout">
@@ -39,7 +40,7 @@
             android:layout_toEndOf="@+id/image"
             android:layout_toRightOf="@+id/image"
             android:maxLines="1"
-            android:text="foo"
+            tools:text="@string/title"
             android:textSize="16sp" />
 
         <TextView
@@ -53,7 +54,7 @@
             android:layout_toRightOf="@+id/image"
             android:layout_below="@+id/text"
             android:layout_alignParentBottom="true"
-            android:text="bar"
+            tools:text="@string/song_book"
             android:textColor="@color/counter_text_color"
             android:textSize="12sp" />
 
