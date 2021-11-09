@@ -4,9 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.TextView
-import android.widget.Toast
 
 import com.woxthebox.draglistview.DragItemAdapter
 
@@ -60,7 +58,7 @@ class ItemAdapter(list: ArrayList<DragDrop>, private val mLayoutId: Int, private
 
     override fun getUniqueItemId(position: Int): Long
     {
-        return mItemList[position].id
+        return mItemList[position].sortOrder
     }
 
     inner class ViewHolder(itemView: View) : DragItemAdapter.ViewHolder(itemView, mGrabHandleId, mDragOnLongPress)

@@ -14,7 +14,7 @@ class DragDropTest extends Specification
     void setup()
     {
         dragDrop1 = new DragDrop(0, "Foo", false)
-        dragDrop2 = new DragDrop(dragDrop1.id, dragDrop1.title, dragDrop1.checked)
+        dragDrop2 = new DragDrop(dragDrop1.sortOrder, dragDrop1.title, dragDrop1.checked)
     }
 
     def "ToString"()

@@ -16,25 +16,24 @@ import java.util.ArrayList
 
 open class DragDrop
 {
-    var id: Long = 0
+    var sortOrder: Long = 0
     var title: String? = null
     var isChecked: Boolean = false
 
     constructor()
     {
-
     }
 
     constructor(id: Long, title: String, checked: Boolean)
     {
-        this.id = id
+        this.sortOrder = id
         this.title = title
         this.isChecked = checked
     }
 
     override fun toString(): String
     {
-        return "DragDrop{" + "id=" + id + ", title='" + title + '\''.toString() + ", checked=" + isChecked + '}'.toString()
+        return "DragDrop{" + "sortOrder=" + sortOrder + ", title='" + title + '\''.toString() + ", checked=" + isChecked + '}'.toString()
     }
 
     override fun equals(`object`: Any?): Boolean

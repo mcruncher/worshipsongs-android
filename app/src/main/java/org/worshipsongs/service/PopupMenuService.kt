@@ -76,9 +76,7 @@ class PopupMenuService
                     bundle.putString(CommonConstants.TITLE_KEY, songName)
                     bundle.putString(CommonConstants.LOCALISED_TITLE_KEY, song.tamilTitle)
                     bundle.putInt(CommonConstants.ID, song.id)
-                    val songBookNameList = songBookService.findSongBookNames(song.id)
-                    bundle.putString("songBookName", getEnglishSongBookName(songBookNameList))
-                    bundle.putString("tamilSongBookName", getTamilSongBookName(songBookNameList))
+
                     val favouritesDialogFragment = FavouritesDialogFragment.newInstance(bundle)
                     favouritesDialogFragment.show(activity.supportFragmentManager, "FavouritesDialogFragment")
                     true
