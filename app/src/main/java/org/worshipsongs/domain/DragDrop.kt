@@ -24,9 +24,9 @@ open class DragDrop
     {
     }
 
-    constructor(id: Long, title: String, checked: Boolean)
+    constructor(sortOrder: Long, title: String, checked: Boolean)
     {
-        this.sortOrder = id
+        this.sortOrder = sortOrder
         this.title = title
         this.isChecked = checked
     }
