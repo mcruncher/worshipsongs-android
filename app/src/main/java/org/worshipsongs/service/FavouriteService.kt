@@ -14,7 +14,6 @@ import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.SongDragDrop
 import org.worshipsongs.utils.PropertyUtils
 
-import java.io.File
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet
@@ -26,7 +25,6 @@ import java.util.HashSet
 
 class FavouriteService
 {
-
     private var sharedPreferences: SharedPreferences? = null
     private var songService: SongService? = null
 

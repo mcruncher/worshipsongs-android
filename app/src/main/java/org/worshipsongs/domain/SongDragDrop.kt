@@ -12,14 +12,10 @@ import java.util.*
 
 class SongDragDrop : DragDrop
 {
-
     var tamilTitle: String? = null
-    var songBookName: String? = null
-    var tamilSongBookName: String? = null
 
     constructor()
     {
-
     }
 
     constructor(id: Long, title: String, checked: Boolean) : super(id, title, checked)

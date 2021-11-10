@@ -47,14 +47,12 @@ class AddFavouritesDialogFragment : DialogFragment()
 
     private fun getPositiveOnClickListener(serviceName: EditText): DialogInterface.OnClickListener
     {
-
         return DialogInterface.OnClickListener { dialog, which ->
             val args = arguments
             val songName = args!!.getString(CommonConstants.TITLE_KEY)
             val localisedName = args.getString(CommonConstants.LOCALISED_TITLE_KEY)
             val id = args.getInt(CommonConstants.ID)
-            val songBookName = args.getString("songBookName")
-            val tamilSongBookName = args.getString("tamilSongBookName")
+
             if (serviceName.text.toString() == "")
             {
                 Toast.makeText(activity, "Enter favourite name...!", Toast.LENGTH_LONG).show()
@@ -63,8 +61,6 @@ class AddFavouritesDialogFragment : DialogFragment()
                 val favouriteName = serviceName.text.toString()
                 val songDragDrop = SongDragDrop(id.toLong(), songName!!, false)
                 songDragDrop.tamilTitle = localisedName
-                songDragDrop.songBookName = songBookName
-                songDragDrop.tamilSongBookName = tamilSongBookName
                 favouriteService.save(favouriteName, songDragDrop)
                 Toast.makeText(activity, "Song added to favourite......!", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -75,7 +71,6 @@ class AddFavouritesDialogFragment : DialogFragment()
 
     companion object
     {
-
         fun newInstance(bundle: Bundle): AddFavouritesDialogFragment
         {
             val addFavouritesDialogFragment = AddFavouritesDialogFragment()
