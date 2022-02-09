@@ -53,7 +53,7 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         Keep the screen awake while viewing a song.
     </li>
     <li>
-        "Present song" on your TV or projector wireless (Chromecast or Miracast/WiDi) or via HDMI cable connection (MHL, SlimPort or Micro-HDMI port).
+        "Present song" on your TV or projector wireless (Chromecast or Miracast/WiDi) or via HDMI cable connection (USB-C DP alt mode, MHL, SlimPort or Micro-HDMI port).
     </li>
     <li>
         Choose font color and background color for primary and secondary screen
