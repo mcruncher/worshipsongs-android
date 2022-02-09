@@ -70,7 +70,7 @@
     <string name="tab_choice_summary">Choose or reorder tab items in main screen</string>
     <string name="tab_choice_title">Change tab items</string>
 
-    <string name="live_share_summary">Configured Dropbox shared folder path for live share songs</string>
+    <string name="live_share_summary">Configure Dropbox shared folder path (location of OpenLP OSZL files)</string>
     <string name="live_share_title">Live share path</string>
 
     <string name="delete">Delete</string>
