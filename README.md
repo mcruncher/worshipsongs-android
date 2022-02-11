@@ -44,9 +44,6 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
         YouTube video support for selected songs.
     </li>
     <li>
-        Share your favourite song or a verse from a song to social media networks.
-    </li>
-    <li>
         You can even replace the songs database that is shipped with the app and provide your own database (in OpenLP format). You can even remotely host your songs db and update the songs seamlessly.
     </li>    
     <li>
