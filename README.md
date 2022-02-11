@@ -23,50 +23,32 @@ Did we mention that Worship Songs is open source? Yes, you can be a part of this
 <h3>What are the features offered?</h3>
  <ul>
     <li>
-        A large collection of latest Tamil and English Praise & Worship song lyrics.
+        A large collection of latest Tamil and English Praise & Worship songs, Jebathotta Jeyageethangal, Keerthanaigal, Seyalveerar Geethangal (FMPB), Saral Navaroji songs, Geethangalum Keerthanaigalum etc.
     </li>
     <li>
-        Romanised text for Tamil songs.
+        Transliterated (Romanised) text for Tamil songs.
     </li>
     <li>
-        Ability to quickly search for a song by typing the first few characters in English. For example, typing "Aara" would help you locate the song "Aarathanai Naayagan Neerae" (ஆராதனை நாயகன் நீரே)<br>
+        Songs grouped by Titles, Authors, Categories, Song Books.
     </li>
     <li>
-        Songs grouped by Authors & Albums. 
-    </li>
-    <li>
-        Elegant tabbed interface to navigate quickly between Songs, Authors, Albums and Playlists.
+        Ability to quickly search for a song by its title or content or song number in a Song Book.
     </li>
     <li>
         Manage your favourite list of songs through "Favourites". This will help you to organize songs that will be used in next Sunday service, Small Group meetings or simply to manage your favourite list.
     </li>
     <li>
+        "Present song" on your TV or projector wireless (Chromecast or Miracast/WiDi) or via HDMI cable connection (USB-C DP alt mode, MHL, SlimPort or Micro-HDMI port).
+    </li>  
+    <li>
         YouTube video support for selected songs.
     </li>
     <li>
-        Music Key support for selected songs.
+        Share your favourite song or a verse from a song to social media networks.
     </li>
     <li>
-        Increase/decrease the font size, distinguish Tamil text from Romanised by setting a different colour.
-    </li>
-    <li>
-        Keep the screen awake while viewing a song.
-    </li>
-    <li>
-        "Present song" on your TV or projector wireless (Chromecast or Miracast/WiDi) or via HDMI cable connection (USB-C DP alt mode, MHL, SlimPort or Micro-HDMI port).
-    </li>
-    <li>
-        Choose font color and background color for primary and secondary screen
-    </li>
-    <li>
-        Import OpenLP database from remote URL and local storage
-    </li>
-    <li>
-        Option to share this app in social media, send us feedback and rate this app.
-    </li>
-    <li>
-        Copy part of song
-    </li>
+        You can even replace the songs database that is shipped with the app and provide your own database (in OpenLP format). You can even remotely host your songs db and update the songs seamlessly.
+    </li>    
     <li>
         Professional design with no ads.
     </li>
