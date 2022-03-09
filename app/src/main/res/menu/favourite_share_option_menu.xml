@@ -17,6 +17,11 @@
         android:title="@string/export_pdf"
         tools:ignore="AppCompatResource"/>
     <item
+        android:id="@+id/export_OpenLPService"
+        android:showAsAction="never"
+        android:title="@string/export_OpenLPService"
+        tools:ignore="AppCompatResource"/>
+    <item
         android:id="@+id/play_song"
         android:showAsAction="never"
         android:title="@string/Play"
