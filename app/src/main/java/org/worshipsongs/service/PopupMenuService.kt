@@ -16,6 +16,7 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import org.apache.commons.lang3.StringUtils
@@ -68,6 +69,7 @@ class PopupMenuService
         exportMenuItem.isVisible = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT
         val presentSongMenuItem = popupMenu.menu.findItem(R.id.present_song)
         presentSongMenuItem.isVisible = false
+        popupMenu.menu.findItem(R.id.export_OpenLPService).isVisible = false
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId)
             {
@@ -257,7 +259,14 @@ class PopupMenuService
                     }
                     false
                 }
-
+                R.id.export_OpenLPService ->
+                {
+                    if (PermissionUtils.isStoragePermissionGranted(activity))
+                    {
+                        Toast.makeText(activity, "Export favourites to service file...!", Toast.LENGTH_LONG).show()
+                    }
+                    true
+                }
                 else -> false
             }
         }
