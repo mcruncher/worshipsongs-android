@@ -20,6 +20,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import org.apache.commons.lang3.StringUtils
+import org.json.JSONArray
+import org.json.JSONObject
 import org.worshipsongs.BuildConfig
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -33,6 +35,7 @@ import org.worshipsongs.utils.PermissionUtils
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * author: Madasamy,Seenivasan, Vignesh Palanisamy
@@ -264,12 +267,83 @@ class PopupMenuService
                     if (PermissionUtils.isStoragePermissionGranted(activity))
                     {
                         Toast.makeText(activity, "Export favourites to service file...!", Toast.LENGTH_LONG).show()
+                        shareAsOpenLPService()
                     }
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun shareAsOpenLPService()
+    {
+        val jsonArray = JSONArray()
+        jsonArray.put(getGeneralInfo())
+        jsonArray.put(getServiceItems())
+
+        println("Json Array: $jsonArray")
+    }
+
+    private fun getGeneralInfo(): JSONObject
+    {
+        val openLPCoreInfo = HashMap<String, Any?>()
+        openLPCoreInfo["lite-service"] = true
+        openLPCoreInfo["service-theme"] = ""
+
+        val generalInfo = HashMap<String, Any?>()
+        generalInfo["openlp_core"] = openLPCoreInfo
+
+        return JSONObject(generalInfo)
+    }
+
+    private fun getServiceItems(): JSONObject
+    {
+        val serviceItems = HashMap<String, Any?>()
+        serviceItems["serviceitem"] = getServiceItem()
+        return JSONObject(serviceItems)
+    }
+
+    private fun getServiceItem(): JSONObject
+    {
+        val serviceItem = HashMap<String, Any?>()
+        serviceItem["header"] = getHeader()
+//        serviceItem["data"] = getHeader()
+
+        println("serviceItem: $serviceItem")
+        return JSONObject(serviceItem)
+    }
+
+    private fun getHeader(): JSONObject
+    {
+        val headerElements = HashMap<String, Any?>()
+
+        headerElements["start_time"] = 0
+        headerElements["will_auto_start"] = false
+        headerElements["type"] = 1
+        headerElements["theme_overwritten"] = false
+        headerElements["processor"] = null
+        headerElements["from_plugin"] = false
+        headerElements["auto_play_slides_loop"] = false
+        headerElements["name"] = "songs"
+        headerElements["notes"] = ""
+        headerElements["capabilities"] = arrayListOf(2,1,5,8,9,13)
+        headerElements["plugin"] = "songs"
+        headerElements["background_audio"] = arrayListOf<Any>()
+        headerElements["media_length"] = 0
+        headerElements["icon"] = ":/plugins/plugin_songs.png"
+        headerElements["search"] = ""
+        headerElements["auto_play_slides_once"] = false
+        headerElements["theme"] = null
+        headerElements["timed_slide_interval"] = 0
+        headerElements["end_time"] = 0
+
+        headerElements["title"] = "Sarva Vallavar"
+        headerElements["audit"] = HashMap<String, Any?>()
+        headerElements["footer"] = HashMap<String, Any?>()
+        headerElements["data"] = HashMap<String, Any?>()
+        headerElements["xml_version"] = ""
+        return JSONObject(headerElements)
     }
 
     private fun shareFavouritesInSocialMedia(text: String)
