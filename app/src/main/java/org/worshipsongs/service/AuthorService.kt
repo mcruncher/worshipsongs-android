@@ -2,15 +2,11 @@ package org.worshipsongs.service
 
 import android.content.Context
 import android.database.Cursor
-
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.domain.Author
 import org.worshipsongs.domain.AuthorSong
 import org.worshipsongs.domain.Song
-import org.worshipsongs.service.DatabaseService
-import org.worshipsongs.utils.RegexUtils
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Author : Madasamy
@@ -103,6 +99,22 @@ class AuthorService(context: Context)
             filteredAuthors.addAll(authorList)
         }
         return filteredAuthors
+    }
+
+    fun findAuthorsByTitle(title: String?): List<String>
+    {
+        val authors = ArrayList<String>()
+        val query = "select a.display_name from Songs as s, authors as a, authors_songs as ass where s.id = ass.song_id and ass.author_id = a.id and s.title = ?"
+        val cursor = databaseService.get().rawQuery(query,  arrayOf(title))
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast)
+        {
+            val author = cursor.getString(0)
+            authors.add(author)
+            cursor.moveToNext()
+        }
+        cursor.close()
+        return authors
     }
 
     companion object

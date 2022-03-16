@@ -51,6 +51,7 @@ class PopupMenuService
     private val songService = SongService(context!!)
     private val databaseService = DatabaseService(context!!)
     private var songBookService = SongBookService(context!!)
+    private val authorService = AuthorService(context!!)
 
     fun showPopupmenu(activity: AppCompatActivity, view: View, songName: String, hidePlay: Boolean)
     {
@@ -244,21 +245,21 @@ class PopupMenuService
         popupMenu.show()
     }
 
-    private fun getPopupMenuItemListener(activity: Activity, text: String): PopupMenu.OnMenuItemClickListener
+    private fun getPopupMenuItemListener(activity: Activity, favouriteName: String): PopupMenu.OnMenuItemClickListener
     {
         return PopupMenu.OnMenuItemClickListener { item ->
             when (item.itemId)
             {
                 R.id.share_whatsapp ->
                 {
-                    shareFavouritesInSocialMedia(text)
+                    shareFavouritesInSocialMedia(favouriteName)
                     true
                 }
                 R.id.export_pdf ->
                 {
                     if (PermissionUtils.isStoragePermissionGranted(activity))
                     {
-                        exportSongToPDF(text, favouriteService.findSongsByFavouriteName(text))
+                        exportSongToPDF(favouriteName, favouriteService.findSongsByFavouriteName(favouriteName))
                     }
                     false
                 }
@@ -266,8 +267,8 @@ class PopupMenuService
                 {
                     if (PermissionUtils.isStoragePermissionGranted(activity))
                     {
-                        Toast.makeText(activity, "Export favourites to service file...!", Toast.LENGTH_LONG).show()
-                        shareAsOpenLPService()
+                        Toast.makeText(activity, "Exporting $favouriteName to service file...!", Toast.LENGTH_LONG).show()
+                        shareAsOpenLPService(favouriteName)
                     }
                     true
                 }
@@ -276,13 +277,15 @@ class PopupMenuService
         }
     }
 
-    private fun shareAsOpenLPService()
+    private fun shareAsOpenLPService(favouriteName: String)
     {
         val jsonArray = JSONArray()
         jsonArray.put(getGeneralInfo())
-        jsonArray.put(getServiceItems())
 
-        println("Json Array: $jsonArray")
+        for (song in favouriteService.findSongsByFavouriteName(favouriteName))
+        {
+            jsonArray.put(getServiceItems(song))
+        }
     }
 
     private fun getGeneralInfo(): JSONObject
@@ -297,27 +300,26 @@ class PopupMenuService
         return JSONObject(generalInfo)
     }
 
-    private fun getServiceItems(): JSONObject
+    private fun getServiceItems(song: Song): JSONObject
     {
         val serviceItems = HashMap<String, Any?>()
-        serviceItems["serviceitem"] = getServiceItem()
+        serviceItems["serviceitem"] = getServiceItem(song)
         return JSONObject(serviceItems)
     }
 
-    private fun getServiceItem(): JSONObject
+    private fun getServiceItem(song: Song): JSONObject
     {
         val serviceItem = HashMap<String, Any?>()
-        serviceItem["header"] = getHeader()
-//        serviceItem["data"] = getHeader()
-
-        println("serviceItem: $serviceItem")
+        serviceItem["header"] = getHeader(song)
         return JSONObject(serviceItem)
     }
 
-    private fun getHeader(): JSONObject
+    private fun getHeader(song: Song): JSONObject
     {
-        val headerElements = HashMap<String, Any?>()
+        val title = song.title
+        val authors = authorService.findAuthorsByTitle(title)
 
+        val headerElements = HashMap<String, Any?>()
         headerElements["start_time"] = 0
         headerElements["will_auto_start"] = false
         headerElements["type"] = 1
@@ -338,12 +340,32 @@ class PopupMenuService
         headerElements["timed_slide_interval"] = 0
         headerElements["end_time"] = 0
 
-        headerElements["title"] = "Sarva Vallavar"
-        headerElements["audit"] = HashMap<String, Any?>()
-        headerElements["footer"] = HashMap<String, Any?>()
-        headerElements["data"] = HashMap<String, Any?>()
-        headerElements["xml_version"] = ""
+        headerElements["title"] = title
+        headerElements["audit"] = arrayListOf(title, authors, "", "")
+        headerElements["footer"] = arrayListOf(title, "Written by: "+ getWrittenBy(authors))
+        headerElements["data"] = getHeaderData(title, authors)
+        headerElements["xml_version"] = song.lyrics
         return JSONObject(headerElements)
+    }
+
+    private fun getWrittenBy(authors: List<String>): String
+    {
+        if(authors.isNotEmpty()) {
+            return when (authors.size) {
+                1 -> { authors[0] }
+                2 -> { authors[0] + " and " + authors[1] }
+                else -> { authors.joinToString(separator = ", ") }
+            }
+        }
+        return ""
+    }
+
+    private fun getHeaderData(title: String?, authors: List<String>): JSONObject
+    {
+        val headerData = HashMap<String, Any?>()
+        headerData["title"] = title
+        headerData["authors"] = authors.joinToString(separator = ", ")
+        return JSONObject(headerData)
     }
 
     private fun shareFavouritesInSocialMedia(text: String)
