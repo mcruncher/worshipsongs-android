@@ -286,6 +286,12 @@ class PopupMenuService
         {
             jsonArray.put(getServiceItems(song))
         }
+        val serviceFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "$favouriteName.osj")
+
+        File(serviceFile.toURI()).bufferedWriter().use { out ->
+            out.write(jsonArray.toString())
+        }
+//        println("Json Array: $jsonArray")
     }
 
     private fun getGeneralInfo(): JSONObject
@@ -311,7 +317,27 @@ class PopupMenuService
     {
         val serviceItem = HashMap<String, Any?>()
         serviceItem["header"] = getHeader(song)
+        serviceItem["data"] = getDataElement(song)
+
+//        println("serviceItem: $serviceItem")
         return JSONObject(serviceItem)
+    }
+
+    private fun getDataElement(song: Song): List<JSONObject>
+    {
+        val dataElements = arrayListOf<JSONObject>()
+
+        val verseOrderList = song.verseOrder?.split(" ")?.toList()
+        for(i in verseOrderList?.indices!!)
+        {
+            val rawSlide = song.contents?.get(i)
+            val dataElement = HashMap<String, Any?>()
+            dataElement["raw_slide"] = rawSlide
+            dataElement["title"] = rawSlide?.substringBefore("{/y}")
+            dataElement["verseTag"] = verseOrderList[i]
+            dataElements.add(JSONObject(dataElement))
+        }
+        return dataElements
     }
 
     private fun getHeader(song: Song): JSONObject
@@ -345,6 +371,7 @@ class PopupMenuService
         headerElements["footer"] = arrayListOf(title, "Written by: "+ getWrittenBy(authors))
         headerElements["data"] = getHeaderData(title, authors)
         headerElements["xml_version"] = song.lyrics
+        println(headerElements)
         return JSONObject(headerElements)
     }
 
