@@ -7,7 +7,7 @@ import org.robolectric.RuntimeEnvironment
  *  Author : Madasamy
  *  Version : 3.x
  */
-class SongParserTest extends ElectricSpecification
+class SongParserIntegrationTest extends ElectricSpecification
 {
     def songParser = new SongParser()
     def lyrics = "<?xml version='1.0' encoding='UTF-8'?>\n" +
