@@ -53,22 +53,22 @@ class DragDropTest extends Specification
         set.size() == 1
     }
 
-    def "To gson"()
+    def "To json"()
     {
         setup:
         def dragDrops = new ArrayList<DragDrop>()
         dragDrops.add(new DragDrop(0, "title", true))
-        def jsonString = DragDrop.toJson(dragDrops)
+        def jsonString = DragDrop["Companion"].toJson(dragDrops)
 
         expect:
-        jsonString == "[{\"id\":0,\"title\":\"title\",\"checked\":true}]"
+        jsonString == "[{\"id\":0,\"title\":\"title\",\"isChecked\":true}]"
     }
 
     def "To array"()
     {
         setup:
-        def jsonString = "[{\"id\":0,\"title\":\"title\",\"checked\":true}]"
-        def result = DragDrop.toArrays(jsonString)
+        def jsonString = "[{\"id\":0,\"title\":\"title\",\"isChecked\":true}]"
+        def result = DragDrop["Companion"].toArrays(jsonString)
         def dragDrop = new DragDrop(0, "title", true)
 
         expect:
@@ -78,7 +78,7 @@ class DragDropTest extends Specification
     def "To array when empty string"()
     {
         setup:
-        def result = DragDrop.toArrays("")
+        def result = DragDrop["Companion"].toArrays("")
 
         expect:
         result.size() == 0

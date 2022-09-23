@@ -70,7 +70,7 @@ class SongDragDropTest extends Specification
     def "ToList"()
     {
         given:
-        def jsonString = "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"checked\":false}]"
+        def jsonString = "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"isChecked\":true}]"
 
         when:
         def result = SongDragDrop["Companion"].toList(jsonString)
