@@ -29,9 +29,7 @@ class SongDragDrop : DragDrop
 
     companion object
     {
-
-
-        fun toJsons(items: List<SongDragDrop>): String
+        fun toJson(items: List<SongDragDrop>): String
         {
             val gson = Gson()
             return gson.toJson(items)
