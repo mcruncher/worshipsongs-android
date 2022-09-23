@@ -44,6 +44,16 @@ class Setting private constructor()
 
     companion object
     {
-        val instance = Setting()
+        private var setting: Setting? = null
+
+        val instance: Setting
+            get()
+            {
+                if (setting == null)
+                {
+                    setting = Setting()
+                }
+                return setting as Setting
+            }
     }
 }
