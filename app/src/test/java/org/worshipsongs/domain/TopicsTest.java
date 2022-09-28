@@ -1,7 +1,7 @@
 package org.worshipsongs.domain;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ public class TopicsTest
     private Topics topics1;
     private Topics topics2;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         topics1 = new Topics("foo");
@@ -30,7 +30,6 @@ public class TopicsTest
         System.out.println("--toString--");
         String result = topics1.toString();
         assertTrue(result.contains("foo"));
-
     }
 
     @Test
