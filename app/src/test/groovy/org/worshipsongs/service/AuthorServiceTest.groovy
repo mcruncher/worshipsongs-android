@@ -1,12 +1,10 @@
 package org.worshipsongs.service
 
-import hkhc.electricspock.ElectricSpecification
+
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.domain.Author
-import org.worshipsongs.utils.RegexUtils
 import spock.lang.Ignore
 import spock.lang.Specification
-
 /**
  *  Author : Madasamy
  *  Version : 3.x

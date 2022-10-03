@@ -1,11 +1,9 @@
 package org.worshipsongs.activity
 
 import android.os.Bundle
-import hkhc.electricspock.ElectricSpecification
 import org.robolectric.Robolectric
 import spock.lang.Ignore
 import spock.lang.Specification
-
 /**
  *  Author : Madasamy
  *  Version : 3.x

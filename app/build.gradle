@@ -155,7 +155,6 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.8.2'
     testImplementation 'org.robolectric:shadows-support-v4:3.1'
     testImplementation 'androidx.test:core:1.4.0'
-    testImplementation 'com.github.hkhc:electricspock:0.9'
 
     annotationProcessor 'com.google.auto.service:auto-service:1.0-rc4'
 }
