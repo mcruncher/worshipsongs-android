@@ -86,8 +86,6 @@ android {
 
     testOptions {
         unitTests.all {
-            systemProperty 'robolectric.enabledSdks', '15'
-
             testLogging {
                 events "PASSED", "STARTED", "FAILED", "SKIPPED"
             }
