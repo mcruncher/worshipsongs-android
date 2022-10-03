@@ -3,12 +3,15 @@ package org.worshipsongs.registry
 //import android.support.v4.app.FragmentActivity
 import hkhc.electricspock.ElectricSpecification
 import org.robolectric.Robolectric
+import spock.lang.Ignore
+import spock.lang.Specification
 
 /**
  *  Author : Madasamy
  *  Version : 3.x.x
  */
-class FragmentRegistryTest extends ElectricSpecification
+@Ignore
+class FragmentRegistryTest extends Specification
 {
 //    def fragmentRegistry = new FragmentRegistry();
 //    def activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get()
