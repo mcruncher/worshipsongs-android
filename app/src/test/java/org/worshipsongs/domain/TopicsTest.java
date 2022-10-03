@@ -1,7 +1,7 @@
 package org.worshipsongs.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ public class TopicsTest
     private Topics topics1;
     private Topics topics2;
 
-    @BeforeEach
+    @Before
     public void setUp()
     {
         topics1 = new Topics("foo");
