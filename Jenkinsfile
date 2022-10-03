@@ -1,5 +1,5 @@
 pipeline {
-   agent { label "java"}
+   agent { label "java11"}
 
    tools{
         gradle 'Gradle-5.4'
