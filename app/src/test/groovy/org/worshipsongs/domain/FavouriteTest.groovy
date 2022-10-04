@@ -1,12 +1,12 @@
 package org.worshipsongs.domain
 
-import hkhc.electricspock.ElectricSpecification
+import spock.lang.Specification
 
 /**
  *  Author : Madasamy
  *  Version : 3.x.x
  */
-class FavouriteTest extends ElectricSpecification
+class FavouriteTest extends Specification
 {
     def favourite1
     def favourite2
@@ -61,7 +61,7 @@ class FavouriteTest extends ElectricSpecification
         list.add(new Favourite("foo", new ArrayList<DragDrop>()))
 
         when:
-        def result = Favourite.toJson(list)
+        def result = Favourite["Companion"].toJson(list)
 
         then:
         result == "[{\"orderId\":0,\"name\":\"foo\",\"dragDrops\":[]}]"
@@ -73,7 +73,7 @@ class FavouriteTest extends ElectricSpecification
         def jsonString = "[{\"name\":\"foo\",\"dragDrops\":[]}]"
 
         when:
-        def result = Favourite.toArrays(jsonString)
+        def result = Favourite["Companion"].toArrays(jsonString)
 
         then:
         result.size() == 1

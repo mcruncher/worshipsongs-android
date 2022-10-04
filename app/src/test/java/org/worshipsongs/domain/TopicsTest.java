@@ -30,7 +30,6 @@ public class TopicsTest
         System.out.println("--toString--");
         String result = topics1.toString();
         assertTrue(result.contains("foo"));
-
     }
 
     @Test

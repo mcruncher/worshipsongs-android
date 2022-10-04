@@ -1,18 +1,19 @@
 package org.worshipsongs.service
 
 import android.preference.PreferenceManager
-import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.ServiceSong
 import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.Type
-
+import spock.lang.Ignore
+import spock.lang.Specification
 /**
  *  Author : Madasamy
  *  Version : 3.x.x
  */
-class SongServiceSpockTest extends ElectricSpecification
+@Ignore
+class SongServiceSpockTest extends Specification
 {
     def songService = new SongService(RuntimeEnvironment.application.getApplicationContext())
     def songs = null

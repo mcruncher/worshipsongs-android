@@ -2,15 +2,16 @@ package org.worshipsongs.service
 
 import android.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
-import hkhc.electricspock.ElectricSpecification
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.SongBook
-
+import spock.lang.Ignore
+import spock.lang.Specification
 /**
  *  Author : Madasamy
  *  Version : 3.x
  */
-class SongBookServiceSpockTest extends ElectricSpecification
+@Ignore
+class SongBookServiceSpockTest extends Specification
 {
 
     def songBookService = new SongBookService(ApplicationProvider.getApplicationContext())

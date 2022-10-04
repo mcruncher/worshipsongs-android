@@ -2,17 +2,18 @@ package org.worshipsongs.service
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import hkhc.electricspock.ElectricSpecification
 import org.robolectric.RuntimeEnvironment
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.Favourite
 import org.worshipsongs.domain.SongDragDrop
-
+import spock.lang.Ignore
+import spock.lang.Specification
 /**
  *  Author : Madasamy
  *  Version : 3.x.x
  */
-class FavouriteServiceTest extends ElectricSpecification
+@Ignore
+class FavouriteServiceTest extends Specification
 {
     def favouriteService = new FavouriteService(RuntimeEnvironment.application.getApplicationContext());
     def songService =  new SongService(RuntimeEnvironment.application.getApplicationContext())

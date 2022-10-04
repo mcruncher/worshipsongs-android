@@ -1,13 +1,15 @@
 package org.worshipsongs.parser
 
-import hkhc.electricspock.ElectricSpecification
-import org.robolectric.RuntimeEnvironment
 
+import org.robolectric.RuntimeEnvironment
+import spock.lang.Ignore
+import spock.lang.Specification
 /**
  *  Author : Madasamy
  *  Version : 3.x
  */
-class SongParserTest extends ElectricSpecification
+@Ignore
+class SongParserIntegrationTest extends Specification
 {
     def songParser = new SongParser()
     def lyrics = "<?xml version='1.0' encoding='UTF-8'?>\n" +
@@ -36,20 +38,6 @@ class SongParserTest extends ElectricSpecification
             " Vaanam thiranthu vanthiduveer\n" +
             " {y}வல்லமையை ஈந்திடுவீர்{/y}\n" +
             " Vallamaiyai eenthiduveer]]></verse></lyrics></song>";
-
-    def "Regex pattern"()
-    {
-        expect:
-        SongParser.XML_FILE_NAME == "verse"
-        SongParser.EXTENSION == "xml";
-        SongParser.VERSE_ELEMENT_NAME == "verse";
-        SongParser.LABEL_ATTRIBUTE_NAME == "label";
-        SongParser.TYPE_ATTRIBUTE_NAME == "type";
-
-        SongParser.I_18_N_TITLE_REGEX == "i18nTitle.*"
-        SongParser.MEDIA_URL_REGEX == "mediaurl.*"
-        SongParser.CHORD_REGEX == "originalKey.*"
-    }
 
     def "Parse contents by verse orders"()
     {
@@ -110,122 +98,4 @@ class SongParserTest extends ElectricSpecification
         expect:
         songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), "").size() == 0
     }
-
-    def "Parse media url key"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI"
-
-        expect:
-        songParser.parseMediaUrlKey(comments) == "Ro59iCBNBdI"
-    }
-
-    def "Parse media url when chord defined"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\noriginalKey=c"
-
-        expect:
-        songParser.parseMediaUrlKey(comments) == "Ro59iCBNBdI"
-    }
-
-    def "Parse media url key when have new line"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n"
-
-        expect:
-        songParser.parseMediaUrlKey(comments) == "Ro59iCBNBdI"
-    }
-
-    def "Parse media url key from null"()
-    {
-        expect:
-        songParser.parseMediaUrlKey(null) == ""
-    }
-
-    def "Parse media url key from empty string"()
-    {
-        expect:
-        songParser.parseMediaUrlKey("") == ""
-    }
-
-    def "Parse chord"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n" + "originalKey=G"
-
-        expect:
-        songParser.parseChord(comments) == "G"
-    }
-
-    def "Parse chord when present in first"()
-    {
-        setup:
-        def comments = "originalKey=g\nmediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI";
-
-        expect:
-        songParser.parseChord(comments) == "g"
-    }
-
-    def "Parse chord when not defined"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\n";
-
-        expect:
-        songParser.parseChord(comments) == ""
-    }
-
-    def "Parse chord from null"()
-    {
-        expect:
-        songParser.parseChord(null) == ""
-    }
-
-    def "Parse chord from empty string"()
-    {
-        expect:
-        songParser.parseChord("") == ""
-    }
-
-    def "Parse tamil title"()
-    {
-        setup:
-        def comments = "i18nTitle=இடைவிடா நன்றி உமக்குத்தானே"
-
-        expect:
-        songParser.parseTamilTitle(comments) == "இடைவிடா நன்றி உமக்குத்தானே"
-    }
-
-    def "Parse tamil title when not defined"()
-    {
-        setup:
-        def comments = "mediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI"
-
-        expect:
-        songParser.parseTamilTitle(comments) == ""
-    }
-
-    def "Parse tamil title when defined in end of comments"()
-    {
-        setup:
-        def comments = "originalKey=g\nmediaUrl=https://www.youtube.com/watch?v=Ro59iCBNBdI\ni18nTitle=இடைவிடா நன்றி உமக்குத்தானே"
-
-        expect:
-        songParser.parseTamilTitle(comments) == "இடைவிடா நன்றி உமக்குத்தானே"
-    }
-
-    def "Parse tamil title from empty string"()
-    {
-        expect:
-        songParser.parseTamilTitle("") == ""
-    }
-
-    def "Parse tamil title from null"()
-    {
-        expect:
-        songParser.parseTamilTitle(null) == ""
-    }
-
 }

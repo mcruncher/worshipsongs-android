@@ -16,7 +16,6 @@ class SongDragDropTest extends Specification
         songDragDrop1 = new SongDragDrop(0, "foo", false)
         songDragDrop1.tamilTitle = "fooo"
         songDragDrop2 = new SongDragDrop(songDragDrop1.id, songDragDrop1.title, songDragDrop1.checked)
-
     }
 
     def "ToString"()
@@ -62,19 +61,19 @@ class SongDragDropTest extends Specification
         def list = new ArrayList<SongDragDrop>()
         list.add(songDragDrop1)
         when:
-        def result = SongDragDrop.toJson(list)
+        def result = SongDragDrop["Companion"].toJson(list)
 
         then:
-        result == "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"checked\":false}]"
+        result == "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"isChecked\":false}]"
     }
 
     def "ToList"()
     {
         given:
-        def jsonString = "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"checked\":false}]"
+        def jsonString = "[{\"tamilTitle\":\"fooo\",\"id\":0,\"title\":\"foo\",\"isChecked\":true}]"
 
         when:
-        def result = SongDragDrop.toArrays(jsonString)
+        def result = SongDragDrop["Companion"].toList(jsonString)
 
         then:
         def expected = new ArrayList<SongDragDrop>()

@@ -65,9 +65,9 @@ class DatabaseService
         return database!!
     }
 
-    fun parseTamilName(topicName: String): String
+    fun parseTamilName(topicName: String?): String
     {
-        if (StringUtils.isNotBlank(topicName))
+        if (topicName != null && StringUtils.isNotBlank(topicName))
         {
             val tamilTopicName = RegexUtils.getMatchString(topicName, TOPIC_NAME_REGEX)
             val formattedTopicName = tamilTopicName.replace("\\{".toRegex(), "").replace("\\}".toRegex(), "")
@@ -76,9 +76,9 @@ class DatabaseService
         return ""
     }
 
-    fun parseEnglishName(topicName: String): String
+    fun parseEnglishName(topicName: String?): String
     {
-        return if (StringUtils.isNotBlank(topicName))
+        return if (topicName != null && StringUtils.isNotBlank(topicName))
         {
             topicName.replace(TOPIC_NAME_REGEX.toRegex(), "")
         } else ""

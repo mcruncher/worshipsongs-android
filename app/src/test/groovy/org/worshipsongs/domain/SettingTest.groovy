@@ -11,13 +11,11 @@ class SettingTest extends Specification
     def setting1;
     def setting2;
 
-
     void setup()
     {
-        setting1 = Setting.instance
+        setting1 = Setting["Companion"].instance
         setting1.setPosition(1)
-        setting2 = Setting.instance
-
+        setting2 = Setting["Companion"].instance
     }
 
     def "ToString"()
@@ -27,8 +25,6 @@ class SettingTest extends Specification
 
         expect:
         result.contains("1")
-
-
     }
 
     def "Equals"()

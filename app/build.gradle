@@ -1,22 +1,31 @@
 plugins {
     id "org.sonarqube" version "2.6.2"
 }
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'jacoco-android'
+apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 apply from: '../sonarqube.gradle'
+// Helps to run Groovy(Spock) tests
 apply plugin: 'groovyx.android'
 
 def buildNumber = System.getenv("BUILD_NUMBER")
+if (buildNumber == null) {
+    buildNumber = "1"
+}
 def versionCodeNumber = Integer.parseInt(buildNumber)
 def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
-android {
+jacoco {
+    toolVersion = "0.8.6"
+}
 
+android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
+
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
@@ -25,10 +34,12 @@ android {
         versionName APP_VERSION
         setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
     }
+
     compileOptions {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
     }
+
     compileOptions.encoding = "UTF-8"
 
     signingConfigs {
@@ -42,7 +53,6 @@ android {
     }
 
     buildTypes {
-
         debug {
             minifyEnabled false
             testCoverageEnabled true
@@ -56,8 +66,8 @@ android {
             debuggable = false
         }
     }
-    packagingOptions {
 
+    packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -75,16 +85,21 @@ android {
     }
 
     testOptions {
-
         unitTests.all {
-            maxHeapSize = "1024m"
+            testLogging {
+                events "PASSED", "STARTED", "FAILED", "SKIPPED"
+            }
+
             jacoco {
                 includeNoLocationClasses = true
+                jacoco.excludes = ['jdk.internal.*']
             }
         }
+
         unitTests {
             includeAndroidResources = true
         }
+
         unitTests.returnDefaultValues = true
     }
 }
@@ -135,11 +150,13 @@ dependencies {
     testImplementation 'org.json:json:20180813'
     testImplementation 'org.codehaus.groovy:groovy-all:2.4.15'
     testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
-    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'org.robolectric:robolectric:4.8.2'
     testImplementation 'org.robolectric:shadows-support-v4:3.1'
     testImplementation 'androidx.test:core:1.4.0'
-    testImplementation 'com.github.hkhc:electricspock:0.9'
+
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc4'
 }
+
 repositories {
     mavenCentral()
 }
