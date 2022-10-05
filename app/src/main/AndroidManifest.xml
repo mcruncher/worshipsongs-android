@@ -87,10 +87,9 @@
                 android:value="org.worshipsongs.activity.FavouriteSongsActivity" />
         </activity>
 
-        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">/>
-
-        </activity>
+        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity"/>
     </application>
+
     <queries>
         <intent>
             <action android:name="com.google.android.youtube.api.service.START" />
