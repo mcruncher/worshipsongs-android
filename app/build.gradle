@@ -1,14 +1,14 @@
 plugins {
     id "org.sonarqube" version "2.6.2"
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 apply from: '../sonarqube.gradle'
 // Helps to run Groovy(Spock) tests
-apply plugin: 'groovyx.android'
+//apply plugin: 'groovyx.android'
 
 def buildNumber = System.getenv("BUILD_NUMBER")
 if (buildNumber == null) {
@@ -23,13 +23,13 @@ jacoco {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "org.worshipsongs"
         minSdkVersion 15
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode versionCodeNumber
         versionName APP_VERSION
         setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
