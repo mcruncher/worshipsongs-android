@@ -3,14 +3,13 @@ buildscript {
 
     dependencies {
         classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:2.0.1'
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
     }
 }
 
 plugins {
     id 'com.android.application' version '7.3.0' apply false
-//    id 'com.android.library' version '7.3.0' apply false
     id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+    id 'com.dicedmelon.gradle.jacoco-android' version '0.1.5' apply false
 }
 
 task clean(type: Delete) {
