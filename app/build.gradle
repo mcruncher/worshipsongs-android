@@ -147,8 +147,7 @@ dependencies {
     // The latest version of Spock requires Junit 5 but Robolectric still depends on Junit 4
     testImplementation 'org.codehaus.groovy:groovy-all:2.4.15'
     testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
-    testImplementation 'org.robolectric:robolectric:4.8.2'
-    testImplementation 'org.robolectric:shadows-support-v4:3.1'
+    testImplementation 'org.robolectric:robolectric:4.9.2'
 
     testImplementation 'androidx.test:core:1.4.0'
 
