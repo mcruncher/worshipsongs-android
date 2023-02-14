@@ -9,9 +9,6 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 apply from: '../sonarqube.gradle'
 
-// Helps to run Groovy(Spock) tests
-//apply plugin: 'groovyx.android'
-
 def buildNumber = System.getenv("BUILD_NUMBER")
 if (buildNumber == null) {
     buildNumber = "1"
