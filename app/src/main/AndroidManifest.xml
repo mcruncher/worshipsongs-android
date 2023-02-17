@@ -26,7 +26,7 @@
         <activity
             android:name=".activity.SplashScreenActivity"
             android:label="@string/home"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -87,10 +87,9 @@
                 android:value="org.worshipsongs.activity.FavouriteSongsActivity" />
         </activity>
 
-        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity">/>
-
-        </activity>
+        <activity android:name="org.worshipsongs.activity.LiveShareSongsActivity"/>
     </application>
+
     <queries>
         <intent>
             <action android:name="com.google.android.youtube.api.service.START" />

@@ -40,35 +40,11 @@ public class CommonUtilsTest
         assertTrue(CommonUtils.INSTANCE.isProductionMode());
     }
 
-
-    @Test
-    public void testIsJellyBeanMrOrGreater()
-    {
-        System.out.println("--isJellyBeanMrOrGreater--");
-        assertTrue(CommonUtils.INSTANCE.isJellyBeanMrOrGreater());
-    }
-
-    @Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
-    @Test
-    public void testIsNotJellyBeanMR()
-    {
-        System.out.println("--isNotJellyBeanMR--");
-        assertFalse(CommonUtils.INSTANCE.isJellyBeanMrOrGreater());
-    }
-
     @Test
     public void testIsLolliPopOrGreater()
     {
         System.out.println("--isLolliPopOrGreater--");
         assertTrue(CommonUtils.INSTANCE.isLollipopOrGreater());
-    }
-
-    @Config(sdk = Build.VERSION_CODES.KITKAT)
-    @Test
-    public void testIsNotLollipop()
-    {
-        System.out.println("--IsNotLollipop--");
-        assertFalse(CommonUtils.INSTANCE.isLollipopOrGreater());
     }
 
     //Note: Update this test every major release

@@ -2,7 +2,7 @@ pipeline {
    agent { label "java11"}
 
    tools{
-        gradle 'Gradle-5.4'
+        gradle 'Gradle-7'
    }
 
    environment{
