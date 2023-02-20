@@ -1,25 +1,26 @@
 pipeline {
-   agent { label "java11"}
+  agent { label "java11"}
 
-   tools{
-        gradle 'Gradle-7'
-   }
+  tools {
+    gradle 'Gradle-7'
+  }
 
-   environment{
-        GRADLE_OPTS='-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m'
-   }
+  environment {
+    GRADLE_OPTS='-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m'
+  }
 
-   stages {
-      stage('Unit test') {
-          steps {
-            sh './gradlew clean testDebug'
-          }
-          post {
-            always {
-                junit(allowEmptyResults: true, testResults: '**/*.xml')
-            }
-          }
+  stages {
+    stage('Unit test') {
+      steps {
+        sh './gradlew clean testDebug'
       }
+      post {
+        always {
+          junit(allowEmptyResults: true, testResults: '**/*.xml')
+        }
+      }
+    }
+
    //   stage('Code coverage') {
    //       steps {
    //           sh './gradlew clean sonarComplete'
@@ -31,16 +32,34 @@ pipeline {
    //          }
    //       }
    //   }
-      stage('Package') {
-          steps {
-            sh './bundle-db.sh'
-            sh './gradlew clean assembleDebug'
-          }
-          post {
-              success {
-                  archive includes:'**/*.apk'
-              }
-          }
+
+    stage ('Package and Publish') {
+      when {
+        anyOf {
+          branch 'master'; branch 'release/*'; branch 'hotfix/*'
+        }
       }
-   }
+
+      steps {
+        sh './bundle-db.sh'
+        sh './gradlew clean assembleRelease'
+      }
+
+      post {
+        always {
+          archive includes:'**/*.apk'
+        }
+
+        success {
+          script {
+            env.WORKSPACE = pwd()
+            env.FILENAME = readFile "${env.WORKSPACE}/changelist"
+          }
+
+          androidApkUpload apkFilesPattern: '**/*.apk', googleCredentialsId: "$GOOGLE_DEVELOPER_CREDENTIALS_ID", recentChangeList: [[language: 'en-GB', text: "${env.FILENAME}"]], trackName: 'beta', rolloutPercentage: '0%'
+        }
+      }
+    }
+
+  }
 }
