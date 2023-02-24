@@ -44,10 +44,9 @@ android {
     signingConfigs {
         releaseConfig {
             storeFile file('../worshipsongs-key.jks')
-            storePassword System.getenv("WORSHIPSONGS_KEYSTOREPWD")
-            keyAlias System.getenv("WORSHIPSONGS_KEYALIAS")
-            keyPassword System.getenv("WORSHIPSONGS_KEYPASSWORD")
-
+            storePassword System.getenv("WORSHIPSONGS_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("WORSHIPSONGS_KEY_ALIAS")
+            keyPassword System.getenv("WORSHIPSONGS_KEY_PASSWORD")
         }
     }
 
