@@ -2,7 +2,6 @@ package org.worshipsongs.domain
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import spock.lang.Specification
 
 /**
  *  Author : Madasamy
@@ -11,8 +10,7 @@ import spock.lang.Specification
 class VerseTest
 {
     @Test
-    fun testToString()
-    {
+    fun `To string`() {
         // given:
         val verse = Verse()
         verse.label = 1

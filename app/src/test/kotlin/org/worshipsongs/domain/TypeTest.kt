@@ -2,7 +2,6 @@ package org.worshipsongs.domain
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import spock.lang.Specification
 
 /**
  *  Author : Madasamy
@@ -11,7 +10,7 @@ import spock.lang.Specification
 class TypeTest {
 
     @Test
-    fun testEnums() {
+    fun enums() {
         // expect:
         assertEquals(4, Type.values().size)
         assertEquals(Type.SONG, Type.valueOf("SONG"))
