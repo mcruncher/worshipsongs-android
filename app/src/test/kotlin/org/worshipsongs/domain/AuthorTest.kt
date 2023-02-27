@@ -15,12 +15,12 @@ class AuthorTest {
     }
 
     @Test
-    fun testToString()
+    fun `To String`()
     {
-        //setup
+        // setup
         val result = author1.toString()
 
-        //expect
+        // expect
         assertTrue(result.contains("foo"))
     }
 }
