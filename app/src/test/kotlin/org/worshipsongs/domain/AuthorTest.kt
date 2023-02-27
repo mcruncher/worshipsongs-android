@@ -1,5 +1,6 @@
 package org.worshipsongs.domain
 
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -10,7 +11,7 @@ class AuthorTest {
     fun setup()
     {
         author1 = Author()
-        author1.firstName == "foo"
+        author1.firstName = "foo"
     }
 
     @Test
@@ -20,6 +21,6 @@ class AuthorTest {
         val result = author1.toString()
 
         //expect
-        result.contains("foo")
+        assertTrue(result.contains("foo"))
     }
 }
