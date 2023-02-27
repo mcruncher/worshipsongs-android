@@ -1,9 +1,9 @@
 package org.worshipsongs.domain
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
-import spock.lang.Specification
 
 /**
  *  Author : Madasamy
@@ -52,7 +52,7 @@ class SongTest {
     fun `Hashcode`()
     {
         // setup:
-        val set = setOf<Song>(song1, song2)
+        val set = setOf(song1, song2)
 
         // expect:
         assertEquals(1, set.size)

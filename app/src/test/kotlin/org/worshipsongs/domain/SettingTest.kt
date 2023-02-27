@@ -38,7 +38,7 @@ class SettingTest {
     @Test
     fun `HashCode`() {
         // setup:
-        val set = setOf<Setting>(setting1, setting2)
+        val set = setOf(setting1, setting2)
 
         // expect:
         assertEquals(1, set.size)

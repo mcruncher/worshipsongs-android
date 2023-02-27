@@ -48,7 +48,7 @@ class SongDragDropTest {
     @Test
     fun `Hashcode`() {
         // setup:
-        val songDragDropSet = setOf<SongDragDrop>(songDragDrop1, songDragDrop2, SongDragDrop())
+        val songDragDropSet = setOf(songDragDrop1, songDragDrop2, SongDragDrop())
 
         // expect:
         assertEquals(2, songDragDropSet.size)
@@ -57,7 +57,7 @@ class SongDragDropTest {
     @Test
     fun `To json`() {
         // given:
-        val list = listOf<SongDragDrop>(songDragDrop1)
+        val list = listOf(songDragDrop1)
 
         // when:
         val result = SongDragDrop.toJson(list)
@@ -76,7 +76,7 @@ class SongDragDropTest {
         val result = SongDragDrop.toList(jsonString)
 
         // then:
-        val expected = listOf<SongDragDrop>(songDragDrop1)
+        val expected = listOf(songDragDrop1)
         assertEquals(expected, result)
     }
 }

@@ -8,6 +8,7 @@ import org.junit.Test
  *  Version : 3.x
  */
 class ServiceSongTest {
+
     @Test
     fun `To String`() {
         // given:

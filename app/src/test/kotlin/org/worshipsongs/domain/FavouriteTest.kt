@@ -47,7 +47,7 @@ class FavouriteTest {
     @Test
     fun `HashCode`() {
         // setup:
-        val favourites = setOf<Favourite>(favourite1, favourite2, Favourite())
+        val favourites = setOf(favourite1, favourite2, Favourite())
 
         // expect:
         assertEquals(2, favourites.size)
@@ -85,7 +85,7 @@ class FavouriteTest {
     fun `To sort order`() {
         // setup:
         val favorites =
-            listOf<Favourite>(favourite1, favourite2, Favourite(3, "latest favourite", ArrayList()))
+            listOf(favourite1, favourite2, Favourite(3, "latest favourite", ArrayList()))
         Collections.sort(favorites)
 
         // expect:

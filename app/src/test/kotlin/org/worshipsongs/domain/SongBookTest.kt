@@ -3,7 +3,6 @@ package org.worshipsongs.domain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import spock.lang.Specification
 
 /**
  *  Author : Madasamy
@@ -53,7 +52,7 @@ class SongBookTest
     fun `HashCode`()
     {
         // setup:
-        val songBooks = setOf<SongBook>(songBook1, songBook2)
+        val songBooks = setOf(songBook1, songBook2)
 
         // expect:
         assertEquals(1, songBooks.size)

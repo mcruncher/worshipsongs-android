@@ -46,7 +46,7 @@ class DragDropTest {
     @Test
     fun `HashCode`() {
         // setup:
-        val set = setOf<DragDrop>(dragDrop1, dragDrop2)
+        val set = setOf(dragDrop1, dragDrop2)
 
         // expect:
         assertEquals(1, set.size)
