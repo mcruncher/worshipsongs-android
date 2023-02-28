@@ -20,7 +20,7 @@ class FavouriteTest {
     }
 
     @Test
-    fun `To string`() {
+    fun testToString() {
         // setup:
         val result = favourite1.toString()
 
@@ -29,13 +29,13 @@ class FavouriteTest {
     }
 
     @Test
-    fun `Equals`() {
+    fun testEquals() {
         // expect:
         assertEquals(favourite1, favourite2)
     }
 
     @Test
-    fun `Not equals`() {
+    fun testNotEquals() {
         // setup:
         favourite2.name = "bar"
 
@@ -45,7 +45,7 @@ class FavouriteTest {
     }
 
     @Test
-    fun `HashCode`() {
+    fun testHashCode() {
         // setup:
         val favourites = setOf(favourite1, favourite2, Favourite())
 

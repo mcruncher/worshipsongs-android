@@ -19,7 +19,7 @@ class DragDropTest {
     }
 
     @Test
-    fun `ToString`() {
+    fun testToString() {
         // setup:
         val result = dragDrop1.toString()
 
@@ -29,13 +29,13 @@ class DragDropTest {
     }
 
     @Test
-    fun `Equals`() {
+    fun testEquals() {
         // expect:
         assertEquals(dragDrop1, dragDrop2)
     }
 
     @Test
-    fun `Not equals`() {
+    fun testNotEquals() {
         // setup:
         dragDrop1.title = "foo1"
 
@@ -44,7 +44,7 @@ class DragDropTest {
     }
 
     @Test
-    fun `HashCode`() {
+    fun testHashCode() {
         // setup:
         val set = setOf(dragDrop1, dragDrop2)
 

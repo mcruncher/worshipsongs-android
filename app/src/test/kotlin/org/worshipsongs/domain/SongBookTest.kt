@@ -21,8 +21,7 @@ class SongBookTest
     }
 
     @Test
-    fun `To String`()
-    {
+    fun testToString() {
         // setup:
         val result = songBook1.toString()
 
@@ -32,15 +31,13 @@ class SongBookTest
     }
 
     @Test
-    fun `Equals`()
-    {
+    fun testEquals() {
         // expect:
         assertEquals(songBook1, songBook2)
     }
 
     @Test
-    fun `Not equals`()
-    {
+    fun testNotEquals() {
         // setup:
         songBook2.name = "bar"
 
@@ -49,8 +46,7 @@ class SongBookTest
     }
 
     @Test
-    fun `HashCode`()
-    {
+    fun testHashCode() {
         // setup:
         val songBooks = setOf(songBook1, songBook2)
 

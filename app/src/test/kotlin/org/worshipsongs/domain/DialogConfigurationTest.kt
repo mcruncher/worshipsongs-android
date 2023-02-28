@@ -20,7 +20,7 @@ class DialogConfigurationSpockTest {
     }
 
     @Test
-    fun `To string`() {
+    fun testToString() {
         // setup:
         val result = dialogConfiguration1.toString()
 
@@ -30,13 +30,13 @@ class DialogConfigurationSpockTest {
     }
 
     @Test
-    fun `Equals`() {
+    fun testEquals() {
         // expect:
         assertEquals(dialogConfiguration1, dialogConfiguration2)
     }
 
     @Test
-    fun `Not equals`() {
+    fun testNotEquals() {
         // setup:
         dialogConfiguration2.title = "bar"
 
@@ -45,7 +45,7 @@ class DialogConfigurationSpockTest {
     }
 
     @Test
-    fun `Hashcode`() {
+    fun testHashcode() {
         // setup:Ø
         val set = setOf(dialogConfiguration1, dialogConfiguration2)
 

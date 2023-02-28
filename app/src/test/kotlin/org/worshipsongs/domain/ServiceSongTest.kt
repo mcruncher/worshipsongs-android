@@ -10,7 +10,7 @@ import org.junit.Test
 class ServiceSongTest {
 
     @Test
-    fun `To String`() {
+    fun testToString() {
         // given:
         val serviceSong = ServiceSong("Foo", Song())
 

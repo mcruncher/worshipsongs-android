@@ -1,59 +1,43 @@
-package org.worshipsongs.domain;
+package org.worshipsongs.domain
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.*;
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
 
 /**
  * Author : Madasamy
  * Version : x.x.x
  */
-public class TopicsTest
-{
-    private Topics topics1;
-    private Topics topics2;
+class TopicsTest {
+    lateinit var topics1: Topics
+    lateinit var topics2: Topics
 
     @Before
-    public void setUp()
-    {
-        topics1 = new Topics("foo");
-        topics2 = new Topics(topics1.getName());
+    fun setUp() {
+        topics1 = Topics("foo")
+        topics2 = Topics(topics1.name!!)
     }
 
     @Test
-    public void testToString() throws Exception
-    {
-        System.out.println("--toString--");
-        String result = topics1.toString();
-        assertTrue(result.contains("foo"));
+    fun testToString() {
+        val result = topics1.toString()
+        assertTrue(result.contains("foo"))
     }
 
     @Test
-    public void testEquals() throws Exception
-    {
-        System.out.println("--equals--");
-        assertTrue(topics1.equals(topics2));
+    fun testEquals() {
+        assertEquals(topics1, topics2)
     }
 
     @Test
-    public void testNotEquals() {
-        System.out.println("--notEquals--");
-        topics1.setName("bar");
-        assertFalse(topics1.equals(topics2));
+    fun testNotEquals() {
+        topics1.name = "bar"
+        assertNotEquals(topics1, topics2)
     }
 
     @Test
-    public void testHashCode() throws Exception
-    {
-        System.out.println("--hashCode--");
-        Set<Topics> topicsSet = new HashSet<>();
-        topicsSet.add(topics1);
-        topicsSet.add(topics2);
-        assertEquals(1, topicsSet.size());
+    fun testHashCode() {
+        val topicsSet = setOf(topics1, topics2)
+        assertEquals(1, topicsSet.size)
     }
-
 }

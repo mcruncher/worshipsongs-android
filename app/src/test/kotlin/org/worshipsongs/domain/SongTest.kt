@@ -21,8 +21,7 @@ class SongTest {
     }
 
     @Test
-    fun `To string`()
-    {
+    fun testToString() {
         // setup:
         val result = song1.toString()
 
@@ -32,15 +31,13 @@ class SongTest {
     }
 
     @Test
-    fun `Equals`()
-    {
+    fun testEquals() {
         // expect:
         assertEquals(song1, song2)
     }
 
     @Test
-    fun `Not equals`()
-    {
+    fun testNotEquals() {
         // setup:
         song2.title = "bar"
 
@@ -49,8 +46,7 @@ class SongTest {
     }
 
     @Test
-    fun `Hashcode`()
-    {
+    fun testHashcode() {
         // setup:
         val set = setOf(song1, song2)
 

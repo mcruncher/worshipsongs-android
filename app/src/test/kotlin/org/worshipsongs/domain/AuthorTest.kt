@@ -15,8 +15,7 @@ class AuthorTest {
     }
 
     @Test
-    fun `To String`()
-    {
+    fun testToString() {
         // setup
         val result = author1.toString()
 

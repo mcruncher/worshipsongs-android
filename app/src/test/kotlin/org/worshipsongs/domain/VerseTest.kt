@@ -10,7 +10,7 @@ import org.junit.Test
 class VerseTest
 {
     @Test
-    fun `To string`() {
+    fun testToString() {
         // given:
         val verse = Verse()
         verse.label = 1

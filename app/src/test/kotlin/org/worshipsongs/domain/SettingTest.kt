@@ -21,7 +21,7 @@ class SettingTest {
     }
 
     @Test
-    fun `To string`() {
+    fun testToString() {
         // setup:
         val result = setting1.toString()
 
@@ -30,13 +30,13 @@ class SettingTest {
     }
 
     @Test
-    fun `Equals`() {
+    fun testEquals() {
         // expect:
         assertEquals(setting1, setting2)
     }
 
     @Test
-    fun `HashCode`() {
+    fun testHashCode() {
         // setup:
         val set = setOf(setting1, setting2)
 

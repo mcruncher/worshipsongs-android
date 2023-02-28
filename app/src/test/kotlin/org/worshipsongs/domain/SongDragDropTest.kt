@@ -21,7 +21,7 @@ class SongDragDropTest {
     }
 
     @Test
-    fun `To string`() {
+    fun testToString() {
         // setup:
         val result = songDragDrop1.toString()
 
@@ -31,13 +31,13 @@ class SongDragDropTest {
     }
 
     @Test
-    fun `Equals`() {
+    fun testEquals() {
         // expect:
         assertEquals(songDragDrop1, songDragDrop2)
     }
 
     @Test
-    fun `Not equals`() {
+    fun testNotEquals() {
         // setup:
         songDragDrop1.title = "bar1"
 
@@ -46,7 +46,7 @@ class SongDragDropTest {
     }
 
     @Test
-    fun `Hashcode`() {
+    fun testHashcode() {
         // setup:
         val songDragDropSet = setOf(songDragDrop1, songDragDrop2, SongDragDrop())
 
