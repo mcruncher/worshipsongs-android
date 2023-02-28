@@ -8,7 +8,7 @@ import org.junit.Test
  *  Author : Madasamy
  *  Version : 3.x
  */
-class DialogConfigurationSpockTest {
+class DialogConfigurationTest {
     lateinit var dialogConfiguration1: DialogConfiguration
     lateinit var dialogConfiguration2: DialogConfiguration
 
