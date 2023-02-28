@@ -178,9 +178,9 @@ class FavouriteServiceTest extends Specification
     {
         setup:
         List<Favourite> favorites = new ArrayList<>()
-        favorites.add(new Favourite(orderId: 1, name: "first favourite"))
-        favorites.add(new Favourite(orderId: 3, name: "latest favourite"))
-        favorites.add(new Favourite(orderId: 2, name: "second favourite"))
+        favorites.add(new org.worshipsongs.domain.Favourite.Favourite(orderId: 1, name: "first favourite"))
+        favorites.add(new org.worshipsongs.domain.Favourite.Favourite(orderId: 3, name: "latest favourite"))
+        favorites.add(new org.worshipsongs.domain.Favourite.Favourite(orderId: 2, name: "second favourite"))
 
         expect:
         favouriteService.getFavouritesNewOrderNumber(favorites) == 4
