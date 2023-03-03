@@ -52,7 +52,7 @@ object CommonConstants
     val STORAGE_PERMISSION_REQUEST_CODE = 1001
 
     //Favourites
-    val FAVOURITES_KEY = "favouritesKey"
+    const val FAVOURITES_KEY = "favouritesKey"
     val MIGRATION_KEY = "migrationKey"
     val DISPLAY_FAVOURITE_HELP_ACTIVITY = "displayFavouriteHelpActivity"
     val THEME_KEY = "themeKey"
