@@ -1,6 +1,5 @@
 package org.worshipsongs.service
 
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import org.junit.After
@@ -22,16 +21,13 @@ import org.worshipsongs.domain.Type
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [22])
 class SongServiceTest {
-    lateinit var songService: SongService
+    var songService = SongService(ApplicationProvider.getApplicationContext())
     lateinit var songs: List<Song>
-    lateinit var preferences: SharedPreferences
+    var preferences =
+        PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
 
     @Before
     fun setUp() {
-        songService = SongService(ApplicationProvider.getApplicationContext())
-        preferences =
-            PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
-
         val song1 = Song()
         song1.title = "foo"
         song1.searchTitle = "foo @"
