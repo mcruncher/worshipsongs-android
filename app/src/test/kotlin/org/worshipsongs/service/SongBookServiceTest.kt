@@ -16,7 +16,7 @@ import org.worshipsongs.domain.SongBook
  */
 
 @RunWith(RobolectricTestRunner::class)
-class SongBookServiceSpockTest {
+class SongBookServiceTest {
     val songBookService = SongBookService(ApplicationProvider.getApplicationContext())
     val sharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
