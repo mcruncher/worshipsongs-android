@@ -1,18 +1,26 @@
-package org.worshipsongs.parser
+package org.worshipsongs.parser;
 
+import static org.junit.Assert.assertEquals;
 
-import org.robolectric.RuntimeEnvironment
-import spock.lang.Ignore
-import spock.lang.Specification
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+import org.worshipsongs.domain.Verse;
+
+import java.util.List;
+
 /**
- *  Author : Madasamy
- *  Version : 3.x
+ * Author : Madasamy
+ * Version : 3.x
  */
-@Ignore
-class SongParserIntegrationTest extends Specification
-{
-    def songParser = new SongParser()
-    def lyrics = "<?xml version='1.0' encoding='UTF-8'?>\n" +
+
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = 22)
+public class SongParserIntegrationTest {
+    private SongParser songParser = new SongParser();
+    private String lyrics = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             " <song version=\"1.0\"><lyrics><verse label=\"1\" type=\"c\"><![CDATA[{y}அக்கினி அபிஷேகம்{/y}\n" +
             " Akkini abishegam\n" +
             " {y}பொழிந்திடுவீர் தேவா{/y}\n" +
@@ -39,63 +47,42 @@ class SongParserIntegrationTest extends Specification
             " {y}வல்லமையை ஈந்திடுவீர்{/y}\n" +
             " Vallamaiyai eenthiduveer]]></verse></lyrics></song>";
 
-    def "Parse contents by verse orders"()
-    {
-        given:
-        def verseOrder = "c1 c2 v1 o1 c1 c2 v2 o2 c1 c2 v3 o3"
+    @Test
+    public void parseContentsByVerseOrder() {
+        // given:
+        String verseOrder = "c1 c2 v1 o1 c1 c2 v2 o2 c1 c2 v3 o3";
 
-        when:
-        def result = songParser.parseContents(RuntimeEnvironment.application.getApplicationContext(), lyrics, verseOrder)
+        // when:
+        List<String> result = songParser.parseContents(RuntimeEnvironment.application.getApplicationContext(), lyrics, verseOrder);
 
-        then:
-        result.size() == 12
+        // then:
+        assertEquals(12, result.size());
     }
 
-    def "Parse contents given verse orders is null"()
-    {
-        given:
-        def verseOrder = null;
+    @Test
+    public void parseContentsWhenVerseOrderIsEmpty() {
+        // given:
+        String verseOrder = "";
 
-        when:
-        def result = songParser.parseContents(RuntimeEnvironment.application.getApplicationContext(), lyrics, verseOrder)
+        // when:
+        List<String> result = songParser.parseContents(RuntimeEnvironment.application.getApplicationContext(), lyrics, verseOrder);
 
-        then:
-        result.size() == 8
+        // then:
+        assertEquals(8, result.size());
     }
 
-    def "Parse contents given verse orders is empty"()
-    {
-        given:
-        def verseOrder = "";
+    @Test
+    public void parseVerse() {
+        // when:
+        List<Verse> result = songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), lyrics);
 
-        when:
-        def result = songParser.parseContents(RuntimeEnvironment.application.getApplicationContext(), lyrics, verseOrder)
-
-        then:
-        result.size() == 8
+        // then:
+        assertEquals(8, result.size());
     }
 
-    def "Parse verse"()
-    {
-        given:
-        String lyrics = lyrics
-
-        when:
-        def result = songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), lyrics)
-
-        then:
-        result.size() == 8
-    }
-
-    def "Parse verse from null"()
-    {
-        expect:
-        songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), null).size() == 0
-    }
-
-    def "Parse verse from empty string"()
-    {
-        expect:
-        songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), "").size() == 0
+    @Test
+    public void parseVerseFromEmptyString() {
+        // expect:
+        assertEquals(0, songParser.parseVerse(RuntimeEnvironment.application.getApplicationContext(), "").size());
     }
 }
