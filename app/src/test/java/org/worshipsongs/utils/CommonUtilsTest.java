@@ -1,8 +1,10 @@
 package org.worshipsongs.utils;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.preference.PreferenceManager;
 
 import org.junit.After;
@@ -12,17 +14,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.worshipsongs.CommonConstants;
-import org.worshipsongs.BuildConfig;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Author : Madasamy
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config( sdk = 22)
+@Config(sdk = 28)
 public class CommonUtilsTest
 {
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
@@ -34,17 +32,28 @@ public class CommonUtilsTest
     }
 
     @Test
-    public void testIsProductionMode()
+    public void isProductionMode()
     {
-        System.out.println("--isProductionMode--");
         assertTrue(CommonUtils.INSTANCE.isProductionMode());
     }
 
     @Test
-    public void testIsLolliPopOrGreater()
+    public void isLolliPopOrGreater()
     {
-        System.out.println("--isLolliPopOrGreater--");
         assertTrue(CommonUtils.INSTANCE.isLollipopOrGreater());
+    }
+
+    @Test
+    public void isAboveOreoWhenRunningOnSdk28OrAbove()
+    {
+        assertTrue(CommonUtils.INSTANCE.isAboveOreo());
+    }
+
+    @Test
+    @Config(sdk = 27)
+    public void isAboveOreoWhenRunningOnSdk27()
+    {
+        assertFalse(CommonUtils.INSTANCE.isAboveOreo());
     }
 
     //Note: Update this test every major release

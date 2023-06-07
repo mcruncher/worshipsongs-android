@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.WorshipSongApplication
+import org.worshipsongs.utils.CommonUtils
 
 /**
  * Author: Seenivasan
@@ -78,7 +79,9 @@ class UserPreferenceSettingService
         get() = sharedPreferences!!.getInt(CommonConstants.LANGUAGE_INDEX_KEY, 0) == 0
 
     val displaySongBook: Boolean
-        get() = sharedPreferences!!.getBoolean("prefDisplaySongbook", false)
+        get() {
+            return CommonUtils.isAboveOreo && sharedPreferences!!.getBoolean("prefDisplaySongbook", false)
+        }
 
     constructor()
     {

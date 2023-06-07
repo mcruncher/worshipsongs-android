@@ -2,16 +2,13 @@ package org.worshipsongs.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Build
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
@@ -25,24 +22,24 @@ object CommonUtils
 {
 
     val isProductionMode: Boolean
-        get()
-        {
+        get() {
             val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.context)
             return defaultSharedPreferences.getBoolean("production", true)
         }
 
-    val isJellyBeanMrOrGreater: Boolean
-        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-
     val isLollipopOrGreater: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
 
+    val isAboveKitkat: Boolean
+        get() = Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT
+
+    val isAboveOreo: Boolean
+        get() = Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1
+
     val projectVersion: String
-        get()
-        {
+        get() {
             var version = ""
-            try
-            {
+            try {
 
                 version = WorshipSongApplication.context!!.packageManager.getPackageInfo(WorshipSongApplication.context!!.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException)
@@ -59,9 +56,6 @@ object CommonUtils
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WorshipSongApplication.context)
             return !sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false)
         }
-
-    val isAboveKitkat: Boolean
-        get() = android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT
 
     fun hideKeyboard(activity: Activity?)
     {
