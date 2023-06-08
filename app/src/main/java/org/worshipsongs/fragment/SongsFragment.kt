@@ -10,6 +10,7 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.AdapterView
@@ -33,7 +34,6 @@ import org.worshipsongs.registry.ITabFragment
 import org.worshipsongs.service.*
 import org.worshipsongs.utils.CommonUtils
 import org.worshipsongs.utils.ImageUtils
-import java.util.*
 
 /**
  * @author : Madasamy
@@ -330,21 +330,27 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
         showSongBook(song, objects)
     }
 
-    private fun showSongBook(song: Song, objects: Map<String, Any>)
-    {
-        val songBookNames = songBookService?.findFormattedSongBookNames(song.id)
-        val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
-        songBookTextView!!.visibility = if (canDisplaySongBook(song, songBookNames)) View.VISIBLE else View.GONE
-        songBookTextView.text = songBookNames!!.joinToString()
+    private fun showSongBook(song: Song, objects: Map<String, Any>) {
+        if (userPreferenceSettingService.displaySongBook) {
+            Log.i(CLASS_NAME, "Showing song book for the song id: " + song.id)
+            val songBookNames = songBookService?.findFormattedSongBookNames(song.id)
+            val songBookTextView = objects[CommonConstants.SONG_BOOK_NAME_KEY] as TextView?
+            songBookTextView!!.visibility =
+                    if (canDisplaySongBook(song, songBookNames)) View.VISIBLE else View.GONE
+            songBookTextView.text = songBookNames!!.joinToString()
+        }
     }
 
-    private fun canDisplaySongBook(song: Song, songBookNames: List<String>?) =
-            userPreferenceSettingService.displaySongBook && songBookNames!!.isNotEmpty() && isUserNotInSongBooksTab(song)
+    private fun canDisplaySongBook(song: Song, songBookNames: List<String>?): Boolean {
+        if (songBookNames != null) {
+            return songBookNames.isNotEmpty() && isUserNotInSongBooksTab(song)
+        }
+        return false
+    }
 
     private fun isUserNotInSongBooksTab(song: Song) = song.songBookNumber == 0
 
-    private fun onItemClickListener(): AdapterView.OnItemClickListener
-    {
+    private fun onItemClickListener(): AdapterView.OnItemClickListener {
         return AdapterView.OnItemClickListener { parent, view, position, id ->
             val song = titleAdapter!!.getItem(position)
             Setting.instance.position = 0

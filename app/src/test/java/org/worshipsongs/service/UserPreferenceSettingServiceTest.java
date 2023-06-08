@@ -1,23 +1,37 @@
 package org.worshipsongs.service;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+
 /**
- * @author  Madasamy
- * @since  3.x
+ * @author Madasamy
+ * @since 3.x
  */
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = 28)
 public class UserPreferenceSettingServiceTest
 {
     private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+
+    @After
+    public void tearDown()
+    {
+        sharedPreferences.edit().clear().apply();
+    }
 
     @Test
     public void testGetPortraitFontSize()
@@ -64,6 +78,7 @@ public class UserPreferenceSettingServiceTest
     @Test
     public void testIsKeepAwake()
     {
+        sharedPreferences.edit().putBoolean("prefKeepAwakeOn", true).apply();
         assertTrue(userPreferenceSettingService.isKeepAwake());
     }
 
@@ -73,4 +88,25 @@ public class UserPreferenceSettingServiceTest
         assertTrue(userPreferenceSettingService.isPlayVideo());
     }
 
+    @Test
+    public void displaySongBookWhenRunningOnSdk28OrAbove()
+    {
+        // by default, it should be false
+        assertFalse(userPreferenceSettingService.getDisplaySongBook());
+
+        // given the user has turned it on
+        sharedPreferences.edit().putBoolean("prefDisplaySongbook", true).apply();
+
+        // it should be true
+        assertTrue(userPreferenceSettingService.getDisplaySongBook());
+    }
+
+    @Test
+    @Config(sdk = 27)
+    public void displaySongBookWhenRunningOnSdk27()
+    {
+        // it should be false
+        sharedPreferences.edit().putBoolean("prefDisplaySongbook", true).apply();
+        assertFalse(userPreferenceSettingService.getDisplaySongBook());
+    }
 }
