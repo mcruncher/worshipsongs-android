@@ -3,16 +3,10 @@ package org.worshipsongs.registry
 import android.app.Activity
 import android.preference.PreferenceManager
 import android.util.Log
-
+import dalvik.system.DexFile
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.domain.DragDrop
-
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Comparator
-import java.util.HashSet
-
-import dalvik.system.DexFile
+import java.util.*
 
 /**
  * @author: Madasamy
@@ -68,8 +62,8 @@ class FragmentRegistry
 
     fun findByTitle(activity: Activity, title: String): ITabFragment?
     {
+        Log.d(TAG, "Finding the fragment matching the title '$title'...")
         val fragments = findAll(activity)
-        Log.i(this.javaClass.simpleName, "Fragement $fragments")
         for (fragment in fragments)
         {
             if (title.equals(fragment.title, ignoreCase = true))
@@ -82,6 +76,7 @@ class FragmentRegistry
 
     fun findAll(activity: Activity): List<ITabFragment>
     {
+        Log.d(TAG, "Finding all the available fragments...")
         val sectionListeners = ArrayList(findAllClasses(activity))
         Collections.sort(sectionListeners, TabFragmentComparator())
         return sectionListeners
@@ -112,10 +107,10 @@ class FragmentRegistry
                     }
                 }
             }
-            Log.i(CLASS_NAME, "No. of fragments " + sectionListeners.size)
+            Log.d(TAG, "No. of fragments: " + sectionListeners.size)
         } catch (ex: Exception)
         {
-            Log.e(CLASS_NAME, "Error occurred while finding classes$ex")
+            Log.e(TAG, "Error occurred while finding the fragments $ex")
         }
 
         return sectionListeners
@@ -125,6 +120,7 @@ class FragmentRegistry
     {
         try
         {
+            Log.d(TAG, "Creating a new instance of the tab fragment ${clazz.name}")
             return clazz.getConstructor().newInstance() as ITabFragment
         } catch (ex: Exception)
         {
@@ -150,7 +146,7 @@ class FragmentRegistry
     companion object
     {
 
-        private val CLASS_NAME = FragmentRegistry::class.java.simpleName
+        private val TAG = FragmentRegistry::class.simpleName
         private val PACKAGE_NAME = "org.worshipsongs.fragment"
         private val ABSTRACT = "Abstract"
     }

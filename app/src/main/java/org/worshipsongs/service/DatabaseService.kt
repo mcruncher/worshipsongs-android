@@ -56,15 +56,6 @@ class DatabaseService
         databaseHelper!!.close()
     }
 
-    fun get(): SQLiteDatabase
-    {
-        if (database == null)
-        {
-            database = databaseHelper!!.openDataBase()
-        }
-        return database!!
-    }
-
     fun parseTamilName(topicName: String?): String
     {
         if (topicName != null && StringUtils.isNotBlank(topicName))

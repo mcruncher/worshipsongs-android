@@ -2,11 +2,9 @@ package org.worshipsongs.service
 
 import android.content.Context
 import android.database.Cursor
-
+import android.util.Log
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.domain.Topics
-
-import java.util.ArrayList
 
 /**
  * Author : Madasamy
@@ -27,19 +25,22 @@ class TopicService
         databaseService = DatabaseService(context)
     }
 
-    fun findAll(): List<Topics>
-    {
+    fun findAll(): List<Topics> {
+        Log.d(TAG, "Finding all the topics...")
         val topicsList = ArrayList<Topics>()
         val query = "select  topic.id, topic.name, count(topic.id) from songs as song " + "inner join songs_topics as songtopics on songtopics.song_id=song.id " + "inner join topics as topic on topic.id=songtopics.topic_id group by name"
-        val cursor = databaseService!!.database!!.rawQuery(query, null)
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val topics = cursorToTopics(cursor)
-            topicsList.add(topics)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService!!.database!!.rawQuery(query, null)
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val topics = cursorToTopics(cursor)
+                topicsList.add(topics)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService!!.close()
         }
-        cursor.close()
         return topicsList
     }
 
@@ -62,14 +63,16 @@ class TopicService
             filteredTextList.addAll(topicsList)
         } else
         {
-            for (topics in topicsList)
-            {
-                if (topics.name!!.toLowerCase().contains(query.toLowerCase()))
-                {
+            for (topics in topicsList) {
+                if (topics.name!!.toLowerCase().contains(query.toLowerCase())) {
                     filteredTextList.add(topics)
                 }
             }
         }
         return filteredTextList
+    }
+
+    companion object {
+        val TAG = TopicService::class.simpleName
     }
 }

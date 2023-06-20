@@ -30,7 +30,6 @@ import org.worshipsongs.utils.PermissionUtils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 
 /**
  * @author  Madasamy
@@ -259,14 +258,14 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
 
     private fun validateDatabase(absolutePath: String)
     {
-        try
-        {
+        Log.d(TAG, "Validating database...")
+
+        try {
             resultTextView!!.text = ""
             databaseService.close()
             databaseService.copyDatabase(absolutePath, true)
             databaseService.open()
-            if (songService.isValidDataBase)
-            {
+            if (songService.isValidDataBase) {
                 updateResultTextview()
                 sharedPreferences.edit().putBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, true).apply()
                 defaultDatabaseButton!!.visibility = if (sharedPreferences.getBoolean(CommonConstants.SHOW_REVERT_DATABASE_BUTTON_KEY, false)) View.VISIBLE
@@ -324,7 +323,7 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
             showDatabaseTypeDialog()
         } else
         {
-            Log.i(this.javaClass.simpleName, "Permission denied")
+            Log.i(TAG, "Permission denied")
         }
     }
 
@@ -383,10 +382,12 @@ class DatabaseSettingActivity : AbstractAppCompactActivity(), AlertDialogFragmen
         presentationScreenService!!.onPause()
     }
 
-    override fun onStop()
-    {
+    override fun onStop() {
         super.onStop()
         presentationScreenService!!.onStop()
     }
 
+    companion object {
+        val TAG = DatabaseSettingActivity::class.simpleName
+    }
 }
