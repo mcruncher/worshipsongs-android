@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.ListView
@@ -24,7 +25,6 @@ import org.worshipsongs.registry.ITabFragment
 import org.worshipsongs.service.AuthorService
 import org.worshipsongs.service.UserPreferenceSettingService
 import org.worshipsongs.utils.CommonUtils
-import java.util.*
 
 
 /**
@@ -73,6 +73,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
+        Log.d(TAG, "Initializing the view...")
         val view = inflater.inflate(R.layout.songs_layout, container, false) as View
         setListView(view)
         return view
@@ -210,6 +211,7 @@ class AuthorsFragment : AbstractTabFragment(), TitleAdapter.TitleAdapterListener
 
     companion object
     {
+        val TAG = AuthorsFragment::class.java.simpleName
         private val STATE_KEY = "listViewState"
 
         fun newInstance(): AuthorsFragment

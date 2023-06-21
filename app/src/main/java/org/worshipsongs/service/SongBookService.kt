@@ -2,9 +2,9 @@ package org.worshipsongs.service
 
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.domain.SongBook
-import java.util.*
 
 /**
  * Author : Madasamy
@@ -23,20 +23,23 @@ class SongBookService(context: Context)
         userPreferenceSettingService = UserPreferenceSettingService(context)
     }
 
-    fun findAll(): List<SongBook>
-    {
+    fun findAll(): List<SongBook> {
+        Log.d(TAG, "Finding all the song books...")
         val songBooks = ArrayList<SongBook>()
 
         val query = "select songbook.id, songbook.name, songbook.publisher, count(songbook.id) " + "from songs as song inner join songs_songbooks as songsongbooks on " + "songsongbooks.song_id=song.id inner join song_books as songbook on " + "songbook.id=songsongbooks.songbook_id group by songbook.name"
-        val cursor = databaseService.database!!.rawQuery(query, null)
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val songBook = cursorToSongBook(cursor)
-            songBooks.add(songBook)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService.database!!.rawQuery(query, null)
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val songBook = cursorToSongBook(cursor)
+                songBooks.add(songBook)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songBooks
     }
 
@@ -52,22 +55,25 @@ class SongBookService(context: Context)
         return formattedSongBookNames
     }
 
-    fun findSongBookNames(songId: Int): List<String>
-    {
+    private fun findSongBookNames(songId: Int): List<String> {
+        Log.d(TAG, "Finding song books that are associated with the song id $songId...")
         val songBookNames = ArrayList<String>()
 
         val query = "select songBook.name from song_books as songBook, songs_songbooks as songsSongBook " +
                 "where songsSongBook.song_id = ? and songsSongBook.songbook_id = songBook.id"
-        val cursor = databaseService.database!!.rawQuery(query, arrayOf(songId.toString()))
-        cursor.moveToFirst()
+        try {
+            val cursor = databaseService.database!!.rawQuery(query, arrayOf(songId.toString()))
+            cursor.moveToFirst()
 
-        while (!cursor.isAfterLast)
-        {
-            val songBookName = cursor.getString(0)
-            songBookNames.add(songBookName!!.trim())
-            cursor.moveToNext()
+            while (!cursor.isAfterLast) {
+                val songBookName = cursor.getString(0)
+                songBookNames.add(songBookName!!.trim())
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songBookNames
     }
 
@@ -113,6 +119,7 @@ class SongBookService(context: Context)
 
     companion object
     {
+        val TAG = SongBookService::class.simpleName
         val TABLE_NAME = "song_books"
     }
 }

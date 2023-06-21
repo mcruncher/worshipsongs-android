@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.worshipsongs.activity.NavigationDrawerActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,10 +22,12 @@ import java.io.OutputStream;
  */
 public class DatabaseHelper extends SQLiteOpenHelper
 {
-    private static final int DATA_BASE_VERSION = 3;
     public static String dbPath = "";
-
     public static String dbName = "songs.sqlite";
+
+    private static final int DATA_BASE_VERSION = 3;
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
+
     private SQLiteDatabase database;
     private final Context context;
 
@@ -116,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public SQLiteDatabase openDataBase() throws SQLException
     {
-        //Open the database
+        Log.d(TAG, "Opening database...");
         String myPath = dbPath + dbName;
         database = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         return database;
@@ -133,6 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public synchronized void close()
     {
+        Log.d(TAG, "Closing database...");
         if (database != null) {
             database.close();
         }

@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
-
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -14,14 +13,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-
 import org.apache.commons.io.FileUtils
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
+import org.worshipsongs.fragment.AlertDialogFragment
 import org.worshipsongs.service.DatabaseService
 import org.worshipsongs.service.SongService
-import org.worshipsongs.fragment.AlertDialogFragment
-
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -129,7 +126,7 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
             alertDialog!!.cancel()
             if (successfull!!)
             {
-                Log.i(AsyncDownloadTask::class.java.simpleName, "Remote database copied successfully.")
+                Log.i(TAG, "Remote database copied successfully.")
                 validateDatabase(destinationFile!!.absolutePath)
             } else
             {
@@ -137,7 +134,7 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
             }
         } catch (ex: Exception)
         {
-            Log.e(AsyncDownloadTask::class.java.simpleName, "Error")
+            Log.e(TAG, "Error")
         } finally
         {
             context.finish()
@@ -145,15 +142,14 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
         }
     }
 
-    private fun validateDatabase(absolutePath: String)
-    {
-        try
-        {
+    private fun validateDatabase(absolutePath: String) {
+        Log.d(TAG, "Validating database...")
+
+        try {
             databaseService.close()
             databaseService.copyDatabase(absolutePath, true)
             databaseService.open()
-            if (songService.isValidDataBase)
-            {
+            if (songService.isValidDataBase) {
                 Toast.makeText(context, R.string.message_update_song_successfull, Toast.LENGTH_SHORT).show()
                 sharedPreferences.edit().putBoolean(CommonConstants.UPDATED_SONGS_KEY, true).apply()
                 sharedPreferences.edit().putLong(CommonConstants.NO_OF_SONGS, songService.count()).apply()
@@ -168,8 +164,7 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
 
     }
 
-    private fun showWarningDialog()
-    {
+    private fun showWarningDialog() {
         val bundle = Bundle()
         bundle.putString(CommonConstants.TITLE_KEY, context.getString(R.string.warning))
         bundle.putString(CommonConstants.MESSAGE_KEY, context.getString(R.string.message_configure_invalid_url))
@@ -179,4 +174,7 @@ class AsyncDownloadTask(private val context: AppCompatActivity) : AsyncTask<Stri
         alertDialogFragment.show(context.supportFragmentManager, "WarningUpdateFragment")
     }
 
+    companion object {
+        val TAG = AsyncDownloadTask::class.simpleName
+    }
 }

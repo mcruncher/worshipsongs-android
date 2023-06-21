@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import com.google.android.material.tabs.TabLayout
 import org.worshipsongs.CommonConstants
 import org.worshipsongs.R
 import org.worshipsongs.WorshipSongApplication
-import org.worshipsongs.activity.SplashScreenActivity
 import org.worshipsongs.component.HomeViewerPageAdapter
 import org.worshipsongs.listener.SongContentViewListener
 import org.worshipsongs.registry.FragmentRegistry
@@ -37,9 +35,12 @@ class HomeTabFragment : Fragment()
     @SuppressLint("ShowToast")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
+        Log.i(TAG, "Initializing the home tab...")
         val view = inflater.inflate(R.layout.home_tab_layout, container, false) as View
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        titles = fragmentRegistry.getTitles( activity as Activity)
+
+        Log.d(TAG, "Getting the available fragment titles...")
+        titles = fragmentRegistry.getTitles(activity as Activity)
 
         val adapter = HomeViewerPageAdapter(childFragmentManager, activity!!, titles!!, songContentViewListener)
         adapter.notifyDataSetChanged()
@@ -90,6 +91,7 @@ class HomeTabFragment : Fragment()
 
     companion object
     {
+        val TAG = HomeTabFragment::class.simpleName
 
         fun newInstance(): HomeTabFragment
         {

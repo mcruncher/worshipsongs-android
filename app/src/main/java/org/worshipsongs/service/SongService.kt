@@ -3,6 +3,7 @@ package org.worshipsongs.service
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
+import android.util.Log
 import androidx.preference.PreferenceManager
 import org.apache.commons.lang3.StringUtils
 import org.worshipsongs.CommonConstants
@@ -45,67 +46,79 @@ class SongService(context: Context)
         userPreferenceSettingService = UserPreferenceSettingService(context)
     }
 
-    fun findAll(): List<Song>
-    {
+    fun findAll(): List<Song> {
+        Log.d(TAG, "Finding all the songs...")
         val songs = ArrayList<Song>()
-        val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), null, null, null, null, "title")
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val song = cursorToSong(cursor)
-            songs.add(song)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), null, null, null, null, "title")
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val song = cursorToSong(cursor)
+                songs.add(song)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songs
     }
 
-    fun findByTopicId(topicId: Int): List<Song>
-    {
+    fun findByTopicId(topicId: Int): List<Song> {
+        Log.d(TAG, "Finding songs by topic id $topicId ...")
         val songs = ArrayList<Song>()
         val query = "select title,lyrics,verse_order,search_title,search_lyrics,comments, s.id " + "from songs as s inner join songs_topics as st on st.song_id = s.id inner join " + "topics as t on st.topic_id = t.id where t.id= ?"
-        val cursor = databaseService.database!!.rawQuery(query, arrayOf(topicId.toString()))
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val song = cursorToSong(cursor)
-            songs.add(song)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService.database!!.rawQuery(query, arrayOf(topicId.toString()))
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val song = cursorToSong(cursor)
+                songs.add(song)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songs
     }
 
-    fun findByAuthorId(authorId: Int): List<Song>
-    {
+    fun findByAuthorId(authorId: Int): List<Song> {
+        Log.d(TAG, "Finding songs by author id $authorId ...")
         val songs = ArrayList<Song>()
         val query = "select title,lyrics,verse_order,search_title,search_lyrics,comments,s.id " + "from songs as s inner join authors_songs as aus on aus.song_id = s.id inner join" + " authors as t on aus.author_id = t.id where t.id= ?"
-        val cursor = databaseService.database!!.rawQuery(query, arrayOf(authorId.toString()))
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val song = cursorToSong(cursor)
-            songs.add(song)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService.database!!.rawQuery(query, arrayOf(authorId.toString()))
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val song = cursorToSong(cursor)
+                songs.add(song)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songs
     }
 
-    fun findBySongBookId(songBookId: Int): List<Song>
-    {
+    fun findBySongBookId(songBookId: Int): List<Song> {
+        Log.d(TAG, "Finding songs by song book id $songBookId ...")
         val songs = ArrayList<Song>()
         val query = "select title,lyrics,verse_order,search_title,search_lyrics,comments,s.id, entry  from " + "songs as s inner join songs_songbooks as ssb on ssb.song_id = s.id inner join " + "song_books as sb on ssb.songbook_id = sb.id where sb.id= ?"
-        val cursor = databaseService.database!!.rawQuery(query, arrayOf(songBookId.toString()))
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast)
-        {
-            val song = cursorToSong(cursor)
-            song.songBookNumber = getSongBookNo(cursor)
-            songs.add(song)
-            cursor.moveToNext()
+        try {
+            val cursor = databaseService.database!!.rawQuery(query, arrayOf(songBookId.toString()))
+            cursor.moveToFirst()
+            while (!cursor.isAfterLast) {
+                val song = cursorToSong(cursor)
+                song.songBookNumber = getSongBookNo(cursor)
+                songs.add(song)
+                cursor.moveToNext()
+            }
+            cursor.close()
+        } finally {
+            databaseService.close()
         }
-        cursor.close()
         return songs
     }
 
@@ -144,31 +157,37 @@ class SongService(context: Context)
         return null
     }
 
-    fun findByTitle(title: String): Song?
-    {
+    fun findByTitle(title: String): Song? {
+        Log.d(TAG, "Finding song by the title $title")
         var song: Song? = null
         val whereClause = " title=\"$title\""
-        val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), whereClause, null, null, null, "title")
-        if (cursor.count > 0)
-        {
-            cursor.moveToFirst()
-            song = cursorToSong(cursor)
-            cursor.close()
+        try {
+            val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), whereClause, null, null, null, "title")
+            if (cursor.count > 0) {
+                cursor.moveToFirst()
+                song = cursorToSong(cursor)
+                cursor.close()
+            }
+        } finally {
+            databaseService.close()
         }
         return song
     }
 
 
-    fun findById(id: Int): Song?
-    {
+    fun findById(id: Int): Song? {
+        Log.d(TAG, "Finding song by the id $id")
         var song: Song? = null
         val whereClause = " id=$id"
-        val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), whereClause, null, null, null, "title")
-        if (cursor.count > 0)
-        {
-            cursor.moveToFirst()
-            song = cursorToSong(cursor)
-            cursor.close()
+        try {
+            val cursor = databaseService.database!!.query(TABLE_NAME, arrayOf("title", "lyrics", "verse_order", "search_title", "search_lyrics", "comments", "id"), whereClause, null, null, null, "title")
+            if (cursor.count > 0) {
+                cursor.moveToFirst()
+                song = cursorToSong(cursor)
+                cursor.close()
+            }
+        } finally {
+            databaseService.close()
         }
         return song
     }
@@ -190,11 +209,16 @@ class SongService(context: Context)
         return song
     }
 
-    fun count(): Long
-    {
-        val c = databaseService.database!!.query(TABLE_NAME, null, null, null, null, null, null)
-        val result = c.count
-        c.close()
+    fun count(): Long {
+        Log.d(TAG, "Counting the number of songs in the songs table...")
+        var result = 0
+        try {
+            val c = databaseService.database!!.query(TABLE_NAME, null, null, null, null, null, null)
+            result = c.count
+            c.close()
+        } finally {
+            databaseService.close()
+        }
         return result.toLong()
     }
 
@@ -368,6 +392,7 @@ class SongService(context: Context)
 
     companion object
     {
+        val TAG = SongService::class.simpleName
         val TABLE_NAME = "songs"
     }
 

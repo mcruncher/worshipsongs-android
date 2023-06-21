@@ -4,15 +4,11 @@ import android.content.Context
 import android.util.Log
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
-import org.json.JSONArray
-import org.json.JSONObject
 import org.w3c.dom.CharacterData
 import org.w3c.dom.Element
 import org.worshipsongs.WorshipSongApplication
-import org.worshipsongs.domain.Song
 import org.worshipsongs.domain.Verse
 import org.worshipsongs.utils.RegexUtils
-import org.worshipsongs.utils.UnzipUtils
 import java.io.File
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
@@ -23,11 +19,9 @@ import javax.xml.parsers.DocumentBuilderFactory
  */
 class SongParser : ISongParser
 {
-
-
     override fun parseContents(context: Context, lyrics: String, verseOrder: String): List<String>
     {
-        Log.i(CLASS_NAME, "Verse order $verseOrder")
+        Log.d(TAG, "Verse order $verseOrder")
         val contents = ArrayList<String>()
         val verseList = parseVerse(WorshipSongApplication.context!!, lyrics)
         val verseDataMap = HashMap<String, String>()
@@ -49,7 +43,7 @@ class SongParser : ISongParser
                 }
             }
         }
-        Log.d(this.javaClass.name, "Parsed contents :$contents")
+        Log.d(TAG, "Parsed contents :$contents")
         return contents
     }
 
@@ -59,7 +53,7 @@ class SongParser : ISongParser
         var xmlFile: File? = null
         try
         {
-            Log.i(CLASS_NAME, "Preparing to parse verse $lyrics")
+            Log.d(TAG, "Preparing to parse verse $lyrics")
             val externalCacheDir = context.externalCacheDir
             xmlFile = File.createTempFile(XML_FILE_NAME, EXTENSION, externalCacheDir)
             FileUtils.write(xmlFile!!, lyrics)
@@ -153,7 +147,7 @@ class SongParser : ISongParser
             }
         } catch (ex: Exception)
         {
-            Log.i(CLASS_NAME, "Error ", ex)
+            Log.e(TAG, "Error ", ex)
         }
 
         return ArrayList()
@@ -162,7 +156,7 @@ class SongParser : ISongParser
     companion object
     {
 
-        private val CLASS_NAME = SongParser::class.java.simpleName
+        val TAG = SongParser::class.simpleName
 
         val XML_FILE_NAME = "verse"
         val EXTENSION = "xml"

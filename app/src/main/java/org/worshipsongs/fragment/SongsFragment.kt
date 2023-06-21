@@ -120,7 +120,6 @@ class SongsFragment : Fragment(), TitleAdapter.TitleAdapterListener<Song>, ITabF
 
     private fun initSetUp()
     {
-        databaseService!!.open()
         loadSongs()
         if (!sharedPreferences.contains(CommonConstants.SEARCH_BY_TITLE_KEY))
         {

@@ -2,10 +2,10 @@ package org.worshipsongs.component
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import org.worshipsongs.R
 
 import org.worshipsongs.fragment.SongsFragment
 import org.worshipsongs.listener.SongContentViewListener
@@ -21,6 +21,7 @@ class HomeViewerPageAdapter(fragmentManager: FragmentManager, private val activi
 
     override fun getItem(position: Int): Fragment
     {
+        Log.d(TAG, "Finding the fragment for the position $position")
         val fragment = fragmentRegistry.findByTitle(activity, titles[position])
         if (fragment != null)
         {
@@ -28,19 +29,21 @@ class HomeViewerPageAdapter(fragmentManager: FragmentManager, private val activi
             return fragment as Fragment
         } else
         {
+            Log.d(TAG, "No fragment found for the position $position. Returning the Songs fragment instead...")
             return SongsFragment.newInstance(Bundle())
         }
     }
 
-    override fun getPageTitle(position: Int): CharSequence?
-    {
+    override fun getPageTitle(position: Int): CharSequence? {
         return ""
     }
 
-    override fun getCount(): Int
-    {
+    override fun getCount(): Int {
         return titles.size
     }
 
+    companion object {
+        val TAG = HomeViewerPageAdapter::class.simpleName
+    }
 }
 
