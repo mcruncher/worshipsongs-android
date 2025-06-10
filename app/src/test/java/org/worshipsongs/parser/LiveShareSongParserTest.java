@@ -3,7 +3,6 @@ package org.worshipsongs.parser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.worshipsongs.domain.Song;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 22)
 public class LiveShareSongParserTest
 {
     private String serviceFilePath = this.getClass().getResource("/service/service_data.osj").getFile();

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config( sdk = 22)
 public class SplashScreenActivityTest
 {
     private SplashScreenActivity splashScreenActivity;

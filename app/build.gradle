@@ -22,13 +22,12 @@ jacoco {
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 34
+    buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId "org.worshipsongs"
-        minSdkVersion 22
-        targetSdkVersion 31
+        minSdkVersion 23
         versionCode versionCodeNumber
         versionName APP_VERSION
         setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
