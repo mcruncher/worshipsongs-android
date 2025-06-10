@@ -19,7 +19,6 @@ import org.worshipsongs.domain.Type
  * Version : x.x.x
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [22])
 class SongServiceTest {
     var songService = SongService(ApplicationProvider.getApplicationContext())
     lateinit var songs: List<Song>

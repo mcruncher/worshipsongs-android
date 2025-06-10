@@ -3,15 +3,12 @@ package org.worshipsongs.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
-import org.worshipsongs.BuildConfig;
 import org.worshipsongs.R;
 
 import androidx.preference.PreferenceManager;
@@ -23,7 +20,6 @@ import static org.junit.Assert.assertEquals;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.LOLLIPOP_MR1)
 public class NavigationDrawerActivityTest
 {
     private NavigationDrawerActivity navigationDrawerActivity;

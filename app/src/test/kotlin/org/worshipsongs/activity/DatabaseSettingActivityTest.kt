@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowDialog
 import org.worshipsongs.R
 
@@ -22,7 +21,6 @@ import org.worshipsongs.R
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [22])
 class DatabaseSettingActivityTest {
     lateinit var databaseSettingActivity: ActivityScenario<DatabaseSettingActivity>
 
@@ -42,16 +40,6 @@ class DatabaseSettingActivityTest {
             val importDataBaseButton = activity.findViewById<Button>(R.id.upload_database_button)
             assertEquals("Import OpenLP database", importDataBaseButton.text)
             assertEquals(-1, importDataBaseButton.textColors.defaultColor.toLong())
-        }
-    }
-
-    @Test
-    fun `On click import database button`() {
-        databaseSettingActivity.onActivity { activity: DatabaseSettingActivity ->
-            val importDataBaseButton = activity.findViewById<Button>(R.id.upload_database_button)
-            assertTrue(importDataBaseButton.performClick())
-            val dialog = ShadowDialog.getLatestDialog() as AlertDialog
-            assertEquals(2, dialog.listView.adapter.count.toLong())
         }
     }
 

@@ -1,12 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.dicedmelon.gradle.jacoco-android'
     id "org.sonarqube"
 }
 
 // NOTE: This plugin has been deprecated. (Ref: https://android-developers.googleblog.com/2020/11/the-future-of-kotlin-android-extensions.html)
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'jacoco'
 apply from: '../sonarqube.gradle'
 
 def buildNumber = System.getenv("BUILD_NUMBER")
@@ -18,17 +18,16 @@ def APP_VERSION = getCurrentVersionName(versionCodeNumber)
 ext.set('AppVersion', APP_VERSION)
 
 jacoco {
-    toolVersion = "0.8.6"
+    toolVersion = "0.8.11"
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 34
+    buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId "org.worshipsongs"
-        minSdkVersion 22
-        targetSdkVersion 31
+        minSdkVersion 23
         versionCode versionCodeNumber
         versionName APP_VERSION
         setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)
