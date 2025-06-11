@@ -1,8 +1,8 @@
 pipeline {
-  agent { label "java11"}
-
-  tools {
-    gradle 'Gradle-7'
+  agent {
+    kubernetes {
+      yamlFile 'kubernetes/gradle-pod.yaml'
+    }
   }
 
   environment {
