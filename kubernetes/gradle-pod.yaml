@@ -7,7 +7,7 @@ spec:
       value: "build-standard-2"
       effect: NoSchedule
   nodeSelector:
-    workload: "build-standard-2"
+    workload: "build"
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
