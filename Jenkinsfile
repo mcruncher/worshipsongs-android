@@ -1,6 +1,7 @@
 pipeline {
   agent {
     kubernetes {
+      defaultContainer 'gradle'
       yamlFile 'kubernetes/gradle-pod.yaml'
     }
   }
@@ -13,7 +14,7 @@ pipeline {
   }
 
   stages {
-    stage('Unit test') {
+    stage('Unit Test') {
       steps {
         sh './gradlew clean testDebug'
       }
