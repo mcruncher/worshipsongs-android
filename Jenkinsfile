@@ -1,8 +1,10 @@
+@Library(['android-libs']) _
+
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'gradle'
-      yamlFile 'kubernetes/gradle-pod.yaml'
+      defaultContainer 'android'
+      yaml """${libraryResource('kubernetes/android-pod.yaml')}"""
     }
   }
 
