@@ -13,7 +13,7 @@ spec:
     runAsGroup: 1000
   containers:
     - name: gradle
-      image: gradle:7-jdk11
+      image: thyrlian/android-sdk:latest
       command:
         - sleep
       args:
