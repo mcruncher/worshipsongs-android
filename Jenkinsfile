@@ -18,7 +18,6 @@ pipeline {
   stages {
     stage('Unit Test') {
       steps {
-        sh 'printenv'
         sh './gradlew clean testDebug'
       }
       post {
