@@ -1,6 +1,12 @@
 buildscript {
     ext.kotlin_version = '1.7.10'
 
+    repositories {
+        maven {
+            url "https://groovy.jfrog.io/artifactory/libs-release/"
+        }
+    }
+
     dependencies {
         classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:2.0.1'
     }
