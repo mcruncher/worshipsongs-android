@@ -17,7 +17,6 @@ import java.util.List;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 22)
 public class SongParserIntegrationTest {
     private SongParser songParser = new SongParser();
     private String lyrics = "<?xml version='1.0' encoding='UTF-8'?>\n" +
