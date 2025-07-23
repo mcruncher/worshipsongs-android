@@ -1,19 +1,22 @@
-pipeline {
-  agent { label "java11"}
+@Library(['android-libs']) _
 
-  tools {
-    gradle 'Gradle-7'
+pipeline {
+  agent {
+    kubernetes {
+      defaultContainer 'android'
+      yaml """${libraryResource('kubernetes/android-pod.yaml')}"""
+    }
   }
 
   environment {
-    GRADLE_OPTS='-Dorg.gradle.daemon=true -Xmx1024m -Xms512m -XX:MaxPermSize=2048m'
+    GRADLE_OPTS='-Dorg.gradle.daemon=true -Xmx1024m -Xms512m'
     WORSHIPSONGS_KEYSTORE_PASSWORD = credentials('worshipsongs-android-keystore-pwd')
     WORSHIPSONGS_KEY_ALIAS = credentials('worshipsongs-android-key-alias')
     WORSHIPSONGS_KEY_PASSWORD = credentials('worshipsongs-android-key-pwd')
   }
 
   stages {
-    stage('Unit test') {
+    stage('Unit Test') {
       steps {
         sh './gradlew clean testDebug'
       }
