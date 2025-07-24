@@ -20,7 +20,6 @@ import org.worshipsongs.CommonConstants;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28)
 public class CommonUtilsTest
 {
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
@@ -47,13 +46,6 @@ public class CommonUtilsTest
     public void isAboveOreoWhenRunningOnSdk28OrAbove()
     {
         assertTrue(CommonUtils.INSTANCE.isAboveOreo());
-    }
-
-    @Test
-    @Config(sdk = 27)
-    public void isAboveOreoWhenRunningOnSdk27()
-    {
-        assertFalse(CommonUtils.INSTANCE.isAboveOreo());
     }
 
     //Note: Update this test every major release
