@@ -20,7 +20,6 @@ import org.worshipsongs.CommonConstants;
  * Version : 3.x
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28)
 public class CommonUtilsTest
 {
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());

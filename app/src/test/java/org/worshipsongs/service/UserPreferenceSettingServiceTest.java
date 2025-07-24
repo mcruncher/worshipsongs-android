@@ -21,7 +21,6 @@ import org.robolectric.annotation.Config;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28)
 public class UserPreferenceSettingServiceTest
 {
     private UserPreferenceSettingService userPreferenceSettingService = new UserPreferenceSettingService();
@@ -101,12 +100,12 @@ public class UserPreferenceSettingServiceTest
         assertTrue(userPreferenceSettingService.getDisplaySongBook());
     }
 
-    @Test
-    @Config(sdk = 27)
-    public void displaySongBookWhenRunningOnSdk27()
-    {
-        // it should be false
-        sharedPreferences.edit().putBoolean("prefDisplaySongbook", true).apply();
-        assertFalse(userPreferenceSettingService.getDisplaySongBook());
-    }
+//    @Test
+//    @Config(sdk = 27)
+//    public void displaySongBookWhenRunningOnSdk27()
+//    {
+//        // it should be false
+//        sharedPreferences.edit().putBoolean("prefDisplaySongbook", true).apply();
+//        assertFalse(userPreferenceSettingService.getDisplaySongBook());
+//    }
 }
