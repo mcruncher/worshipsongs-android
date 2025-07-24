@@ -27,7 +27,8 @@ android {
 
     defaultConfig {
         applicationId "org.worshipsongs"
-        minSdkVersion 33
+        minSdkVersion 27
+        targetSdkVersion 34
         versionCode versionCodeNumber
         versionName APP_VERSION
         setProperty("archivesBaseName", "worshipsongs-" + defaultConfig.versionName)

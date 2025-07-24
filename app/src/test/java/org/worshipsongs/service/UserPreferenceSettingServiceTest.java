@@ -99,4 +99,13 @@ public class UserPreferenceSettingServiceTest
         // it should be true
         assertTrue(userPreferenceSettingService.getDisplaySongBook());
     }
+
+//    @Test
+//    @Config(sdk = 27)
+//    public void displaySongBookWhenRunningOnSdk27()
+//    {
+//        // it should be false
+//        sharedPreferences.edit().putBoolean("prefDisplaySongbook", true).apply();
+//        assertFalse(userPreferenceSettingService.getDisplaySongBook());
+//    }
 }

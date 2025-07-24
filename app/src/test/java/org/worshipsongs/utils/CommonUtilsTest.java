@@ -48,6 +48,13 @@ public class CommonUtilsTest
         assertTrue(CommonUtils.INSTANCE.isAboveOreo());
     }
 
+    @Test
+    @Config(sdk = 27)
+    public void isAboveOreoWhenRunningOnSdk27()
+    {
+        assertFalse(CommonUtils.INSTANCE.isAboveOreo());
+    }
+
     //Note: Update this test every major release
     @Test
     public void testGetProjectVersion()
